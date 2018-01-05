@@ -2,7 +2,7 @@
   <div class="courses-list">
     <v-toolbar dense extended>
       <v-toolbar-title>
-        {{ title + (departmentName ? '：' + departmentName : '') }}
+        {{ (departmentName ? departmentName : title) }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <choose-department
@@ -155,7 +155,11 @@ export default {
 
   .list {
     height: calc(100vh - 100px);
+    overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: -100;
+
     .list__tile {
       height: 88px + 16px !important;
     }

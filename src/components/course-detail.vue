@@ -2,7 +2,7 @@
   <div class="course-detail">
     <v-toolbar dense>
       <v-toolbar-title>
-        {{ title + (course.title ? '：' + course.title : '') }}
+        {{ (course.title ? course.title : title) }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>

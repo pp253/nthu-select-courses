@@ -46,13 +46,12 @@
                   @click="choosedDepartment = departmentAbbr, choosedClass = ''"
                   :class="choosedDepartment === departmentAbbr ? 'list__tile--active' : ''"
                 >
-                  <v-list-tile-content
-                  >{{ department.chineseName }}</v-list-tile-content>
+                  <v-list-tile-content>{{ department.chineseName }}</v-list-tile-content>
                 </v-list-tile>
               </template>
             </v-list>
           </v-flex>
-          <v-flex xs4 class="limit-height">
+          <v-flex xs4 class="limit-height flex-class">
             <v-list
               v-if="/*choosedCollege !== '' && */choosedDepartment !== ''"
             >
@@ -63,9 +62,9 @@
                   ripple
                   :key="cls.abbr"
                   @click="choosedClass = cls.abbr"
+                  :class="choosedClass === cls.abbr ? 'list__tile--active' : ''"
                 >
-                  <v-list-tile-content
-                  >{{ cls.name }}</v-list-tile-content>
+                  <v-list-tile-content>{{ cls.name }}</v-list-tile-content>
                 </v-list-tile>
               </template>
             </v-list>
@@ -108,7 +107,7 @@ export default {
 
 <style lang="scss">
 .choose-department {
-  .flex-college, .flex-department {
+  .flex-college, .flex-department, .flex-class {
     li.list__tile--active a div {
       color: #1976D2 !important;
     }
@@ -119,6 +118,7 @@ export default {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

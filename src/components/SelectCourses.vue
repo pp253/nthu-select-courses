@@ -56,7 +56,8 @@
         </v-navigation-drawer>
 
         </v-flex>
-        <v-flex xs3>
+
+        <v-flex xs3 v-if="store.ui.common.showCoursesList">
           <courses-list
             title="課程清單"
             @update-preview-time="updatePreviewTime"
@@ -64,7 +65,7 @@
           ></courses-list>
         </v-flex>
 
-        <v-flex xs3>
+        <v-flex xs3 v-if="store.ui.common.showSelectedCoursesList">
           <courses-list
             title="已選課程清單"
             :list="store.user.selectedCoursesDetail"
@@ -73,16 +74,10 @@
         </v-flex>
 
 
-        <v-flex xs6 v-if="!store.ui.common.showCourseDetail">
+        <v-flex xs6 v-if="!store.ui.common.showCourseDetail && store.ui.common.showTimeTable">
           <v-toolbar dense>
             <v-toolbar-title>課表</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>search</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon>favorite</v-icon>
-            </v-btn>
             <v-btn icon>
               <v-icon>more_vert</v-icon>
             </v-btn>
@@ -91,6 +86,7 @@
             :preview-time="previewTime"
           ></time-table>
         </v-flex>
+
         <v-flex xs6 v-if="store.ui.common.showCourseDetail">
           <course-detail
             title="課程資訊"

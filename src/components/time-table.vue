@@ -24,11 +24,11 @@
             :key="weekday"
             :class="previewTime.includes(weekday + timeSection) ? 'cyan lighten-4 preview' : ''"
           >
-              <div
-                v-for="course in timeTable[weekday][timeSection]"
-                :key="course.number"
-                class="green--after"
-              >{{ course.title }}</div>
+            <div
+              v-for="course in timeTable[weekday][timeSection]"
+              :key="course.number"
+              class="green--after"
+            >{{ course.title }}</div>
           </td>
         </tr>
       </tbody>
@@ -85,6 +85,7 @@ export default {
 .time-table {
   height: calc(100vh - 48px);
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   table {
     table-layout: fixed;
