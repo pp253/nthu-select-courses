@@ -1,0 +1,17 @@
+{
+  "dialog": {
+    "OK": "好的",
+    "Apply": "確定",
+    "Cancel": "取消",
+    "Retry": "重試"
+  },
+  "login": {
+    "username": "帳號",
+    "userpass": "密碼",
+    "auth_img": "驗證碼",
+    "login": "登入"
+  },
+  "chooseDepartment": {
+    "title": "選擇科系"
+  }
+}
