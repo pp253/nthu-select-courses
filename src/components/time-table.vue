@@ -1,39 +1,48 @@
 <template>
-  <v-container class="time-table">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>一</th>
-          <th>二</th>
-          <th>三</th>
-          <th>四</th>
-          <th>五</th>
-          <th>六</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="timeSection in timeSectionName"
-          :key="timeSection"
-          :class="'time-section-' + timeSection"
-        >
-          <th>{{ timeSection }}</th>
-          <td
-            v-for="weekday in weekdayName"
-            :key="weekday"
-            :class="previewTime.includes(weekday + timeSection) ? 'cyan lighten-4 preview' : ''"
+  <div>
+    <v-toolbar dense>
+      <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>more_vert</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-container class="time-table">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ $t('timeTable.weekday.m') }}</th>
+            <th>{{ $t('timeTable.weekday.t') }}</th>
+            <th>{{ $t('timeTable.weekday.w') }}</th>
+            <th>{{ $t('timeTable.weekday.r') }}</th>
+            <th>{{ $t('timeTable.weekday.f') }}</th>
+            <th>{{ $t('timeTable.weekday.s') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="timeSection in timeSectionName"
+            :key="timeSection"
+            :class="'time-section-' + timeSection"
           >
-            <div
-              v-for="course in timeTable[weekday][timeSection]"
-              :key="course.number"
-              class="green--after"
-            >{{ course.title }}</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </v-container>
+            <th>{{ timeSection }}</th>
+            <td
+              v-for="weekday in weekdayName"
+              :key="weekday"
+              :class="previewTime.includes(weekday + timeSection) ? 'cyan lighten-4 preview' : ''"
+            >
+              <div
+                v-for="course in timeTable[weekday][timeSection]"
+                :key="course.number"
+                class="green--after"
+              >{{ course.title }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </v-container>
+  </div>
 </template>
 
 <script>

@@ -11,7 +11,45 @@
     "auth_img": "驗證碼",
     "login": "登入"
   },
+  "action": {
+    "addCourse": "加入課程",
+    "removeCourse": "移除課程",
+    "addFavorite": "加入最愛",
+    "removeFavorite": "移除最愛"
+  },
   "chooseDepartment": {
     "title": "選擇科系"
+  },
+  "favoriteCoursesList": {
+    "title": "最愛課程清單"
+  },
+  "selectedCoursesList": {
+    "title": "已選課程清單"
+  },
+  "coursesList": {
+    "title": "課程清單"
+  },
+  "courseDetail": {
+    "title": "課程資訊",
+    "number": "科號",
+    "time": "時間",
+    "professor": "授課教師",
+    "credit": "學分",
+    "size_limit": "人限",
+    "room": "地點",
+    "prerequirement": "擋修",
+    "memo": "備註",
+    "close": "關閉課程資訊"
+  },
+  "timeTable": {
+    "title": "課表",
+    "weekday": {
+      "m": "一",
+      "t": "二",
+      "w": "三",
+      "r": "四",
+      "f": "五",
+      "s": "六"
+    }
   }
 }

@@ -9,30 +9,30 @@
         <v-btn icon slot="activator" @click="store.ui.common.showCourseDetail = false">
           <v-icon>close</v-icon>
         </v-btn>
-        <span>關閉課程資訊</span>
+        <span>{{ $t('courseDetail.close') }}</span>
       </v-tooltip>
     </v-toolbar>
 
     <v-container>
       <v-layout wrap>
-        <v-flex xs2 class="grey--text text--darken-2">科號</v-flex><v-flex xs4>{{ course.number }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">時間</v-flex><v-flex xs4>{{ course.time }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">授課教師</v-flex><v-flex xs4>{{ course.professor }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">學分</v-flex><v-flex xs4>{{ course.credit }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">人限</v-flex><v-flex xs4>{{ course.size_limit }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">地點</v-flex><v-flex xs4>{{ course.room }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs4>{{ course.number }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs4>{{ course.time }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs4>{{ course.professor }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs4>{{ course.credit }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs4>{{ course.size_limit }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs4>{{ course.room }}</v-flex>
       </v-layout>
       <v-layout wrap pb-3>
-        <v-flex xs2 class="grey--text text--darken-2">擋修</v-flex><v-flex xs10>{{ course.prerequirement }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">備註</v-flex><v-flex xs10>{{ course.memo }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.prerequirement') }}</v-flex><v-flex xs10>{{ course.prerequirement }}</v-flex>
+        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.memo') }}</v-flex><v-flex xs10>{{ course.memo }}</v-flex>
       </v-layout>
 
       <v-btn
         @click="store.user.selectedCourses.indexOf(course.number) === -1 ? addCourses(course.number) : removeCourses(course.number)"
-      >{{ store.user.selectedCourses.indexOf(course.number) === -1 ? '加入課程' : '移除課程' }}</v-btn>
+      >{{ store.user.selectedCourses.indexOf(course.number) === -1 ? $t('action.addCourse') : $t('action.removeCourse') }}</v-btn>
       <v-btn
         @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
-      >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? '加入最愛' : '移除最愛' }}</v-btn>
+      >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
     </v-container>
     <v-divider></v-divider>
     <v-container>

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid pa-0 class="select-courses">
     <v-layout row>
-      <v-flex class="flex-drawer">
+      <div class="flex-drawer">
         <v-navigation-drawer permanent light :mini-variant="true">
           <v-toolbar flat class="transparent">
             <v-list class="pa-0">
@@ -20,7 +20,7 @@
               >
                 <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
               </v-list-tile>
-              <span>課程清單</span>
+              <span>{{ $t('coursesList.title') }}</span>
             </v-tooltip>
             <v-tooltip right>
               <v-list-tile
@@ -30,7 +30,7 @@
               >
                 <v-list-tile-action><v-icon>playlist_add_check</v-icon></v-list-tile-action>
               </v-list-tile>
-              <span>已選課程清單</span>
+              <span>{{ $t('selectedCoursesList.title') }}</span>
             </v-tooltip>
             <v-tooltip right>
               <v-list-tile
@@ -40,7 +40,7 @@
               >
                 <v-list-tile-action><v-icon>favorite</v-icon></v-list-tile-action>
               </v-list-tile>
-              <span>最愛課程清單</span>
+              <span>{{ $t('favoriteCoursesList.title') }}</span>
             </v-tooltip>
             <v-tooltip right>
               <v-list-tile
@@ -50,77 +50,73 @@
               >
                 <v-list-tile-action><v-icon>grid_on</v-icon></v-list-tile-action>
               </v-list-tile>
-              <span>課表</span>
+              <span>{{ $t('timeTable.title') }}</span>
             </v-tooltip>
           </v-list>
         </v-navigation-drawer>
 
-        </v-flex>
+      </div>
+      <v-flex>
+        <v-layout>
+          <v-flex xs3 v-if="store.ui.common.showCoursesList">
+            <courses-list
+              :title="$t('coursesList.title')"
+              @update-preview-time="updatePreviewTime"
+              empty-text="請從上方按鈕選擇您要查看的課程。"
+            ></courses-list>
+          </v-flex>
 
-        <v-flex xs3 v-if="store.ui.common.showCoursesList">
-          <courses-list
-            title="課程清單"
-            @update-preview-time="updatePreviewTime"
-            empty-text="請從上方按鈕選擇您要查看的課程。"
-          ></courses-list>
-        </v-flex>
-
-        <v-flex xs3 v-if="store.ui.common.showSelectedCoursesList">
-          <courses-list
-            title="已選課程清單"
-            :list="store.user.selectedCoursesDetail"
-            @update-preview-time="updatePreviewTime"
-          ></courses-list>
-        </v-flex>
+          <v-flex xs3 v-if="store.ui.common.showSelectedCoursesList">
+            <courses-list
+              :title="$t('selectedCoursesList.title')"
+              :list="store.user.selectedCoursesDetail"
+              @update-preview-time="updatePreviewTime"
+            ></courses-list>
+          </v-flex>
 
 
-        <v-flex xs6 v-if="!store.ui.common.showCourseDetail && store.ui.common.showTimeTable">
-          <v-toolbar dense>
-            <v-toolbar-title>課表</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>more_vert</v-icon>
-            </v-btn>
-          </v-toolbar>
-          <time-table
-            :preview-time="previewTime"
-          ></time-table>
-        </v-flex>
+          <v-flex xs6 v-if="!store.ui.common.showCourseDetail && store.ui.common.showTimeTable">
+            <time-table
+              :preview-time="previewTime"
+            ></time-table>
+          </v-flex>
 
-        <v-flex xs6 v-if="store.ui.common.showCourseDetail">
-          <course-detail
-            title="課程資訊"
-            :course-number="store.ui.common.courseDetailNumber"
-          ></course-detail>
-        </v-flex>
-      </v-layout>
+          <v-flex xs6 v-if="store.ui.common.showCourseDetail">
+            <course-detail
+              :title="$t('courseDetial.title')"
+              :course-number="store.ui.common.courseDetailNumber"
+            ></course-detail>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
-import store from '../lib/store'
+import store from "../lib/store";
 
 export default {
-  name: 'SelectCourses',
-  data () {
+  name: "SelectCourses",
+  data() {
     return {
       store: store,
-      previewTime: ''
-    }
+      previewTime: ""
+    };
   },
   methods: {
-    updatePreviewTime (previewTime) {
-      this.previewTime = previewTime
+    updatePreviewTime(previewTime) {
+      this.previewTime = previewTime;
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
 .select-courses {
   .flex-drawer {
     z-index: 1;
-    
+
     aside.navigation-drawer--mini-variant {
       width: 64px !important;
 

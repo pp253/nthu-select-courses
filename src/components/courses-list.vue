@@ -57,24 +57,12 @@
                 <v-list>
                   <v-list-tile
                     ripple
-                    v-if="store.user.selectedCourses.indexOf(course.number) === -1"
-                    @click="addCourses(course.number)"
-                  >加入課程</v-list-tile>
+                    @click="store.user.selectedCourses.indexOf(course.number) === -1 ? addCourses(course.number) : removeCourses(course.number)"
+                  >{{ store.user.selectedCourses.indexOf(course.number) === -1 ? $t('action.addCourse') : $t('action.removeCourse') }}</v-list-tile>
                   <v-list-tile
                     ripple
-                    v-if="store.user.selectedCourses.indexOf(course.number) !== -1"
-                    @click="removeCourses(course.number)"
-                  >移除課程</v-list-tile>
-                  <v-list-tile
-                    ripple
-                    v-if="store.user.favoriteCourses.indexOf(course.number) === -1"
-                    @click="addFavorite(course.number)"
-                  >加入最愛</v-list-tile>
-                  <v-list-tile
-                    ripple
-                    v-if="store.user.favoriteCourses.indexOf(course.number) !== -1"
-                    @click="removeFavorite(course.number)"
-                  >移除最愛</v-list-tile>
+                    @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
+                  >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-list-tile>
                   <v-list-tile
                     ripple
                     @click="store.openCourseDetail(course.number)"
