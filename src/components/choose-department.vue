@@ -13,7 +13,7 @@
     <v-card
       class="choose-department"
     >
-      <v-card-title>{{ $t('chooseDepartment.title') }}</v-card-title>
+      <v-card-title class="headline">{{ $t('chooseDepartment.title') }}</v-card-title>
       <v-card-text>
         <v-layout>
           <!--

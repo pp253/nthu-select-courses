@@ -66,7 +66,7 @@
                   <v-list-tile
                     ripple
                     @click="store.openCourseDetail(course.number)"
-                  >詳細資訊</v-list-tile>
+                  >{{ $t('coursesList.detail') }}</v-list-tile>
                 </v-list>
               </v-menu>
             </div>
@@ -81,7 +81,6 @@
       >{{ emptyText }}</div>
 
     </v-list>
-
   </div>
 </template>
 

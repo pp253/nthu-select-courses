@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import coursesDb from './courses_db.json'
+import * as api from '../api'
 
 const store = new Vue({
   data () {
@@ -25,16 +26,77 @@ const store = new Vue({
       catalog: coursesDb.catalog,
       courses: coursesDb.courses,
       user: {
-        ACIXSTORE: '',
+        isLogin: false,
+        username: '',
+        sessionToken: '',
         // 只儲存加入的course number，不然難以查詢
         selectedCourses: [],
+        selectedCoursesStatus: [],
         selectedCoursesDetail: [],
         favoriteCourses: [],
-        favoriteCoursesDetail: []
+        favoriteCoursesDetail: [],
+        scores: {},
+        scoresLoaded: false
       }
     }
   },
   methods: {
+    login (loginInfo) {
+      return new Promise((resolve, reject) => {
+        api.getSessionToken(loginInfo)
+        .then((data) => {
+          this.user.sessionToken = data.sessionToken
+          this.user.username = data.username
+          this.user.isLogin = true
+          resolve(data)
+        })
+        .catch(function (err) {
+          reject(err)
+        })
+      })
+    },
+    getScores () {
+      return new Promise((resolve, reject) => {
+        if (this.user.sessionToken === '') {
+          reject()
+          return
+        }
+        if (this.user.scoresLoaded === true) {
+          resolve(this.user.scores)
+        } else {
+          api.getScores(this.user.sessionToken)
+          .then((data) => {
+            for (let semester in data) {
+              this.user.scores[semester] = data[semester]
+            }
+            this.user.scoresLoaded = true
+            resolve(this.user.scores)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+        }
+      })
+    },
+    getSyllabus (courseNumber) {
+      return new Promise((resolve, reject) => {
+        if (!(courseNumber in this.courses)) {
+          reject()
+          return
+        }
+        if (this.courses[courseNumber].syllabus) {
+          resolve(this.courses[courseNumber].syllabus)
+        } else {
+          api.getSyllabus(courseNumber)
+          .then((data) => {
+            resolve(data)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+        }
+      })
+    },
     getDepartmentDetail (abbr) {
       if (abbr.length <= 4) {
         // Department

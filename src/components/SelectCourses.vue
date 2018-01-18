@@ -62,7 +62,7 @@
             <courses-list
               :title="$t('coursesList.title')"
               @update-preview-time="updatePreviewTime"
-              empty-text="請從上方按鈕選擇您要查看的課程。"
+              :empty-text="$t('coursesList.pleaseSelect')"
             ></courses-list>
           </v-flex>
 
@@ -83,7 +83,7 @@
 
           <v-flex xs6 v-if="store.ui.common.showCourseDetail">
             <course-detail
-              :title="$t('courseDetial.title')"
+              :title="$t('courseDetail.title')"
               :course-number="store.ui.common.courseDetailNumber"
             ></course-detail>
           </v-flex>

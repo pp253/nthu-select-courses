@@ -17,6 +17,14 @@
     "addFavorite": "加入最愛",
     "removeFavorite": "移除最愛"
   },
+  "entry": {
+    "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
+    "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請在試一遍！",
+    "AuthCheckCodeNotCorrectTitle": "驗證碼錯誤",
+    "AuthCheckCodeNotCorrectText": "驗證碼輸入錯誤，請再試一遍！",
+    "NTHUServerErrorTitle": "選課系統錯誤",
+    "NTHUServerErrorText": "選課系統錯誤，請再試一遍！"
+  },
   "chooseDepartment": {
     "title": "選擇科系"
   },
@@ -27,7 +35,11 @@
     "title": "已選課程清單"
   },
   "coursesList": {
-    "title": "課程清單"
+    "title": "課程清單",
+    "pleaseSelect": "請從上方按鈕選擇您要查看的課程。",
+    "emptyText": "您還沒有加入的課程歐！",
+    "syllabus": "課程大綱",
+    "detail": "詳細資訊"
   },
   "courseDetail": {
     "title": "課程資訊",
@@ -51,5 +63,20 @@
       "f": "五",
       "s": "六"
     }
+  },
+  "error": {
+    
+  },
+  "scores": {
+    "selecting": "請選擇學期",
+    "grade": "成績",
+    "title": "{0}的成績",
+    "emptyText": "沒有成績",
+    "distribution": "成績分布"
+  },
+  "semester": {
+    "10": "上學期",
+    "20": "下學期",
+    "30": "暑期"
   }
 }

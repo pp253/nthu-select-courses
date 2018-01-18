@@ -1,12 +1,11 @@
 import Vue from 'vue'
-import components from './components'
-import router from './router'
-import './lib/store'
-import i18n from './i18n'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+import i18n from './i18n'
+import router from './router'
+import './components'
+import './lib/store'
 import App from './App'
-// import * as preselect from './api/preselect'
 
 Vue.use(Vuetify)
 
@@ -22,3 +21,5 @@ new Vue({
     App
   }
 })
+
+console.info('I know you are interested in source code, go https://github.com/pp253/nthu-select-courses and get it!')
