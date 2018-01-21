@@ -36,7 +36,7 @@
                 v-for="course in timeTable[weekday][timeSection]"
                 :key="course.number"
                 class="green--after"
-              >{{ course.title }}</div>
+              >{{ store.courses[course.number].title }}</div>
             </td>
           </tr>
         </tbody>
@@ -51,10 +51,12 @@ import store from '../lib/store'
 export default {
   name: 'TimeTable',
   props: {
-    'preview-time': String
+    'preview-time': String,
+    'list': Array
   },
   data () {
     return {
+      store: store,
       timeSectionName: ['1', '2', '3', '4', 'n', '5', '6', '7', '8', '9', 'a', 'b', 'c'],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S']
     }
@@ -74,9 +76,9 @@ export default {
         }
       }
 
-      for (let course of store.user.selectedCoursesDetail) {
-        for (let i = 0; i < course.time.length; i += 2) {
-          let list = /([MTWRFS])([1-9abcnABCN])/g.exec(course.time.slice(i, i + 2))
+      for (let course of this.list) {
+        for (let i = 0; i < this.store.courses[course.number].time.length; i += 2) {
+          let list = /([MTWRFS])([1-9abcnABCN])/g.exec(this.store.courses[course.number].time.slice(i, i + 2))
           table[list[1].toUpperCase()][list[2].toLowerCase()].push(course)
         }
       }
@@ -84,8 +86,6 @@ export default {
     }
   },
   methods: {
-    
-
   }
 }
 </script>

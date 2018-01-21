@@ -9,17 +9,18 @@
     "username": "帳號",
     "userpass": "密碼",
     "auth_img": "驗證碼",
-    "login": "登入"
+    "login": "登入",
+    "authCodeFormatError": "驗證碼應該有六位數字！"
   },
   "action": {
     "addCourse": "加入課程",
-    "removeCourse": "移除課程",
+    "quitCourse": "移除課程",
     "addFavorite": "加入最愛",
     "removeFavorite": "移除最愛"
   },
   "entry": {
     "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
-    "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請在試一遍！",
+    "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請再試一遍！",
     "AuthCheckCodeNotCorrectTitle": "驗證碼錯誤",
     "AuthCheckCodeNotCorrectText": "驗證碼輸入錯誤，請再試一遍！",
     "NTHUServerErrorTitle": "選課系統錯誤",

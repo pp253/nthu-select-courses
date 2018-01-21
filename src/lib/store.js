@@ -13,13 +13,17 @@ const store = new Vue({
           showCoursesList: true,
           showSelectedCoursesList: true,
           showFavoriteCoursesList: true,
-          showTimeTable: true
+          showTimeTable: true,
+          loading: false
         },
         pc: {
-
+          navDrawer: false
         },
         mobile: {
-
+          selectCourse: {
+            showpage: ''
+          },
+          bottomDrawer: false
         }
       },
       departments: coursesDb.departments,
@@ -30,9 +34,10 @@ const store = new Vue({
         username: '',
         sessionToken: '',
         // 只儲存加入的course number，不然難以查詢
-        selectedCourses: [],
-        selectedCoursesStatus: [],
-        selectedCoursesDetail: [],
+        selectedCourses: [], // turn to deparcated
+        selectedCoursesDetail: [], // turn to deparcated
+        currentSelectedCourses: [],
+        currentSelectedCoursesLoaded: false,
         favoriteCourses: [],
         favoriteCoursesDetail: [],
         scores: {},
@@ -66,8 +71,8 @@ const store = new Vue({
         } else {
           api.getScores(this.user.sessionToken)
           .then((data) => {
-            for (let semester in data) {
-              this.user.scores[semester] = data[semester]
+            for (let semester in data.scores) {
+              this.user.scores[semester] = data.scores[semester]
             }
             this.user.scoresLoaded = true
             resolve(this.user.scores)
@@ -76,6 +81,80 @@ const store = new Vue({
             reject(err)
           })
         }
+      })
+    },
+    getCurrentSelectedCourses () {
+      return new Promise((resolve, reject) => {
+        if (this.user.sessionToken === '') {
+          reject()
+          return
+        }
+        if (this.user.currentSelectedCoursesLoaded === true) {
+          resolve(this.user.currentSelectedCourses)
+        } else {
+          api.getCurrentSelectedCourses(this.user.sessionToken)
+          .then((data) => {
+            this.user.currentSelectedCourses.splice(0, this.user.currentSelectedCourses.length)
+            for (let course of data.currentSelectedCourses) {
+              this.user.currentSelectedCourses.push(course)
+            }
+            this.user.currentSelectedCoursesLoaded = true
+            resolve(this.user.currentSelectedCourses)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+        }
+      })
+    },
+    addCourse (courseNumber, order) {
+      return new Promise((resolve, reject) => {
+        api.addCourse(this.user.sessionToken, courseNumber, order)
+        .then((data) => {
+          this.user.currentSelectedCourses.splice(0, this.user.currentSelectedCourses.length)
+          for (let course of data.currentSelectedCourses) {
+            this.user.currentSelectedCourses.push(course)
+          }
+          this.user.currentSelectedCoursesLoaded = true
+          resolve(this.user.currentSelectedCourses)
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    quitCourse (courseNumber) {
+      return new Promise((resolve, reject) => {
+        api.quitCourse(this.user.sessionToken, courseNumber)
+        .then((data) => {
+          this.user.currentSelectedCourses.splice(0, this.user.currentSelectedCourses.length)
+          for (let course of data.currentSelectedCourses) {
+            this.user.currentSelectedCourses.push(course)
+          }
+          this.user.currentSelectedCoursesLoaded = true
+          resolve(this.user.currentSelectedCourses)
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    editOrder (newOrder, oldOrder) {
+      return new Promise((resolve, reject) => {
+        api.editOrder(this.user.sessionToken, newOrder, oldOrder)
+        .then((data) => {
+          this.user.currentSelectedCourses.splice(0, this.user.currentSelectedCourses.length)
+          for (let course of data.currentSelectedCourses) {
+            this.user.currentSelectedCourses.push(course)
+          }
+          this.user.currentSelectedCoursesLoaded = true
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
       })
     },
     getSyllabus (courseNumber) {
@@ -120,15 +199,6 @@ const store = new Vue({
     getCourseDetail (courseNumber) {
       return this.courses[courseNumber] || {}
     },
-    addSelectedCourses (courseNumber) {
-      if (this.user.selectedCourses.indexOf(courseNumber) !== -1) {
-        console.log('duplicate course selected!')
-        return this.user.selectedCourses
-      }
-      this.user.selectedCourses.push(courseNumber)
-      this.user.selectedCoursesDetail.push(this.getCourseDetail(courseNumber))
-      return this.user.selectedCourses
-    },
     removeSelectedCourses (courseNumber) {
       let idx = this.user.selectedCourses.indexOf(courseNumber)
       if (idx === -1) {
@@ -161,6 +231,11 @@ const store = new Vue({
     openCourseDetail (courseNumber) {
       this.ui.common.showCourseDetail = true
       this.ui.common.courseDetailNumber = courseNumber
+    },
+    courseSelected (courseNumber) {
+      return (this.user.currentSelectedCourses.find((course) => {
+        return course.number === courseNumber
+      }) !== undefined)
     }
   },
   created () {

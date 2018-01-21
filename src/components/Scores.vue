@@ -1,13 +1,13 @@
 <template>
   <div class="scores">
-    <v-toolbar dense extended fixed app>
+    <v-toolbar dense extended>
       <v-menu :nudge-width="100">
         <v-toolbar-title slot="activator">
           <span>{{ readableSemester }}</span>
           <v-icon>arrow_drop_down</v-icon>
         </v-toolbar-title>
         <v-list>
-          <v-list-tile v-for="item in availableSemester" :key="item.value" @click="semester = item.value">
+          <v-list-tile v-for="item in availableSemester" :key="item.value" @click="semester = item.value" ripple>
             <v-list-tile-title v-text="item.text"></v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -99,7 +99,7 @@ export default {
         let seText = /(\d{3})(\d{2})/.exec(i)
         list.push({
           text: seText[1] + this.$t(`semester.${seText[2]}`),
-          value: i 
+          value: i
         })
       }
       return list
@@ -112,9 +112,11 @@ export default {
     store.getScores()
     .then((data) => {
       this.scores = data
+      this.semester = Object.keys(this.scores).reverse()[Object.keys(this.scores).length > 1 ? 1 : 0]
     })
     .catch((err) => {
       console.log(err)
+      this.$router.push('/')
     })
   }
 }
@@ -124,6 +126,16 @@ export default {
 .scores {
   ul {
     height: calc(100vh - 100px);
+
+    .list__tile__action {
+      min-width: 100px;
+
+      .list__tile__action-text {
+        font-size: 16px;
+        position: relative;
+        top: 3px;
+      }
+    }
   }
 }
 </style>

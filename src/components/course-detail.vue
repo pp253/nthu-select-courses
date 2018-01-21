@@ -28,8 +28,8 @@
       </v-layout>
 
       <v-btn
-        @click="store.user.selectedCourses.indexOf(course.number) === -1 ? addCourses(course.number) : removeCourses(course.number)"
-      >{{ store.user.selectedCourses.indexOf(course.number) === -1 ? $t('action.addCourse') : $t('action.removeCourse') }}</v-btn>
+        @click="store.courseSelected(course.number) ? addCourse(course.number) : quitCourse(course.number)"
+      >{{ store.courseSelected(course.number) ? $t('action.addCourse') : $t('action.quitCourse') }}</v-btn>
       <v-btn
         @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
       >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
@@ -61,11 +61,17 @@ export default {
     }
   },
   methods: {
-    addCourses (number) {
-      store.addSelectedCourses(number)
+    addCourse (number) {
+      let order = ''
+      if (this.store.courses[number].random !== 0) {
+        order = this.store.user.currentSelectedCourses.filter((course) => {
+          return course.status && course.status === 2 && this.store.courses[course.number].random === this.store.courses[number].random
+        }).length + 1
+      }
+      this.store.addCourse(number, order)
     },
-    removeCourses (number) {
-      store.removeSelectedCourses(number)
+    quitCourse (number) {
+      this.store.quitCourse(number)
     },
     addFavorite (number) {
       store.addFavorateCourses(number)

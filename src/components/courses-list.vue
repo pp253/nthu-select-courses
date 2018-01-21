@@ -32,23 +32,73 @@
         v-if="coursesList.length > 0"
         v-for="(course, index) in coursesList"
       >
+        <v-subheader
+          v-if="course.type === 'subheader'"
+          :key="course.title"
+        >
+          {{ course.title }}
+          <v-spacer></v-spacer>
+          <v-dialog
+            v-if="course.orderable"
+            v-model="course.dialog"
+            persistent
+            max-width="350"
+            scrollable
+          >
+            <v-btn color="primary" dark slot="activator">編輯志願序</v-btn>
+            <v-card>
+              <v-card-title class="headline">編輯志願序</v-card-title>
+              <v-card-text>
+                <v-list>
+                  <draggable v-model="course.newOrder">
+                    <template
+                      v-for="(element, idx) in course.newOrder"
+                    >
+                      <v-list-tile
+                        avatar
+                        :key="'drag-' + element.number"
+                      >
+                        <v-list-tile-action class="grey--text lighten-1">
+                          志願{{idx + 1}}
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                          {{ store.courses[element.number].title }}
+                        </v-list-tile-content>
+                        <v-list-tile-avatar>
+                          <v-icon>drag_handle</v-icon>
+                        </v-list-tile-avatar>
+                      </v-list-tile>
+                    </template>
+                  </draggable>
+                </v-list>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click.native="cancelEditOrder(course)" flat>取消</v-btn>
+                <v-btn @click.native="editOrder(course)" flat>確定</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-subheader>
+
         <v-list-tile
+          v-if="store.courses[course.number]"
           ripple
           @click=""
           :key="course.number"
-          @mouseover="updatePreviewTime(course.time)"
+          @mouseover="updatePreviewTime(course.number)"
           @mouseleave="updatePreviewTime('')"
           @dblclick="store.openCourseDetail(course.number)"
         >
           <v-list-tile-content>
-            <v-list-tile-title>{{ course.title }}</v-list-tile-title>
-            <v-list-tile-sub-title class="grey--text text--darken-4">{{ course.number + ' ' + course.professor }}</v-list-tile-sub-title>
-            <v-list-tile-sub-title class="detail">{{ '學分' + course.credit + '　人限' + course.size_limit + '　' + course.room }}</v-list-tile-sub-title>
-            <v-list-tile-sub-title class="memo">{{ course.memo || ' ' }}</v-list-tile-sub-title>
+            <v-list-tile-title>{{ store.courses[course.number].title }}</v-list-tile-title>
+            <v-list-tile-sub-title class="grey--text text--darken-4">{{ store.courses[course.number].number + ' ' + store.courses[course.number].professor }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="detail">{{ '學分' + store.courses[course.number].credit + '　人限' + store.courses[course.number].size_limit + '　' + store.courses[course.number].room }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="memo">{{ store.courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <v-list-tile-action-text>{{ course.time }}</v-list-tile-action-text>
+            <v-list-tile-action-text>{{ store.courses[course.number].time }}</v-list-tile-action-text>
             <div class="text-xs-center">
               <v-menu offset-y left>
                 <v-btn icon slot="activator">
@@ -57,8 +107,8 @@
                 <v-list>
                   <v-list-tile
                     ripple
-                    @click="store.user.selectedCourses.indexOf(course.number) === -1 ? addCourses(course.number) : removeCourses(course.number)"
-                  >{{ store.user.selectedCourses.indexOf(course.number) === -1 ? $t('action.addCourse') : $t('action.removeCourse') }}</v-list-tile>
+                    @click="store.courseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
+                  >{{ store.courseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-list-tile>
                   <v-list-tile
                     ripple
                     @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
@@ -72,7 +122,10 @@
             </div>
           </v-list-tile-action>
         </v-list-tile>
-        <v-divider v-if="index < coursesList.length - 1" :key="course.number + '-divider'"></v-divider>
+        <v-divider
+          v-if="store.courses[course.number] && index < coursesList.length - 1"
+          :key="course.number + '-divider'"
+        ></v-divider>
       </template>
 
       <div
@@ -103,36 +156,146 @@ export default {
       departmentName: ''
     }
   },
+  watch: {
+    list (newVal, oldVal) {
+      this.coursesList.splice(0, this.coursesList.length)
+      
+      // 待亂數
+      let waitingForRandomCoursesList = newVal.filter((course) => {
+        return course.status && course.status === 2 && !['通', '體', '中'].includes(course.orderCatalog)
+      })
+      if (waitingForRandomCoursesList.length > 0) {
+        this.coursesList.push({
+          type: 'subheader',
+          title: '待亂數',
+          newOrder: waitingForRandomCoursesList,
+          oldOrder: waitingForRandomCoursesList.slice(0, waitingForRandomCoursesList.length),
+          dialog: false,
+          orderable: false
+        })
+        for (let course of waitingForRandomCoursesList) {
+          this.coursesList.push(course)
+        }
+      }
+      
+      // 通識、體育志願（待亂數）
+      let waitingForRandomGePeCoursesList = newVal.filter((course) => {
+        return course.status && course.status === 2 && this.store.courses[course.number].random === 20
+      }).sort((courseA, courseB) => {
+        return courseA.order - courseB.order
+      })
+      if (waitingForRandomGePeCoursesList.length > 0) {
+        this.coursesList.push({
+          type: 'subheader',
+          title: '通識、體育志願（待亂數）',
+          newOrder: waitingForRandomGePeCoursesList,
+          oldOrder: waitingForRandomGePeCoursesList.slice(0, waitingForRandomGePeCoursesList.length),
+          dialog: false,
+          orderable: true
+        })
+        for (let course of waitingForRandomGePeCoursesList) {
+          this.coursesList.push(course)
+        }
+      }
+      
+      // 大學中文志願（待亂數）
+      let waitingForRandomCLCoursesList = newVal.filter((course) => {
+        return course.status && course.status === 2 && this.store.courses[course.number].random === 5
+      }).sort((courseA, courseB) => {
+        return courseA.order - courseB.order
+      })
+      if (waitingForRandomCLCoursesList.length > 0) {
+        this.coursesList.push({
+          type: 'subheader',
+          title: '大學中文志願（待亂數）',
+          newOrder: waitingForRandomCLCoursesList,
+          oldOrder: waitingForRandomCLCoursesList.slice(0, waitingForRandomCLCoursesList.length),
+          dialog: false,
+          orderable: true
+        })
+        for (let course of waitingForRandomCLCoursesList) {
+          this.coursesList.push(course)
+        }
+      }
+      
+      // 已選上
+      let addedCourses = newVal.filter((course) => {
+        return course.status && course.status === 1
+      })
+      if (addedCourses.length > 0) {
+        this.coursesList.push({
+          type: 'subheader',
+          title: '已選上',
+          newOrder: addedCourses,
+          oldOrder: addedCourses.slice(0, addedCourses.length),
+          dialog: false,
+          orderable: false
+        })
+        for (let course of addedCourses) {
+          this.coursesList.push(course)
+        }
+      }
+    }
+  },
   methods: {
     updateCourses (abbr) {
-      this.departmentName = store.getDepartmentDetail(abbr).chineseName || store.getDepartmentDetail(abbr).name
+      this.departmentName = this.store.getDepartmentDetail(abbr).chineseName || this.store.getDepartmentDetail(abbr).name
 
       this.coursesList.splice(0, this.coursesList.length)
-      for (let courseNumber of store.getCourses(abbr)) {
-        this.coursesList.push(store.getCourseDetail(courseNumber))
+      for (let courseNumber of this.store.getCourses(abbr)) {
+        this.coursesList.push({
+          number: courseNumber
+        })
       }
       return this.coursesList
     },
-    addCourses (number) {
-      store.addSelectedCourses(number)
+    addCourse (number) {
+      let order = ''
+      if (this.store.courses[number].random !== 0) {
+        order = this.store.user.currentSelectedCourses.filter((course) => {
+          return course.status && course.status === 2 && this.store.courses[course.number].random === this.store.courses[number].random
+        }).length + 1
+      }
+      this.store.ui.common.loading = true
+      this.store.addCourse(number, order)
+      .then(() => {
+        this.store.ui.common.loading = false
+      })
     },
-    removeCourses (number) {
-      store.removeSelectedCourses(number)
+    quitCourse (number) {
+      this.store.ui.common.loading = true
+      this.store.quitCourse(number)
+      .then(() => {
+        this.store.ui.common.loading = false
+      })
     },
     addFavorite (number) {
-      store.addFavorateCourses(number)
+      this.store.addFavorateCourses(number)
     },
     removeFavorite (number) {
-      store.removeFavorateCourses(number)
+      this.store.removeFavorateCourses(number)
     },
-    updatePreviewTime (time) {
-      this.$emit('update-preview-time', time)
+    updatePreviewTime (number) {
+      this.$emit('update-preview-time', number)
+    },
+    editOrder (catagory) {
+      this.store.ui.common.loading = true
+      this.store.editOrder(catagory.newOrder, catagory.oldOrder)
+      .then((data) => {
+        catagory.dialog = false
+      this.store.ui.common.loading = false
+      })
+    },
+    cancelEditOrder (catagory) {
+      catagory.newOrder.splice(0, catagory.newOrder.length)
+      for (let order of catagory.oldOrder) {
+        catagory.newOrder.push(order)
+      }
+      catagory.dialog = false
     }
   },
   mounted () {
-    if (this.list) {
-      this.coursesList = this.list
-    }
+    // TODO: 進入時應重新載入列表。
   }
 }
 </script>
@@ -149,6 +312,10 @@ export default {
 
     .list__tile {
       height: 88px + 16px !important;
+
+      .list__tile__action-text {
+        font-size: 16px;
+      }
     }
 
     .memo {
@@ -157,7 +324,5 @@ export default {
       min-height: 21.5px;
     }
   }
-
 }
 </style>
-
