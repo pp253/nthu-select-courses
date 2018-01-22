@@ -1,6 +1,6 @@
 <template>
-  <div class="courses-list">
-    <v-toolbar dense extended>
+  <div :class="'courses-list full-height' + (!list ? ' extended' : '')">
+    <v-toolbar dense :extended="!list">
       <v-toolbar-title>
         {{ (departmentName ? departmentName : title) }}
       </v-toolbar-title>
@@ -13,7 +13,7 @@
         <v-icon>more_vert</v-icon>
       </v-btn>
 
-      <v-layout row slot="extension">
+      <v-layout row slot="extension" v-if="!list">
         <v-flex>
           <v-text-field
             type="text"
@@ -42,6 +42,7 @@
             v-if="course.orderable"
             v-model="course.dialog"
             persistent
+            :fullscreen="store.isMobile"
             max-width="350"
             scrollable
           >
@@ -158,10 +159,19 @@ export default {
   },
   watch: {
     list (newVal, oldVal) {
+      this.updateList()
+    }
+  },
+  methods: {
+    updateList () {
       this.coursesList.splice(0, this.coursesList.length)
+
+      if (!this.list) {
+        return
+      }
       
       // 待亂數
-      let waitingForRandomCoursesList = newVal.filter((course) => {
+      let waitingForRandomCoursesList = this.list.filter((course) => {
         return course.status && course.status === 2 && !['通', '體', '中'].includes(course.orderCatalog)
       })
       if (waitingForRandomCoursesList.length > 0) {
@@ -179,7 +189,7 @@ export default {
       }
       
       // 通識、體育志願（待亂數）
-      let waitingForRandomGePeCoursesList = newVal.filter((course) => {
+      let waitingForRandomGePeCoursesList = this.list.filter((course) => {
         return course.status && course.status === 2 && this.store.courses[course.number].random === 20
       }).sort((courseA, courseB) => {
         return courseA.order - courseB.order
@@ -199,7 +209,7 @@ export default {
       }
       
       // 大學中文志願（待亂數）
-      let waitingForRandomCLCoursesList = newVal.filter((course) => {
+      let waitingForRandomCLCoursesList = this.list.filter((course) => {
         return course.status && course.status === 2 && this.store.courses[course.number].random === 5
       }).sort((courseA, courseB) => {
         return courseA.order - courseB.order
@@ -219,7 +229,7 @@ export default {
       }
       
       // 已選上
-      let addedCourses = newVal.filter((course) => {
+      let addedCourses = this.list.filter((course) => {
         return course.status && course.status === 1
       })
       if (addedCourses.length > 0) {
@@ -235,9 +245,7 @@ export default {
           this.coursesList.push(course)
         }
       }
-    }
-  },
-  methods: {
+    },
     updateCourses (abbr) {
       this.departmentName = this.store.getDepartmentDetail(abbr).chineseName || this.store.getDepartmentDetail(abbr).name
 
@@ -296,19 +304,22 @@ export default {
   },
   mounted () {
     // TODO: 進入時應重新載入列表。
+    if (this.list) {
+      this.updateList()
+    }
   }
 }
 </script>
 
 <style lang="scss">
 .courses-list {
-
   .list {
-    height: calc(100vh - 100px);
+    height: calc(100% - 48px);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: -100;
+    padding-bottom: 64px;
 
     .list__tile {
       height: 88px + 16px !important;
@@ -323,6 +334,12 @@ export default {
       white-space: nowrap;
       min-height: 21.5px;
     }
+  }
+}
+
+.courses-list.extended {
+  .list {
+    height: calc(100% - 96px);
   }
 }
 </style>

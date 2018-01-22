@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-height">
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -92,17 +92,19 @@ export default {
 
 <style lang="scss">
 .time-table {
-  height: calc(100vh - 48px);
+  height: calc(100% - 48px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: 64px;
 
   table {
     table-layout: fixed;
-    min-width: 100%;
+    min-width: 500px;
+    width: 100%;
     min-height: 100%;
     text-align: center;
     border-collapse: collapse;
-
+    
     tbody {
       tr td{
         // In table, height means min-height

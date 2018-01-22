@@ -6,24 +6,31 @@ const store = new Vue({
   data () {
     return {
       ui: {
-        mode: 'pc', // 'mobile', 'pc'
+        isMobile: false,
+        windowSize: {
+          x: 0,
+          y: 0
+        },
         common: {
           showCourseDetail: false,
           courseDetailNumber: '',
-          showCoursesList: true,
-          showSelectedCoursesList: true,
-          showFavoriteCoursesList: true,
-          showTimeTable: true,
-          loading: false
+          loading: false,
+          hideDrawer: false
         },
         pc: {
-          navDrawer: false
+          showCoursesList: true,
+          showSelectedCoursesList: true,
+          showFavoriteCoursesList: false,
+          showTimeTable: true,
+          navDrawer: true
         },
         mobile: {
-          selectCourse: {
-            showpage: ''
-          },
-          bottomDrawer: false
+          showCoursesList: true,
+          showSelectedCoursesList: false,
+          showFavoriteCoursesList: false,
+          showTimeTable: false,
+          timeTableOffsetTop: 0,
+          bottomDrawer: true
         }
       },
       departments: coursesDb.departments,
@@ -33,9 +40,6 @@ const store = new Vue({
         isLogin: false,
         username: '',
         sessionToken: '',
-        // 只儲存加入的course number，不然難以查詢
-        selectedCourses: [], // turn to deparcated
-        selectedCoursesDetail: [], // turn to deparcated
         currentSelectedCourses: [],
         currentSelectedCoursesLoaded: false,
         favoriteCourses: [],
@@ -45,7 +49,39 @@ const store = new Vue({
       }
     }
   },
+  computed: {
+    isMobile: {
+      get: function () {
+        // Fix Vuetify's bug
+        if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
+          this.ui.isMobile = true
+          return true
+        } else {
+          this.ui.isMobile = false
+          return false
+        }
+      },
+      set: function (val) {
+        console.warn('setter of isMobile should not be called.')
+      }
+    },
+    isNotMobile: {
+      get: function () {
+        return !this.isMobile
+      },
+      set: function (val) {
+        console.warn('setter of isNotMobile should not be called.')
+      }
+    }
+  },
   methods: {
+    changeUiMode (mode) {
+      this.ui.mode = mode
+      if (mode === 'pc') {
+      } else {
+
+      }
+    },
     login (loginInfo) {
       return new Promise((resolve, reject) => {
         api.getSessionToken(loginInfo)
@@ -198,16 +234,6 @@ const store = new Vue({
     },
     getCourseDetail (courseNumber) {
       return this.courses[courseNumber] || {}
-    },
-    removeSelectedCourses (courseNumber) {
-      let idx = this.user.selectedCourses.indexOf(courseNumber)
-      if (idx === -1) {
-        console.log('course is not selected!')
-        return this.user.selectedCourses
-      }
-      this.user.selectedCourses.splice(idx, 1)
-      this.user.selectedCoursesDetail.splice(idx, 1)
-      return this.user.selectedCourses
     },
     addFavorateCourses (courseNumber) {
       if (this.user.favoriteCourses.indexOf(courseNumber) !== -1) {

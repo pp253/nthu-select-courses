@@ -108,7 +108,7 @@ export default {
       return this.scores[this.semester] ? this.scores[this.semester] : []
     }
   },
-  created () {
+  mounted () {
     store.getScores()
     .then((data) => {
       this.scores = data

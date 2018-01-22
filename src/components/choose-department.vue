@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    :fullscreen="false"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
     max-width="500px"
   >
     <v-btn
