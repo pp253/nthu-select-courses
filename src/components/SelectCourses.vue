@@ -1,55 +1,56 @@
 <template>
   <v-container fluid pa-0 class="select-courses full-height">
-    <v-layout class="full-height">
-      <v-flex
-        :class="layoutSize.coursesList"
-        v-if="showCoursesList"
-        class="full-height"
-      >
-        <courses-list
-          :title="$t('coursesList.title')"
-          @update-preview-time="updatePreviewTime"
-          :empty-text="$t('coursesList.pleaseSelect')"
-        ></courses-list>
-      </v-flex>
+    <keep-alive>
+      <v-layout class="full-height">
+        <v-flex
+          :class="layoutSize.coursesList"
+          :hidden="!showCoursesList"
+          class="full-height"
+        >
+          <courses-list
+            :title="$t('coursesList.title')"
+            @update-preview-time="updatePreviewTime"
+            :empty-text="$t('coursesList.pleaseSelect')"
+          ></courses-list>
+        </v-flex>
 
-      <v-flex
-        :class="layoutSize.selectedCourses"
-        v-if="showSelectedCoursesList"
-      >
-        <courses-list
-          :title="$t('selectedCoursesList.title')"
-          :list="store.user.currentSelectedCourses"
-          @update-preview-time="updatePreviewTime"
-        ></courses-list>
-      </v-flex>
+        <v-flex
+          :class="layoutSize.selectedCourses"
+          :hidden="!showSelectedCoursesList"
+        >
+          <courses-list
+            :title="$t('selectedCoursesList.title')"
+            :list="store.user.currentSelectedCourses"
+            @update-preview-time="updatePreviewTime"
+          ></courses-list>
+        </v-flex>
 
-      <v-flex
-        :class="layoutSize.timeTable"
-        v-if="showTimeTable"
-      >
-        <time-table
-          :preview-time="previewTime"
-          :list="store.user.currentSelectedCourses"
-        ></time-table>
-      </v-flex>
+        <v-flex
+          :class="layoutSize.timeTable"
+          :hidden="!showTimeTable"
+        >
+          <time-table
+            :preview-time="previewTime"
+            :list="store.user.currentSelectedCourses"
+          ></time-table>
+        </v-flex>
 
-      <v-flex
-        :class="layoutSize.courseDetail"
-        v-if="showCourseDetail"
-      >
-        <course-detail
-          :title="$t('courseDetail.title')"
-          :course-number="store.ui.common.courseDetailNumber"
-        ></course-detail>
-      </v-flex>
-    </v-layout>
+        <v-flex
+          :class="layoutSize.courseDetail"
+          :hidden="!showCourseDetail"
+        >
+          <course-detail
+            :title="$t('courseDetail.title')"
+            :course-number="store.ui.common.courseDetailNumber"
+          ></course-detail>
+        </v-flex>
+      </v-layout>
+    </keep-alive>
   </v-container>
 </template>
 
 <script>
-import store from "../lib/store";
-import { editOrder } from '../api/index';
+import store from "../lib/store"
 
 export default {
   name: "SelectCourses",
@@ -57,7 +58,7 @@ export default {
     return {
       store: store,
       previewTime: ""
-    };
+    }
   },
   computed: {
     layoutSize () {
@@ -130,13 +131,19 @@ export default {
       return layoutSize
     },
     showCoursesList () {
-      return this.store.isNotMobile ? this.store.ui.pc.showCoursesList : this.store.ui.mobile.showCoursesList
+      return this.store.isNotMobile ?
+        this.store.ui.pc.showCoursesList :
+        (!this.store.ui.common.showCourseDetail && this.store.ui.mobile.showCoursesList)
     },
     showSelectedCoursesList () {
-      return this.store.isNotMobile ? this.store.ui.pc.showSelectedCoursesList : this.store.ui.mobile.showSelectedCoursesList
+      return this.store.isNotMobile ?
+        this.store.ui.pc.showSelectedCoursesList :
+        (!this.store.ui.common.showCourseDetail && this.store.ui.mobile.showSelectedCoursesList)
     },
     showTimeTable () {
-      return this.store.isNotMobile ? (!this.store.ui.common.showCourseDetail && this.store.ui.pc.showTimeTable) : this.store.ui.mobile.showTimeTable
+      return this.store.isNotMobile ?
+        (!this.store.ui.common.showCourseDetail && this.store.ui.pc.showTimeTable) :
+        (!this.store.ui.common.showCourseDetail && this.store.ui.mobile.showTimeTable)
     },
     showCourseDetail () {
       return this.store.ui.common.showCourseDetail
@@ -148,7 +155,7 @@ export default {
     }
   },
   mounted () {
-    /*
+    this.store.ui.common.hideDrawer = false
     this.store.ui.common.loading = true
     this.store.getCurrentSelectedCourses()
     .then(() => {
@@ -159,7 +166,6 @@ export default {
       this.$router.push('/')
       this.store.ui.common.loading = false
     })
-    */
   }
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
   <v-container class="entry">
     <v-layout wrap pt-5>
-      <v-flex xs12 order-xs1 md5 order-md2 class="login">
+      <v-flex xs12 order-xs1 md6 order-md2 lg4 xl4 class="login">
         <v-container :pa-0="store.isMobile" mb-5>
           <form>
             <v-card ref="form">
               <v-card-title >
                 <div>
                   <div class="headline">登入</div>
-                  <div class="grey--text darken-1">請使用你在校務資訊系統登入的帳號。<a href="">隱私權Q&A</a></div>
+                  <div class="grey--text darken-1">請使用你在校務資訊系統登入的帳號。常見問題請見頁底。</div>
                 </div>
               </v-card-title>
               <v-card-text>
@@ -59,7 +59,7 @@
         </v-container>
       </v-flex>
 
-      <v-flex xs12 order-xs2 md7 order-md1 class="introduction">
+      <v-flex xs12 order-xs2 md6 order-md1 lg8 xl8 class="introduction">
         <v-container :pa-0="store.isMobile" mb-5>
           <v-card class="mb-3">
             <v-card-title>
@@ -142,11 +142,11 @@
             <v-card-text>
               <v-list>
                 <v-list-tile>
-                  <a>向第一個清大簡易預排系統致敬！</a>
+                  <a href="http://nthu-course.cf/">向第一個清大簡易預排系統致敬！</a>
                 </v-list-tile>
                 <v-divider></v-divider>
                 <v-list-tile>
-                  <a>向第一個清大課程評價網站致敬！</a>
+                  <a href="https://nthu-plus.com/">向第一個清大課程評價網站致敬！</a>
                 </v-list-tile>
                 <v-divider></v-divider>
                 <v-list-tile>
@@ -219,7 +219,7 @@ export default {
       .then((data) => {
         this.store.ui.common.loading = false
         this.store.ui.common.hideDrawer = false
-        this.$router.push({ name: 'SelectCourses' })
+        this.$router.push({ name: 'Service' })
       })
       .catch((err) => {
         this.store.ui.common.loading = false

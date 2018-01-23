@@ -15,6 +15,9 @@ const store = new Vue({
           showCourseDetail: false,
           courseDetailNumber: '',
           loading: false,
+          dialog: false,
+          dialogTitle: '',
+          dialogText: '',
           hideDrawer: false
         },
         pc: {
@@ -160,6 +163,61 @@ const store = new Vue({
         })
       })
     },
+    addCourseAuto (number) {
+      return new Promise((resolve, reject) => {
+        this.ui.common.loading = true
+        let order = ''
+        if (this.courses[number].random !== 0) {
+          order = this.user.currentSelectedCourses.filter((course) => {
+            return course.status && course.status === 2 && this.courses[course.number].random === this.courses[number].random
+          }).length + 1
+        }
+
+        this.addCourse(number, order)
+        .then((data) => {
+          this.ui.common.loading = false
+          resolve(data)
+        })
+        .catch((err) => {
+          const errMsg = {
+            22: {
+              title: '清大官方伺服器錯誤',
+              text: ''
+            },
+            23: {
+              title: '請重新載入頁面以重新登入',
+              text: ''
+            },
+            30: {
+              title: '沒有該課程',
+              text: ''
+            },
+            31: {
+              title: '課程已停開',
+              text: ''
+            },
+            32: {
+              title: '你已經修過這堂課了',
+              text: ''
+            },
+            33: {
+              title: '衝堂',
+              text: ''
+            },
+            34: {
+              title: '你已經選過這堂課了',
+              text: ''
+            }
+          }
+          console.log(err.id, err.id in errMsg)
+          this.ui.common.dialog = true
+          this.ui.common.dialogTitle = (err.id in errMsg) ? errMsg[err.id].title : '系統錯誤'
+          this.ui.common.dialogText = '系統錯誤，請試著向清大簡易選課反映。' + err
+          this.ui.common.loading = false
+          reject(err)
+        })
+      })
+    },
     quitCourse (courseNumber) {
       return new Promise((resolve, reject) => {
         api.quitCourse(this.user.sessionToken, courseNumber)
@@ -170,6 +228,19 @@ const store = new Vue({
           }
           this.user.currentSelectedCoursesLoaded = true
           resolve(this.user.currentSelectedCourses)
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    quitCourseAuto (number) {
+      return new Promise((resolve, reject) => {
+        this.ui.common.loading = true
+        this.quitCourse(number)
+        .then((data) => {
+          this.ui.common.loading = false
           resolve(data)
         })
         .catch((err) => {

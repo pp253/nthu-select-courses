@@ -15,26 +15,30 @@
             v-model="store.isNotMobile"
             :class="store.ui.common.hideDrawer ? 'display-none' : ''"
           >
-            <v-toolbar flat class="transparent">
-              <v-list class="pa-0">
-                <v-list-tile avatar>
-                  <v-list-tile-avatar>
-                  </v-list-tile-avatar>
-                </v-list-tile>
-              </v-list>
-            </v-toolbar>
             <v-list pt-0>
+              <v-list-tile
+                @click="$router.push('/service')"
+                ripple
+              >
+                <v-list-tile-action>
+                  <v-icon>arrow_back</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
               <v-tooltip
                 v-for="item in menu"
                 :key="item.title"
                 right
               >
                 <v-list-tile
-                  ripple
                   slot="activator"
-                  @click="item.onclickDesktop"
+                  @click="store.ui.pc[item.attr] = !store.ui.pc[item.attr]"
+                  ripple
                 >
-                  <v-list-tile-action><v-icon>{{item.icon}}</v-icon></v-list-tile-action>
+                  <v-list-tile-action>
+                    <v-icon
+                      :class="store.ui.pc[item.attr] ? 'blue--text' : ''"
+                    >{{item.icon}}</v-icon>
+                  </v-list-tile-action>
                 </v-list-tile>
                 <span>{{ $t(item.title) }}</span>
               </v-tooltip>
@@ -43,9 +47,7 @@
         </v-flex>
 
         <v-flex class="main">
-          <keep-alive>
-            <router-view />
-          </keep-alive>
+          <router-view />
         </v-flex>
       </v-layout>
       <v-bottom-nav
@@ -58,7 +60,7 @@
         <v-btn
           v-for="item in menu"
           :key="item.title + '-btn'"
-          @click="item.onclickMobile"
+          @click="uiMobileClearShowing(); store.ui.mobile[item.attr] = !store.ui.mobile[item.attr]"
           flat
         >
           <span>{{ $t(item.title) }}</span>
@@ -66,6 +68,7 @@
         </v-btn>
       </v-bottom-nav>
     </v-container>
+
     <v-dialog v-model="store.ui.common.loading" max-width="250px" persistent>
       <v-card>
         <v-card-text>
@@ -74,6 +77,19 @@
             <v-flex xs9 class="loading-text">Now loading...</v-flex>
           </v-layout>
         </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="store.ui.common.dialog" max-width="250px" persistent>
+      <v-card>
+        <v-card-title class="headline">{{ store.ui.common.dialogTitle }}</v-card-title>
+        <v-card-text>{{ store.ui.common.dialogText }}</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            @click="store.ui.common.dialog = false"
+          >好</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-app>
@@ -89,26 +105,22 @@ export default {
       store: store,
       menu: [
         {
-          onclickDesktop: ()=>{store.ui.pc.showCoursesList = !store.ui.pc.showCoursesList},
-          onclickMobile: ()=>{this.uiMobileClearShowing(); store.ui.mobile.showCoursesList = !store.ui.mobile.showCoursesList},
+          attr: 'showCoursesList',
           icon: 'list',
           title: 'coursesList.title'
         },
         {
-          onclickDesktop: ()=>{store.ui.pc.showSelectedCoursesList = !store.ui.pc.showSelectedCoursesList},
-          onclickMobile: ()=>{this.uiMobileClearShowing(); store.ui.mobile.showSelectedCoursesList = !store.ui.mobile.showSelectedCoursesList},
+          attr: 'showSelectedCoursesList',
           icon: 'playlist_add_check',
           title: 'selectedCoursesList.title'
-        },
+        },/*
         {
-          onclickDesktop: ()=>{store.ui.pc.showFavoriteCoursesList = !store.ui.pc.showFavoriteCoursesList},
-          onclickMobile: ()=>{this.uiMobileClearShowing(); store.ui.mobile.showFavoriteCoursesList = !store.ui.mobile.showFavoriteCoursesList},
+          attr: 'showFavoriteCoursesList',
           icon: 'favorite',
           title: 'favoriteCoursesList.title'
-        },
+        },*/
         {
-          onclickDesktop: ()=>{store.ui.pc.showTimeTable = !store.ui.pc.showTimeTable},
-          onclickMobile: ()=>{this.uiMobileClearShowing(); store.ui.mobile.showTimeTable = !store.ui.mobile.showTimeTable},
+          attr: 'showTimeTable',
           icon: 'grid_on',
           title: 'timeTable.title'
         }
@@ -138,6 +150,7 @@ export default {
     }
   },
   mounted (){
+    this.store.ui.common.loading = false
   }
 }
 </script>
@@ -173,7 +186,7 @@ html {
     padding-left: 10px;
   }
 
-  .display-none {
+  .display-none, .hidden {
     display: none;
   }
 

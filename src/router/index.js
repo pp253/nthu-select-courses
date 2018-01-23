@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Entry from '@/components/Entry'
+import Service from '@/components/Service'
 import SelectCourses from '@/components/SelectCourses'
 import Scores from '@/components/Scores'
 
@@ -12,6 +13,11 @@ export default new Router({
       path: '/',
       name: 'Entry',
       component: Entry
+    },
+    {
+      path: '/service',
+      name: 'Service',
+      component: Service
     },
     {
       path: '/select_courses',

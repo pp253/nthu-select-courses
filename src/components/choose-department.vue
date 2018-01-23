@@ -113,8 +113,13 @@ export default {
     }
   }
 
+  .layout {
+    overflow-x: auto;
+  }
+
   .limit-height {
-    max-height: 50vh;
+    min-width: 156px;
+    max-height: 65vh;
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;

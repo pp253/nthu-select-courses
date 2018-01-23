@@ -15,20 +15,20 @@
 
     <v-container>
       <v-layout wrap>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs4>{{ course.number }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs4>{{ course.time }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs4>{{ course.professor }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs4>{{ course.credit }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs4>{{ course.size_limit }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs4>{{ course.room }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs9 md4>{{ course.number }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs9 md4>{{ course.time }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs9 md4>{{ course.professor }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs9 md4>{{ course.credit }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.size_limit }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs9 md4>{{ course.room }}</v-flex>
       </v-layout>
       <v-layout wrap pb-3>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.prerequirement') }}</v-flex><v-flex xs10>{{ course.prerequirement }}</v-flex>
-        <v-flex xs2 class="grey--text text--darken-2">{{ $t('courseDetail.memo') }}</v-flex><v-flex xs10>{{ course.memo }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.prerequirement') }}</v-flex><v-flex xs9 md10>{{ course.prerequirement }}</v-flex>
+        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.memo') }}</v-flex><v-flex xs9 md10>{{ course.memo }}</v-flex>
       </v-layout>
 
       <v-btn
-        @click="store.courseSelected(course.number) ? addCourse(course.number) : quitCourse(course.number)"
+        @click="store.courseSelected(course.number) ? store.quitCourseAuto(course.number) : store.addCourseAuto(course.number)"
       >{{ store.courseSelected(course.number) ? $t('action.addCourse') : $t('action.quitCourse') }}</v-btn>
       <v-btn
         @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
@@ -61,18 +61,6 @@ export default {
     }
   },
   methods: {
-    addCourse (number) {
-      let order = ''
-      if (this.store.courses[number].random !== 0) {
-        order = this.store.user.currentSelectedCourses.filter((course) => {
-          return course.status && course.status === 2 && this.store.courses[course.number].random === this.store.courses[number].random
-        }).length + 1
-      }
-      this.store.addCourse(number, order)
-    },
-    quitCourse (number) {
-      this.store.quitCourse(number)
-    },
     addFavorite (number) {
       store.addFavorateCourses(number)
     },

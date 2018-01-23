@@ -9,20 +9,15 @@
         v-if="!list"
         @update-department="updateCourses"
       ></choose-department>
-      <v-btn icon>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
-
-      <v-layout row slot="extension" v-if="!list">
-        <v-flex>
-          <v-text-field
-            type="text"
-            name="input-search"
-            value=""
-            prepend-icon="search"
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
+      <div slot="extension" v-if="!list" class="search-box">
+        <v-text-field
+          v-model="searchText"
+          type="text"
+          value=""
+          prepend-icon="search"
+          clearable
+        ></v-text-field>
+      </div>
     </v-toolbar>
 
     <v-list
@@ -108,7 +103,7 @@
                 <v-list>
                   <v-list-tile
                     ripple
-                    @click="store.courseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
+                    @click="store.courseSelected(course.number) ? store.quitCourseAuto(course.number) : store.addCourseAuto(course.number)"
                   >{{ store.courseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-list-tile>
                   <v-list-tile
                     ripple
@@ -133,7 +128,6 @@
         v-if="coursesList.length === 0"
         class="text-xs-center pt-5"
       >{{ emptyText }}</div>
-
     </v-list>
   </div>
 </template>
@@ -154,12 +148,46 @@ export default {
     return {
       store: store,
       coursesList: [],
-      departmentName: ''
+      departmentName: '',
+      searchText: '',
+      abbr: ''
     }
   },
   watch: {
     list (newVal, oldVal) {
       this.updateList()
+    },
+    searchText (newVal) {
+      setTimeout(() => {
+        if (newVal !== '' && newVal === this.searchText) {
+          this.store.ui.common.loading = true
+          this.coursesList.splice(0, this.coursesList.length)
+          for (let courseNumber in this.store.courses) {
+            let course = this.store.courses[courseNumber]
+            if (course.number.includes(newVal) ||
+              course.title.includes(newVal) ||
+              course.professor.includes(newVal) ||
+              course.memo.includes(newVal) ||
+              course.time.includes(newVal) ||
+              course.room.includes(newVal)
+            ) {
+              this.coursesList.push({
+                number: courseNumber
+              })
+            }
+            if (this.coursesList.length > 100) {
+              this.store.ui.common.dialog = true
+              this.store.ui.common.dialogTitle = '你搜尋的範圍太廣了'
+              this.store.ui.common.dialogText = '試著找出關鍵字吧。'
+              break
+            }
+          }
+          this.departmentName = '搜尋：' + this.searchText
+          this.store.ui.common.loading = false
+        } else if (this.searchText === '') {
+          this.updateCourses(this.abbr)
+        }
+      }, 1000)
     }
   },
   methods: {
@@ -247,35 +275,23 @@ export default {
       }
     },
     updateCourses (abbr) {
-      this.departmentName = this.store.getDepartmentDetail(abbr).chineseName || this.store.getDepartmentDetail(abbr).name
+      this.abbr = abbr
 
-      this.coursesList.splice(0, this.coursesList.length)
-      for (let courseNumber of this.store.getCourses(abbr)) {
-        this.coursesList.push({
-          number: courseNumber
-        })
+      if (abbr === '') {
+        this.departmentName = this.title
+        this.coursesList.splice(0, this.coursesList.length)
+        return []
+      } else {
+        this.departmentName = this.store.getDepartmentDetail(abbr).chineseName || this.store.getDepartmentDetail(abbr).name
+
+        this.coursesList.splice(0, this.coursesList.length)
+        for (let courseNumber of this.store.getCourses(abbr)) {
+          this.coursesList.push({
+            number: courseNumber
+          })
+        }
+        return this.coursesList
       }
-      return this.coursesList
-    },
-    addCourse (number) {
-      let order = ''
-      if (this.store.courses[number].random !== 0) {
-        order = this.store.user.currentSelectedCourses.filter((course) => {
-          return course.status && course.status === 2 && this.store.courses[course.number].random === this.store.courses[number].random
-        }).length + 1
-      }
-      this.store.ui.common.loading = true
-      this.store.addCourse(number, order)
-      .then(() => {
-        this.store.ui.common.loading = false
-      })
-    },
-    quitCourse (number) {
-      this.store.ui.common.loading = true
-      this.store.quitCourse(number)
-      .then(() => {
-        this.store.ui.common.loading = false
-      })
     },
     addFavorite (number) {
       this.store.addFavorateCourses(number)
@@ -313,8 +329,12 @@ export default {
 
 <style lang="scss">
 .courses-list {
+  .search-box {
+    width: calc(100% - 32px);
+  }
+
   .list {
-    height: calc(100% - 48px);
+    height: calc(100% - 48px - 16px);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
