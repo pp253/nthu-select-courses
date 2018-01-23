@@ -40,6 +40,18 @@
         </v-container>
       </v-flex>
     </v-layout>
+
+    <v-layout>
+      <v-flex xs12>
+        <v-container :pa-0="store.isMobile" mt-5 mb-5>
+          <v-card class="transparent elevation-0">
+            <v-card-text>
+              Made with 🍺 by <a href="https://github.com/pp253">pp253</a>. <a href="https://github.com/pp253/nthu-select-courses">GitHub</a>
+            </v-card-text>
+          </v-card>
+        </v-container>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -66,7 +78,7 @@ export default {
         },
         {
           title: '簡易教學評鑑調查',
-          content: '開發中，敬請期待！',
+          content: '尚未開放。',
           icon: 'face',
           path: '/',
           disabled: true

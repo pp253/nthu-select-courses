@@ -30,6 +30,7 @@
         <v-subheader
           v-if="course.type === 'subheader'"
           :key="course.title"
+          class="pr-0"
         >
           {{ course.title }}
           <v-spacer></v-spacer>
@@ -46,7 +47,7 @@
               <v-card-title class="headline">編輯志願序</v-card-title>
               <v-card-text>
                 <v-list>
-                  <draggable v-model="course.newOrder">
+                  <draggable v-model="course.newOrder" :options="{handle:'.drag'}">
                     <template
                       v-for="(element, idx) in course.newOrder"
                     >
@@ -60,7 +61,7 @@
                         <v-list-tile-content>
                           {{ store.courses[element.number].title }}
                         </v-list-tile-content>
-                        <v-list-tile-avatar>
+                        <v-list-tile-avatar class="drag">
                           <v-icon>drag_handle</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
@@ -89,7 +90,7 @@
           <v-list-tile-content>
             <v-list-tile-title>{{ store.courses[course.number].title }}</v-list-tile-title>
             <v-list-tile-sub-title class="grey--text text--darken-4">{{ store.courses[course.number].number + ' ' + store.courses[course.number].professor }}</v-list-tile-sub-title>
-            <v-list-tile-sub-title class="detail">{{ '學分' + store.courses[course.number].credit + '　人限' + store.courses[course.number].size_limit + '　' + store.courses[course.number].room }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="detail">{{ '學分' + store.courses[course.number].credit + '　人限' + store.courses[course.number].size_limit + ' (' + store.courses[course.number].previous_size + ')　' + store.courses[course.number].room }}</v-list-tile-sub-title>
             <v-list-tile-sub-title class="memo">{{ store.courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
           </v-list-tile-content>
 
@@ -159,7 +160,7 @@ export default {
     },
     searchText (newVal) {
       setTimeout(() => {
-        if (newVal !== '' && newVal === this.searchText) {
+        if (this.searchText !== null && newVal !== '' && newVal === this.searchText) {
           this.store.ui.common.loading = true
           this.coursesList.splice(0, this.coursesList.length)
           for (let courseNumber in this.store.courses) {
@@ -184,7 +185,7 @@ export default {
           }
           this.departmentName = '搜尋：' + this.searchText
           this.store.ui.common.loading = false
-        } else if (this.searchText === '') {
+        } else if (this.searchText === null) {
           this.updateCourses(this.abbr)
         }
       }, 1000)
@@ -334,7 +335,7 @@ export default {
   }
 
   .list {
-    height: calc(100% - 48px - 16px);
+    height: calc(100% - 48px);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;

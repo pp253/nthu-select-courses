@@ -19,6 +19,7 @@
               <v-list-tile
                 @click="$router.push('/service')"
                 ripple
+                class="mb-3"
               >
                 <v-list-tile-action>
                   <v-icon>arrow_back</v-icon>
@@ -129,12 +130,7 @@ export default {
   },
   computed: {
     bottomDrawerActive () {
-      let idx = [
-        store.ui.mobile.showCoursesList,
-        store.ui.mobile.showSelectedCoursesList,
-        store.ui.mobile.showFavoriteCoursesList,
-        store.ui.mobile.showTimeTable
-      ].findIndex((val) => {return val === true})
+      let idx = this.menu.findIndex((item) => {return store.ui.mobile[item.attr] === true})
       return idx
     }
   },
@@ -158,6 +154,8 @@ export default {
 <style lang="scss">
 html {
   overflow-y: hidden;
+  font-family: -apple-system, 'Microsoft JhengHei', BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  user-select: none;
 }
 
 .app {

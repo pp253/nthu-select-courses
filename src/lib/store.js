@@ -209,7 +209,6 @@ const store = new Vue({
               text: ''
             }
           }
-          console.log(err.id, err.id in errMsg)
           this.ui.common.dialog = true
           this.ui.common.dialogTitle = (err.id in errMsg) ? errMsg[err.id].title : '系統錯誤'
           this.ui.common.dialogText = '系統錯誤，請試著向清大簡易選課反映。' + err
@@ -270,17 +269,16 @@ const store = new Vue({
           reject()
           return
         }
-        if (this.courses[courseNumber].syllabus) {
-          resolve(this.courses[courseNumber].syllabus)
-        } else {
-          api.getSyllabus(courseNumber)
-          .then((data) => {
-            resolve(data)
-          })
-          .catch((err) => {
-            reject(err)
-          })
-        }
+        api.getSyllabus(this.user.sessionToken, courseNumber)
+        .then((data) => {
+          this.courses[courseNumber].syllabus.description = data.description.replace(/\n/g, '<br>')
+          this.courses[courseNumber].syllabus.briefDescription = data.briefDescription.replace(/\n/g, '<br>')
+          this.courses[courseNumber].syllabus.file = data.file
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
       })
     },
     getDepartmentDetail (abbr) {
@@ -304,7 +302,18 @@ const store = new Vue({
       return this.catalog[abbr] || []
     },
     getCourseDetail (courseNumber) {
-      return this.courses[courseNumber] || {}
+      if (!this.courses[courseNumber]) {
+        return {}
+      }
+      if (!this.courses[courseNumber].syllabus) {
+        this.$set(this.courses[courseNumber], 'syllabus', {
+          description: '',
+          briefDescription: '',
+          file: false
+        })
+        this.getSyllabus(courseNumber)
+      }
+      return this.courses[courseNumber]
     },
     addFavorateCourses (courseNumber) {
       if (this.user.favoriteCourses.indexOf(courseNumber) !== -1) {

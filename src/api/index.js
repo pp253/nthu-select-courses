@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const SERVER_BASE = 'http://pp253253.ddns.net/'
+const SERVER_BASE = 'http://nthu-course.ddns.net/'
 
 function legalRequest (apiPath, data) {
   return new Promise((resolve, reject) => {
@@ -23,13 +23,6 @@ export function getLoginToken () {
 
 export function getSessionToken (loginInfo) {
   return legalRequest('api/user/getSessionToken', loginInfo)
-}
-
-export function getSyllabus (courseNumber) {
-  let data = {
-    courseNumber: courseNumber
-  }
-  return legalRequest('api/user/getSyllabus', data)
 }
 
 export function getScores (sessionToken) {
@@ -70,4 +63,12 @@ export function quitCourse (sessionToken, courseNumber) {
     courseNumber: courseNumber
   }
   return legalRequest('api/select_course/quitCourse', data)
+}
+
+export function getSyllabus (sessionToken, courseNumber) {
+  let data = {
+    sessionToken: sessionToken,
+    courseNumber: courseNumber
+  }
+  return legalRequest('api/select_course/getSyllabus', data)
 }

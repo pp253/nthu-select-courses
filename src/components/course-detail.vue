@@ -13,29 +13,49 @@
       </v-tooltip>
     </v-toolbar>
 
-    <v-container>
-      <v-layout wrap>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs9 md4>{{ course.number }}</v-flex>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs9 md4>{{ course.time }}</v-flex>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs9 md4>{{ course.professor }}</v-flex>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs9 md4>{{ course.credit }}</v-flex>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.size_limit }}</v-flex>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs9 md4>{{ course.room }}</v-flex>
-      </v-layout>
-      <v-layout wrap pb-3>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.prerequirement') }}</v-flex><v-flex xs9 md10>{{ course.prerequirement }}</v-flex>
-        <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.memo') }}</v-flex><v-flex xs9 md10>{{ course.memo }}</v-flex>
-      </v-layout>
+    <v-container pa-0 ma-0 class="content">
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs9 md4>{{ course.number }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs9 md4>{{ course.time }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs9 md4>{{ course.professor }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs9 md4>{{ course.credit }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.size_limit + ` (${course.previous_size})` }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs9 md4>{{ course.room }}</v-flex>
+        </v-layout>
+        <v-layout wrap pb-3>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.prerequirement') }}</v-flex><v-flex xs9 md10>{{ course.prerequirement }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.memo') }}</v-flex><v-flex xs9 md10>{{ course.memo }}</v-flex>
+        </v-layout>
 
-      <v-btn
-        @click="store.courseSelected(course.number) ? store.quitCourseAuto(course.number) : store.addCourseAuto(course.number)"
-      >{{ store.courseSelected(course.number) ? $t('action.addCourse') : $t('action.quitCourse') }}</v-btn>
-      <v-btn
-        @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
-      >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
-    </v-container>
-    <v-divider></v-divider>
-    <v-container>
+        <v-btn
+          @click="store.courseSelected(course.number) ? store.quitCourseAuto(course.number) : store.addCourseAuto(course.number)"
+        >{{ store.courseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-btn>
+        <v-btn
+          @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
+        >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
+      </v-container>
+      <v-divider></v-divider>
+      <v-container
+        v-if="course.syllabus && course.syllabus.briefDescription !== ''"
+      >
+        <div
+          v-html="course.syllabus.briefDescription"
+        ></div>
+      </v-container>
+      <v-divider></v-divider>
+      <v-container
+        v-if="course.syllabus"
+      >
+        <v-btn
+          v-if="course.syllabus.file"
+          :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
+          target="_blank"
+        >下載課程大綱</v-btn>
+        <div
+          v-html="course.syllabus.description"
+        ></div>
+      </v-container>
     </v-container>
   </div>
 </template>
@@ -76,6 +96,18 @@ export default {
 
 <style lang="scss">
 .course-detail {
+  .content {
+    height: calc(100vh - 48px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    user-select: auto;
+  }
+}
 
+.mode-mobile {
+  .content {
+    height: calc(100vh - 48px - 56px);
+  }
 }
 </style>

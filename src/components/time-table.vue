@@ -2,10 +2,6 @@
   <div class="full-height">
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
     </v-toolbar>
     <v-container class="time-table">
       <table>

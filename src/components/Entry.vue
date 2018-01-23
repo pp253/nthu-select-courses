@@ -42,6 +42,7 @@
                       autocomplete="off"
                       :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]"
                       validate-on-blur
+                      type="number"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -84,7 +85,7 @@
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-container :pa-0="$vuetify.breakpoint.xsOnly">
-                    <h2>🧠聰明搜尋</h2>
+                    <h2>🔍聰明搜尋</h2>
                     <p>有了搜尋功能後，選課變得更快樂了呢～你除了能搜尋課程名稱、教師以外，還可以搜尋時段。</p>
                   </v-container>
                 </v-flex>
@@ -95,8 +96,6 @@
                   </v-container>
                 </v-flex>
               </v-layout>
-              <h3></h3>
-
             </v-card-text>
           </v-card>
 
@@ -124,10 +123,9 @@
                 <div slot="header">我發現問題了，可以怎麼反應？</div>
                 <v-card>
                   <v-card-text class="grey lighten-3">
-                    太棒了！你有三種方式可以告訴清大簡易選課系統，<br>
-                    一、填寫<a>回饋表單</a><br>
-                    二、透過粉專反映<br>
-                    三、直接在GitHub上面開個issue<br>
+                    太棒了！你有兩種方式可以告訴清大簡易選課系統，<br>
+                    一、填寫<a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a><br>
+                    二、直接在GitHub上面開個issue<br>
                     感恩你，讚嘆你！
                   </v-card-text>
                 </v-card>
@@ -159,7 +157,7 @@
       </v-flex>
     </v-layout>
 
-    <v-layout wrap>
+    <v-layout>
       <v-flex xs12>
         <v-container :pa-0="store.isMobile" mb-5>
           <v-card class="transparent elevation-0">
