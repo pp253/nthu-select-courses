@@ -33,12 +33,16 @@
       two-line
       ripple
     >
-      <v-list-tile>
+      <v-list-tile
+        v-if="semesterOverviewInfo && !searchText"
+      >
         <v-list-tile-title>
-          GPA：8.7，系排名：87/99
+          {{ semesterOverviewInfo }}
         </v-list-tile-title>
       </v-list-tile>
-      <v-divider />
+      <v-divider
+        v-if="semesterOverviewInfo && !searchText"
+      />
       <template
         v-if="scoresList.length > 0"
         v-for="(score, index) in scoresList"
@@ -96,7 +100,8 @@ import store from '../lib/store'
 export default {
   name: 'ScoreList',
   props: {
-    'scores': Object 
+    'scores': Object,
+    'overview': Object
   },
   data () {
     return {
@@ -160,6 +165,23 @@ export default {
       } else {
         return this.scores[this.semester] ? this.scores[this.semester] : []
       }
+    },
+    semesterOverviewInfo () {
+      if (!this.overview || !this.semester || !this.overview[this.semester]) {
+        return ''
+      }
+
+      let info = this.overview[this.semester]
+
+      let text = [
+        info.gpa ? 'GPA：' + info.gpa : null,
+        info.classRanking ? '班排名：' + info.classRanking : null,
+        info.departmentRanking ? '系排名：' + info.departmentRanking : null,
+        info.credit ? '應得學分：' + info.credit : null,
+        info.deservedCredit ? '實得學分：' + info.deservedCredit : null
+      ].filter((item) => {return item})
+
+      return text.join('，')
     }
   },
   methods: {

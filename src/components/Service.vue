@@ -67,16 +67,17 @@ export default {
       store: store,
       services: [
         {
-          title: this.$t('selectCourses.name'),
-          content: this.$t('selectCourses.description'),
-          icon: 'playlist_add',
-          path: '/select_courses'
-        },
-        {
           title: this.$t('scores.name'),
           content: this.$t('scores.description'),
           icon: 'assessment',
           path: '/scores'
+        },
+        {
+          title: this.$t('selectCourses.name'),
+          content: this.$t('selectCourses.description') + '現在不是選課期間，系統未開放！',
+          icon: 'playlist_add',
+          path: '/select_courses',
+          disabled: true
         },
         {
           title: this.$t('commentsAboutCourses.name'),
@@ -89,6 +90,9 @@ export default {
     }
   },
   mounted () {
+    if (!this.store.user.isLogin) {
+      this.$router.push('/')
+    }
   }
 }
 </script>

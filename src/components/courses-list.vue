@@ -202,7 +202,7 @@ export default {
                 number: courseNumber
               })
             }
-            if (this.coursesList.length > 100) {
+            if (this.coursesList.length > 30) {
               this.store.ui.common.dialog = true
               this.store.ui.common.dialogTitle = '你搜尋的範圍太廣了'
               this.store.ui.common.dialogText = '試著找出關鍵字吧。'

@@ -63,6 +63,9 @@ html {
   overflow-y: hidden;
   font-family: -apple-system, 'Microsoft JhengHei', BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   user-select: none;
+}
+
+body {
   -webkit-overflow-scrolling: auto;
 }
 

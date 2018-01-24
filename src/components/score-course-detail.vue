@@ -12,9 +12,9 @@
         <v-toolbar-title v-if="course && course.syllabus">{{ course.syllabus.chineseTitle }}</v-toolbar-title>
 
         <v-tabs-bar slot="extension">
-          <v-tabs-slider color="grey"></v-tabs-slider>
           <v-tabs-item href="#tab-distribution">成績分布</v-tabs-item>
           <v-tabs-item href="#tab-syllabus">課程大綱</v-tabs-item>
+          <v-tabs-slider color="grey"></v-tabs-slider>
         </v-tabs-bar>
       </v-toolbar>
       <v-tabs-items>
@@ -60,7 +60,7 @@
           >
             <v-btn
               v-if="course.syllabus.file"
-              :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
+              :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.syllabus.number}.pdf`"
               target="_blank"
             >下載課程大綱</v-btn>
             <div
@@ -128,21 +128,11 @@ export default {
             {
               label: 'Distribution of scores',
               backgroundColor: '#f87979',
-              data: toArray(distribution).slice(0, 13),
-              datalabels: {
-                anchor: 'end',
-                align: 'end',
-                backgroundColor: '#eee',
-                borderRadius: 5,
-                font: {
-                  size: '16'
-                }
-              }
+              data: toArray(distribution).slice(0, 13)
             }
           ]
         }
 
-        console.log(this.chartData)
         this.store.ui.common.loading = false
       })
       .catch((err) => {
@@ -185,6 +175,7 @@ export default {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 64px;
+    user-select: text;
   }
 }
 </style>

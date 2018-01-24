@@ -10,6 +10,7 @@
     "userpass": "密碼",
     "auth_img": "驗證碼",
     "login": "登入",
+    "directLogin": "您還保持登入狀態，直接進入",
     "logout": "登出",
     "authCodeFormatError": "驗證碼應該有六位數字！"
   },

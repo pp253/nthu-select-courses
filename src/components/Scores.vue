@@ -3,6 +3,7 @@
     <score-list
       @show-score-detail="showDetail"
       :scores="scores"
+      :overview="overview"
       :hidden="showCourseDetail"
     >
     </score-list>
@@ -24,6 +25,7 @@ export default {
     return {
       store: store,
       scores: {},
+      overview: {},
       showCourseDetail: false,
       courseDetailNumber: ''
     }
@@ -42,11 +44,15 @@ export default {
     store.getScores()
     .then((data) => {
       this.store.ui.common.loading = false
-      for (let key in data) {
-        this.$set(this.scores, key, data[key])
+      for (let key in data.scores) {
+        this.$set(this.scores, key, data.scores[key])
+      }
+      for (let key in data.overview) {
+        this.$set(this.overview, key, data.overview[key])
       }
     })
     .catch((err) => {
+      this.store.ui.common.loading = false
       console.log(err)
       this.$router.push('/')
     })

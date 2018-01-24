@@ -53,8 +53,19 @@ Vue.component('horizontal-bar-chart', {
             padding: {
               left: 0,
               right: 0,
-              top: 30,
-              bottom: 0
+              top: 40,
+              bottom: 40
+            }
+          },
+          plugins: {
+            datalabels: {
+              anchor: 'end',
+              align: 'end',
+              backgroundColor: '#eee',
+              borderRadius: 5,
+              font: {
+                size: '16'
+              }
             }
           }
         }

@@ -49,7 +49,8 @@ const store = new Vue({
         favoriteCourses: [],
         favoriteCoursesDetail: [],
         scores: {},
-        scoresLoaded: false
+        scoresLoaded: false,
+        overview: {}
       }
     }
   },
@@ -107,15 +108,21 @@ const store = new Vue({
           return
         }
         if (this.user.scoresLoaded === true) {
-          resolve(this.user.scores)
+          resolve({
+            scores: this.user.scores,
+            overview: this.user.overview
+          })
         } else {
           api.getScores(this.user.sessionToken)
           .then((data) => {
             for (let semester in data.scores) {
               this.user.scores[semester] = data.scores[semester]
             }
+            for (let semester in data.overview) {
+              this.user.overview[semester] = data.overview[semester]
+            }
             this.user.scoresLoaded = true
-            resolve(this.user.scores)
+            resolve(data)
           })
           .catch((err) => {
             reject(err)

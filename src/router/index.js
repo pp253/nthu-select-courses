@@ -4,6 +4,7 @@ import Entry from '@/components/Entry'
 import Service from '@/components/Service'
 import SelectCourses from '@/components/SelectCourses'
 import Scores from '@/components/Scores'
+import About from '@/components/About'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/scores',
       name: 'Scores',
       component: Scores
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About
     }
   ]
 })

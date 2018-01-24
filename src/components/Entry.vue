@@ -1,11 +1,23 @@
 <template>
   <v-container class="entry">
-    <v-layout wrap pt-5>
-      <v-flex xs12 order-xs1 md6 order-md2 lg4 xl4 class="login">
-        <v-container :pa-0="store.isMobile" mb-5>
+    <v-layout>
+      <v-flex xs12>
+        <v-container :pa-0="store.isMobile" mb-3>
+          <v-card class="transparent elevation-0">
+            <v-card-text>
+              <h1>清大簡易選課系統</h1>
+            </v-card-text>
+          </v-card>
+        </v-container>
+      </v-flex>
+    </v-layout>
+
+    <v-layout wrap>
+      <v-flex xs12 order-xs1 md5 order-md2 lg4 xl4 class="login">
+        <v-container :pa-0="store.isMobile" mb-3>
           <form>
             <v-card ref="form">
-              <v-card-title >
+              <v-card-title>
                 <div>
                   <div class="headline">登入</div>
                   <div class="grey--text darken-1">請使用你在校務資訊系統登入的帳號。常見問題請見頁底。</div>
@@ -30,10 +42,10 @@
                   required
                 ></v-text-field>
                 <v-layout>
-                  <v-flex xs5 sm3 lg4 xl3>
+                  <v-flex xs5 sm3 md4 lg4 xl3>
                     <img :src="'data:image/png;base64,' + authImg" class="auth-img">
                   </v-flex>
-                  <v-flex xs7 sm9 lg8 xl9>
+                  <v-flex xs7 sm9 md8 lg8 xl9>
                     <v-text-field
                       name="input-authCheckCode"
                       :label="$t('login.auth_img')"
@@ -49,23 +61,36 @@
                 </v-layout>
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  @click="submit"
-                  :disabled="!username || !userpass || !authCheckCode"
-                >{{ $t('login.login') }}</v-btn>
+                <v-layout wrap>
+                  <v-flex
+                    v-if="store.user.isLogin"
+                    xs12
+                    mb-3
+                    text-xs-right
+                  >
+                    <v-btn
+                      @click="$router.push('/service')"
+                    >{{ $t('login.directLogin') }}</v-btn>
+                  </v-flex>
+                  <v-flex xs12 text-xs-right>
+                    <v-btn
+                      @click="submit"
+                      :disabled="!username || !userpass || !authCheckCode"
+                    >{{ $t('login.login') }}</v-btn>
+                  </v-flex>
+                </v-layout>
               </v-card-actions>
             </v-card>
           </form>
         </v-container>
       </v-flex>
 
-      <v-flex xs12 order-xs2 md6 order-md1 lg8 xl8 class="introduction">
+      <v-flex xs12 order-xs2 md7 order-md1 lg8 xl8 class="introduction">
         <v-container :pa-0="store.isMobile" mb-5>
           <v-card class="mb-3">
             <v-card-title>
               <div>
-                <span class="headline">清大簡易選課系統 Beta</span><br />
+                <span class="headline">清大簡易選課系統</span><br />
                 <span class="subheading">重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！</span>
               </div>
             </v-card-title>
@@ -98,9 +123,34 @@
               </v-layout>
             </v-card-text>
           </v-card>
+          <v-card class="mb-3">
+            <v-card-title>
+              <div>
+                <span class="headline">其他服務</span>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <v-layout wrap>
+                <v-flex xs12 sm6>
+                  <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                    <h2>簡易成績查詢</h2>
+                    <p>簡易成績查詢讓你用更好的介面，看到更好的成績！</p>
+                  </v-container>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                    <h2>簡易教學評量</h2>
+                    <p>未來開放。</p>
+                  </v-container>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+          </v-card>
 
           <v-card>
-            <v-card-title>常見問題</v-card-title>
+            <v-card-title>
+              <span class="headline">常見問題</span>
+            </v-card-title>
             <v-expansion-panel class="mb-3">
               <v-expansion-panel-content>
                 <div slot="header">這個網站會記錄我的帳號和密碼嗎？</div>
@@ -135,7 +185,7 @@
 
           <v-card>
             <v-card-title>
-              連結
+              <span class="headline">連結</span>
             </v-card-title>
             <v-card-text>
               <v-list>
@@ -154,6 +204,13 @@
             </v-card-text>
           </v-card>
         </v-container>
+      </v-flex>
+    </v-layout>
+
+    <v-layout>
+      <v-flex xs12>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       </v-flex>
     </v-layout>
 
@@ -259,7 +316,23 @@ export default {
     }
   },
   mounted () {
-    this.reload()
+    this.reload();
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nthu-easy-course.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
   }
 }
 </script>
