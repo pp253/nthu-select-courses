@@ -30,10 +30,10 @@
                   required
                 ></v-text-field>
                 <v-layout>
-                  <v-flex xs5 sm3>
+                  <v-flex xs5 sm3 lg4 xl3>
                     <img :src="'data:image/png;base64,' + authImg" class="auth-img">
                   </v-flex>
-                  <v-flex xs7 sm9>
+                  <v-flex xs7 sm9 lg8 xl9>
                     <v-text-field
                       name="input-authCheckCode"
                       :label="$t('login.auth_img')"
@@ -216,7 +216,6 @@ export default {
       store.login(loginInfo)
       .then((data) => {
         this.store.ui.common.loading = false
-        this.store.ui.common.hideDrawer = false
         this.$router.push({ name: 'Service' })
       })
       .catch((err) => {
@@ -260,7 +259,6 @@ export default {
     }
   },
   mounted () {
-    this.store.ui.common.hideDrawer = true
     this.reload()
   }
 }

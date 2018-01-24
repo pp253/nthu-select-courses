@@ -1,48 +1,112 @@
 <template>
   <v-container fluid pa-0 class="select-courses full-height">
     <keep-alive>
-      <v-layout class="full-height">
+      <v-layout row class="full-height">
         <v-flex
-          :class="layoutSize.coursesList"
-          :hidden="!showCoursesList"
-          class="full-height"
+          :hidden="store.ui.common.hideDrawer"
+          class="navdrawer"
         >
-          <courses-list
-            :title="$t('coursesList.title')"
-            @update-preview-time="updatePreviewTime"
-            :empty-text="$t('coursesList.pleaseSelect')"
-          ></courses-list>
+          <v-navigation-drawer
+            permanent
+            light
+            :mini-variant="true"
+            v-model="store.isNotMobile"
+            :hidden="store.ui.common.hideDrawer"
+          >
+            <v-list pt-0>
+              <v-list-tile
+                @click="$router.push('/service')"
+                ripple
+                class="mb-3"
+              >
+                <v-list-tile-action>
+                  <v-icon>arrow_back</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+              <v-tooltip
+                v-for="item in menu"
+                :key="item.title"
+                right
+              >
+                <v-list-tile
+                  slot="activator"
+                  @click="store.ui.pc[item.attr] = !store.ui.pc[item.attr]"
+                  ripple
+                >
+                  <v-list-tile-action>
+                    <v-icon
+                      :class="store.ui.pc[item.attr] ? 'blue--text' : ''"
+                    >{{item.icon}}</v-icon>
+                  </v-list-tile-action>
+                </v-list-tile>
+                <span>{{ $t(item.title) }}</span>
+              </v-tooltip>
+            </v-list>
+          </v-navigation-drawer>
         </v-flex>
 
-        <v-flex
-          :class="layoutSize.selectedCourses"
-          :hidden="!showSelectedCoursesList"
-        >
-          <courses-list
-            :title="$t('selectedCoursesList.title')"
-            :list="store.user.currentSelectedCourses"
-            @update-preview-time="updatePreviewTime"
-          ></courses-list>
-        </v-flex>
+        <v-flex class="main">
+          <v-layout class="full-height">
+            <v-flex
+              :class="layoutSize.coursesList"
+              :hidden="!showCoursesList"
+              class="full-height"
+            >
+              <courses-list
+                :title="$t('coursesList.title')"
+                @update-preview-time="updatePreviewTime"
+                :empty-text="$t('coursesList.pleaseSelect')"
+              ></courses-list>
+            </v-flex>
 
-        <v-flex
-          :class="layoutSize.timeTable"
-          :hidden="!showTimeTable"
-        >
-          <time-table
-            :preview-time="previewTime"
-            :list="store.user.currentSelectedCourses"
-          ></time-table>
-        </v-flex>
+            <v-flex
+              :class="layoutSize.selectedCourses"
+              :hidden="!showSelectedCoursesList"
+            >
+              <courses-list
+                :title="$t('selectedCoursesList.title')"
+                :list="store.user.currentSelectedCourses"
+                @update-preview-time="updatePreviewTime"
+              ></courses-list>
+            </v-flex>
 
-        <v-flex
-          :class="layoutSize.courseDetail"
-          :hidden="!showCourseDetail"
-        >
-          <course-detail
-            :title="$t('courseDetail.title')"
-            :course-number="store.ui.common.courseDetailNumber"
-          ></course-detail>
+            <v-flex
+              :class="layoutSize.timeTable"
+              :hidden="!showTimeTable"
+            >
+              <time-table
+                :preview-time="previewTime"
+                :list="store.user.currentSelectedCourses"
+              ></time-table>
+            </v-flex>
+
+            <v-flex
+              :class="layoutSize.courseDetail"
+              :hidden="!showCourseDetail"
+            >
+              <course-detail
+                :title="$t('courseDetail.title')"
+                :course-number="store.ui.common.courseDetailNumber"
+              ></course-detail>
+            </v-flex>
+            <v-bottom-nav
+              fixed
+              v-model="store.isMobile"
+              :class="store.ui.common.hideDrawer ? 'display-none' : ''"
+              :active="bottomDrawerActive"
+              color="white"
+            >
+              <v-btn
+                v-for="item in menu"
+                :key="item.title + '-btn'"
+                @click="uiMobileClearShowing(); store.ui.mobile[item.attr] = !store.ui.mobile[item.attr]"
+                flat
+              >
+                <span v-text="$t(item.title)"></span>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-btn>
+            </v-bottom-nav>
+          </v-layout>
         </v-flex>
       </v-layout>
     </keep-alive>
@@ -57,10 +121,36 @@ export default {
   data() {
     return {
       store: store,
-      previewTime: ""
+      previewTime: "",
+      menu: [
+        {
+          attr: 'showCoursesList',
+          icon: 'list',
+          title: 'coursesList.title'
+        },
+        {
+          attr: 'showSelectedCoursesList',
+          icon: 'playlist_add_check',
+          title: 'selectedCoursesList.title'
+        },/*
+        {
+          attr: 'showFavoriteCoursesList',
+          icon: 'favorite',
+          title: 'favoriteCoursesList.title'
+        },*/
+        {
+          attr: 'showTimeTable',
+          icon: 'grid_on',
+          title: 'timeTable.title'
+        }
+      ]
     }
   },
   computed: {
+    bottomDrawerActive () {
+      let idx = this.menu.findIndex((item) => {return store.ui.mobile[item.attr] === true})
+      return idx
+    },
     layoutSize () {
       let layoutSize = {
         coursesList: 'xs3',
@@ -152,6 +242,12 @@ export default {
   methods: {
     updatePreviewTime(courseNumber) {
       this.previewTime = this.store.courses[courseNumber] ? this.store.courses[courseNumber].time : '';
+    },
+    uiMobileClearShowing () {
+      store.ui.mobile.showCoursesList = false
+      store.ui.mobile.showSelectedCoursesList = false
+      store.ui.mobile.showFavoriteCoursesList = false
+      store.ui.mobile.showTimeTable = false
     }
   },
   mounted () {
@@ -172,9 +268,41 @@ export default {
 
 <style lang="scss">
 .select-courses {
+  .navdrawer {
+    display: none;
+    z-index: 1;
+    aside.navigation-drawer--mini-variant {
+      width: 64px !important;
+
+      .list__tile {
+        padding: 0 8px;
+      }
+    }
+  }
+
+  .main {
+    width: 100vw;
+    height: 100vh;
+  }
+
   .memo {
     // text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+.mode-mobile .select-courses {
+  .main {
+    height: calc(100vh - 56px);
+  }
+}
+
+.mode-pc .select-courses {
+  .navdrawer {
+    display: block;
+  }
+  .main {
+    width: calc(100vw - 64px);
   }
 }
 </style>

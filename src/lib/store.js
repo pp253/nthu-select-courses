@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import coursesDb from './courses_db.json'
 import * as api from '../api'
+import { htmlEncode } from './util'
 
 const store = new Vue({
   data () {
@@ -209,9 +210,10 @@ const store = new Vue({
               text: ''
             }
           }
+          console.log(err, err.more)
           this.ui.common.dialog = true
-          this.ui.common.dialogTitle = (err.id in errMsg) ? errMsg[err.id].title : '系統錯誤'
-          this.ui.common.dialogText = '系統錯誤，請試著向清大簡易選課反映。' + err
+          this.ui.common.dialogTitle = (err.id in errMsg) ? errMsg[err.id].title : '對不起，系統發生錯誤了！'
+          this.ui.common.dialogText = ((err.id in errMsg) && (errMsg[err.id].text.length !== 0) ? errMsg[err.id].text + '<br>' : '') + '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
           this.ui.common.loading = false
           reject(err)
         })
@@ -265,16 +267,25 @@ const store = new Vue({
     },
     getSyllabus (courseNumber) {
       return new Promise((resolve, reject) => {
-        if (!(courseNumber in this.courses)) {
-          reject()
-          return
-        }
         api.getSyllabus(this.user.sessionToken, courseNumber)
         .then((data) => {
-          this.courses[courseNumber].syllabus.description = data.description.replace(/\n/g, '<br>')
-          this.courses[courseNumber].syllabus.briefDescription = data.briefDescription.replace(/\n/g, '<br>')
-          this.courses[courseNumber].syllabus.file = data.file
+          if (courseNumber in this.courses) {
+            this.courses[courseNumber].syllabus.description = data.description
+            this.courses[courseNumber].syllabus.briefDescription = data.briefDescription
+            this.courses[courseNumber].syllabus.file = data.file
+          }
           resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    getDistribution (courseNumber) {
+      return new Promise((resolve, reject) => {
+        api.getDistribution(this.user.sessionToken, courseNumber)
+        .then((data) => {
+          resolve(data.distribution)
         })
         .catch((err) => {
           reject(err)

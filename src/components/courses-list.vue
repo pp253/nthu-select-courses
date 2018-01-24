@@ -42,12 +42,20 @@
             max-width="350"
             scrollable
           >
-            <v-btn color="primary" dark slot="activator">編輯志願序</v-btn>
+            <v-btn
+              color="primary"
+              dark
+              slot="activator"
+              v-text="$t('coursesList.editOrder')"
+            ></v-btn>
             <v-card>
-              <v-card-title class="headline">編輯志願序</v-card-title>
+              <v-card-title
+                class="headline"
+                v-text="$t('coursesList.editOrder')"
+              ></v-card-title>
               <v-card-text>
                 <v-list>
-                  <draggable v-model="course.newOrder" :options="{handle:'.drag'}">
+                  <draggable v-model="course.newOrder" :options="{handle:'.drag-handle'}">
                     <template
                       v-for="(element, idx) in course.newOrder"
                     >
@@ -56,12 +64,12 @@
                         :key="'drag-' + element.number"
                       >
                         <v-list-tile-action class="grey--text lighten-1">
-                          志願{{idx + 1}}
+                          {{ $t('coursesList.order').replace('{0}', idx + 1) }}
                         </v-list-tile-action>
                         <v-list-tile-content>
                           {{ store.courses[element.number].title }}
                         </v-list-tile-content>
-                        <v-list-tile-avatar class="drag">
+                        <v-list-tile-avatar class="drag-handle">
                           <v-icon>drag_handle</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
@@ -71,8 +79,16 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn @click.native="cancelEditOrder(course)" flat>取消</v-btn>
-                <v-btn @click.native="editOrder(course)" flat>確定</v-btn>
+                <v-btn
+                  @click.native="cancelEditOrder(course)"
+                  flat
+                  v-text="$t('dialog.Cancel')"
+                ></v-btn>
+                <v-btn
+                  @click.native="editOrder(course)"
+                  flat
+                  v-text="$t('dialog.Apply')"
+                ></v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -89,8 +105,18 @@
         >
           <v-list-tile-content>
             <v-list-tile-title>{{ store.courses[course.number].title }}</v-list-tile-title>
-            <v-list-tile-sub-title class="grey--text text--darken-4">{{ store.courses[course.number].number + ' ' + store.courses[course.number].professor }}</v-list-tile-sub-title>
-            <v-list-tile-sub-title class="detail">{{ '學分' + store.courses[course.number].credit + '　人限' + store.courses[course.number].size_limit + ' (' + store.courses[course.number].previous_size + ')　' + store.courses[course.number].room }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="grey--text text--darken-4">{{
+              $t('coursesList.courseSub')
+              .replace('{0}', store.courses[course.number].number)
+              .replace('{1}', store.courses[course.number].professor)
+            }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="detail">{{
+              $t('coursesList.courseDetail')
+              .replace('{0}', store.courses[course.number].credit)
+              .replace('{1}', store.courses[course.number].size_limit)
+              .replace('{2}', store.courses[course.number].previous_size)
+              .replace('{3}', store.courses[course.number].room)
+            }}</v-list-tile-sub-title>
             <v-list-tile-sub-title class="memo">{{ store.courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
           </v-list-tile-content>
 
@@ -183,7 +209,7 @@ export default {
               break
             }
           }
-          this.departmentName = '搜尋：' + this.searchText
+          this.departmentName = this.$t('common.search').replace('{0}', this.searchText)
           this.store.ui.common.loading = false
         } else if (this.searchText === null) {
           this.updateCourses(this.abbr)
@@ -206,7 +232,7 @@ export default {
       if (waitingForRandomCoursesList.length > 0) {
         this.coursesList.push({
           type: 'subheader',
-          title: '待亂數',
+          title: this.$t('coursesList.waitingForRandomTitle'),
           newOrder: waitingForRandomCoursesList,
           oldOrder: waitingForRandomCoursesList.slice(0, waitingForRandomCoursesList.length),
           dialog: false,
@@ -320,7 +346,6 @@ export default {
     }
   },
   mounted () {
-    // TODO: 進入時應重新載入列表。
     if (this.list) {
       this.updateList()
     }
@@ -339,8 +364,8 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    z-index: -100;
     padding-bottom: 64px;
+    z-index: -100;
 
     .list__tile {
       height: 88px + 16px !important;

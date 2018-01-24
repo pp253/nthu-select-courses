@@ -5,7 +5,7 @@
         <v-container :pa-0="$vuetify.breakpoint.xsOnly" pb-3>
           <v-card>
             <v-card-title>
-              <span class="headline">你已成功登入，請選擇服務</span>
+              <span class="headline" v-text="$t('service.title')"></span>
             </v-card-title>
             <v-card-actions>
               <v-spacer />
@@ -13,7 +13,8 @@
                 flat
                 class="red--text"
                 @click="store.user.isLogin = false; $router.push('/')"
-              >登出</v-btn>
+                v-text="$t('login.logout')"
+              ></v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
@@ -34,7 +35,8 @@
                 outline
                 block
                 :disabled="service.disabled"
-              >{{ '進入' + service.title }}</v-btn>
+                v-text="$t('service.into').replace('{0}', service.title)"
+              ></v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
@@ -65,20 +67,20 @@ export default {
       store: store,
       services: [
         {
-          title: '簡易選課系統',
-          content: '重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！',
+          title: this.$t('selectCourses.name'),
+          content: this.$t('selectCourses.description'),
           icon: 'playlist_add',
           path: '/select_courses'
         },
         {
-          title: '簡易成績查詢',
-          content: '簡易成績查詢讓你用更好的介面，看到更好的成績！',
+          title: this.$t('scores.name'),
+          content: this.$t('scores.description'),
           icon: 'assessment',
           path: '/scores'
         },
         {
-          title: '簡易教學評鑑調查',
-          content: '尚未開放。',
+          title: this.$t('commentsAboutCourses.name'),
+          content: this.$t('commentsAboutCourses.description'),
           icon: 'face',
           path: '/',
           disabled: true
@@ -87,7 +89,6 @@ export default {
     }
   },
   mounted () {
-    this.store.ui.common.hideDrawer = true
   }
 }
 </script>

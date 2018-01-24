@@ -72,3 +72,11 @@ export function getSyllabus (sessionToken, courseNumber) {
   }
   return legalRequest('api/select_course/getSyllabus', data)
 }
+
+export function getDistribution (sessionToken, courseNumber) {
+  let data = {
+    sessionToken: sessionToken,
+    courseNumber: courseNumber
+  }
+  return legalRequest('api/scores/getDistribution', data)
+}

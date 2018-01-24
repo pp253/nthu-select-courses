@@ -10,6 +10,7 @@
     "userpass": "密碼",
     "auth_img": "驗證碼",
     "login": "登入",
+    "logout": "登出",
     "authCodeFormatError": "驗證碼應該有六位數字！"
   },
   "action": {
@@ -40,7 +41,16 @@
     "pleaseSelect": "請從上方按鈕選擇您要查看的課程。",
     "emptyText": "您還沒有加入的課程歐！",
     "syllabus": "課程大綱",
-    "detail": "詳細資訊"
+    "detail": "詳細資訊",
+    "editOrder": "編輯志願序",
+    "order": "志願{0}",
+    "courseSub": "{0}　{1}",
+    "courseDetail": "學分{0}　人限{1} ({2})　{3}",
+    "waitingForRandomTitle": "待亂數",
+    "waitingForRandomCLTitle": "通識、體育志願（待亂數）",
+    "waitingForRandomGePETitle": "大學中文志願（待亂數）",
+    "addedCoursesTitle": "已選上",
+    "failedCoursesTitle": "未選上"
   },
   "courseDetail": {
     "title": "課程資訊",
@@ -68,16 +78,34 @@
   "error": {
     
   },
+  "selectCourses": {
+    "name": "簡易選課系統",
+    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+  },
   "scores": {
+    "name": "簡易成績查詢",
+    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！",
     "selecting": "請選擇學期",
     "grade": "成績",
     "title": "{0}的成績",
     "emptyText": "沒有成績",
     "distribution": "成績分布"
   },
+  "commentsAboutCourses": {
+    "name": "簡易教學評鑑調查",
+    "description": "尚未開放。"
+  },
   "semester": {
     "10": "上學期",
     "20": "下學期",
     "30": "暑期"
+  },
+  "common": {
+    "nowLoading": "載入中...",
+    "search": "搜尋：{0}"
+  },
+  "service": {
+    "title": "你好，請選擇以下服務",
+    "into": "進入{0}"
   }
 }
