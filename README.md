@@ -1,6 +1,6 @@
 # nthu-select-courses
 
-> A Vue.js project
+The server side repository is at [nthu-select-course-server](https://github.com/pp253/nthu-select-courses-server)
 
 ## Build Setup
 
@@ -13,15 +13,19 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Main Dependencies
+
+- Vue
+- Vuetify
+- vue-i18n
+- vue-router
+- vuedraggable
+- axios
+- chart.js
+
+## Main Dev Dependencies
+
+- Babel
+- Webpack
