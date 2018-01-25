@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const SERVER_BASE = 'http://nthu-course.ddns.net/'
+const SERVER_BASE = 'http://localhost/'
 
 function legalRequest (apiPath, data) {
   return new Promise((resolve, reject) => {
