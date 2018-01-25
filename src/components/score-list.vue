@@ -34,15 +34,20 @@
       ripple
     >
       <v-list-tile
-        v-if="semesterOverviewInfo && !searchText"
+        v-if="overview && overview[semester] && !searchText"
       >
-        <v-list-tile-title>
-          {{ semesterOverviewInfo }}
-        </v-list-tile-title>
+        <v-list-tile-content>
+          <v-list-tile-title>
+            GPA：{{overview[semester].gpa}}
+          </v-list-tile-title>
+          <v-list-tile-sub-title>班排名：{{overview[semester].classRanking}}　系排名：{{overview[semester].departmentRanking}}</v-list-tile-sub-title>
+          <v-list-tile-sub-title>應得學分：{{overview[semester].credit}}　實得學分：{{overview[semester].deservedCredit}}</v-list-tile-sub-title>
+        </v-list-tile-content>
       </v-list-tile>
       <v-divider
-        v-if="semesterOverviewInfo && !searchText"
+        v-if="overview && overview[semester] && !searchText"
       />
+      
       <template
         v-if="scoresList.length > 0"
         v-for="(score, index) in scoresList"
@@ -165,23 +170,6 @@ export default {
       } else {
         return this.scores[this.semester] ? this.scores[this.semester] : []
       }
-    },
-    semesterOverviewInfo () {
-      if (!this.overview || !this.semester || !this.overview[this.semester]) {
-        return ''
-      }
-
-      let info = this.overview[this.semester]
-
-      let text = [
-        info.gpa ? 'GPA：' + info.gpa : null,
-        info.classRanking ? '班排名：' + info.classRanking : null,
-        info.departmentRanking ? '系排名：' + info.departmentRanking : null,
-        info.credit ? '應得學分：' + info.credit : null,
-        info.deservedCredit ? '實得學分：' + info.deservedCredit : null
-      ].filter((item) => {return item})
-
-      return text.join('，')
     }
   },
   methods: {
