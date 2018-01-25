@@ -2,38 +2,19 @@ export default {
   namespaced: true,
   state: {
     isMobile: false,
-    showCourseDetail: false,
-    courseDetailNumber: '',
     loading: false,
     dialog: false,
     dialogTitle: '',
-    dialogText: '',
-    pc: {
-      showCoursesList: true,
-      showSelectedCoursesList: true,
-      showFavoriteCoursesList: false,
-      showTimeTable: true
-    },
-    mobile: {
-      showCoursesList: true,
-      showSelectedCoursesList: false,
-      showFavoriteCoursesList: false,
-      showTimeTable: false
-    }
+    dialogText: ''
   },
   getters: {
-
+    isNotMobile (state) {
+      return !state.isMobile
+    }
   },
   mutations: {
     setMobile (state, options) {
       state.isMobile = options.isMobile
-    },
-    openCourseDetail (state, options) {
-      state.showCourseDetail = true
-      state.courseDetailNumber = options.courseNumber
-    },
-    closeCourseDetail (state) {
-      state.showCourseDetail = false
     },
     openDialog (state, options) {
       state.dialog = true
