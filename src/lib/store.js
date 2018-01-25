@@ -13,26 +13,10 @@ const store = new Vue({
           y: 0
         },
         common: {
-          showCourseDetail: false,
-          courseDetailNumber: '',
           loading: false,
           dialog: false,
           dialogTitle: '',
-          dialogText: '',
-          hideDrawer: false
-        },
-        pc: {
-          showCoursesList: true,
-          showSelectedCoursesList: true,
-          showFavoriteCoursesList: false,
-          showTimeTable: true
-        },
-        mobile: {
-          showCoursesList: true,
-          showSelectedCoursesList: false,
-          showFavoriteCoursesList: false,
-          showTimeTable: false,
-          timeTableOffsetTop: 0
+          dialogText: ''
         }
       },
       departments: coursesDb.departments,
@@ -349,10 +333,6 @@ const store = new Vue({
       this.user.favoriteCourses.splice(idx, 1)
       this.user.favoriteCoursesDetail.splice(idx, 1)
       return this.user.favoriteCourses
-    },
-    openCourseDetail (courseNumber) {
-      this.ui.common.showCourseDetail = true
-      this.ui.common.courseDetailNumber = courseNumber
     },
     courseSelected (courseNumber) {
       return (this.user.currentSelectedCourses.find((course) => {

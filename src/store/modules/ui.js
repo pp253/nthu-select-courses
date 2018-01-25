@@ -8,7 +8,6 @@ export default {
     dialog: false,
     dialogTitle: '',
     dialogText: '',
-    hideDrawer: false,
     pc: {
       showCoursesList: true,
       showSelectedCoursesList: true,

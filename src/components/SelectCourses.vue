@@ -3,7 +3,7 @@
     <keep-alive>
       <v-layout row class="full-height">
         <v-flex
-          :hidden="store.ui.common.hideDrawer"
+          :hidden="hideDrawer"
           class="navdrawer"
         >
           <v-navigation-drawer
@@ -11,7 +11,7 @@
             light
             :mini-variant="true"
             v-model="store.isNotMobile"
-            :hidden="store.ui.common.hideDrawer"
+            :hidden="hideDrawer"
           >
             <v-list pt-0>
               <v-list-tile
@@ -30,12 +30,12 @@
               >
                 <v-list-tile
                   slot="activator"
-                  @click="store.ui.pc[item.attr] = !store.ui.pc[item.attr]"
+                  @click="pc[item.attr] = !pc[item.attr]"
                   ripple
                 >
                   <v-list-tile-action>
                     <v-icon
-                      :class="store.ui.pc[item.attr] ? 'blue--text' : ''"
+                      :class="pc[item.attr] ? 'blue--text' : ''"
                     >{{item.icon}}</v-icon>
                   </v-list-tile-action>
                 </v-list-tile>
@@ -55,6 +55,7 @@
               <courses-list
                 :title="$t('coursesList.title')"
                 @update-preview-time="updatePreviewTime"
+                @open-course-detail="openCourseDetail"
                 :empty-text="$t('coursesList.pleaseSelect')"
               ></courses-list>
             </v-flex>
@@ -67,6 +68,7 @@
                 :title="$t('selectedCoursesList.title')"
                 :list="store.user.currentSelectedCourses"
                 @update-preview-time="updatePreviewTime"
+                @open-course-detail="openCourseDetail"
               ></courses-list>
             </v-flex>
 
@@ -86,20 +88,21 @@
             >
               <course-detail
                 :title="$t('courseDetail.title')"
-                :course-number="store.ui.common.courseDetailNumber"
+                :course-number="courseDetailNumber"
+                @close-course-detail="closeCourseDetail"
               ></course-detail>
             </v-flex>
             <v-bottom-nav
               fixed
               v-model="store.isMobile"
-              :class="store.ui.common.hideDrawer ? 'display-none' : ''"
+              :hidden="hideDrawer"
               :active="bottomDrawerActive"
               color="white"
             >
               <v-btn
                 v-for="item in menu"
                 :key="item.title + '-btn'"
-                @click="uiMobileClearShowing(); store.ui.mobile[item.attr] = !store.ui.mobile[item.attr]"
+                @click="uiMobileClearShowing(); mobile[item.attr] = !mobile[item.attr]"
                 flat
               >
                 <span v-text="$t(item.title)"></span>
@@ -143,12 +146,27 @@ export default {
           icon: 'grid_on',
           title: 'timeTable.title'
         }
-      ]
+      ],
+      showCourseDetail: false,
+      courseDetailNumber: '',
+      hideDrawer: false,
+      pc: {
+        showCoursesList: true,
+        showSelectedCoursesList: true,
+        showFavoriteCoursesList: false,
+        showTimeTable: true
+      },
+      mobile: {
+        showCoursesList: true,
+        showSelectedCoursesList: false,
+        showFavoriteCoursesList: false,
+        showTimeTable: false
+      }
     }
   },
   computed: {
     bottomDrawerActive () {
-      let idx = this.menu.findIndex((item) => {return store.ui.mobile[item.attr] === true})
+      let idx = this.menu.findIndex((item) => {return this.mobile[item.attr] === true})
       return idx
     },
     layoutSize () {
@@ -160,8 +178,8 @@ export default {
         courseDetail: 'xs6'
       }
 
-      let uc = this.store.ui.pc
-      let cd = this.store.ui.common.showCourseDetail
+      let uc = this.pc
+      let cd = this.showCourseDetail
 
       if (this.$vuetify.breakpoint.mdAndUp) {
         if (uc.showTimeTable) {
@@ -222,21 +240,18 @@ export default {
     },
     showCoursesList () {
       return this.store.isNotMobile ?
-        this.store.ui.pc.showCoursesList :
-        (!this.store.ui.common.showCourseDetail && this.store.ui.mobile.showCoursesList)
+        this.pc.showCoursesList :
+        (!this.showCourseDetail && this.mobile.showCoursesList)
     },
     showSelectedCoursesList () {
       return this.store.isNotMobile ?
-        this.store.ui.pc.showSelectedCoursesList :
-        (!this.store.ui.common.showCourseDetail && this.store.ui.mobile.showSelectedCoursesList)
+        this.pc.showSelectedCoursesList :
+        (!this.showCourseDetail && this.mobile.showSelectedCoursesList)
     },
     showTimeTable () {
       return this.store.isNotMobile ?
-        (!this.store.ui.common.showCourseDetail && this.store.ui.pc.showTimeTable) :
-        (!this.store.ui.common.showCourseDetail && this.store.ui.mobile.showTimeTable)
-    },
-    showCourseDetail () {
-      return this.store.ui.common.showCourseDetail
+        (!this.showCourseDetail && this.pc.showTimeTable) :
+        (!this.showCourseDetail && this.mobile.showTimeTable)
     }
   },
   methods: {
@@ -244,14 +259,22 @@ export default {
       this.previewTime = this.store.courses[courseNumber] ? this.store.courses[courseNumber].time : '';
     },
     uiMobileClearShowing () {
-      store.ui.mobile.showCoursesList = false
-      store.ui.mobile.showSelectedCoursesList = false
-      store.ui.mobile.showFavoriteCoursesList = false
-      store.ui.mobile.showTimeTable = false
+      this.mobile.showCoursesList = false
+      this.mobile.showSelectedCoursesList = false
+      this.mobile.showFavoriteCoursesList = false
+      this.mobile.showTimeTable = false
+    },
+    openCourseDetail (courseNumber) {
+      this.showCourseDetail = true
+      this.courseDetailNumber = courseNumber
+    },
+    closeCourseDetail () {
+      this.showCourseDetail = false
     }
   },
   mounted () {
-    this.store.ui.common.hideDrawer = false
+    /*
+    this.hideDrawer = false
     this.store.ui.common.loading = true
     this.store.getCurrentSelectedCourses()
     .then(() => {
@@ -262,6 +285,7 @@ export default {
       this.$router.push('/')
       this.store.ui.common.loading = false
     })
+    */
   }
 }
 </script>

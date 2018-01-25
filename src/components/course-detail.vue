@@ -6,7 +6,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
-        <v-btn icon slot="activator" @click="store.ui.common.showCourseDetail = false">
+        <v-btn icon slot="activator" @click="closeCourseDetail">
           <v-icon>close</v-icon>
         </v-btn>
         <span>{{ $t('courseDetail.close') }}</span>
@@ -54,7 +54,7 @@
         >下載課程大綱</v-btn>
         <div
           v-html="course.syllabus.description"
-        ></div>
+        ></div> 
       </v-container>
     </v-container>
   </div>
@@ -87,6 +87,9 @@ export default {
     removeFavorite (number) {
       store.removeFavorateCourses(number)
     },
+    closeCourseDetail () {
+      this.$emit('close-course-detail')
+    }
   },
   mounted () {
     

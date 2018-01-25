@@ -101,7 +101,7 @@
           :key="course.number"
           @mouseover="updatePreviewTime(course.number)"
           @mouseleave="updatePreviewTime('')"
-          @dblclick="store.openCourseDetail(course.number)"
+          @dblclick="openCourseDetail(course.number)"
         >
           <v-list-tile-content>
             <v-list-tile-title>{{ store.courses[course.number].title }}</v-list-tile-title>
@@ -138,7 +138,7 @@
                   >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-list-tile>
                   <v-list-tile
                     ripple
-                    @click="store.openCourseDetail(course.number)"
+                    @click="openCourseDetail(course.number)"
                   >{{ $t('coursesList.detail') }}</v-list-tile>
                 </v-list>
               </v-menu>
@@ -343,6 +343,9 @@ export default {
         catagory.newOrder.push(order)
       }
       catagory.dialog = false
+    },
+    openCourseDetail (courseNumber) {
+      this.$emit('open-course-detail', courseNumber)
     }
   },
   mounted () {
