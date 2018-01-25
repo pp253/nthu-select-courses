@@ -3,7 +3,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import i18n from '@/i18n'
 import router from '@/router'
-import '@/store'
+import store from '@/store'
 import '@/components'
 import '@/lib/store'
 import App from '@/App'
@@ -15,6 +15,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   i18n,
   template: '<App/>',

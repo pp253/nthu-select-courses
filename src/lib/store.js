@@ -25,16 +25,14 @@ const store = new Vue({
           showCoursesList: true,
           showSelectedCoursesList: true,
           showFavoriteCoursesList: false,
-          showTimeTable: true,
-          navDrawer: true
+          showTimeTable: true
         },
         mobile: {
           showCoursesList: true,
           showSelectedCoursesList: false,
           showFavoriteCoursesList: false,
           showTimeTable: false,
-          timeTableOffsetTop: 0,
-          bottomDrawer: true
+          timeTableOffsetTop: 0
         }
       },
       departments: coursesDb.departments,
