@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
-import i18n from './i18n'
-import router from './router'
-import './components'
-import './lib/store'
-import App from './App'
+import i18n from '@/i18n'
+import router from '@/router'
+import '@/store'
+import '@/components'
+import '@/lib/store'
+import App from '@/App'
 
 Vue.use(Vuetify)
 
