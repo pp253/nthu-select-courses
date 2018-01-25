@@ -98,7 +98,7 @@
               <v-layout wrap>
                 <v-flex xs12 sm6>
                   <v-container :pa-0="$vuetify.breakpoint.xsOnly">
-                    <h2>📱手機也能選課</h2>
+                    <h2>📱手機也能輕鬆選課</h2>
                     <p>從此，選課不再是電腦的專利了。清大簡易選課系統提供適合手機瀏覽的介面，讓你隨時隨地都能選課。</p>
                   </v-container>
                 </v-flex>
