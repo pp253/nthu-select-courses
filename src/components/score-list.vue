@@ -35,6 +35,7 @@
     >
       <v-list-tile
         v-if="overview && overview[semester] && !searchText"
+        class="three-line-list-tile"
       >
         <v-list-tile-content>
           <v-list-tile-title>
@@ -192,6 +193,12 @@ export default {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 64px;
+
+    .three-line-list-tile {
+      .list__tile {
+        height: 88px;
+      }
+    }
 
     .list__tile__action {
       min-width: 100px;
