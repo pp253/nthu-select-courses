@@ -1,11 +1,10 @@
 <template>
   <v-app
-    :class="'app' + ` mode-${store.isNotMobile ? 'pc' : 'mobile'}`"
-    v-resize="onResize"
+    :class="'app' + ` mode-${!$store.state.ui.isMobile ? 'pc' : 'mobile'}`"
   >
     <router-view />
 
-    <v-dialog v-model="store.ui.common.loading" max-width="250px" persistent>
+    <v-dialog v-model="$store.state.ui.loading" max-width="250px" persistent>
       <v-card>
         <v-card-text>
           <v-layout>
@@ -20,14 +19,14 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="store.ui.common.dialog" max-width="350px" persistent>
+    <v-dialog v-model="$store.state.ui.dialog" max-width="350px" persistent>
       <v-card>
-        <v-card-title class="headline">{{ store.ui.common.dialogTitle }}</v-card-title>
-        <v-card-text v-html="store.ui.common.dialogText"></v-card-text>
+        <v-card-title class="headline">{{ $t($store.state.ui.dialogTitle) }}</v-card-title>
+        <v-card-text v-html="$t($store.state.ui.dialogText)"></v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
-            @click="store.ui.common.dialog = false"
+            @click="$store.commit('ui/closeDialog')"
             flat
             v-text="$t('dialog.OK')"
           ></v-btn>
@@ -38,22 +37,10 @@
 </template>
 
 <script>
-import store from "./lib/store";
-
 export default {
   name: 'app',
-  data () {
-    return {
-      store: store
-    }
-  },
-  methods: {
-    onResize () {
-      this.store.ui.windowSize = { x: window.innerWidth, y: window.innerHeight }
-    }
-  },
-  mounted (){
-    this.store.ui.common.loading = false
+  mounted () {
+    this.$store.commit('ui/stopLoading')
   }
 }
 </script>

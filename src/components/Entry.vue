@@ -2,7 +2,7 @@
   <v-container class="entry">
     <v-layout>
       <v-flex xs12>
-        <v-container :pa-0="store.isMobile" mb-3>
+        <v-container :pa-0="$store.state.ui.isMobile" mb-3>
           <v-card class="transparent elevation-0">
             <v-card-text>
               <h1>清大簡易選課系統</h1>
@@ -14,7 +14,7 @@
 
     <v-layout wrap>
       <v-flex xs12 order-xs1 md5 order-md2 lg4 xl4 class="login">
-        <v-container :pa-0="store.isMobile" mb-3>
+        <v-container :pa-0="$store.state.ui.isMobile" mb-3>
           <form>
             <v-card ref="form">
               <v-card-title>
@@ -43,7 +43,7 @@
                 ></v-text-field>
                 <v-layout>
                   <v-flex xs5 sm3 md4 lg4 xl3>
-                    <img :src="'data:image/png;base64,' + authImg" class="auth-img">
+                    <img :src="'data:image/png;base64,' + $store.state.user.authImg" class="auth-img">
                   </v-flex>
                   <v-flex xs7 sm9 md8 lg8 xl9>
                     <v-text-field
@@ -63,7 +63,7 @@
               <v-card-actions>
                 <v-layout wrap>
                   <v-flex
-                    v-if="store.user.isLogin"
+                    v-if="$store.state.user.isLogin"
                     xs12
                     mb-3
                     text-xs-right
@@ -86,7 +86,7 @@
       </v-flex>
 
       <v-flex xs12 order-xs2 md7 order-md1 lg8 xl8 class="introduction">
-        <v-container :pa-0="store.isMobile" mb-5>
+        <v-container :pa-0="$store.state.ui.isMobile" mb-5>
           <v-card class="mb-3">
             <v-card-title>
               <div>
@@ -216,7 +216,7 @@
 
     <v-layout>
       <v-flex xs12>
-        <v-container :pa-0="store.isMobile" mb-5>
+        <v-container :pa-0="$store.state.ui.isMobile" mb-5>
           <v-card class="transparent elevation-0">
             <v-card-text>
               Made with 🍺 by <a href="https://github.com/pp253">pp253</a>. <a href="https://github.com/pp253/nthu-select-courses">GitHub</a>
@@ -225,93 +225,51 @@
         </v-container>
       </v-flex>
     </v-layout>
-
-    <v-dialog v-model="dialog.open" max-width="290">
-      <v-card>
-        <v-card-title class="headline">{{ $t(dialog.title) }}</v-card-title>
-        <v-card-text>{{ $t(dialog.text) }}</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat="flat" @click.native="dialog.open = false">{{ $t('dialog.OK') }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-import * as api from '../api'
-import store from '../lib/store'
-
 export default {
   name: 'Entry',
   data () {
     return {
-      store: store,
-      loginToken: '',
-      authImg: null,
       username: '',
       userpass: '',
-      authCheckCode: '',
-      dialog: {
-        open: false,
-        text: '',
-        title: ''
-      }
+      authCheckCode: ''
     }
   },
   methods: {
     submit () {
-      this.store.ui.common.loading = true
       let loginInfo = {
         username: this.username,
         userpass: this.userpass,
-        authCheckCode: this.authCheckCode,
-        loginToken: this.loginToken
+        authCheckCode: this.authCheckCode
       }
 
-      store.login(loginInfo)
+      this.$store.commit('ui/startLoading')
+
+      this.$store.dispatch('user/getSessionToken', loginInfo)
       .then((data) => {
-        this.store.ui.common.loading = false
+        this.$store.commit('ui/stopLoading')
         this.$router.push({ name: 'Service' })
       })
       .catch((err) => {
-        this.store.ui.common.loading = false
-        console.log(err)
-        switch (err.id) {
-          case 20:
-            // Err: UserInfoNotCorrect
-            this.dialog.open = true
-            this.dialog.title = 'entry.UserInfoNotCorrectTitle'
-            this.dialog.text = 'entry.UserInfoNotCorrectText'
-            break
-        
-          case 21:
-            // Err: AuthCheckCodeNotCorrect
-            this.dialog.open = true
-            this.dialog.title = 'entry.AuthCheckCodeNotCorrectTitle'
-            this.dialog.text = 'entry.AuthCheckCodeNotCorrectText'
-            break
-          
-          case 22:
-          default:
-            // Err: NTHUServerError
-            this.dialog.open = true
-            this.dialog.title = 'entry.NTHUServerErrorTitle'
-            this.dialog.text = 'entry.NTHUServerErrorText'
-            break
-        }
-        this.reload()
+        this.$store.commit('ui/stopLoading')
       })
     },
     reload () {
       this.userpass = ''
       this.authCheckCode = ''
 
-      api.getLoginToken()
+      this.$store.commit('ui/startLoading')
+
+      this.$store.dispatch('user/getLoginToken')
       .then((data) => {
-        this.loginToken = data.loginToken
-        this.authImg = data.authImg
+        this.$store.commit('ui/stopLoading')
+        this.$router.push({ name: 'Service' })
+      })
+      .catch((err) => {
+        this.$store.commit('ui/stopLoading')
       })
     }
   },

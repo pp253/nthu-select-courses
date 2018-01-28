@@ -1,4 +1,3 @@
-import * as api from '@/api'
 import coursesDb from '@/lib/courses_db.json'
 
 export default {
@@ -12,22 +11,7 @@ export default {
 
   },
   mutations: {
-    setCourseSyllabus (state, options) {
-      return new Promise((resolve, reject) => {
-        if (!state.courses[options.courseNumber]) {
-          Object.assign({}, state.courses, {
-            number: options.courseNumber
-          })
-        }
-        if (!state.courses[options.courseNumber].syllabus) {
-          api.getSyllabus()
-          Object.assign({}, state.courses[options.courseNumber], )
-        } else {
-          resolve(state.courses[options.courseNumber].syllabus)
-        }
-          
-      })
-    }
+
   },
   actions: {
     getSyllabus (context, courseNumber) {
@@ -45,6 +29,35 @@ export default {
           reject(err)
         })
       })
+    },
+    getDistribution (context, courseNumber) {
+      return new Promise((resolve, reject) => {
+        api.getDistribution(this.user.sessionToken, courseNumber)
+        .then((data) => {
+          resolve(data.distribution)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+    },
+    // This should move to select-courses
+    getDepartmentDetail (context, abbr) {
+      if (abbr.length <= 4) {
+        // Department
+        return this.departments[abbr]
+      } else {
+        // Class
+        for (let deptAbbr in this.departments) {
+          for (let cls of this.departments[deptAbbr].classes) {
+            if (cls.abbr === abbr) {
+              return cls
+            }
+          }
+        }
+      }
+      console.error(`Can't find the abbr ${abbr}`)
+      return false
     }
   }
 }
