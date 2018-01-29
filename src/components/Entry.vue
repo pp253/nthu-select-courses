@@ -266,7 +266,6 @@ export default {
       this.$store.dispatch('user/getLoginToken')
       .then((data) => {
         this.$store.commit('ui/stopLoading')
-        this.$router.push({ name: 'Service' })
       })
       .catch((err) => {
         this.$store.commit('ui/stopLoading')
