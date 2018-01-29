@@ -1,6 +1,5 @@
 <template>
   <v-container pa-0 ma-0 fluid class="score-course-detail">
-
     <v-tabs fixed centered>
       <v-toolbar dense class="elevation-1">
         <v-btn
@@ -74,7 +73,6 @@
 </template>
 
 <script>
-import store from '../lib/store'
 import {toArray} from '../lib/util'
 
 export default {
@@ -85,7 +83,6 @@ export default {
   },
   data () {
     return {
-      store: store,
       course: {},
       chartData: null
     }
@@ -105,8 +102,9 @@ export default {
         }
       }
       
-      this.store.ui.common.loading = true
-      this.store.getDistribution(newVal)
+      this.$store.commit('ui/startLoading')
+
+      this.$store.dispatch('scores/getDistribution', {courseNumber: newVal})
       .then((distribution) => {
         this.$set(this.course, 'distribution', distribution)
         this.chartData = {
@@ -133,17 +131,17 @@ export default {
           ]
         }
 
-        this.store.ui.common.loading = false
+        this.$store.commit('ui/stopLoading')
       })
       .catch((err) => {
         console.error(err)
       })
       
-      this.store.getSyllabus(newVal)
-      .then((data) => {
+      this.$store.dispatch('scores/getSyllabus', {courseNumber: newVal})
+      .then((syllabus) => {
         this.$set(this.course, 'syllabus', {})
-        for (let key in data) {
-          this.$set(this.course.syllabus, key, data[key])
+        for (let key in syllabus) {
+          this.$set(this.course.syllabus, key, syllabus[key])
         }
         this.course.syllabus.description
         this.course.syllabus.briefDescription
