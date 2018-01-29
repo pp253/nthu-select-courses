@@ -40,6 +40,17 @@
 export default {
   name: 'app',
   mounted () {
+    this.$watch('$vuetify.breakpoint.name', (newVal) => {
+      // Fix Vuetify's bug
+      if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
+        this.$store.commit('ui/setMobile', {isMobile: true})
+        return true
+      } else {
+        this.$store.commit('ui/setMobile', {isMobile: false})
+        return false
+      }
+    })
+    
     this.$store.commit('ui/stopLoading')
   }
 }

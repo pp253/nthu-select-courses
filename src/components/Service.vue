@@ -24,7 +24,7 @@
         :key="service.title"
         xs12
         sm6
-        xl4
+        lg4
       >
         <v-container :pa-0="$vuetify.breakpoint.xsOnly" pb-3>
           <v-card>
@@ -75,7 +75,7 @@ export default {
           content: this.$t('selectCourses.description') + '現在不是選課期間，系統未開放！',
           icon: 'playlist_add',
           path: '/select_courses',
-          disabled: true
+          disabled: false
         },
         {
           title: this.$t('commentsAboutCourses.name'),

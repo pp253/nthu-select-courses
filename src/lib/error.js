@@ -32,9 +32,13 @@ export const ResponseErrorMsg = {
       id: 1001,
       msg: `Login Token is invalid.`
     })
+  },
+  DepartmentAbbrNotFound () {
+    return ResponseErrorJSON({
+      id: 1010,
+      msg: `Department's abbr was not found.`
+    })
   }
-  // store/score/
-
 }
 
 export default {

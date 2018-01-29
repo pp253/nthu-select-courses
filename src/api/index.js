@@ -136,3 +136,19 @@ export function getDistribution (sessionToken, courseNumber) {
   }
   return legalRequest('api/scores/getDistribution', data)
 }
+
+export function getAvailableSelectionResult (sessionToken) {
+  let data = {
+    sessionToken: sessionToken
+  }
+  return legalRequest('api/select_course/getAvailableSelectionResult', data)
+}
+
+export function getSelectionResult (sessionToken, semester, phase) {
+  let data = {
+    sessionToken: sessionToken,
+    semester: semester,
+    phase: phase
+  }
+  return legalRequest('api/select_course/getSelectionResult', data)
+}

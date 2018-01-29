@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import ui from './modules/ui'
-import db from './modules/db'
 import selectCourses from './modules/select-courses'
 import scores from './modules/scores'
 import user from './modules/user'
@@ -23,7 +22,6 @@ export default new Vuex.Store({
     ui,
     selectCourses,
     scores,
-    db,
     user
   }
 })

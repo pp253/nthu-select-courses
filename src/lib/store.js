@@ -1,24 +1,10 @@
 import Vue from 'vue'
 import coursesDb from './courses_db.json'
 import * as api from '../api'
-import { htmlEncode } from './util'
 
 const store = new Vue({
   data () {
     return {
-      ui: {
-        isMobile: false,
-        windowSize: {
-          x: 0,
-          y: 0
-        },
-        common: {
-          loading: false,
-          dialog: false,
-          dialogTitle: '',
-          dialogText: ''
-        }
-      },
       departments: coursesDb.departments,
       catalog: coursesDb.catalog,
       courses: coursesDb.courses,
@@ -29,68 +15,11 @@ const store = new Vue({
         currentSelectedCourses: [],
         currentSelectedCoursesLoaded: false,
         favoriteCourses: [],
-        favoriteCoursesDetail: [],
-        scores: {},
-        scoresLoaded: false,
-        overview: {}
-      }
-    }
-  },
-  computed: {
-    isMobile: {
-      get: function () {
-        // Fix Vuetify's bug
-        if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
-          this.ui.isMobile = true
-          return true
-        } else {
-          this.ui.isMobile = false
-          return false
-        }
-      },
-      set: function (val) {
-        console.warn('setter of isMobile should not be called.')
-      }
-    },
-    isNotMobile: {
-      get: function () {
-        return !this.isMobile
-      },
-      set: function (val) {
-        console.warn('setter of isNotMobile should not be called.')
+        favoriteCoursesDetail: []
       }
     }
   },
   methods: {
-    getScores () {
-      return new Promise((resolve, reject) => {
-        if (this.user.sessionToken === '') {
-          reject()
-          return
-        }
-        if (this.user.scoresLoaded === true) {
-          resolve({
-            scores: this.user.scores,
-            overview: this.user.overview
-          })
-        } else {
-          api.getScores(this.user.sessionToken)
-          .then((data) => {
-            for (let semester in data.scores) {
-              this.user.scores[semester] = data.scores[semester]
-            }
-            for (let semester in data.overview) {
-              this.user.overview[semester] = data.overview[semester]
-            }
-            this.user.scoresLoaded = true
-            resolve(data)
-          })
-          .catch((err) => {
-            reject(err)
-          })
-        }
-      })
-    },
     getCurrentSelectedCourses () {
       return new Promise((resolve, reject) => {
         if (this.user.sessionToken === '') {
@@ -208,17 +137,6 @@ const store = new Vue({
             this.courses[courseNumber].syllabus.file = data.file
           }
           resolve(data)
-        })
-        .catch((err) => {
-          reject(err)
-        })
-      })
-    },
-    getDistribution (courseNumber) {
-      return new Promise((resolve, reject) => {
-        api.getDistribution(this.user.sessionToken, courseNumber)
-        .then((data) => {
-          resolve(data.distribution)
         })
         .catch((err) => {
           reject(err)

@@ -10,7 +10,7 @@
             permanent
             light
             :mini-variant="true"
-            v-model="store.isNotMobile"
+            :value="!$store.state.ui.isMobile"
             :hidden="hideDrawer"
           >
             <v-list pt-0>
@@ -94,7 +94,7 @@
             </v-flex>
             <v-bottom-nav
               fixed
-              v-model="store.isMobile"
+              :value="$store.state.ui.isMobile"
               :hidden="hideDrawer"
               :active="bottomDrawerActive"
               color="white"
@@ -239,17 +239,17 @@ export default {
       return layoutSize
     },
     showCoursesList () {
-      return this.store.isNotMobile ?
+      return !this.$store.state.ui.isMobile ?
         this.pc.showCoursesList :
         (!this.showCourseDetail && this.mobile.showCoursesList)
     },
     showSelectedCoursesList () {
-      return this.store.isNotMobile ?
+      return !this.$store.state.ui.isMobile ?
         this.pc.showSelectedCoursesList :
         (!this.showCourseDetail && this.mobile.showSelectedCoursesList)
     },
     showTimeTable () {
-      return this.store.isNotMobile ?
+      return !this.$store.state.ui.isMobile ?
         (!this.showCourseDetail && this.pc.showTimeTable) :
         (!this.showCourseDetail && this.mobile.showTimeTable)
     }
@@ -273,19 +273,28 @@ export default {
     }
   },
   mounted () {
-    /*
     this.hideDrawer = false
-    this.store.ui.common.loading = true
-    this.store.getCurrentSelectedCourses()
+    this.$store.commit('ui/startLoading')
+
+    this.$store.dispatch('selectCourses/getAvailableSelectionResult')
     .then(() => {
-      this.store.ui.common.loading = false
+      if (this.$store.state.selectCourses.editable) {
+        this.store.getCurrentSelectedCourses()
+        .then(() => {
+          this.$store.commit('ui/stopLoading')
+        })
+        .catch((err) => {
+          this.$router.push('/')
+          this.$store.commit('ui/stopLoading')
+        })
+      } else {
+        this.$store.commit('ui/stopLoading')
+      }
     })
     .catch((err) => {
-      console.log(err)
       this.$router.push('/')
-      this.store.ui.common.loading = false
+      this.$store.commit('ui/stopLoading')
     })
-    */
   }
 }
 </script>

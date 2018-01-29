@@ -1,9 +1,23 @@
 <template>
   <div :class="'courses-list full-height' + (!list ? ' extended' : '')">
     <v-toolbar dense :extended="!list">
-      <v-toolbar-title>
-        {{ (departmentName ? departmentName : title) }}
-      </v-toolbar-title>
+      <v-menu :nudge-width="100">
+        <v-toolbar-title slot="activator">
+          {{ (departmentName ? departmentName : title) }}
+          <v-icon>arrow_drop_down</v-icon>
+        </v-toolbar-title>
+        <v-list>
+          <v-list-tile
+            v-if="list"
+            v-for="item in availableSelectionResult"
+            :key="item.value"
+            ripple
+          >
+            <v-list-tile-title v-text="item.text"></v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+
       <v-spacer></v-spacer>
       <choose-department
         v-if="!list"
@@ -38,7 +52,7 @@
             v-if="course.orderable"
             v-model="course.dialog"
             persistent
-            :fullscreen="store.isMobile"
+            :fullscreen="$store.state.ui.isMobile"
             max-width="350"
             scrollable
           >
@@ -104,7 +118,13 @@
           @dblclick="openCourseDetail(course.number)"
         >
           <v-list-tile-content>
-            <v-list-tile-title>{{ store.courses[course.number].title }}</v-list-tile-title>
+            <v-list-tile-title>
+              <span
+                v-if="store.courses[course.number].canceled"
+                class="red--text"
+              >停開</span>
+              {{ store.courses[course.number].title }}
+            </v-list-tile-title>
             <v-list-tile-sub-title class="grey--text text--darken-4">{{
               $t('coursesList.courseSub')
               .replace('{0}', store.courses[course.number].number)
@@ -215,6 +235,20 @@ export default {
           this.updateCourses(this.abbr)
         }
       }, 1000)
+    }
+  },
+  computed: {
+    availableSelectionResult () {
+      let list = []
+      for (let semester in this.$store.state.selectCourses.availableSelectionResult) {
+        for (let item of this.$store.state.selectCourses.availableSelectionResult[semester]) {
+          list.push({
+            text: item,
+            value: semester + item
+          })
+        }
+      }
+      return list
     }
   },
   methods: {
