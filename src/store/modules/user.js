@@ -1,11 +1,12 @@
 import * as api from '@/api'
+import error from '../../lib/error';
 
 export default {
   namespaced: true,
   state: {
+    isLogin: false,
     loginToken: '',
     authImg: '',
-    isLogin: false,
     username: '',
     sessionToken: ''
   },
@@ -22,6 +23,9 @@ export default {
     setLogin (state, options) {
       state.isLogin = options.isLogin
     },
+    logout (state) {
+      state.isLogin = false
+    },
     setUsername (state, options) {
       state.username = options.username
     },
@@ -35,6 +39,10 @@ export default {
     }
   },
   actions: {
+    /**
+     * Get login token and auth img for user to login.
+     * @return {Promise}
+     */
     getLoginToken (context) {
       return new Promise((resolve, reject) => {
         api.getLoginToken()
@@ -48,10 +56,16 @@ export default {
         })
       })
     },
+    /**
+     * Pass the username and user password to server and get the session token.
+     * @param {Object} loginInfo Login Info should include `username`,
+     * `userpass`, `authCheckCode`.
+     * @return {Promise}
+     */
     getSessionToken (context, loginInfo) {
       return new Promise((resolve, reject) => {
-        if (context.state.user.loginToken === '') {
-          reject()
+        if (context.state.loginToken === '') {
+          reject(error.ResponseErrorMsg.InvalidLoginToken())
           return
         }
 
@@ -59,7 +73,7 @@ export default {
           username: loginInfo.username,
           userpass: loginInfo.userpass,
           authCheckCode: loginInfo.authCheckCode,
-          loginToken: context.state.user.loginToken
+          loginToken: context.state.loginToken
         })
         .then((data) => {
           context.commit('setUser', {

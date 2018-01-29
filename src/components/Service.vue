@@ -12,7 +12,7 @@
               <v-btn
                 flat
                 class="red--text"
-                @click="store.user.isLogin = false; $router.push('/')"
+                @click="$store.commit('user/logout'); $router.push('/')"
                 v-text="$t('login.logout')"
               ></v-btn>
             </v-card-actions>
@@ -24,6 +24,7 @@
         :key="service.title"
         xs12
         sm6
+        xl4
       >
         <v-container :pa-0="$vuetify.breakpoint.xsOnly" pb-3>
           <v-card>
@@ -45,7 +46,7 @@
 
     <v-layout>
       <v-flex xs12>
-        <v-container :pa-0="store.isMobile" mt-5 mb-5>
+        <v-container :pa-0="$store.state.ui.isMobile" mt-5 mb-5>
           <v-card class="transparent elevation-0">
             <v-card-text>
               Made with 🍺 by <a href="https://github.com/pp253">pp253</a>. <a href="https://github.com/pp253/nthu-select-courses">GitHub</a>
@@ -58,13 +59,10 @@
 </template>
 
 <script>
-import store from '../lib/store'
-
 export default {
   name: 'Service',
   data () {
     return {
-      store: store,
       services: [
         {
           title: this.$t('scores.name'),
@@ -90,7 +88,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.store.user.isLogin) {
+    if (!this.$store.state.user.isLogin) {
       this.$router.push('/')
     }
   }

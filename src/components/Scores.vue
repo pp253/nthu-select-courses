@@ -3,13 +3,14 @@
     <score-list
       @show-score-detail="showDetail"
       :scores="scores"
+      :courses="courses"
       :overview="overview"
       :hidden="showCourseDetail"
     >
     </score-list>
     <score-course-detail
       @close-score-detail="closeDetail"
-      :scores="scores"
+      :courses="courses"
       :course-detail-number="courseDetailNumber"
       :hidden="!showCourseDetail"
     >
@@ -18,17 +19,21 @@
 </template>
 
 <script>
-import store from '../lib/store'
+import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
-      store: store,
-      scores: {},
-      overview: {},
       showCourseDetail: false,
       courseDetailNumber: ''
     }
+  },
+  computed: {
+    ...mapState('scores', [
+      'scores',
+      'courses',
+      'overview'
+    ])
   },
   methods: {
     showDetail (courseNumber) {
@@ -40,20 +45,14 @@ export default {
     }
   },
   mounted () {
-    this.store.ui.common.loading = true
-    store.getScores()
+    this.$store.commit('ui/startLoading')
+    this.$store.dispatch('scores/getScores')
     .then((data) => {
-      this.store.ui.common.loading = false
-      for (let key in data.scores) {
-        this.$set(this.scores, key, data.scores[key])
-      }
-      for (let key in data.overview) {
-        this.$set(this.overview, key, data.overview[key])
-      }
+      this.$store.commit('ui/stopLoading')
     })
     .catch((err) => {
-      this.store.ui.common.loading = false
       console.log(err)
+      this.$store.commit('ui/stopLoading')
       this.$router.push('/')
     })
   }

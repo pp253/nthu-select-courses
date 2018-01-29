@@ -101,17 +101,15 @@
 </template>
 
 <script>
-import store from '../lib/store'
-
 export default {
   name: 'ScoreList',
   props: {
     'scores': Object,
+    'courses': Object,
     'overview': Object
   },
   data () {
     return {
-      store: store,
       semester: '',
       searchText: ''
     }
@@ -149,12 +147,13 @@ export default {
         let list = []
         for (let semester of Object.keys(this.scores).reverse()) {
           let semesterList = []
-          for (let score of this.scores[semester]) {
-            if (score.courseTitle.includes(this.searchText) ||
-              score.courseNumber.includes(this.searchText) ||
-              score.grade.includes(this.searchText)
+          for (let courseNumber of this.scores[semester]) {
+            let course = this.courses[courseNumber]
+            if (course.courseTitle.includes(this.searchText) ||
+              course.courseNumber.includes(this.searchText) ||
+              course.grade.includes(this.searchText)
             ) {
-              semesterList.push(score)
+              semesterList.push(course)
             }
           }
           if (semesterList.length > 0) {
@@ -169,7 +168,13 @@ export default {
         }
         return list
       } else {
-        return this.scores[this.semester] ? this.scores[this.semester] : []
+        let list = []
+        if (this.scores[this.semester]) {
+          for (let courseNumber of this.scores[this.semester]) {
+            list.push(this.courses[courseNumber])
+          }
+        }
+        return list
       }
     }
   },
