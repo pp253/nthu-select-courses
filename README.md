@@ -1,6 +1,14 @@
 # nthu-select-courses
 
+The goal of the NTHU SELECT COURSES is to make courses selecting a easy, intuitive, and pleasure journey.
+
 The server side repository is at [nthu-select-course-server](https://github.com/pp253/nthu-select-courses-server)
+
+## Architecture
+
+- 
+- src
+  - 
 
 ## Build Setup
 
@@ -18,6 +26,7 @@ npm run build
 ## Main Dependencies
 
 - Vue
+- Vuex
 - Vuetify
 - vue-i18n
 - vue-router
