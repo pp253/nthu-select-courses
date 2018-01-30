@@ -62,7 +62,7 @@
         </v-subheader>
         <v-list-tile
           v-if="!score.type && score.type !== 'subheader'"
-          @click="$emit('show-score-detail', score.semester + score.courseNumber)"
+          @click="$emit('show-score-detail', score.courseNumber)"
           :key="score.number"
           ripple
         >
@@ -180,11 +180,16 @@ export default {
   },
   methods: {
     toReadableSemester (semester) {
-      if (semester === '') {
+      if (!semester) {
         return this.$t('scores.selecting')
       }
       let seText = /(\d{3})(\d{2})/.exec(semester)
       return seText[1] + this.$t(`semester.${seText[2]}`)
+    }
+  },
+  mounted () {
+    if (this.scores) {
+      this.semester = Object.keys(this.scores).reverse()[Object.keys(this.scores).length > 1 ? 1 : 0]
     }
   }
 }

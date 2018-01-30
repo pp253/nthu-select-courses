@@ -79,34 +79,20 @@ export default {
   name: 'ScoreCourseDetail',
   props: {
     'scores': Object,
+    'courses': Object,
     'course-detail-number': String
   },
   data () {
     return {
-      course: {},
       chartData: null
     }
   },
   watch: {
     courseDetailNumber (newVal) {
-      if (!newVal) {
-        return
-      }
-
-      for (let semester in this.scores) {
-        for (let score of this.scores[semester]) {
-          if (newVal === score.courseNumber) {
-            this.course = score
-            break
-          }
-        }
-      }
-      
       this.$store.commit('ui/startLoading')
 
       this.$store.dispatch('scores/getDistribution', {courseNumber: newVal})
       .then((distribution) => {
-        this.$set(this.course, 'distribution', distribution)
         this.chartData = {
           labels: [
             'A+',
@@ -138,17 +124,6 @@ export default {
       })
       
       this.$store.dispatch('scores/getSyllabus', {courseNumber: newVal})
-      .then((syllabus) => {
-        this.$set(this.course, 'syllabus', {})
-        for (let key in syllabus) {
-          this.$set(this.course.syllabus, key, syllabus[key])
-        }
-        this.course.syllabus.description
-        this.course.syllabus.briefDescription
-      })
-      .catch((err) => {
-        console.error(err)
-      })
     }
   },
   computed: {
@@ -160,6 +135,17 @@ export default {
       let sum = this.course.distribution.total
 
       return ((1 - (this.course.distribution.D + this.course.distribution.E + this.course.distribution.X) / sum) * 100).toFixed(1)
+    },
+    course () {
+      if (!this.courseDetailNumber) {
+        return {}
+      }
+
+      if (this.courseDetailNumber in this.courses) {
+        return this.courses[this.courseDetailNumber]
+      } else {
+        return {}
+      }
     }
   }
 }

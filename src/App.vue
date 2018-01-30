@@ -39,8 +39,8 @@
 <script>
 export default {
   name: 'app',
-  mounted () {
-    this.$watch('$vuetify.breakpoint.name', (newVal) => {
+  methods: {
+    updateIsMobile (newVal) {
       // Fix Vuetify's bug
       if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
         this.$store.commit('ui/setMobile', {isMobile: true})
@@ -49,7 +49,11 @@ export default {
         this.$store.commit('ui/setMobile', {isMobile: false})
         return false
       }
-    })
+    }
+  },
+  mounted () {
+    this.updateIsMobile(this.$vuetify.breakpoint.name)
+    this.$watch('$vuetify.breakpoint.name', this.updateIsMobile)
     
     this.$store.commit('ui/stopLoading')
   }

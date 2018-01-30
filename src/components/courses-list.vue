@@ -23,15 +23,16 @@
         v-if="!list"
         @update-department="updateCourses"
       ></choose-department>
-      <div slot="extension" v-if="!list" class="search-box">
-        <v-text-field
-          v-model="searchText"
-          type="text"
-          value=""
-          prepend-icon="search"
-          clearable
-        ></v-text-field>
-      </div>
+
+      <v-text-field
+        slot="extension"
+        v-if="!list"
+        v-model="searchText"
+        type="text"
+        value=""
+        prepend-icon="search"
+        clearable
+      ></v-text-field>
     </v-toolbar>
 
     <v-list
@@ -81,7 +82,7 @@
                           {{ $t('coursesList.order').replace('{0}', idx + 1) }}
                         </v-list-tile-action>
                         <v-list-tile-content>
-                          {{ store.courses[element.number].title }}
+                          {{ courses[element.number].title }}
                         </v-list-tile-content>
                         <v-list-tile-avatar class="drag-handle">
                           <v-icon>drag_handle</v-icon>
@@ -109,7 +110,7 @@
         </v-subheader>
 
         <v-list-tile
-          v-if="store.courses[course.number]"
+          v-if="courses[course.number]"
           ripple
           @click=""
           :key="course.number"
@@ -120,28 +121,28 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <span
-                v-if="store.courses[course.number].canceled"
+                v-if="courses[course.number].canceled"
                 class="red--text"
               >停開</span>
-              {{ store.courses[course.number].title }}
+              {{ courses[course.number].title }}
             </v-list-tile-title>
             <v-list-tile-sub-title class="grey--text text--darken-4">{{
               $t('coursesList.courseSub')
-              .replace('{0}', store.courses[course.number].number)
-              .replace('{1}', store.courses[course.number].professor)
+              .replace('{0}', courses[course.number].number)
+              .replace('{1}', courses[course.number].professor)
             }}</v-list-tile-sub-title>
             <v-list-tile-sub-title class="detail">{{
               $t('coursesList.courseDetail')
-              .replace('{0}', store.courses[course.number].credit)
-              .replace('{1}', store.courses[course.number].size_limit)
-              .replace('{2}', store.courses[course.number].previous_size)
-              .replace('{3}', store.courses[course.number].room)
+              .replace('{0}', courses[course.number].credit)
+              .replace('{1}', courses[course.number].size_limit)
+              .replace('{2}', courses[course.number].previous_size)
+              .replace('{3}', courses[course.number].room)
             }}</v-list-tile-sub-title>
-            <v-list-tile-sub-title class="memo">{{ store.courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <v-list-tile-action-text>{{ store.courses[course.number].time }}</v-list-tile-action-text>
+            <v-list-tile-action-text>{{ courses[course.number].time }}</v-list-tile-action-text>
             <div class="text-xs-center">
               <v-menu offset-y left>
                 <v-btn icon slot="activator">
@@ -149,16 +150,19 @@
                 </v-btn>
                 <v-list>
                   <v-list-tile
+                    v-if="!courses[course.number].canceled"
+                    @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
                     ripple
-                    @click="store.courseSelected(course.number) ? store.quitCourseAuto(course.number) : store.addCourseAuto(course.number)"
-                  >{{ store.courseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-list-tile>
+                  >{{ isCourseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-list-tile>
+                  <!--
                   <v-list-tile
-                    ripple
                     @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
-                  >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-list-tile>
-                  <v-list-tile
                     ripple
+                  >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-list-tile>
+                  -->
+                  <v-list-tile
                     @click="openCourseDetail(course.number)"
+                    ripple
                   >{{ $t('coursesList.detail') }}</v-list-tile>
                 </v-list>
               </v-menu>
@@ -166,7 +170,7 @@
           </v-list-tile-action>
         </v-list-tile>
         <v-divider
-          v-if="store.courses[course.number] && index < coursesList.length - 1"
+          v-if="courses[course.number] && index < coursesList.length - 1"
           :key="course.number + '-divider'"
         ></v-divider>
       </template>
@@ -180,8 +184,6 @@
 </template>
 
 <script>
-import store from '../lib/store'
-
 export default {
   name: 'CoursesList',
   props: {
@@ -189,15 +191,16 @@ export default {
     list: Array,
     'empty-text': {
       default: '您還沒有加入的課程歐！'
-    }
+    },
+    'courses-db': Object
   },
   data () {
     return {
-      store: store,
       coursesList: [],
       departmentName: '',
       searchText: '',
-      abbr: ''
+      abbr: '',
+      courses: {}
     }
   },
   watch: {
@@ -207,10 +210,10 @@ export default {
     searchText (newVal) {
       setTimeout(() => {
         if (this.searchText !== null && newVal !== '' && newVal === this.searchText) {
-          this.store.ui.common.loading = true
-          this.coursesList.splice(0, this.coursesList.length)
-          for (let courseNumber in this.store.courses) {
-            let course = this.store.courses[courseNumber]
+          this.$store.commit('ui/startLoading')
+          this.coursesList = []
+          for (let courseNumber in this.courses) {
+            let course = this.courses[courseNumber]
             if (course.number.includes(newVal) ||
               course.title.includes(newVal) ||
               course.professor.includes(newVal) ||
@@ -223,14 +226,15 @@ export default {
               })
             }
             if (this.coursesList.length > 30) {
-              this.store.ui.common.dialog = true
-              this.store.ui.common.dialogTitle = '你搜尋的範圍太廣了'
-              this.store.ui.common.dialogText = '試著找出關鍵字吧。'
+              this.$store.commit('ui/openDialog', {
+                title: '你搜尋的範圍太廣了',
+                text: '試著找出關鍵字吧。'
+              })
               break
             }
           }
           this.departmentName = this.$t('common.search').replace('{0}', this.searchText)
-          this.store.ui.common.loading = false
+          this.$store.commit('ui/stopLoading')
         } else if (this.searchText === null) {
           this.updateCourses(this.abbr)
         }
@@ -252,8 +256,48 @@ export default {
     }
   },
   methods: {
+    addCourse (courseNumber) {
+      return new Promise((resolve, reject) => {
+        this.$store.commit('ui/startLoading')
+        let order = ''
+        if (this.courses[courseNumber].random !== 0) {
+          order = this.$store.state.selectCourses.currentSelectedCourses.filter((course) => {
+            return course.status && course.status === 2 && this.courses[course.number].random === this.courses[courseNumber].random
+          }).length + 1
+        }
+
+        this.$store.dispatch('selectCourses/addCourse', {
+          courseNumber: courseNumber,
+          order: order
+        })
+        .then((data) => {
+          this.$store.commit('ui/stopLoading')
+          resolve(data)
+        })
+        .catch((err) => {
+          this.$store.commit('ui/stopLoading')
+          reject(err)
+        })
+      })
+    },
+    quitCourse (courseNumber) {
+      return new Promise((resolve, reject) => {
+        this.$store.commit('ui/startLoading')
+        this.$store.dispatch('selectCourses/quitCourse', {
+          courseNumber: courseNumber
+        })
+        .then((data) => {
+        this.$store.commit('ui/stopLoading')
+          resolve(data)
+        })
+        .catch((err) => {
+          this.$store.commit('ui/stopLoading')
+          reject(err)
+        })
+      })
+    },
     updateList () {
-      this.coursesList.splice(0, this.coursesList.length)
+      this.coursesList = []
 
       if (!this.list) {
         return
@@ -279,7 +323,7 @@ export default {
       
       // 通識、體育志願（待亂數）
       let waitingForRandomGePeCoursesList = this.list.filter((course) => {
-        return course.status && course.status === 2 && this.store.courses[course.number].random === 20
+        return course.status && course.status === 2 && this.courses[course.number].random === 20
       }).sort((courseA, courseB) => {
         return courseA.order - courseB.order
       })
@@ -299,7 +343,7 @@ export default {
       
       // 大學中文志願（待亂數）
       let waitingForRandomCLCoursesList = this.list.filter((course) => {
-        return course.status && course.status === 2 && this.store.courses[course.number].random === 5
+        return course.status && course.status === 2 && this.courses[course.number].random === 5
       }).sort((courseA, courseB) => {
         return courseA.order - courseB.order
       })
@@ -335,40 +379,59 @@ export default {
         }
       }
     },
+    getDepartmentDetail (abbr) {
+      let departments = this.$store.state.selectCourses.departments
+      if (abbr.length <= 4 && (abbr in departments)) {
+        // Department
+        return departments[abbr]
+      } else {
+        // Class
+        for (let deptAbbr in departments) {
+          for (let cls of departments[deptAbbr].classes) {
+            if (cls.abbr === abbr) {
+              return cls
+            }
+          }
+        }
+      }
+    },
     updateCourses (abbr) {
       this.abbr = abbr
 
       if (abbr === '') {
         this.departmentName = this.title
-        this.coursesList.splice(0, this.coursesList.length)
-        return []
+        this.coursesList = []
       } else {
-        this.departmentName = this.store.getDepartmentDetail(abbr).chineseName || this.store.getDepartmentDetail(abbr).name
+        this.departmentName = this.getDepartmentDetail(abbr).chineseName || this.getDepartmentDetail(abbr).name
 
-        this.coursesList.splice(0, this.coursesList.length)
-        for (let courseNumber of this.store.getCourses(abbr)) {
-          this.coursesList.push({
-            number: courseNumber
-          })
+        this.coursesList = []
+        if (abbr in this.$store.state.selectCourses.catalog) {
+          for (let courseNumber of this.$store.state.selectCourses.catalog[abbr]) {
+            this.coursesList.push({
+              number: courseNumber
+            })
+          }
         }
-        return this.coursesList
       }
     },
     addFavorite (number) {
-      this.store.addFavorateCourses(number)
+      // this.store.addFavorateCourses(number)
     },
     removeFavorite (number) {
-      this.store.removeFavorateCourses(number)
+      // this.store.removeFavorateCourses(number)
     },
     updatePreviewTime (number) {
       this.$emit('update-preview-time', number)
     },
     editOrder (catagory) {
-      this.store.ui.common.loading = true
-      this.store.editOrder(catagory.newOrder, catagory.oldOrder)
+      this.$store.commit('ui/startLoading')
+      this.$store.dispatch('selectCourses/editOrder', {
+        newOrder: catagory.newOrder,
+        oldOrder: catagory.oldOrder
+      })
       .then((data) => {
         catagory.dialog = false
-      this.store.ui.common.loading = false
+        this.$store.commit('ui/stopLoading')
       })
     },
     cancelEditOrder (catagory) {
@@ -380,11 +443,21 @@ export default {
     },
     openCourseDetail (courseNumber) {
       this.$emit('open-course-detail', courseNumber)
+    },
+    isCourseSelected (courseNumber) {
+      return (this.$store.state.selectCourses.currentSelectedCourses.find((course) => {
+        return course.number === courseNumber
+      }) !== undefined)
     }
   },
   mounted () {
     if (this.list) {
       this.updateList()
+    }
+    if (this.coursesDb) {
+      this.courses = this.coursesDb
+    } else {
+      this.courses = this.$store.state.selectCourses.courses
     }
   }
 }
@@ -392,10 +465,6 @@ export default {
 
 <style lang="scss">
 .courses-list {
-  .search-box {
-    width: calc(100% - 32px);
-  }
-
   .list {
     height: calc(100% - 48px);
     overflow-x: hidden;

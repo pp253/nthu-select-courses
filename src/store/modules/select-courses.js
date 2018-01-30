@@ -32,6 +32,9 @@ export default {
       state.editable = options.editable
     },
     setSyllabus (state, options) {
+      if (!state.courses[options.courseNumber]) {
+        return
+      }
       state.courses[options.courseNumber] = Object.assign({}, state.courses[options.courseNumber], {
         syllabus: options.syllabus
       })
@@ -57,7 +60,7 @@ export default {
     }
   },
   actions: {
-    addCourse (context, options) {
+    quitCourse (context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
@@ -75,7 +78,7 @@ export default {
         })
       })
     },
-    quitCourse (context, options) {
+    addCourse (context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
@@ -145,7 +148,10 @@ export default {
         } else {
           api.getSyllabus(context.rootState.user.sessionToken, options.courseNumber)
           .then((data) => {
-            context.commit('setSyllabus', data.syllabus)
+            context.commit('setSyllabus', {
+              courseNumber: options.courseNumber,
+              syllabus: data.syllabus
+            })
             resolve(data.syllabus)
           })
           .catch((err) => {

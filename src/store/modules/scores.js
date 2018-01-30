@@ -106,7 +106,7 @@ export default {
     },
     /**
      * Get syllabus of score in a course.
-     * @param {*} options Options should include `courseNumber`
+     * @param {Object} options Options should include `courseNumber`
      * @returns {Promise}
      */
     getSyllabus (context, options) {
@@ -120,9 +120,9 @@ export default {
         .then((data) => {
           context.commit('setSyllabus', {
             courseNumber: options.courseNumber,
-            syllabus: data
+            syllabus: data.syllabus
           })
-          resolve(data)
+          resolve(data.syllabus)
         })
         .catch((err) => {
           reject(err)

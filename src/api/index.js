@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import {htmlEncode} from '@/lib/util'
 
 const SERVER_BASE = 'http://localhost/'
 const ERR_MSG = {
@@ -37,6 +38,22 @@ const ERR_MSG = {
   },
   34: {
     title: '你已經選過這堂課了',
+    text: ''
+  },
+  35: {
+    title: '擋修',
+    text: ''
+  },
+  36: {
+    title: '其他的錯誤',
+    text: ''
+  },
+  37: {
+    title: '現在不是選課期間',
+    text: ''
+  },
+  38: {
+    title: '此課程代碼不正確',
     text: ''
   }
 }

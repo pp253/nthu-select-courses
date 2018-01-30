@@ -66,7 +66,7 @@
             >
               <courses-list
                 :title="$t('selectedCoursesList.title')"
-                :list="store.user.currentSelectedCourses"
+                :list="$store.state.selectCourses.currentSelectedCourses"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
               ></courses-list>
@@ -78,7 +78,7 @@
             >
               <time-table
                 :preview-time="previewTime"
-                :list="store.user.currentSelectedCourses"
+                :list="$store.state.selectCourses.currentSelectedCourses"
               ></time-table>
             </v-flex>
 
@@ -117,13 +117,10 @@
 </template>
 
 <script>
-import store from "../lib/store"
-
 export default {
   name: "SelectCourses",
   data() {
     return {
-      store: store,
       previewTime: "",
       menu: [
         {
@@ -256,7 +253,7 @@ export default {
   },
   methods: {
     updatePreviewTime(courseNumber) {
-      this.previewTime = this.store.courses[courseNumber] ? this.store.courses[courseNumber].time : '';
+      this.previewTime = this.$store.state.selectCourses.courses[courseNumber] ? this.$store.state.selectCourses.courses[courseNumber].time : '';
     },
     uiMobileClearShowing () {
       this.mobile.showCoursesList = false

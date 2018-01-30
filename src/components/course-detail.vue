@@ -2,6 +2,10 @@
   <div class="course-detail">
     <v-toolbar dense>
       <v-toolbar-title>
+        <span
+          v-if="course.canceled"
+          class="red--text"
+        >停開</span>
         {{ (course.title ? course.title : title) }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -29,11 +33,14 @@
         </v-layout>
 
         <v-btn
-          @click="store.courseSelected(course.number) ? store.quitCourseAuto(course.number) : store.addCourseAuto(course.number)"
-        >{{ store.courseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-btn>
+          v-if="!course.canceled"
+          @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
+        >{{ isCourseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-btn>
+        <!--
         <v-btn
           @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
         >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
+        -->
       </v-container>
       <v-divider></v-divider>
       <v-container
@@ -61,38 +68,99 @@
 </template>
 
 <script>
-import store from '../lib/store'
-
 export default {
   name: 'CoursesList',
   props: {
     'title': String,
-    'course-number': String
+    'course-number': String,
+    'courses-db': Object
   },
   data () {
     return {
-      store: store,
-      course: store.getCourseDetail(this.courseNumber)
+      courses: {}
     }
   },
   watch: {
-    courseNumber (newValue, oldValue) {
-      this.course = store.getCourseDetail(newValue)
+    courseNumber (newVal) {
+      if (this.courses[this.courseNumber]) {
+        if (!this.courses[this.courseNumber].syllabus && !this.coursesDb) {
+          this.$store.dispatch('selectCourses/getSyllabus', {
+            courseNumber: newVal
+          })
+        }
+      }
+    }
+  },
+  computed: {
+    course () {
+      if (this.courseNumber in this.courses) {
+        return this.courses[this.courseNumber]
+      }
+      return {}
     }
   },
   methods: {
+    addCourse (courseNumber) {
+      return new Promise((resolve, reject) => {
+        this.$store.commit('ui/startLoading')
+        let order = ''
+        if (this.courses[courseNumber].random !== 0) {
+          order = this.$store.state.selectCourses.currentSelectedCourses.filter((course) => {
+            return course.status && course.status === 2 && this.courses[course.number].random === this.courses[courseNumber].random
+          }).length + 1
+        }
+
+        this.$store.dispatch('selectCourses/addCourse', {
+          courseNumber: courseNumber,
+          order: order
+        })
+        .then((data) => {
+          this.$store.commit('ui/stopLoading')
+          resolve(data)
+        })
+        .catch((err) => {
+          this.$store.commit('ui/stopLoading')
+          reject(err)
+        })
+      })
+    },
+    quitCourse (courseNumber) {
+      return new Promise((resolve, reject) => {
+        this.$store.commit('ui/startLoading')
+        this.$store.dispatch('selectCourses/quitCourse', {
+          courseNumber: courseNumber
+        })
+        .then((data) => {
+          this.$store.commit('ui/stopLoading')
+          resolve(data)
+        })
+        .catch((err) => {
+          this.$store.commit('ui/stopLoading')
+          reject(err)
+        })
+      })
+    },
+    isCourseSelected (courseNumber) {
+      return (this.$store.state.selectCourses.currentSelectedCourses.find((course) => {
+        return course.number === courseNumber
+      }) !== undefined)
+    },
     addFavorite (number) {
-      store.addFavorateCourses(number)
+      // store.addFavorateCourses(number)
     },
     removeFavorite (number) {
-      store.removeFavorateCourses(number)
+      // store.removeFavorateCourses(number)
     },
     closeCourseDetail () {
       this.$emit('close-course-detail')
     }
   },
   mounted () {
-    
+    if (this.coursesDb) {
+      this.courses = this.coursesDb
+    } else {
+      this.courses = this.$store.state.selectCourses.courses
+    }
   }
 }
 </script>
