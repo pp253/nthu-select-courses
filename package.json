@@ -2,7 +2,7 @@
   "name": "nthu-select-courses",
   "version": "1.0.0",
   "description": "NTHU SELECT COURSES: Make courses selection an easy, intuitive, and pleasure work.",
-  "author": "pp253 <pp253@users.noreply.github.com>",
+  "author": "pp253 <pp.pp253@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
