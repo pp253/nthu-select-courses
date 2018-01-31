@@ -185,10 +185,12 @@
 
 <script>
 import draggable from 'vuedraggable'
+import ChooseDepartment from './choose-department'
 
 export default {
   name: 'CoursesList',
   components: {
+    ChooseDepartment,
     draggable
   },
   props: {
