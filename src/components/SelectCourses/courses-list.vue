@@ -184,8 +184,13 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 export default {
   name: 'CoursesList',
+  components: {
+    draggable
+  },
   props: {
     'title': String,
     list: Array,

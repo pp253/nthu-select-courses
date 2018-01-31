@@ -28,7 +28,7 @@
           </v-container>
           <v-divider />
           <v-container pr-0 pl-0>
-            <horizontal-bar-chart
+            <distribution-chart
               :chart-data="chartData"
             />
           </v-container>
@@ -74,9 +74,13 @@
 
 <script>
 import {toArray} from '@/lib/util'
+import DistributionChart from './distribution-chart'
 
 export default {
   name: 'ScoreCourseDetail',
+  components: {
+    DistributionChart
+  },
   props: {
     'scores': Object,
     'courses': Object,

@@ -1,23 +1,10 @@
-import Vue from 'vue'
-import draggable from 'vuedraggable'
+<script>
 import { Bar, HorizontalBar, mixins } from 'vue-chartjs'
 import datalabels from 'chartjs-plugin-datalabels'
-import CoursesList from './SelectCourses/courses-list'
-import ChooseDepartment from './SelectCourses/choose-department'
-import TimeTable from './SelectCourses/time-table'
-import CourseDetail from './SelectCourses/course-detail'
-import ScoreList from './Scores/score-list'
-import ScoreCourseDetail from './Scores/score-course-detail'
 const { reactiveProp } = mixins
 
-Vue.component('courses-list', CoursesList)
-Vue.component('choose-department', ChooseDepartment)
-Vue.component('time-table', TimeTable)
-Vue.component('course-detail', CourseDetail)
-Vue.component('draggable', draggable)
-Vue.component('score-list', ScoreList)
-Vue.component('score-course-detail', ScoreCourseDetail)
-Vue.component('horizontal-bar-chart', {
+export default {
+  name: 'DistributionChart',
   extends: Bar,
   mixins: [reactiveProp],
   props: {
@@ -75,4 +62,5 @@ Vue.component('horizontal-bar-chart', {
     this.addPlugin(datalabels)
     this.renderChart(this.chartData, this.options)
   }
-})
+}
+</script>

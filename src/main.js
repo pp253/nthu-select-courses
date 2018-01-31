@@ -4,7 +4,6 @@ import 'vuetify/dist/vuetify.css'
 import i18n from '@/i18n'
 import router from '@/router'
 import store from '@/store'
-import '@/components'
 import '@/lib/store'
 import App from '@/App'
 

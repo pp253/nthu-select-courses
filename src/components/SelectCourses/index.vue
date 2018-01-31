@@ -117,8 +117,19 @@
 </template>
 
 <script>
+import CoursesList from './courses-list'
+import ChooseDepartment from './choose-department'
+import TimeTable from './time-table'
+import CourseDetail from './course-detail'
+
 export default {
   name: "SelectCourses",
+  components: {
+    CoursesList,
+    ChooseDepartment,
+    TimeTable,
+    CourseDetail
+  },
   data() {
     return {
       previewTime: "",
