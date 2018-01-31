@@ -14,6 +14,9 @@ export default {
     currentSelectedCourses: [],
     currentSelectedCoursesLoaded: false,
     favoriteCourses: [],
+    selectionPhase: false,
+    addOrDropPhase: false,
+    withdrawalPhase: false,
     editable: false,
     semester: '',
     phase: ''
@@ -22,14 +25,23 @@ export default {
 
   },
   mutations: {
+    setSelectionPhase (state, options) {
+      state.selectionPhase = options.selectionPhase
+    },
+    setAddOrDropPhase (state, options) {
+      state.addOrDropPhase = options.addOrDropPhase
+    },
+    setWithdrawalPhase (state, options) {
+      state.withdrawalPhase = options.withdrawalPhase
+    },
+    setEditable (state, options) {
+      state.editable = options.editable
+    },
     setSemester (state, options) {
       state.semester = options.semester
     },
     setPhase (state, options) {
       state.phase = options.phase
-    },
-    setEditable (state, options) {
-      state.editable = options.editable
     },
     setSyllabus (state, options) {
       if (!state.courses[options.courseNumber]) {

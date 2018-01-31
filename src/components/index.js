@@ -2,12 +2,12 @@ import Vue from 'vue'
 import draggable from 'vuedraggable'
 import { Bar, HorizontalBar, mixins } from 'vue-chartjs'
 import datalabels from 'chartjs-plugin-datalabels'
-import CoursesList from './courses-list'
-import ChooseDepartment from './choose-department'
-import TimeTable from './time-table'
-import CourseDetail from './course-detail'
-import ScoreList from './score-list'
-import ScoreCourseDetail from './score-course-detail'
+import CoursesList from './SelectCourses/courses-list'
+import ChooseDepartment from './SelectCourses/choose-department'
+import TimeTable from './SelectCourses/time-table'
+import CourseDetail from './SelectCourses/course-detail'
+import ScoreList from './Scores/score-list'
+import ScoreCourseDetail from './Scores/score-course-detail'
 const { reactiveProp } = mixins
 
 Vue.component('courses-list', CoursesList)

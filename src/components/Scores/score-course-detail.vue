@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import {toArray} from '../lib/util'
+import {toArray} from '@/lib/util'
 
 export default {
   name: 'ScoreCourseDetail',
