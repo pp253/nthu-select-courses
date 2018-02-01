@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
+    :fullscreen="$store.state.ui.isMobile"
     max-width="500px"
   >
     <v-btn
@@ -38,7 +38,7 @@
             <v-list
             >
               <template
-                v-for="(department, departmentAbbr) in this.store.departments"
+                v-for="(department, departmentAbbr) in departments"
               >
                 <v-list-tile
                   ripple
@@ -56,7 +56,7 @@
               v-if="/*choosedCollege !== '' && */choosedDepartment !== ''"
             >
               <template
-                v-for="(cls, _) in this.store.departments[choosedDepartment].classes"
+                v-for="(cls, _) in departments[choosedDepartment].classes"
               >
                 <v-list-tile
                   ripple
@@ -81,13 +81,11 @@
 </template>
 
 <script>
-import store from '@/lib/store'
-
 export default {
   name: 'ChooseDepartment',
   data () {
     return {
-      store: store,
+      departments: {},
       choosedCollege: '',
       choosedDepartment: '',
       choosedClass: '',
@@ -97,10 +95,13 @@ export default {
   methods: {
     done () {
       if (this.choosedDepartment !== '') {
-        console.log('Select', this.choosedClass === '' ? this.choosedDepartment : this.choosedClass)
-        this.$emit('update-department', this.choosedClass === '' ? this.choosedDepartment : this.choosedClass)
+        console.log('Select', this.choosedClass || this.choosedDepartment)
+        this.$emit('update-department', this.choosedClass || this.choosedDepartment)
       }
     }
+  },
+  mounted () {
+    this.departments = this.$store.state.selectCourses.departments
   }
 };
 </script>

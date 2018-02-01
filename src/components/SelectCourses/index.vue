@@ -52,24 +52,24 @@
               :hidden="!showCoursesList"
               class="full-height"
             >
-              <courses-list
+              <courses-catalog
                 :title="$t('coursesList.title')"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
                 :empty-text="$t('coursesList.pleaseSelect')"
-              ></courses-list>
+              />
             </v-flex>
 
             <v-flex
               :class="layoutSize.selectedCourses"
               :hidden="!showSelectedCoursesList"
             >
-              <courses-list
+              <selection-result
                 :title="$t('selectedCoursesList.title')"
                 :list="$store.state.selectCourses.currentSelectedCourses"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
-              ></courses-list>
+              />
             </v-flex>
 
             <v-flex
@@ -117,16 +117,18 @@
 </template>
 
 <script>
-import CoursesList from './courses-list'
 import TimeTable from './time-table'
 import CourseDetail from './course-detail'
+import CoursesCatalog from './courses-catalog'
+import SelectionResult from './selection-result'
 
 export default {
   name: "SelectCourses",
   components: {
-    CoursesList,
     TimeTable,
-    CourseDetail
+    CourseDetail,
+    CoursesCatalog,
+    SelectionResult
   },
   data() {
     return {
