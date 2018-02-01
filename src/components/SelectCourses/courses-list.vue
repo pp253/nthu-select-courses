@@ -79,7 +79,7 @@
         ripple
         @click=""
         :key="course.number"
-        @mouseover="updatePreviewTime(course.number)"
+        @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
         @mouseleave="updatePreviewTime('')"
         @dblclick="openCourseDetail(course.number)"
       >

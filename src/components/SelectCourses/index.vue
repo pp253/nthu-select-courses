@@ -121,6 +121,7 @@ import TimeTable from './time-table'
 import CourseDetail from './course-detail'
 import CoursesCatalog from './courses-catalog'
 import SelectionResult from './selection-result'
+import { mapState } from 'vuex';
 
 export default {
   name: "SelectCourses",
@@ -173,6 +174,10 @@ export default {
     }
   },
   computed: {
+    ...mapState('selectCourses', [
+      'courses',
+      'selectionPhase'
+    ]),
     bottomDrawerActive () {
       let idx = this.menu.findIndex((item) => {return this.mobile[item.attr] === true})
       return idx
@@ -264,7 +269,9 @@ export default {
   },
   methods: {
     updatePreviewTime(courseNumber) {
-      this.previewTime = this.$store.state.selectCourses.courses[courseNumber] ? this.$store.state.selectCourses.courses[courseNumber].time : '';
+      this.previewTime = this.courses[courseNumber] ?
+        this.courses[courseNumber].time : 
+        courseNumber
     },
     uiMobileClearShowing () {
       this.mobile.showCoursesList = false
@@ -286,7 +293,7 @@ export default {
 
     this.$store.dispatch('selectCourses/getAvailableSelectionResult')
     .then(() => {
-      if (this.$store.state.selectCourses.selectionPhase) {
+      if (this.selectionPhase) {
         this.store.getCurrentSelectedCourses()
         .then(() => {
           this.$store.commit('ui/stopLoading')
