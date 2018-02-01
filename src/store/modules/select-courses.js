@@ -1,5 +1,5 @@
 import * as api from '@/api'
-import error from '../../lib/error'
+import error from '@/lib/error'
 import coursesDb from '@/lib/courses_db.json'
 
 export default {
@@ -20,9 +20,6 @@ export default {
     editable: false,
     semester: '',
     phase: ''
-  },
-  getters: {
-
   },
   mutations: {
     setSelectionPhase (state, options) {

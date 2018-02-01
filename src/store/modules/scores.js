@@ -1,5 +1,5 @@
 import * as api from '@/api'
-import error from '../../lib/error'
+import error from '@/lib/error'
 
 export default {
   namespaced: true,
