@@ -66,7 +66,7 @@
             >
               <selection-result
                 :title="$t('selectedCoursesList.title')"
-                :list="$store.state.selectCourses.currentSelectedCourses"
+                :list="currentSelectedCourses"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
               />
@@ -78,7 +78,7 @@
             >
               <time-table
                 :preview-time="previewTime"
-                :list="$store.state.selectCourses.currentSelectedCourses"
+                :list="currentSelectedCourses"
               ></time-table>
             </v-flex>
 
@@ -176,7 +176,8 @@ export default {
   computed: {
     ...mapState('selectCourses', [
       'courses',
-      'selectionPhase'
+      'selectionPhase',
+      'currentSelectedCourses'
     ]),
     bottomDrawerActive () {
       let idx = this.menu.findIndex((item) => {return this.mobile[item.attr] === true})
