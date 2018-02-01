@@ -217,7 +217,8 @@ export default {
                 semester: data.semester,
                 phase: data.phase,
                 status: data.status,
-                randomFailed: data.randomFailed
+                randomFailed: data.randomFailed,
+                waitingForRandom: data.waitingForRandom
               }
             })
             resolve(data)

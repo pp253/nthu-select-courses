@@ -165,8 +165,8 @@ export default {
         showTimeTable: true
       },
       mobile: {
-        showCoursesList: true,
-        showSelectedCoursesList: false,
+        showCoursesList: false,
+        showSelectedCoursesList: true,
         showFavoriteCoursesList: false,
         showTimeTable: false
       }

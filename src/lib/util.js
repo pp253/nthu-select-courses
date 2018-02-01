@@ -19,3 +19,7 @@ export function toArray (obj) {
   }
   return arr
 }
+
+export function toReadableSemester (semester) {
+  
+}

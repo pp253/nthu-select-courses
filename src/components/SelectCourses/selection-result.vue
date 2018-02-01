@@ -1,6 +1,16 @@
 <template>
   <v-container fluid pa-0 ma-0 class="selection-result">
     <v-toolbar dense>
+      <v-select
+        :items="readableAvailableSelectionResult"
+        @input="openSelectionResult"
+        item-text="text"
+        item-value="value"
+        :label="title || $t('selectedCoursesList.title')"
+        single-line
+        bottom
+      ></v-select>
+      <!--
       <v-menu :nudge-width="100">
         <v-toolbar-title slot="activator">
           {{ title || $t('selectedCoursesList.title') }}
@@ -17,6 +27,7 @@
           </v-list-tile>
         </v-list>
       </v-menu>
+      -->
     </v-toolbar>
 
     <v-container fluid pa-0 ma-0 class="list-wrapper">
@@ -43,7 +54,8 @@ export default {
     return {
       semester: '',
       phase: '',
-      title: ''
+      title: '',
+      semesterPhase: {}
     }
   },
   computed: {
@@ -61,7 +73,7 @@ export default {
           phase in this.selectionResult[semester]
         ) {
           let selectionResult = this.selectionResult[semester][phase]
-          courses = Object.assign({}, selectionResult.status, selectionResult.randomFailed)
+          courses = Object.assign({}, selectionResult.status, selectionResult.randomFailed, selectionResult.waitingForRandom)
         }
       }
       return courses
@@ -76,7 +88,7 @@ export default {
           phase in this.selectionResult[semester]
         ) {
           let selectionResult = this.selectionResult[semester][phase]
-          let selectionResultCatalog = ['status', 'randomFailed']
+          let selectionResultCatalog = ['waitingForRandom', 'status', 'randomFailed']
           for (let catalog of selectionResultCatalog) {
             let tmpList = []
             for (let courseNumber in selectionResult[catalog]) {
@@ -102,29 +114,36 @@ export default {
       for (let semester in this.availableSelectionResult) {
         for (let phase of this.availableSelectionResult[semester]) {
           list.push({
-            text: semester + phase,
-            value: semester + phase,
-            semester: semester,
-            phase: phase
+            text: `${this.toReadableSemester(semester)} ${this.$t('phase.' + phase)}`,
+            value: `${semester} ${phase}`
           })
         }
       }
+      list.reverse()
       return list
     }
   },
   methods: {
-    toReadableSemesterPhase (semester, phase) {
-
+    toReadableSemester (semester) {
+      if (!semester) {
+        return ''
+      }
+      let seText = /(\d{3})(\d{2})/.exec(semester)
+      return seText[1] + this.$t(`semester.${seText[2]}`)
     },
-    openSelectionResult (semester, phase) {
-      this.semester = semester
-      this.phase = phase
-      if (!this.selectionResult[semester] ||
-        !this.selectionResult[semester][phase]
+    openSelectionResult (semesterPhase) {
+      if (!semesterPhase) {
+        return
+      }
+      let rgText = semesterPhase.split(' ')
+      this.semester = rgText[0]
+      this.phase = rgText[1]
+      if (!this.selectionResult[this.semester] ||
+        !this.selectionResult[this.semester][this.phase]
       ) {
         this.$store.dispatch('selectCourses/getSelectionResult', {
-          semester: semester,
-          phase: phase
+          semester: this.semester,
+          phase: this.phase
         })
       }
     },
@@ -141,6 +160,10 @@ export default {
 <style lang="scss">
 .selection-result {
   height: 100%;
+
+  .input-group {
+    margin-top: 16px;
+  }
 
   .list-wrapper {
     height: calc(100% - 48px);
