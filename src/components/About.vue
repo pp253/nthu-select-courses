@@ -2,7 +2,7 @@
   <v-container pa-0 pt-5>
     <v-layout>
       <v-flex>
-        <v-container :pa-0="store.isMobile" mb-3>
+        <v-container :pa-0="$store.state.ui.isMobile" mb-3>
           <v-card>
             <v-card-title>
               <span class="headline">關於製作團隊</span>
@@ -24,13 +24,10 @@
 </template>
 
 <script>
-import store from '@/lib/store'
-
 export default {
   name: 'About',
   data () {
     return {
-      store: store
     }
   }
 }

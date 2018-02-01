@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height">
+  <v-container fluid pa-0 ma-0 class="full-height">
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
     </v-toolbar>
@@ -32,34 +32,28 @@
                 v-for="course in timeTable[weekday][timeSection]"
                 :key="course.number"
                 class="green--after"
-              >{{ store.courses[course.number].title }}</div>
+              >{{ courses[course.number].title }}</div>
             </td>
           </tr>
         </tbody>
       </table>
     </v-container>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import store from '@/lib/store'
-
 export default {
   name: 'TimeTable',
   props: {
     'preview-time': String,
-    'list': Array
+    'list': Array,
+    'title': String
   },
   data () {
     return {
-      store: store,
+      courses: {},
       timeSectionName: ['1', '2', '3', '4', 'n', '5', '6', '7', '8', '9', 'a', 'b', 'c'],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S']
-    }
-  },
-  watch: {
-    previewTime (nV, oV) {
-      return this.previewTime
     }
   },
   computed: {
@@ -73,15 +67,16 @@ export default {
       }
 
       for (let course of this.list) {
-        for (let i = 0; i < this.store.courses[course.number].time.length; i += 2) {
-          let list = /([MTWRFS])([1-9abcnABCN])/g.exec(this.store.courses[course.number].time.slice(i, i + 2))
+        for (let i = 0; i < this.courses[course.number].time.length; i += 2) {
+          let list = /([MTWRFS])([1-9abcnABCN])/g.exec(this.courses[course.number].time.slice(i, i + 2))
           table[list[1].toUpperCase()][list[2].toLowerCase()].push(course)
         }
       }
       return table
     }
   },
-  methods: {
+  mounted () {
+    this.courses = this.$store.state.selectCourses.courses
   }
 }
 </script>

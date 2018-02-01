@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-0 ma-0 class="selection-result">
+  <v-container fluid pa-0 ma-0 class="selection-result">
     <v-toolbar dense>
       <v-menu :nudge-width="100">
         <v-toolbar-title slot="activator">
@@ -8,8 +8,9 @@
         </v-toolbar-title>
         <v-list>
           <v-list-tile
-            v-for="item in availableSelectionResult"
+            v-for="item in readableAvailableSelectionResult"
             :key="item.value"
+            @click="openSelectionResult(item.semester, item.phase)"
             ripple
           >
             <v-list-tile-title v-text="item.text"></v-list-tile-title>
@@ -18,7 +19,7 @@
       </v-menu>
     </v-toolbar>
 
-    <v-container pa-0 ma-0 class="list-wrapper">
+    <v-container fluid pa-0 ma-0 class="list-wrapper">
       <courses-list
         :courses="courses"
         :list="list"
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import CoursesList from './courses-list'
 
 export default {
@@ -39,23 +41,71 @@ export default {
   },
   data () {
     return {
-      courses: {},
-      abbr: '',
-      departmentName: '',
+      semester: '',
+      phase: '',
       title: ''
     }
   },
   computed: {
-    list () {
-      return []
+    ...mapState('selectCourses', [
+      'selectionResult',
+      'availableSelectionResult'
+    ]),
+    courses () {
+      let courses = {}
+      let semester = this.semester
+      let phase = this.phase
+
+      if (semester && phase) {
+        if (semester in this.selectionResult &&
+          phase in this.selectionResult[semester]
+        ) {
+          let selectionResult = this.selectionResult[semester][phase]
+          courses = Object.assign({}, selectionResult.status, selectionResult.randomFailed)
+        }
+      }
+      return courses
     },
-    availableSelectionResult () {
+    list () {
       let list = []
-      for (let semester in this.$store.state.selectCourses.availableSelectionResult) {
-        for (let item of this.$store.state.selectCourses.availableSelectionResult[semester]) {
+      let semester = this.semester
+      let phase = this.phase
+
+      if (semester && phase) {
+        if (semester in this.selectionResult &&
+          phase in this.selectionResult[semester]
+        ) {
+          let selectionResult = this.selectionResult[semester][phase]
+          let selectionResultCatalog = ['status', 'randomFailed']
+          for (let catalog of selectionResultCatalog) {
+            let tmpList = []
+            for (let courseNumber in selectionResult[catalog]) {
+              tmpList.push({
+                number: courseNumber
+              })
+            }
+
+            if (tmpList.length) {
+              list.push({
+                type: 'subheader',
+                title: `selectionResult.${catalog}`
+              })
+              list = list.concat(tmpList)
+            }
+          }
+        }
+      }
+      return list
+    },
+    readableAvailableSelectionResult () {
+      let list = []
+      for (let semester in this.availableSelectionResult) {
+        for (let phase of this.availableSelectionResult[semester]) {
           list.push({
-            text: item,
-            value: semester + item
+            text: semester + phase,
+            value: semester + phase,
+            semester: semester,
+            phase: phase
           })
         }
       }
@@ -63,15 +113,27 @@ export default {
     }
   },
   methods: {
+    toReadableSemesterPhase (semester, phase) {
+
+    },
+    openSelectionResult (semester, phase) {
+      this.semester = semester
+      this.phase = phase
+      if (!this.selectionResult[semester] ||
+        !this.selectionResult[semester][phase]
+      ) {
+        this.$store.dispatch('selectCourses/getSelectionResult', {
+          semester: semester,
+          phase: phase
+        })
+      }
+    },
     updatePreviewTime (number) {
       this.$emit('update-preview-time', number)
     },
     openCourseDetail (courseNumber) {
       this.$emit('open-course-detail', courseNumber)
     }
-  },
-  mounted () {
-    this.courses = this.$store.state.selectCourses.courses
   }
 }
 </script>
@@ -85,6 +147,7 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 64px;
   }
 }
 </style>

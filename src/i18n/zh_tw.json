@@ -20,6 +20,10 @@
     "addFavorite": "加入最愛",
     "removeFavorite": "移除最愛"
   },
+  "selectionResult": {
+    "status": "已選上",
+    "randomFailed": "未選上"
+  },
   "entry": {
     "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
     "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請再試一遍！",

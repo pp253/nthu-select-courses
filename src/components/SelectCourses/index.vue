@@ -286,7 +286,7 @@ export default {
 
     this.$store.dispatch('selectCourses/getAvailableSelectionResult')
     .then(() => {
-      if (this.$store.state.selectCourses.editable) {
+      if (this.$store.state.selectCourses.selectionPhase) {
         this.store.getCurrentSelectedCourses()
         .then(() => {
           this.$store.commit('ui/stopLoading')

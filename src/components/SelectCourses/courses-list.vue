@@ -1,6 +1,6 @@
 <template>
   <v-list
-    class="full-height courses-list"
+    class="courses-list"
     ripple
   >
     <template
@@ -12,7 +12,7 @@
         :key="course.title"
         class="pr-0"
       >
-        {{ course.title }}
+        {{ $t(course.title) }}
         <v-spacer></v-spacer>
         <v-dialog
           v-if="course.orderable"
@@ -164,10 +164,6 @@ export default {
       default: '您還沒有加入的課程歐！'
     }
   },
-  data () {
-    return {
-    }
-  },
   methods: {
     addCourse (courseNumber) {
       return new Promise((resolve, reject) => {
@@ -200,7 +196,7 @@ export default {
           courseNumber: courseNumber
         })
         .then((data) => {
-        this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/stopLoading')
           resolve(data)
         })
         .catch((err) => {
@@ -244,15 +240,14 @@ export default {
         return course.number === courseNumber
       }) !== undefined)
     }
-  },
-  mounted () {
   }
 }
 </script>
 
 <style lang="scss">
 .courses-list {
-  height: 100%;
+  min-height: 100%;
+  padding-bottom: 64px;
 
   .list__tile {
     height: 88px + 16px !important;
@@ -266,10 +261,6 @@ export default {
       white-space: nowrap;
       min-height: 21.5px;
     }
-  }
-
-  > *:last-child {
-    padding-bottom: 64px;
   }
 }
 </style>

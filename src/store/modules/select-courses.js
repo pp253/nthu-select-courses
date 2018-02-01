@@ -210,8 +210,17 @@ export default {
         } else {
           api.getSelectionResult(context.rootState.user.sessionToken, options.semester, options.phase)
           .then((data) => {
-            context.commit('setSelectionResult', data.selectionResult)
-            resolve(data.selectionResult)
+            context.commit('setSelectionResult', {
+              semester: data.semester,
+              phase: data.phase,
+              selectionResult: {
+                semester: data.semester,
+                phase: data.phase,
+                status: data.status,
+                randomFailed: data.randomFailed
+              }
+            })
+            resolve(data)
           })
           .catch((err) => {
             reject(err)

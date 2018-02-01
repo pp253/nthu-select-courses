@@ -103,7 +103,7 @@ export default {
   mounted () {
     this.departments = this.$store.state.selectCourses.departments
   }
-};
+}
 </script>
 
 <style lang="scss">
