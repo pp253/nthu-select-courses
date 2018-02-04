@@ -78,6 +78,13 @@ export default {
           disabled: false
         },
         {
+          title: '輸入教師密碼',
+          content: '這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。',
+          icon: 'https',
+          path: '/teacher_password',
+          disabled: true
+        },
+        {
           title: this.$t('commentsAboutCourses.name'),
           content: this.$t('commentsAboutCourses.description'),
           icon: 'face',

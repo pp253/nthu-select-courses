@@ -251,6 +251,9 @@ export default {
       this.$store.dispatch('user/getSessionToken', loginInfo)
       .then((data) => {
         this.$store.commit('ui/stopLoading')
+        this.$store.dispatch('ui/openSnackbar', {
+          snackbarText: '已成功登入！'
+        })
         this.$router.push({ name: 'Service' })
       })
       .catch((err) => {

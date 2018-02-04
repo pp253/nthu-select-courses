@@ -5,19 +5,23 @@
         {{ title || $t('coursesList.title') }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        @click="showDepartmentPicker = true"
-        icon
-        flat
-      >
-        <v-icon>list</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <v-btn
+          slot="activator"
+          @click="showDepartmentPicker = true"
+          icon
+          flat
+        >
+          <v-icon>list</v-icon>
+        </v-btn>
+        <span>選擇科系</span>
+      </v-tooltip>
       <department-picker
         :value="showDepartmentPicker"
         @update-department="updateDepartment"
         @close="showDepartmentPicker = false"
       />
-      
+
       <v-text-field
         slot="extension"
         v-model="searchText"

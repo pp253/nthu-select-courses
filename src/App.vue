@@ -40,6 +40,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar
+      :timeout="6000"
+      bottom
+      multi-line
+      :value="$store.state.ui.snackbar"
+    >
+      {{ $store.state.ui.snackbarText }}
+      <v-btn flat dark @click.native="$store.commit('ui/closeSnackbar')">Close</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
