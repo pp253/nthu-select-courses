@@ -6,7 +6,7 @@
           v-if="course.canceled"
           class="red--text"
         >停開</span>
-        {{ (course.title ? course.title : title) }}
+        {{ course.title || course.chineseTitle || title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
@@ -24,7 +24,7 @@
           <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs9 md4>{{ course.time }}</v-flex>
           <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs9 md4>{{ course.professor }}</v-flex>
           <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs9 md4>{{ course.credit }}</v-flex>
-          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.size_limit + ` (${course.previous_size})` }}</v-flex>
+          <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.size_limit + ` (${course.previous_size || '-'})` }}</v-flex>
           <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs9 md4>{{ course.room }}</v-flex>
         </v-layout>
         <v-layout wrap pb-3>
@@ -72,34 +72,45 @@ export default {
   name: 'CoursesList',
   props: {
     'title': String,
-    'course-number': String,
-    'courses-db': Object
+    'course-number': String
   },
   data () {
     return {
-      courses: {}
+      courses: this.$store.state.selectCourses.courses,
+      course: {}
     }
   },
   watch: {
     courseNumber (newVal) {
-      if (this.courses[this.courseNumber]) {
-        if (!this.courses[this.courseNumber].syllabus && !this.coursesDb) {
+      if (this.courses[newVal]) {
+        if (!this.courses[newVal].syllabus) {
           this.$store.dispatch('selectCourses/getSyllabus', {
             courseNumber: newVal
           })
+          .then(() => {
+            this.updateCourse()
+          })
+        } else {
+          this.updateCourse()
         }
+      } else {
+        this.$store.dispatch('selectCourses/getSyllabus', {
+          courseNumber: newVal
+        })
+        .then(() => {
+          this.updateCourse()
+        })
       }
-    }
-  },
-  computed: {
-    course () {
-      if (this.courseNumber in this.courses) {
-        return this.courses[this.courseNumber]
-      }
-      return {}
     }
   },
   methods: {
+    updateCourse () {
+      if (this.courseNumber in this.courses) {
+        this.course = this.courses[this.courseNumber]
+      } else {
+        this.course = {}
+      }
+    },
     addCourse (courseNumber) {
       return new Promise((resolve, reject) => {
         this.$store.commit('ui/startLoading')
@@ -154,13 +165,6 @@ export default {
     closeCourseDetail () {
       this.$emit('close-course-detail')
     }
-  },
-  mounted () {
-    if (this.coursesDb) {
-      this.courses = this.coursesDb
-    } else {
-      this.courses = this.$store.state.selectCourses.courses
-    }
   }
 }
 </script>
@@ -174,6 +178,7 @@ export default {
     -webkit-overflow-scrolling: touch;
     user-select: auto;
   }
+  user-select: text;
 }
 
 .mode-mobile {

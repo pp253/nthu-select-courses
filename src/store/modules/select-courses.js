@@ -42,7 +42,9 @@ export default {
     },
     setSyllabus (state, options) {
       if (!state.courses[options.courseNumber]) {
-        return
+        state.courses[options.courseNumber] = Object.assign({
+          number: options.courseNumber
+        }, options.syllabus)
       }
       state.courses[options.courseNumber] = Object.assign({}, state.courses[options.courseNumber], {
         syllabus: options.syllabus

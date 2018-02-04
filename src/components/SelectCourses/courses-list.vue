@@ -89,6 +89,10 @@
               v-if="courses[course.number].canceled"
               class="red--text"
             >停開</span>
+            <span
+              v-if="courses[course.number].required"
+              class="red--text"
+            >{{ courses[course.number].required }}</span>
             {{ courses[course.number].title }}
           </v-list-tile-title>
           <v-list-tile-sub-title class="grey--text text--darken-4">{{
@@ -100,7 +104,7 @@
             $t('coursesList.courseDetail')
             .replace('{0}', courses[course.number].credit)
             .replace('{1}', courses[course.number].size_limit)
-            .replace('{2}', courses[course.number].previous_size)
+            .replace('{2}', courses[course.number].previous_size || '-')
             .replace('{3}', courses[course.number].room)
           }}</v-list-tile-sub-title>
           <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
@@ -149,12 +153,10 @@
 
 <script>
 import draggable from 'vuedraggable'
-import ChooseDepartment from './choose-department'
 
 export default {
   name: 'CoursesList',
   components: {
-    ChooseDepartment,
     draggable
   },
   props: {
@@ -248,6 +250,11 @@ export default {
 .courses-list {
   min-height: 100%;
   padding-bottom: 64px;
+
+  .menu {
+    position: relative;
+    bottom: 20px;
+  }
 
   .list__tile {
     height: 88px + 16px !important;
