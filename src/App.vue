@@ -22,7 +22,14 @@
     <v-dialog v-model="$store.state.ui.dialog" max-width="350px" persistent>
       <v-card>
         <v-card-title class="headline">{{ $t($store.state.ui.dialogTitle) }}</v-card-title>
-        <v-card-text v-html="$t($store.state.ui.dialogText)"></v-card-text>
+        <v-card-text>
+          <div
+            v-html="$t($store.state.ui.dialogText)"
+          ></div>
+          <div
+            v-html="$store.state.ui.dialogMore"
+          ></div>
+        </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn

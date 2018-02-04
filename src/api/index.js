@@ -67,12 +67,14 @@ function legalRequest (apiPath, data) {
         if (err.id) {
           store.commit('ui/openDialog', {
             title: (err.id in ERR_MSG) ? ERR_MSG[err.id].title : '對不起，系統發生錯誤了！',
-            text: ((err.id in ERR_MSG) && (ERR_MSG[err.id].text.length !== 0) ? ERR_MSG[err.id].text + '<br>' : '') + '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
+            text: (err.id in ERR_MSG) && (ERR_MSG[err.id].text.length !== 0) ? ERR_MSG[err.id].text + '<br>' : '',
+            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
           })
         } else if (err.name) {
           store.commit('ui/openDialog', {
             title: err.name,
-            text: err.message
+            text: err.message,
+            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
           })
         }
         reject(res.data)
@@ -83,7 +85,8 @@ function legalRequest (apiPath, data) {
     .catch(function (err) {
       store.commit('ui/openDialog', {
         title: err.name,
-        text: err.message
+        text: err.message,
+        more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
       })
       reject(err)
     })
