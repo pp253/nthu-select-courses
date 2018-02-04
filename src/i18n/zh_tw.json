@@ -3,7 +3,9 @@
     "OK": "好的",
     "Apply": "確定",
     "Cancel": "取消",
-    "Retry": "重試"
+    "Retry": "重試",
+    "Clear": "清除",
+    "Close": "關閉"
   },
   "login": {
     "username": "帳號",
@@ -33,18 +35,18 @@
     "NTHUServerErrorTitle": "選課系統錯誤",
     "NTHUServerErrorText": "選課系統錯誤，請再試一遍！"
   },
-  "chooseDepartment": {
+  "departmentPicker": {
     "title": "選擇科系"
   },
   "favoriteCoursesList": {
     "title": "最愛課程"
   },
   "selectedCoursesList": {
-    "title": "已選課程"
+    "title": "選課結果"
   },
   "coursesList": {
     "title": "課程清單",
-    "pleaseSelect": "請從上方按鈕選擇您要查看的課程。",
+    "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋不到你的關鍵字",
     "emptyText": "您還沒有加入的課程歐！",
     "syllabus": "課程大綱",
     "detail": "詳細資訊",
@@ -128,5 +130,8 @@
     "300P": "加退選結果",
     "400": "二退紀錄",
     "400P": "二退結果"
+  },
+  "periodPicker": {
+    "title": "查詢時段"
   }
 }

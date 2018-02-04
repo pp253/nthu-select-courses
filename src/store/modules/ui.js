@@ -5,7 +5,8 @@ export default {
     loading: false,
     dialog: false,
     dialogTitle: '',
-    dialogText: ''
+    dialogText: '',
+    dialogMore: ''
   },
   getters: {
     isNotMobile (state) {
@@ -20,6 +21,7 @@ export default {
       state.dialog = true
       state.dialogTitle = options.title
       state.dialogText = options.text
+      state.dialogMore = options.more
     },
     closeDialog (state) {
       state.dialog = false
@@ -30,8 +32,5 @@ export default {
     stopLoading (state) {
       state.loading = false
     }
-  },
-  actions: {
-
   }
 }
