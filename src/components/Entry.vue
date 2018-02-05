@@ -258,6 +258,7 @@ export default {
       })
       .catch((err) => {
         this.$store.commit('ui/stopLoading')
+        this.reload()
       })
     },
     reload () {
