@@ -165,7 +165,7 @@
                 <div slot="header">這是清大官方的選課系統嗎？</div>
                 <v-card>
                   <v-card-text class="grey lighten-3">
-                    不是。這個是由<a href="https://github.com/pp253">在校學生</a>自發架設的簡易選課系統，旨在提供更提供清爽、直覺和方便的選課系統。
+                    不是。這個是由<a @click="$router.push('/about')">在校學生</a>自發架設的簡易選課系統，旨在提供更提供清爽、直覺和方便的選課系統。
                   </v-card-text>
                 </v-card>
               </v-expansion-panel-content>
@@ -215,22 +215,19 @@
     </v-layout>
 
     <v-layout>
-      <v-flex xs12>
-        <v-container :pa-0="$store.state.ui.isMobile" mb-5>
-          <v-card class="transparent elevation-0">
-            <v-card-text>
-              Made with 🍺 by <a href="https://github.com/pp253">pp253</a>. <a href="https://github.com/pp253/nthu-select-courses">GitHub</a>
-            </v-card-text>
-          </v-card>
-        </v-container>
-      </v-flex>
+      <layout-footer />
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import LayoutFooter from './layout-footer'
+
 export default {
   name: 'Entry',
+  components: {
+    LayoutFooter
+  },
   data () {
     return {
       username: '',

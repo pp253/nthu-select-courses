@@ -120,6 +120,10 @@ input::-webkit-inner-spin-button {
   .full-height {
     height: 100%;
   }
+
+  a {
+    text-decoration: underline;
+  }
 }
 
 .app.mode-pc {
