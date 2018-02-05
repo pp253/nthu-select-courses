@@ -18,54 +18,62 @@
       </v-toolbar>
       <v-tabs-items>
         <v-tabs-content id="tab-distribution">
-          <v-container v-if="course && course.distribution">
-            <v-layout>
-              <v-flex xs2 class="grey--text text--darken-2">總人數</v-flex>
-              <v-flex xs4>{{ course.distribution.total }}人</v-flex>
-              <v-flex xs2 class="grey--text text--darken-2">及格率</v-flex>
-              <v-flex xs4>{{ passRate }}%</v-flex>
-            </v-layout>
-          </v-container>
-          <v-divider />
-          <v-container pr-0 pl-0>
-            <distribution-chart
-              :chart-data="chartData"
-            />
-          </v-container>
+          <v-layout wrap justify-center>
+            <v-flex xs12 lg8 xl6>
+              <v-container v-if="course && course.distribution">
+                <v-layout>
+                  <v-flex xs2 class="grey--text text--darken-2">總人數</v-flex>
+                  <v-flex xs4>{{ course.distribution.total }}人</v-flex>
+                  <v-flex xs2 class="grey--text text--darken-2">及格率</v-flex>
+                  <v-flex xs4>{{ passRate }}%</v-flex>
+                </v-layout>
+              </v-container>
+              <v-divider />
+              <v-container pr-0 pl-0>
+                <distribution-chart
+                  :chart-data="chartData"
+                />
+              </v-container>
+            </v-flex>
+          </v-layout>
         </v-tabs-content>
 
         <v-tabs-content id="tab-syllabus">
-          <v-container v-if="course && course.syllabus">
-            <v-layout wrap>
-              <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.number }}</v-flex>
-              <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.time }}</v-flex>
-              <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.professor }}</v-flex>
-              <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.credit }}</v-flex>
-              <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.size_limit }}</v-flex>
-              <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.room }}</v-flex>
-            </v-layout>
-          </v-container>
-          <v-divider></v-divider>
-          <v-container
-            v-if="course && course.syllabus && course.syllabus.briefDescription !== ''"
-          >
-            <div
-              v-html="course.syllabus.briefDescription"
-            ></div>
-          </v-container>
-          <v-divider></v-divider>
-          <v-container
-            v-if="course && course.syllabus"
-          >
-            <v-btn
-              v-if="course.syllabus.file"
-              :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.syllabus.number}.pdf`"
-              target="_blank"
-            >下載課程大綱</v-btn>
-            <div
-              v-html="course.syllabus.description"
-            ></div>
-          </v-container>
+          <v-layout wrap justify-center>
+            <v-flex xs12 lg8 xl6>
+              <v-container v-if="course && course.syllabus">
+                <v-layout wrap>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.number }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.time') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.time }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.professor }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.credit }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.size_limit }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex><v-flex xs9 md4>{{ course.syllabus.room }}</v-flex>
+                </v-layout>
+              </v-container>
+              <v-divider></v-divider>
+              <v-container
+                v-if="course && course.syllabus && course.syllabus.briefDescription !== ''"
+              >
+                <div
+                  v-html="course.syllabus.briefDescription"
+                ></div>
+              </v-container>
+              <v-divider></v-divider>
+              <v-container
+                v-if="course && course.syllabus"
+              >
+                <v-btn
+                  v-if="course.syllabus.file"
+                  :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.syllabus.number}.pdf`"
+                  target="_blank"
+                >下載課程大綱</v-btn>
+                <div
+                  v-html="course.syllabus.description"
+                ></div>
+              </v-container>
+            </v-flex>
+          </v-layout>
         </v-tabs-content>
       </v-tabs-items>
     </v-tabs>

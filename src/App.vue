@@ -44,7 +44,6 @@
     <v-snackbar
       :timeout="6000"
       bottom
-      multi-line
       :value="$store.state.ui.snackbar"
     >
       {{ $store.state.ui.snackbarText }}
@@ -122,7 +121,17 @@ input::-webkit-inner-spin-button {
   }
 
   a {
+    text-decoration: none;
+  }
+
+  a.underline, .underline a {
     text-decoration: underline;
+  }
+
+  a {
+    .avatar {
+      text-decoration: none;
+    }
   }
 }
 

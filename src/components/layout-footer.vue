@@ -4,7 +4,11 @@
       <v-card class="transparent elevation-0">
         <v-card-text>
           <p>在 {{beWithText[beWithIndex]}} 的陪伴下製作 — <a href="https://github.com/pp253">pp253</a></p>
-          <p><a @click="$router.push('/about')">關於</a> ． <a href="https://github.com/pp253/nthu-select-courses">程式碼 GitHub</a> ． <a href="">條款與聲明</a></p>
+          <p class="underline">
+            <a @click="$router.push('/about')" target="_blank">關於</a> ． 
+            <a href="https://github.com/pp253/nthu-select-courses" target="_blank">程式碼 GitHub</a> ． 
+            <a href="" target="_blank">條款與聲明</a>
+          </p>
         </v-card-text>
       </v-card>
     </v-container>
@@ -17,11 +21,28 @@ export default {
   data () {
     return {
       beWithText: [
-        '🍺',
+        'You',
+        'NTHU',
         'Node.js',
+        'Webpack',
+        'Babel',
         'Vue',
         'Vuetify',
-        'NTHU'
+        'JavaScript',
+        '🔥',
+        '🧡',
+        '🏩',
+        '🧠',
+        '🎻',
+        '👾',
+        '🧞',
+        '🎲',
+        '🎹',
+        '🥢',
+        '🏫',
+        '🗼',
+        '🌅',
+        '🍺'
       ],
       beWithIndex: 0
     }
@@ -29,10 +50,10 @@ export default {
   methods: {
     updateBeWithText () {
       if (this) {
-        this.beWithIndex = (++this.beWithIndex % this.beWithText.length)
+        this.beWithIndex = parseInt(Math.random() * this.beWithText.length)
         setTimeout(() => {
           this.updateBeWithText()
-        }, 2500)
+        }, 2000)
       }
     }
   },

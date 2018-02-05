@@ -1,7 +1,7 @@
 <template>
   <v-container pa-0 pt-5 class="about" text-xs-center>
-    <v-layout wrap>
-      <v-flex xs12 xl8 offset-xl2>
+    <v-layout wrap justify-center>
+      <v-flex xs12 xl8>
         <v-layout wrap>
           <v-flex xs12>
             <v-container :pa-0="$store.state.ui.isMobile" pb-3 mb-3>
@@ -58,7 +58,13 @@
                               size="64px"
                               class="grey lighten-4"
                             >
-                              <img :src="people.img" />
+                              <img
+                                v-if="people.img"
+                                :src="people.img"
+                              />
+                              <v-icon
+                                v-else
+                              >person</v-icon>
                             </v-avatar>
                             <p class="mb-2">{{ people.name }}</p>
                           </a>
@@ -81,24 +87,30 @@
                   <h2 class="pb-3">依賴組件</h2>
                   <v-layout wrap justify-center>
                     <v-flex
-                      v-for="dependenciy in dependencies"
-                      :key="dependenciy.name"
+                      v-for="dependency in dependencies"
+                      :key="dependency.name"
                       xs4 sm3 md2 lg1
                     >
                       <v-container>
-                        <a :href="dependenciy.link">
+                        <a :href="dependency.link">
                           <v-avatar
                             size="64px"
                             class="grey lighten-4"
                           >
-                            <img :src="dependenciy.img" />
+                            <img
+                              v-if="dependency.img"
+                              :src="dependency.img"
+                            />
+                            <v-icon
+                              v-else
+                            >extension</v-icon>
                           </v-avatar>
-                          <p class="mb-2">{{ dependenciy.name }}</p>
+                          <p class="mb-2">{{ dependency.name }}</p>
                         </a>
                       </v-container>
                     </v-flex>
                   </v-layout>
-                  <p>更多請參考<a href="http://www.apache.org/licenses/">package.json</a>。</p>
+                  <p>更多請參考<a href="https://github.com/pp253/nthu-select-courses/blob/master/package.json">package.json</a>。</p>
                   <v-btn icon flat large @click="$router.push('/')">
                     <v-icon>home</v-icon>
                   </v-btn>
@@ -137,40 +149,40 @@ export default {
   data () {
     return {
       list: {
-        '開發團隊': [
+        '開發者': [
           {
             name: 'pp253',
             link: 'https://github.com/pp253',
             description: '清大工工20級。雖然腦袋不太好，但還是很喜歡動動他。',
-            img: ''
+            img: '/static/img/about/pp253.jpg'
           },
           {
-            text: '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses">GitHub</a>，然後開個issue、commit、或是PR，你就成為了開發者！'
+            text: '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses">GitHub</a>，然後commit個、或是PR，你就成為了開發者！'
           }
         ],
         '測試者': [
           {
             name: '王子齊',
             link: '',
-            description: '清大工工20級',
+            description: '第一次封測，清大工工20級',
             img: ''
           },
           {
-            name: '賴朱齊',
+            name: '賴朱頎',
             link: '',
-            description: '清大工工20級',
+            description: '第一次封測，清大工工20級',
             img: ''
           },
           {
-            name: '黃提到',
+            name: '黃提道',
             link: '',
-            description: '清大工工20級',
+            description: '第一次封測，清大工工20級',
             img: ''
           },
           {
             name: '王冠勛',
             link: '',
-            description: '清大工工20級',
+            description: '第一次封測，清大工工20級',
             img: ''
           },
           {
@@ -215,7 +227,7 @@ export default {
           img: ''
         },
         {
-          name: 'vuedraggable',
+          name: 'vue-draggable',
           link: '',
           img: ''
         },
