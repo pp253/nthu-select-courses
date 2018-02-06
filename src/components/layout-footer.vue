@@ -7,7 +7,7 @@
           <p class="underline">
             <a @click="$router.push('/about')" target="_blank">關於</a> ． 
             <a href="https://github.com/pp253/nthu-select-courses" target="_blank">程式碼 GitHub</a> ． 
-            <a href="" target="_blank">條款與聲明</a>
+            <a href="http://www.apache.org/licenses/" target="_blank">條款與聲明</a>
           </p>
         </v-card-text>
       </v-card>
@@ -30,15 +30,11 @@ export default {
         'Vuetify',
         'JavaScript',
         '🔥',
-        '🧡',
         '🏩',
-        '🧠',
         '🎻',
         '👾',
-        '🧞',
         '🎲',
         '🎹',
-        '🥢',
         '🏫',
         '🗼',
         '🌅',
