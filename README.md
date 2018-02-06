@@ -1,14 +1,22 @@
 # nthu-select-courses
 
-The goal of the NTHU SELECT COURSES is to make courses selecting a easy, intuitive, and pleasure journey.
+The goal of the NTHU SELECT COURSES is to make courses selecting an easy, intuitive, and pleasure journey.
 
 The server side repository is at [nthu-select-course-server](https://github.com/pp253/nthu-select-courses-server)
 
 ## Architecture
 
-- 
+- secret (ignored)
+  - private.key
+  - certificate.crt
 - src
-  - 
+  - api
+    - select-course.js
+    - scores.js
+  - lib
+- routes
+  - index.js
+- public (ignored)
 
 ## Build Setup
 
