@@ -168,15 +168,13 @@ export default {
     }
   },
   methods: {
-    log (...abbr) {
-      console.log(...abbr)
-    },
     updateList () {
       let list = []
       let courses = this.courses
       let searchText = this.searchText.toLowerCase()
       let searchPeriods = this.searchPeriods
       let abbr = this.abbr
+      const searchLimit = 100
 
       if (this.onlySearchAbbr && abbr) {
         courses = {}
@@ -211,7 +209,7 @@ export default {
                 number: courseNumber
               })
             }
-            if (list.length > 100) {
+            if (list.length > searchLimit) {
               this.$store.commit('ui/openDialog', {
                 title: '你搜尋的時段太多了',
                 text: '試著找出關鍵字吧。'
@@ -231,7 +229,7 @@ export default {
               list.push({
                 number: courseNumber
               })
-              if (list.length > 100) {
+              if (list.length > searchLimit) {
                 this.$store.commit('ui/openDialog', {
                   title: '你搜尋的範圍太大了',
                   text: '試著找出關鍵字吧。'
@@ -252,7 +250,7 @@ export default {
               list.push({
                 number: courseNumber
               })
-              if (list.length > 100) {
+              if (list.length > searchLimit) {
                 this.$store.commit('ui/openDialog', {
                   title: '你搜尋的範圍太大了',
                   text: '試著找出關鍵字吧。'
@@ -273,7 +271,7 @@ export default {
               list.push({
                 number: courseNumber
               })
-              if (list.length > 100) {
+              if (list.length > searchLimit) {
                 this.$store.commit('ui/openDialog', {
                   title: '你搜尋的範圍太大了',
                   text: '試著找出關鍵字吧。'
@@ -297,7 +295,7 @@ export default {
                 number: courseNumber
               })
             }
-            if (list.length > 100) {
+            if (list.length > searchLimit) {
               this.$store.commit('ui/openDialog', {
                 title: '你搜尋的範圍太大了',
                 text: '試著找出關鍵字吧。'
