@@ -5,7 +5,9 @@
     "Cancel": "取消",
     "Retry": "重試",
     "Clear": "清除",
-    "Close": "關閉"
+    "Close": "關閉",
+    "Yes": "好的",
+    "No": "不了，謝謝"
   },
   "login": {
     "username": "帳號",
@@ -58,7 +60,8 @@
     "waitingForRandomCLTitle": "通識、體育志願（待亂數）",
     "waitingForRandomGePETitle": "大學中文志願（待亂數）",
     "addedCoursesTitle": "已選上",
-    "failedCoursesTitle": "未選上"
+    "failedCoursesTitle": "未選上",
+    "addSuccess": "您已成功加入{0}。"
   },
   "courseDetail": {
     "title": "課程資訊",
@@ -97,7 +100,9 @@
     "grade": "成績",
     "title": "{0}的成績",
     "emptyText": "沒有成績",
-    "distribution": "成績分布"
+    "distribution": "成績分布",
+    "requestSharingDistributionTitle": "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
+    "requestSharingDistributionText": "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。"
   },
   "commentsAboutCourses": {
     "name": "簡易教學評鑑調查",

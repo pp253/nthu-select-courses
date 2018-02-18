@@ -30,7 +30,9 @@
             v-html="$store.state.ui.dialogMore"
           ></div>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions
+          v-if="$store.state.ui.dialogMode === 'info'"
+        >
           <v-spacer />
           <v-btn
             @click="$store.commit('ui/closeDialog')"
@@ -38,9 +40,24 @@
             v-text="$t('dialog.OK')"
           ></v-btn>
         </v-card-actions>
+        <v-card-actions
+          v-if="$store.state.ui.dialogMode === 'request'"
+        >
+          <v-spacer />
+          <v-btn
+            @click="$bus.$emit('dialog-return', 'No'), $store.commit('ui/closeDialog')"
+            flat
+            v-text="$t('dialog.No')"
+          ></v-btn>
+          <v-btn
+            @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/closeDialog')"
+            flat
+            v-text="$t('dialog.Yes')"
+          ></v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
-
+    
     <v-snackbar
       :timeout="6000"
       bottom

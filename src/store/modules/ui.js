@@ -7,6 +7,7 @@ export default {
     dialogTitle: '',
     dialogText: '',
     dialogMore: '',
+    dialogMode: 'info',
     snackbar: false,
     snackbarText: ''
   },
@@ -23,7 +24,8 @@ export default {
       state.dialog = true
       state.dialogTitle = options.title
       state.dialogText = options.text
-      state.dialogMore = options.more
+      state.dialogMore = options.more || ''
+      state.dialogMode = options.mode || 'info'
     },
     closeDialog (state) {
       state.dialog = false
@@ -50,6 +52,28 @@ export default {
       setTimeout(() => {
         context.commit('closeSnackbar')
       }, 6000)
+    },
+    openRequestDialog (context, options) {
+      return new Promise((resolve, reject) => {
+        context.commit('openDialog', {
+          title: options.title,
+          text: options.text,
+          more: options.more,
+          mode: options.mode || 'request'
+        })
+
+        this.$bus.$once('dialog-return', (result) => {
+          switch (result) {
+            case 'Yes':
+              resolve('Yes')
+              break
+            case 'No':
+            default:
+              reject('No')
+              break
+          }
+        })
+      })
     }
   }
 }
