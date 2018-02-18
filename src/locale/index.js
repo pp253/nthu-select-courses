@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import en from './en.json'
-import zhTW from './zh_tw.json'
+import en from './lang/en'
+import zhTW from './lang/zh_tw'
 
 Vue.use(VueI18n)
 
