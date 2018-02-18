@@ -1,8 +1,8 @@
 import axios from 'axios'
 import store from '@/store'
-import {htmlEncode} from '@/lib/util'
+import {htmlEncode} from '@/lib/utils'
 
-const SERVER_BASE = 'https://nthu-course.ddns.net/'
+const SERVER_BASE = 'http://localhost/'
 const ERR_MSG = {
   20: {
     title: 'entry.UserInfoNotCorrectTitle',
@@ -68,13 +68,13 @@ function legalRequest (apiPath, data) {
           store.commit('ui/openDialog', {
             title: (err.id in ERR_MSG) ? ERR_MSG[err.id].title : '對不起，系統發生錯誤了！',
             text: (err.id in ERR_MSG) && (ERR_MSG[err.id].text.length !== 0) ? ERR_MSG[err.id].text + '<br>' : '',
-            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
+            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + (err.more ? '<br>' + htmlEncode(err.more) : '')
           })
         } else if (err.name) {
           store.commit('ui/openDialog', {
             title: err.name,
             text: err.message,
-            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
+            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + (err.more ? '<br>' + htmlEncode(err.more) : '')
           })
         }
         reject(res.data)
