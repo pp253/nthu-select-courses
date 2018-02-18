@@ -4,7 +4,7 @@ import 'vuetify/dist/vuetify.css'
 import i18n from '@/i18n'
 import router from '@/router'
 import store from '@/store'
-import '@/lib/store'
+import bus from '@/lib/bus'
 import App from '@/App'
 
 Vue.use(Vuetify)
