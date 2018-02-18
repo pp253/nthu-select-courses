@@ -3,40 +3,40 @@
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
     </v-toolbar>
-    <v-container class="time-table">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>{{ $t('timeTable.weekday.m') }}</th>
-            <th>{{ $t('timeTable.weekday.t') }}</th>
-            <th>{{ $t('timeTable.weekday.w') }}</th>
-            <th>{{ $t('timeTable.weekday.r') }}</th>
-            <th>{{ $t('timeTable.weekday.f') }}</th>
-            <th>{{ $t('timeTable.weekday.s') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
+    <v-container fluid pa-0 ma-0 class="time-table">
+      <div class="table">
+        <div class="table-head">
+          <div class="table-row">
+            <div class="table-col col-title"></div>
+            <div class="table-col">{{ $t('timeTable.weekday.m') }}</div>
+            <div class="table-col">{{ $t('timeTable.weekday.t') }}</div>
+            <div class="table-col">{{ $t('timeTable.weekday.w') }}</div>
+            <div class="table-col">{{ $t('timeTable.weekday.r') }}</div>
+            <div class="table-col">{{ $t('timeTable.weekday.f') }}</div>
+            <div class="table-col">{{ $t('timeTable.weekday.s') }}</div>
+          </div>
+        </div>
+        <div class="table-body">
+          <div
             v-for="timeSection in timeSectionName"
             :key="timeSection"
-            :class="'time-section-' + timeSection"
+            :class="'table-row time-section-' + timeSection"
           >
-            <th>{{ timeSection }}</th>
-            <td
+            <div class="table-col col-title">{{ timeSection }}</div>
+            <div
               v-for="weekday in weekdayName"
               :key="weekday"
-              :class="previewTime.includes(weekday + timeSection) ? 'cyan lighten-4 preview' : ''"
+              :class="'table-col' + (previewTime.includes(weekday + timeSection) ? ' cyan lighten-4 preview' : '')"
             >
               <div
                 v-for="course in timeTable[weekday][timeSection]"
                 :key="course.number"
                 class="green--after"
               >{{ courses[course.number].title }}</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </v-container>
   </v-container>
 </template>
@@ -86,22 +86,35 @@ export default {
   height: calc(100% - 48px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 64px;
 
-  table {
-    table-layout: fixed;
-    min-width: 500px;
-    width: 100%;
+  .table {
+    $title-width: 30px;
+    $title-height: 16px * 2;
+    $title-font-size: 16px;
+    $col-width: 100px;
+    $col-height: 16px * 4;
+
+    width: fit-content;
+    min-width: 100%;
+    padding: 16px;
+    padding-bottom: 64px;
     min-height: 100%;
     text-align: center;
     border-collapse: collapse;
-    
-    tbody {
-      tr td{
-        // In table, height means min-height
-        height: 16px * 4;
-        width: 100px;
+    background-color: unset;
+
+    .table-row {
+      width: 100%;
+      white-space: nowrap;
+      display: table;
+
+      .table-col{
+        display: table-cell;
+        height: $col-height;
+        min-width: $col-width;
+        width: calc(100% - 30px);
         border: 1px solid #aaa;
+        border-bottom: none;
         vertical-align: middle;
 
         .course {
@@ -109,18 +122,40 @@ export default {
         }
       }
 
-      .preview {
-        border-color: #aaa !important;
-      }
-
-      tr.time-section-n td, tr.time-section-5 td, tr.time-section-a td {
-        border-top: 3px double #aaa;
+      .table-col.col-title {
+        width: $title-width;
+        max-width: 30px;
+        min-width: 30px;
+        border: none !important;
+        font-size: $title-font-size;
       }
     }
 
-    thead th, th {
-      height: 16px * 2;
-      width: 30px;
+    .table-row.time-section-n .table-col,
+    .table-row.time-section-5 .table-col,
+    .table-row.time-section-a .table-col {
+      border-top: 3px double #aaa;
+    }
+    
+    .table-row.time-section-c .table-col {
+      border-bottom: 1px solid #aaa;
+    }
+
+    .table-head, .table-body {
+      width: fit-content;
+      min-width: 100%;
+    }
+
+    .table-head .table-row .table-col {
+      height: $title-height;
+      font-size: $title-font-size;
+      border: none !important;
+    }
+    
+    .table-body {
+      .preview {
+        border-color: #aaa !important;
+      }
     }
   }
 }
