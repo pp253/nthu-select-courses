@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
-import i18n from '@/i18n'
+import locale from '@/locale'
 import router from '@/router'
 import store from '@/store'
 import bus from '@/lib/bus'
@@ -16,7 +16,7 @@ new Vue({
   el: '#app',
   store,
   router,
-  i18n,
+  i18n: locale,
   template: '<App/>',
   components: {
     App
