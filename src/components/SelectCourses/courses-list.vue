@@ -1,3 +1,5 @@
+<!-- eslint-disable vue/valid-v-on -->
+
 <template>
   <v-list
     class="courses-list"
@@ -44,7 +46,7 @@
                       :key="'drag-' + element.number"
                     >
                       <v-list-tile-action class="grey--text lighten-1">
-                        {{ $t('coursesList.order').replace('{0}', idx + 1) }}
+                        {{ $t('coursesList.order', [idx + 1]) }}
                       </v-list-tile-action>
                       <v-list-tile-content>
                         {{ courses[element.number].title }}
@@ -75,7 +77,7 @@
       </v-subheader>
 
       <v-list-tile
-        v-if="courses[course.number]"
+        v-if="course && (course.number in courses)"
         ripple
         @click=""
         :key="course.number"
@@ -183,6 +185,9 @@ export default {
         })
         .then((data) => {
           this.$store.commit('ui/stopLoading')
+          this.$store.dispatch('ui/openSnackbar', {
+            snackbarText: this.$t('coursesList.addSuccess', [this.courses[courseNumber].title])
+          })
           resolve(data)
         })
         .catch((err) => {

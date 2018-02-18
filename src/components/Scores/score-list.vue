@@ -124,7 +124,7 @@ export default {
   },
   computed: {
     readableSemester () {
-      return this.searchText ? this.$t('common.search').replace('{0}', this.searchText) : this.toReadableSemester(this.semester)
+      return this.searchText ? this.$t('common.search', [this.searchText]) : this.toReadableSemester(this.semester)
     },
     availableSemester () {
       if (!this.scores) {

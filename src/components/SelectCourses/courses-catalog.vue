@@ -189,7 +189,7 @@ export default {
       
       if (searchText && searchText !== '') {
         if (searchText.startsWith('period:')) {
-          this.title = this.$t('common.search').replace('{0}', searchPeriods.join(''))
+          this.title = this.$t('common.search', [searchPeriods.join('')])
           if (searchPeriods.length === 0) {
             return
           }
@@ -224,7 +224,7 @@ export default {
           if (searchProfessor === '') {
             return
           }
-          this.title = this.$t('common.search').replace('{0}', searchText)
+          this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.professor.includes(searchProfessor)) {
@@ -245,7 +245,7 @@ export default {
           if (searchTitle === '') {
             return
           }
-          this.title = this.$t('common.search').replace('{0}', searchText)
+          this.title = this.$t('common.search', searchText)
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.title && course.title.includes(searchTitle)) {
@@ -266,7 +266,7 @@ export default {
           if (searchNumber === '') {
             return
           }
-          this.title = this.$t('common.search').replace('{0}', searchText)
+          this.title = this.$t('common.search', searchText)
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.number.includes(searchNumber)) {
@@ -283,7 +283,7 @@ export default {
             }
           }
         } else {
-          this.title = this.$t('common.search').replace('{0}', searchText)
+          this.title = this.$t('common.search', searchText)
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.number.includes(searchText) ||

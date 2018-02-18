@@ -38,7 +38,7 @@
                     outline
                     block
                     :disabled="service.disabled"
-                    v-text="$t('service.into').replace('{0}', service.title)"
+                    v-text="$t('service.into', [service.title])"
                   ></v-btn>
                 </v-card-actions>
               </v-card>
