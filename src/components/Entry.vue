@@ -58,6 +58,7 @@
                           validate-on-blur
                           type="number"
                           required
+                          @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"
                         ></v-text-field>
                       </v-flex>
                     </v-layout>
