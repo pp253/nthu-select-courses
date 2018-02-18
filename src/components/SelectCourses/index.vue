@@ -84,7 +84,7 @@
 
             <v-flex
               :class="layoutSize.courseDetail"
-              :hidden="!showCourseDetail"
+              v-if="showCourseDetail"
             >
               <course-detail
                 :title="$t('courseDetail.title')"
@@ -92,6 +92,7 @@
                 @close-course-detail="closeCourseDetail"
               ></course-detail>
             </v-flex>
+
             <v-bottom-nav
               fixed
               :value="$store.state.ui.isMobile"
@@ -121,7 +122,7 @@ import TimeTable from './time-table'
 import CourseDetail from './course-detail'
 import CoursesCatalog from './courses-catalog'
 import SelectionResult from './selection-result'
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
 export default {
   name: "SelectCourses",

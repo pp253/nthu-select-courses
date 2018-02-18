@@ -112,9 +112,9 @@ export default {
   },
   data () {
     return {
-      courses: {},
-      catalog: {},
-      departments: {},
+      courses: this.$store.state.selectCourses.courses,
+      catalog: this.$store.state.selectCourses.catalog,
+      departments: this.$store.state.selectCourses.departments,
       searchText: '',
       searchPeriods: '',
       onlySearchAbbr: true,
@@ -243,7 +243,7 @@ export default {
           if (searchTitle === '') {
             return
           }
-          this.title = this.$t('common.search', searchText)
+          this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.title && course.title.toLowerCase().includes(searchTitle)) {
@@ -264,7 +264,7 @@ export default {
           if (searchNumber === '') {
             return
           }
-          this.title = this.$t('common.search', searchText)
+          this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.number.toLowerCase().includes(searchNumber)) {
@@ -281,7 +281,7 @@ export default {
             }
           }
         } else {
-          this.title = this.$t('common.search', searchText)
+          this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (course.number.toLowerCase().includes(searchText) ||
@@ -349,11 +349,6 @@ export default {
     openCourseDetail (courseNumber) {
       this.$emit('open-course-detail', courseNumber)
     }
-  },
-  mounted () {
-    this.courses = this.$store.state.selectCourses.courses
-    this.catalog = this.$store.state.selectCourses.catalog
-    this.departments = this.$store.state.selectCourses.departments
   }
 }
 </script>

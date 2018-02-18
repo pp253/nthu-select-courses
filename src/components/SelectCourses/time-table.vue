@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-      courses: {},
+      courses: this.$store.state.selectCourses.courses,
       timeSectionName: ['1', '2', '3', '4', 'n', '5', '6', '7', '8', '9', 'a', 'b', 'c'],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S']
     }
@@ -74,9 +74,6 @@ export default {
       }
       return table
     }
-  },
-  mounted () {
-    this.courses = this.$store.state.selectCourses.courses
   }
 }
 </script>

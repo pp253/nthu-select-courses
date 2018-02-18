@@ -98,16 +98,18 @@
             {{ courses[course.number].title }}
           </v-list-tile-title>
           <v-list-tile-sub-title class="grey--text text--darken-4">{{
-            $t('coursesList.courseSub')
-            .replace('{0}', courses[course.number].number)
-            .replace('{1}', courses[course.number].professor)
+            $t('coursesList.courseSub', [
+              courses[course.number].number,
+              courses[course.number].professor
+            ])
           }}</v-list-tile-sub-title>
           <v-list-tile-sub-title class="detail">{{
-            $t('coursesList.courseDetail')
-            .replace('{0}', courses[course.number].credit)
-            .replace('{1}', courses[course.number].size_limit)
-            .replace('{2}', courses[course.number].previous_size || '-')
-            .replace('{3}', courses[course.number].room)
+            $t('coursesList.courseDetail', [
+              courses[course.number].credit,
+              courses[course.number].size_limit,
+              courses[course.number].previous_size || '-',
+              courses[course.number].room
+            ])
           }}</v-list-tile-sub-title>
           <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
         </v-list-tile-content>
