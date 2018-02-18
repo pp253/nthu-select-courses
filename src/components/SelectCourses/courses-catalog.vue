@@ -174,7 +174,7 @@ export default {
     updateList () {
       let list = []
       let courses = this.courses
-      let searchText = this.searchText
+      let searchText = this.searchText.toLowerCase()
       let searchPeriods = this.searchPeriods
       let abbr = this.abbr
 
@@ -227,7 +227,7 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.professor.includes(searchProfessor)) {
+            if (course.professor.toLowerCase().includes(searchProfessor)) {
               list.push({
                 number: courseNumber
               })
@@ -248,7 +248,7 @@ export default {
           this.title = this.$t('common.search', searchText)
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.title && course.title.includes(searchTitle)) {
+            if (course.title && course.title.toLowerCase().includes(searchTitle)) {
               list.push({
                 number: courseNumber
               })
@@ -269,7 +269,7 @@ export default {
           this.title = this.$t('common.search', searchText)
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.number.includes(searchNumber)) {
+            if (course.number.toLowerCase().includes(searchNumber)) {
               list.push({
                 number: courseNumber
               })
@@ -286,12 +286,12 @@ export default {
           this.title = this.$t('common.search', searchText)
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.number.includes(searchText) ||
-              course.title.includes(searchText) ||
-              course.professor.includes(searchText) ||
-              course.memo.includes(searchText) ||
-              course.time.includes(searchText) ||
-              course.room.includes(searchText)
+            if (course.number.toLowerCase().includes(searchText) ||
+              course.title.toLowerCase().includes(searchText) ||
+              course.professor.toLowerCase().includes(searchText) ||
+              course.memo.toLowerCase().includes(searchText) ||
+              course.time.toLowerCase().includes(searchText) ||
+              course.room.toLowerCase().includes(searchText)
             ) {
               list.push({
                 number: courseNumber

@@ -121,14 +121,14 @@ export default {
         return this.departments
       }
 
-      let searchText = this.searchText
+      let searchText = this.searchText.toLowerCase()
       let list = {}
       for (let deptAbbr in this.departments) {
         let department = this.departments[deptAbbr]
-        if ((department.chineseName && department.chineseName.includes(searchText)) ||
-          (department.name && department.name.includes(searchText)) ||
-          (department.englishName && department.englishName.includes(searchText)) ||
-          department.abbr.includes(searchText)
+        if ((department.chineseName && department.chineseName.toLowerCase().includes(searchText)) ||
+          (department.name && department.name.toLowerCase().includes(searchText)) ||
+          (department.englishName && department.englishName.toLowerCase().includes(searchText)) ||
+          department.abbr.toLowerCase().includes(searchText)
         ) {
           list[deptAbbr] = this.departments[deptAbbr]
         }
@@ -141,7 +141,6 @@ export default {
       this.dialog = false
       this.$emit('close')
       if (this.choosedDepartment !== '') {
-        console.log('Select', this.choosedClass || this.choosedDepartment)
         this.$emit('update-department', this.choosedClass || this.choosedDepartment)
       }
     },
