@@ -121,8 +121,7 @@ export default {
 
       .table-col.col-title {
         width: $title-width;
-        max-width: 30px;
-        min-width: 30px;
+        min-width: $title-width;
         border: none !important;
         font-size: $title-font-size;
       }
