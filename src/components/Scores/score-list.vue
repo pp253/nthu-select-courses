@@ -144,14 +144,15 @@ export default {
         return []
       }
       if (this.searchText) {
+        let searchText = this.searchText.toLowerCase()
         let list = []
         for (let semester of Object.keys(this.scores).reverse()) {
           let semesterList = []
           for (let courseNumber of this.scores[semester]) {
             let course = this.courses[courseNumber]
-            if (course.courseTitle.includes(this.searchText) ||
-              course.courseNumber.includes(this.searchText) ||
-              course.grade.includes(this.searchText)
+            if (course.courseTitle.toLowerCase().includes(searchText) ||
+              course.courseNumber.toLowerCase().includes(searchText) ||
+              course.grade.toLowerCase().includes(searchText)
             ) {
               semesterList.push(course)
             }
