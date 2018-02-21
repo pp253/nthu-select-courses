@@ -46,11 +46,17 @@
           </v-flex>
         </v-layout>
         <v-layout>
+          <v-flex xs12>
+            <v-card color="transparent" class="elevation-0">
+              <v-card-text>Session Token: {{ $store.state.user.sessionToken }}</v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+        <v-layout>
           <layout-footer />
         </v-layout>
       </v-flex>
     </v-layout>
-
   </v-container>
 </template>
 
