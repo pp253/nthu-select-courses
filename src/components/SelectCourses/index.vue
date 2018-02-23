@@ -84,7 +84,7 @@
 
             <v-flex
               :class="layoutSize.courseDetail"
-              v-if="showCourseDetail"
+              :hidden="!showCourseDetail"
             >
               <course-detail
                 :title="$t('courseDetail.title')"
