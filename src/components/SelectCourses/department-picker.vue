@@ -3,6 +3,7 @@
     v-model="dialog"
     :fullscreen="$store.state.ui.isMobile"
     max-width="500px"
+    persistent
   >
     <v-card class="department-picker">
       <v-card-title class="headline">
@@ -35,7 +36,7 @@
                         @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'"
                         :class="choosedDepartment === departmentAbbr ? 'list__tile--active' : ''"
                       >
-                        <v-list-tile-content>{{ department.abbr }} {{ department.chineseName }}</v-list-tile-content>
+                        <v-list-tile-content>{{ department.chineseName }} {{ department.abbr }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider :key="departmentAbbr + '-divider'" />
                     </template>
@@ -127,7 +128,7 @@ export default {
         let department = this.departments[deptAbbr]
         if ((department.chineseName && department.chineseName.toLowerCase().includes(searchText)) ||
           (department.name && department.name.toLowerCase().includes(searchText)) ||
-          (department.englishName && department.englishName.toLowerCase().includes(searchText)) ||
+          // (department.englishName && department.englishName.toLowerCase().includes(searchText)) ||
           department.abbr.toLowerCase().includes(searchText)
         ) {
           list[deptAbbr] = this.departments[deptAbbr]
