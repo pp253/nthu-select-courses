@@ -9,12 +9,9 @@
         {{ course.title || course.chineseTitle || title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tooltip bottom>
-        <v-btn icon slot="activator" @click="closeCourseDetail">
-          <v-icon>close</v-icon>
-        </v-btn>
-        <span>{{ $t('courseDetail.close') }}</span>
-      </v-tooltip>
+      <v-btn icon @click="closeCourseDetail">
+        <v-icon>close</v-icon>
+      </v-btn>
     </v-toolbar>
 
     <v-container pa-0 ma-0 class="content">
