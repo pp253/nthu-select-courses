@@ -20,7 +20,9 @@
   },
   "action": {
     "addCourse": "加入課程",
-    "quitCourse": "移除課程",
+    "quitCourse": "退選",
+    "addLimitedCourse": "加簽",
+    "printLimitedCourseForm": "列印加簽單",
     "addFavorite": "加入最愛",
     "removeFavorite": "移除最愛"
   },
@@ -48,7 +50,7 @@
   },
   "coursesList": {
     "title": "課程清單",
-    "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋不到你的關鍵字",
+    "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字",
     "emptyText": "您還沒有加入的課程歐！",
     "syllabus": "課程大綱",
     "detail": "詳細資訊",

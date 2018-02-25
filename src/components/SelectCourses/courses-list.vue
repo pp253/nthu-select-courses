@@ -10,11 +10,11 @@
       v-for="(course, index) in list"
     >
       <v-subheader
-        v-if="course.type === 'subheader'"
-        :key="course.title"
+        v-if="course.header"
+        :key="course.header"
         class="pr-0"
       >
-        {{ $t(course.title) }}
+        {{ $t(course.header) }}
         <v-spacer></v-spacer>
         <v-dialog
           v-if="course.orderable"
@@ -77,7 +77,7 @@
       </v-subheader>
 
       <v-list-tile
-        v-if="course && (course.number in courses)"
+        v-if="course.number in courses"
         ripple
         @click=""
         :key="course.number"
@@ -123,10 +123,15 @@
               </v-btn>
               <v-list>
                 <v-list-tile
-                  v-if="!courses[course.number].canceled"
+                  v-if="(addOrDropPhase || selectionPhase) && !courses[course.number].canceled"
                   @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
                   ripple
                 >{{ isCourseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-list-tile>
+                <v-list-tile
+                  v-if="addOrDropPhase && !courses[course.number].canceled"
+                  @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
+                  ripple
+                >{{ isCourseSelected(course.number) ? $t('action.addLimitedCourse') : $t('action.printLimitedCourseForm') }}</v-list-tile>
                 <!--
                 <v-list-tile
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
@@ -157,6 +162,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import { mapState } from 'vuex'
 
 export default {
   name: 'CoursesList',
@@ -169,6 +175,13 @@ export default {
     'empty-text': {
       default: '您還沒有加入的課程歐！'
     }
+  },
+  computed: {
+    ...mapState('selectCourses', [
+      'selectionPhase',
+      'addOrDropPhase',
+      'withdrawalPhase'
+    ])
   },
   methods: {
     addCourse (courseNumber) {
@@ -200,17 +213,28 @@ export default {
     },
     quitCourse (courseNumber) {
       return new Promise((resolve, reject) => {
-        this.$store.commit('ui/startLoading')
-        this.$store.dispatch('selectCourses/quitCourse', {
-          courseNumber: courseNumber
+        this.$store.dispatch('ui/openRequestDialog', {
+          title: `確定退選「${this.courses[courseNumber].title}」嗎？`,
+          text: '此動作無法還原。',
+          mode: 'request'
         })
-        .then((data) => {
-          this.$store.commit('ui/stopLoading')
-          resolve(data)
-        })
-        .catch((err) => {
-          this.$store.commit('ui/stopLoading')
-          reject(err)
+        .then((result) => {
+          if (result) {
+            this.$store.commit('ui/startLoading')
+            /*
+            this.$store.dispatch('selectCourses/quitCourse', {
+              courseNumber: courseNumber
+            })
+            .then((data) => {
+              this.$store.commit('ui/stopLoading')
+              resolve(data)
+            })
+            .catch((err) => {
+              this.$store.commit('ui/stopLoading')
+              reject(err)
+            })
+            */
+          }
         })
       })
     },

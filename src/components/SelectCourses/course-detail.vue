@@ -30,7 +30,7 @@
         </v-layout>
 
         <v-btn
-          v-if="!course.canceled"
+          v-if="selectionPhase && !course.canceled"
           @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
         >{{ isCourseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-btn>
         <!--
@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'CoursesList',
   props: {
@@ -76,6 +78,13 @@ export default {
       courses: this.$store.state.selectCourses.courses,
       course: {}
     }
+  },
+  computed: {
+    ...mapState('selectCourses', [
+      'selectionPhase',
+      'addOrDropPhase',
+      'withdrawalPhase'
+    ])
   },
   watch: {
     courseNumber (newVal) {

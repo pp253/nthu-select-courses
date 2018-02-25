@@ -180,6 +180,8 @@ export default {
   computed: {
     ...mapState('selectCourses', [
       'selectionPhase',
+      'addOrDropPhase',
+      'withdrawalPhase',
       'currentSelectedCourses',
       'selectionResult',
       'availableSelectionResult',
@@ -206,7 +208,9 @@ export default {
       let semester = this.semester
       let phase = this.phase
 
-      if (semester && phase) {
+      if (phase === 'current') {
+        list = this.currentSelectedCourses
+      } else if (semester && phase) {
         if (semester in this.selectionResult &&
           phase in this.selectionResult[semester]
         ) {
@@ -223,14 +227,14 @@ export default {
 
             if (tmpList.length) {
               list.push({
-                type: 'subheader',
-                title: `selectionResult.${catalog}`
+                header: `selectionResult.${catalog}`
               })
               list = list.concat(tmpList)
             }
           }
         }
       }
+
       return list
     },
     bottomDrawerActive () {
@@ -347,10 +351,11 @@ export default {
     this.hideDrawer = false
     this.$store.commit('ui/startLoading')
 
+    // TODO: 應該把下面的改成並行，而非循序
     this.$store.dispatch('selectCourses/getAvailableSelectionResult')
     .then(() => {
-      if (this.selectionPhase) {
-        this.store.getCurrentSelectedCourses()
+      if (this.selectionPhase || this.addOrDropPhase || this.withdrawalPhase) {
+        this.$store.dispatch('selectCourses/getCurrentSelectedCourses')
         .then(() => {
           this.$store.commit('ui/stopLoading')
         })

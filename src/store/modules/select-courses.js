@@ -15,9 +15,11 @@ export default {
     currentSelectedCoursesLoaded: false,
     favoriteCourses: [],
     selectionPhase: false,
-    addOrDropPhase: false,
+    addOrDropPhase: true,
     withdrawalPhase: false,
     editable: false,
+    currentSemester: '10602',
+    currentPhase: '',
     semester: '',
     phase: ''
   },

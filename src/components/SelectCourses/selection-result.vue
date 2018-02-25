@@ -9,25 +9,18 @@
         :label="title || $t('selectedCoursesList.title')"
         single-line
         bottom
-      ></v-select>
-      <!--
-      <v-menu :nudge-width="100">
-        <v-toolbar-title slot="activator">
-          {{ title || $t('selectedCoursesList.title') }}
-          <v-icon>arrow_drop_down</v-icon>
-        </v-toolbar-title>
-        <v-list>
-          <v-list-tile
-            v-for="item in readableAvailableSelectionResult"
-            :key="item.value"
-            @click="openSelectionResult(item.semester, item.phase)"
-            ripple
-          >
-            <v-list-tile-title v-text="item.text"></v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-      -->
+      >
+        <template slot="item" slot-scope="data">
+          <template v-if="data.item.type === 'divider'">
+            <v-divider />
+          </template>
+          <template v-else>
+            <v-list-tile-content>
+              <v-list-tile-title v-html="data.item.text"></v-list-tile-title>
+            </v-list-tile-content>
+          </template>
+        </template>
+      </v-select>
     </v-toolbar>
 
     <v-container fluid pa-0 ma-0 class="list-wrapper">
@@ -62,6 +55,9 @@ export default {
   },
   computed: {
     ...mapState('selectCourses', [
+      'selectionPhase',
+      'addOrDropPhase',
+      'withdrawalPhase',
       'selectionResult',
       'availableSelectionResult',
       'semester',
@@ -69,6 +65,7 @@ export default {
     ]),
     readableAvailableSelectionResult () {
       let list = []
+
       for (let semester in this.availableSelectionResult) {
         for (let phase of this.availableSelectionResult[semester]) {
           list.push({
@@ -76,7 +73,35 @@ export default {
             value: `${semester} ${phase}`
           })
         }
+        list.push({
+          header: this.toReadableSemester(semester)
+        })
+        list.push({
+          divider: true
+        })
       }
+
+      if (this.addOrDropPhase) {
+        list.push({
+          text: '加簽課程清單',
+          value: `add`
+        })
+      }
+
+      if (this.withdrawPhase) {
+        list.push({
+          text: '二退課程清單',
+          value: `withdraw`
+        })
+      }
+
+      if (this.selectionPhase || this.addOrDropPhase || this.withdrawPhase) {
+        list.push({
+          text: '加退選狀況',
+          value: `current`
+        })
+      }
+
       list.reverse()
       return list
     }
@@ -93,16 +118,20 @@ export default {
       if (!semesterPhase) {
         return
       }
-      let rgText = semesterPhase.split(' ')
-      this.$store.commit('selectCourses/setSemester', {semester: rgText[0]})
-      this.$store.commit('selectCourses/setPhase', {phase: rgText[1]})
-      if (!this.selectionResult[this.semester] ||
-        !this.selectionResult[this.semester][this.phase]
-      ) {
-        this.$store.dispatch('selectCourses/getSelectionResult', {
-          semester: this.semester,
-          phase: this.phase
-        })
+      if (semesterPhase === 'current') {
+        this.$store.commit('selectCourses/setPhase', {phase: 'current'})
+      } else {
+        let rgText = semesterPhase.split(' ')
+        this.$store.commit('selectCourses/setSemester', {semester: rgText[0]})
+        this.$store.commit('selectCourses/setPhase', {phase: rgText[1]})
+        if (!this.selectionResult[this.semester] ||
+          !this.selectionResult[this.semester][this.phase]
+        ) {
+          this.$store.dispatch('selectCourses/getSelectionResult', {
+            semester: this.semester,
+            phase: this.phase
+          })
+        }
       }
     },
     updatePreviewTime (number) {

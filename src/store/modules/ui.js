@@ -65,11 +65,11 @@ export default {
         this.$bus.$once('dialog-return', (result) => {
           switch (result) {
             case 'Yes':
-              resolve('Yes')
+              resolve(true)
               break
             case 'No':
             default:
-              reject('No')
+              resolve(false)
               break
           }
         })
