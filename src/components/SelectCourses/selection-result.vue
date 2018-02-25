@@ -50,10 +50,12 @@ export default {
   components: {
     CoursesList
   },
+  props: {
+    'list': Array,
+    'courses': Object
+  },
   data () {
     return {
-      semester: '',
-      phase: '',
       title: '',
       semesterPhase: {}
     }
@@ -61,54 +63,10 @@ export default {
   computed: {
     ...mapState('selectCourses', [
       'selectionResult',
-      'availableSelectionResult'
+      'availableSelectionResult',
+      'semester',
+      'phase'
     ]),
-    courses () {
-      let courses = {}
-      let semester = this.semester
-      let phase = this.phase
-
-      if (semester && phase) {
-        if (semester in this.selectionResult &&
-          phase in this.selectionResult[semester]
-        ) {
-          let selectionResult = this.selectionResult[semester][phase]
-          courses = Object.assign({}, selectionResult.status, selectionResult.randomFailed, selectionResult.waitingForRandom)
-        }
-      }
-      return courses
-    },
-    list () {
-      let list = []
-      let semester = this.semester
-      let phase = this.phase
-
-      if (semester && phase) {
-        if (semester in this.selectionResult &&
-          phase in this.selectionResult[semester]
-        ) {
-          let selectionResult = this.selectionResult[semester][phase]
-          let selectionResultCatalog = ['waitingForRandom', 'status', 'randomFailed']
-          for (let catalog of selectionResultCatalog) {
-            let tmpList = []
-            for (let courseNumber in selectionResult[catalog]) {
-              tmpList.push({
-                number: courseNumber
-              })
-            }
-
-            if (tmpList.length) {
-              list.push({
-                type: 'subheader',
-                title: `selectionResult.${catalog}`
-              })
-              list = list.concat(tmpList)
-            }
-          }
-        }
-      }
-      return list
-    },
     readableAvailableSelectionResult () {
       let list = []
       for (let semester in this.availableSelectionResult) {
@@ -136,8 +94,8 @@ export default {
         return
       }
       let rgText = semesterPhase.split(' ')
-      this.semester = rgText[0]
-      this.phase = rgText[1]
+      this.$store.commit('selectCourses/setSemester', {semester: rgText[0]})
+      this.$store.commit('selectCourses/setPhase', {phase: rgText[1]})
       if (!this.selectionResult[this.semester] ||
         !this.selectionResult[this.semester][this.phase]
       ) {

@@ -3,7 +3,7 @@
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
     </v-toolbar>
-    <v-container fluid pa-0 ma-0 class="time-table">
+    <v-container fluid class="time-table">
       <div class="table">
         <div class="table-head">
           <div class="table-row">
@@ -31,12 +31,20 @@
               <div
                 v-for="course in timeTable[weekday][timeSection]"
                 :key="course.number"
-                class="green--after"
+                @mouseover="$emit('update-preview-time', course.number)"
+                @mouseout="$emit('update-preview-time', '')"
+                :class="course.status === 'waitingForRandom' ? 'light-blue--text' : (course.status === 'randomFailed' ? 'red--text ' : '')"
               >{{ courses[course.number].title }}</div>
             </div>
           </div>
         </div>
       </div>
+      <v-layout>
+        <v-flex xs12>
+          <span class="light-blue--text">藍字</span>：待亂數，目前未選上。<br>
+          <span class="red--text">紅字</span>：亂數失敗，未選上。
+        </v-flex>
+      </v-layout>
     </v-container>
   </v-container>
 </template>
@@ -47,11 +55,11 @@ export default {
   props: {
     'preview-time': String,
     'list': Array,
-    'title': String
+    'title': String,
+    'courses': Object
   },
   data () {
     return {
-      courses: this.$store.state.selectCourses.courses,
       timeSectionName: ['1', '2', '3', '4', 'n', '5', '6', '7', '8', '9', 'a', 'b', 'c'],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S']
     }
@@ -65,8 +73,10 @@ export default {
           table[weekday][timeSection] = []
         }
       }
-
       for (let course of this.list) {
+        if (course.type === 'subheader') {
+          continue
+        }
         for (let i = 0; i < this.courses[course.number].time.length; i += 2) {
           let list = /([MTWRFS])([1-9abcnABCN])/g.exec(this.courses[course.number].time.slice(i, i + 2))
           table[list[1].toUpperCase()][list[2].toLowerCase()].push(course)
@@ -93,7 +103,7 @@ export default {
 
     width: fit-content;
     min-width: 100%;
-    padding: 16px;
+    padding-right: 16px;
     padding-bottom: 64px;
     min-height: 100%;
     text-align: center;
@@ -104,12 +114,13 @@ export default {
       width: 100%;
       white-space: nowrap;
       display: table;
+      table-layout: fixed;
 
       .table-col{
         display: table-cell;
         height: $col-height;
         min-width: $col-width;
-        width: calc(100% - 30px);
+        width: $col-width;
         border: 1px solid #aaa;
         border-bottom: none;
         vertical-align: middle;
@@ -117,9 +128,14 @@ export default {
         .course {
           background-color: #999;
         }
+
+        > div {
+          white-space: initial;
+        }
       }
 
       .table-col.col-title {
+        user-select: none;
         width: $title-width;
         min-width: $title-width;
         border: none !important;
@@ -149,6 +165,8 @@ export default {
     }
     
     .table-body {
+      user-select: text;
+
       .preview {
         border-color: #aaa !important;
       }

@@ -65,8 +65,9 @@
               :hidden="!showSelectedCoursesList"
             >
               <selection-result
+                :courses="courses"
+                :list="list"
                 :title="$t('selectedCoursesList.title')"
-                :list="currentSelectedCourses"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
               />
@@ -77,8 +78,10 @@
               :hidden="!showTimeTable"
             >
               <time-table
+                :courses="courses"
                 :preview-time="previewTime"
-                :list="currentSelectedCourses"
+                :list="list"
+                @update-preview-time="updatePreviewTime"
               ></time-table>
             </v-flex>
 
@@ -176,10 +179,60 @@ export default {
   },
   computed: {
     ...mapState('selectCourses', [
-      'courses',
       'selectionPhase',
-      'currentSelectedCourses'
+      'currentSelectedCourses',
+      'selectionResult',
+      'availableSelectionResult',
+      'semester',
+      'phase',
     ]),
+    courses () {
+      let courses = this.$store.state.selectCourses.courses
+      let semester = this.semester
+      let phase = this.phase
+
+      if (semester && phase) {
+        if (semester in this.selectionResult &&
+          phase in this.selectionResult[semester]
+        ) {
+          let selectionResult = this.selectionResult[semester][phase]
+          courses = Object.assign({}, courses, selectionResult.status, selectionResult.randomFailed, selectionResult.waitingForRandom)
+        }
+      }
+      return courses
+    },
+    list () {
+      let list = []
+      let semester = this.semester
+      let phase = this.phase
+
+      if (semester && phase) {
+        if (semester in this.selectionResult &&
+          phase in this.selectionResult[semester]
+        ) {
+          let selectionResult = this.selectionResult[semester][phase]
+          let selectionResultCatalog = ['waitingForRandom', 'status', 'randomFailed']
+          for (let catalog of selectionResultCatalog) {
+            let tmpList = []
+            for (let courseNumber in selectionResult[catalog]) {
+              tmpList.push({
+                number: courseNumber,
+                status: catalog
+              })
+            }
+
+            if (tmpList.length) {
+              list.push({
+                type: 'subheader',
+                title: `selectionResult.${catalog}`
+              })
+              list = list.concat(tmpList)
+            }
+          }
+        }
+      }
+      return list
+    },
     bottomDrawerActive () {
       let idx = this.menu.findIndex((item) => {return this.mobile[item.attr] === true})
       return idx
@@ -271,9 +324,10 @@ export default {
   },
   methods: {
     updatePreviewTime(courseNumber) {
-      this.previewTime = this.courses[courseNumber] ?
-        this.courses[courseNumber].time : 
-        courseNumber
+      this.previewTime = courseNumber in this.courses ? this.courses[courseNumber].time : 
+        (courseNumber in this.$store.state.selectCourses.courses ?
+          this.$store.state.selectCourses.courses[courseNumber].time :
+          courseNumber)
     },
     uiMobileClearShowing () {
       this.mobile.showCoursesList = false
