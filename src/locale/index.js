@@ -12,5 +12,6 @@ const locales = {
 
 export default new VueI18n({
   locale: 'zh_tw', // set locale
+  fallbackLocale: 'zh_tw',
   messages: locales // set locale messages
 })
