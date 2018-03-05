@@ -121,11 +121,11 @@
 </template>
 
 <script>
-import TimeTable from './time-table'
-import CourseDetail from './course-detail'
-import CoursesCatalog from './courses-catalog'
-import SelectionResult from './selection-result'
 import { mapState } from 'vuex'
+import TimeTable from './components/time-table'
+import CourseDetail from './components/course-detail'
+import CoursesCatalog from './components/courses-catalog'
+import SelectionResult from './components/selection-result'
 
 export default {
   name: "SelectCourses",
@@ -137,7 +137,7 @@ export default {
   },
   data() {
     return {
-      previewTime: "",
+      previewTime: '',
       menu: [
         {
           attr: 'showCoursesList',

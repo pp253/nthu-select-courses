@@ -20,8 +20,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import ScoreCourseDetail from './score-course-detail'
-import ScoreList from './score-list'
+import ScoreCourseDetail from './components/score-course-detail'
+import ScoreList from './components/score-list'
 
 export default {
   components: {

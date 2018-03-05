@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import LayoutFooter from './layout-footer'
+import LayoutFooter from '@/components/layout-footer'
 
 export default {
   name: 'Service',
