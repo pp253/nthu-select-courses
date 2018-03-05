@@ -1,6 +1,6 @@
 <template>
   <v-app
-    :class="'app' + ` mode-${!$store.state.ui.isMobile ? 'pc' : 'mobile'}`"
+    :class="`app mode-${$store.state.ui.isMobile ? 'mobile' : 'pc'}`"
   >
     <router-view />
 

@@ -4,8 +4,8 @@ import 'vuetify/dist/vuetify.css'
 import locale from '@/locale'
 import router from '@/router'
 import store from '@/store'
-import bus from '@/lib/bus'
 import App from '@/App'
+import '@/lib/bus'
 
 Vue.use(Vuetify)
 
