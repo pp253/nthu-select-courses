@@ -68,7 +68,7 @@ export default {
   components: {
     LayoutFooter
   },
-  data () {
+  data() {
     return {
       services: [
         {
@@ -79,14 +79,17 @@ export default {
         },
         {
           title: this.$t('selectCourses.name'),
-          content: this.$t('selectCourses.description') + '現在不是選課期間，系統未開放！',
+          content:
+            this.$t('selectCourses.description') +
+            '現在不是選課期間，系統未開放！',
           icon: 'playlist_add',
           path: '/select_courses',
           disabled: false
         },
         {
           title: '輸入教師密碼',
-          content: '這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。',
+          content:
+            '這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。',
           icon: 'https',
           path: '/teacher_password',
           disabled: true
@@ -101,7 +104,7 @@ export default {
       ]
     }
   },
-  mounted () {
+  mounted() {
     if (!this.$store.state.user.isLogin) {
       this.$router.push('/')
     }

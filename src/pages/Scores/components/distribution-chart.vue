@@ -8,26 +8,30 @@ export default {
   extends: Bar,
   mixins: [reactiveProp],
   props: {
-    'options': {
+    options: {
       type: Object,
       default: () => {
         return {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
-            yAxes: [{
-              ticks: {
-                callback: function (value, index, values) {
-                  return value + '人'
-                },
-                fontSize: 12
+            yAxes: [
+              {
+                ticks: {
+                  callback: function(value, index, values) {
+                    return value + '人'
+                  },
+                  fontSize: 12
+                }
               }
-            }],
-            xAxes: [{
-              ticks: {
-                fontSize: 16
+            ],
+            xAxes: [
+              {
+                ticks: {
+                  fontSize: 16
+                }
               }
-            }]
+            ]
           },
           legend: {
             display: false
@@ -58,7 +62,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.addPlugin(datalabels)
     this.renderChart(this.chartData, this.options)
   }

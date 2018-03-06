@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
-import {htmlEncode} from '@/lib/utils'
+import { htmlEncode } from '@/lib/utils'
 
 const SERVER_BASE = 'https://nthu-course.ddns.net/' // 'http://localhost/'
 const ERR_MSG = {
@@ -58,57 +58,71 @@ const ERR_MSG = {
   }
 }
 
-function legalRequest (apiPath, data) {
+function legalRequest(apiPath, data) {
   return new Promise((resolve, reject) => {
-    axios.post(SERVER_BASE + apiPath, data)
-    .then((res) => {
-      if (res.data.error) {
-        let err = res.data
-        if (err.id) {
-          store.commit('ui/openDialog', {
-            title: (err.id in ERR_MSG) ? ERR_MSG[err.id].title : '對不起，系統發生錯誤了！',
-            text: (err.id in ERR_MSG) && (ERR_MSG[err.id].text.length !== 0) ? ERR_MSG[err.id].text + '<br>' : '',
-            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + (err.more ? '<br>' + htmlEncode(err.more) : '')
-          })
-        } else if (err.name) {
-          store.commit('ui/openDialog', {
-            title: err.name,
-            text: err.message,
-            more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + (err.more ? '<br>' + htmlEncode(err.more) : '')
-          })
+    axios
+      .post(SERVER_BASE + apiPath, data)
+      .then(res => {
+        if (res.data.error) {
+          let err = res.data
+          if (err.id) {
+            store.commit('ui/openDialog', {
+              title:
+                err.id in ERR_MSG
+                  ? ERR_MSG[err.id].title
+                  : '對不起，系統發生錯誤了！',
+              text:
+                err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
+                  ? ERR_MSG[err.id].text + '<br>'
+                  : '',
+              more:
+                '如果你覺得這不應該發生，請試著向清大簡易選課反映。' +
+                (err.more ? '<br>' + htmlEncode(err.more) : '')
+            })
+          } else if (err.name) {
+            store.commit('ui/openDialog', {
+              title: err.name,
+              text: err.message,
+              more:
+                '如果你覺得這不應該發生，請試著向清大簡易選課反映。' +
+                (err.more ? '<br>' + htmlEncode(err.more) : '')
+            })
+          }
+          reject(res.data)
+          return
         }
-        reject(res.data)
-        return
-      }
-      resolve(res.data)
-    })
-    .catch(function (err) {
-      store.commit('ui/openDialog', {
-        title: err.name,
-        text: err.message,
-        more: '如果你覺得這不應該發生，請試著向清大簡易選課反映。' + '<br>' + htmlEncode(err.more)
+        resolve(res.data)
       })
-      reject(err)
-    })
+      .catch(function(err) {
+        store.commit('ui/openDialog', {
+          title: err.name,
+          text: err.message,
+          more:
+            '如果你覺得這不應該發生，請試著向清大簡易選課反映。' +
+            '<br>' +
+            htmlEncode(err.more)
+        })
+        reject(err)
+      })
   })
 }
 
-export function getLoginToken () {
+export function getLoginToken() {
   return legalRequest('api/user/getLoginToken')
 }
 
-export function getSessionToken (loginInfo) {
+export function getSessionToken(loginInfo) {
   return legalRequest('api/user/getSessionToken', loginInfo)
 }
 
-export function getCurrentSelectedCourses (sessionToken) {
+export function getCurrentSelectedCourses(sessionToken) {
   let data = {
     sessionToken: sessionToken
   }
   return legalRequest('api/select_course/getCurrentSelectedCourses', data)
 }
 
-export function editOrder (sessionToken, newOrder, oldOrder) {
+export function editOrder(sessionToken, newOrder, oldOrder) {
   let data = {
     sessionToken: sessionToken,
     newOrder: newOrder,
@@ -117,7 +131,7 @@ export function editOrder (sessionToken, newOrder, oldOrder) {
   return legalRequest('api/select_course/editOrder', data)
 }
 
-export function addCourse (sessionToken, courseNumber, order) {
+export function addCourse(sessionToken, courseNumber, order) {
   let data = {
     sessionToken: sessionToken,
     courseNumber: courseNumber,
@@ -126,7 +140,7 @@ export function addCourse (sessionToken, courseNumber, order) {
   return legalRequest('api/select_course/addCourse', data)
 }
 
-export function quitCourse (sessionToken, courseNumber) {
+export function quitCourse(sessionToken, courseNumber) {
   let data = {
     sessionToken: sessionToken,
     courseNumber: courseNumber
@@ -134,7 +148,7 @@ export function quitCourse (sessionToken, courseNumber) {
   return legalRequest('api/select_course/quitCourse', data)
 }
 
-export function getSyllabus (sessionToken, courseNumber) {
+export function getSyllabus(sessionToken, courseNumber) {
   let data = {
     sessionToken: sessionToken,
     courseNumber: courseNumber
@@ -142,14 +156,14 @@ export function getSyllabus (sessionToken, courseNumber) {
   return legalRequest('api/select_course/getSyllabus', data)
 }
 
-export function getScores (sessionToken) {
+export function getScores(sessionToken) {
   let data = {
     sessionToken: sessionToken
   }
   return legalRequest('api/scores/getScores', data)
 }
 
-export function getDistribution (sessionToken, courseNumber) {
+export function getDistribution(sessionToken, courseNumber) {
   let data = {
     sessionToken: sessionToken,
     courseNumber: courseNumber
@@ -157,14 +171,14 @@ export function getDistribution (sessionToken, courseNumber) {
   return legalRequest('api/scores/getDistribution', data)
 }
 
-export function getAvailableSelectionResult (sessionToken) {
+export function getAvailableSelectionResult(sessionToken) {
   let data = {
     sessionToken: sessionToken
   }
   return legalRequest('api/select_course/getAvailableSelectionResult', data)
 }
 
-export function getSelectionResult (sessionToken, semester, phase) {
+export function getSelectionResult(sessionToken, semester, phase) {
   let data = {
     sessionToken: sessionToken,
     semester: semester,

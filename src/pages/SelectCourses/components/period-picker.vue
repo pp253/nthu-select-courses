@@ -19,7 +19,7 @@
                 {{ $t(`timeTable.weekday.${weekday.toLowerCase()}`) }}
                 <v-divider />
               </v-flex>
-              
+
               <v-flex
                 v-for="timeSection in timeSectionName"
                 :key="timeSection"
@@ -56,48 +56,67 @@
 export default {
   name: 'PeriodPicker',
   props: {
-    'value': {
+    value: {
       type: Boolean,
       default: false
     }
   },
-  data () {
+  data() {
     return {
       dialog: false,
-      timeSectionName: ['1', '2', '3', '4', 'n', '5', '6', '7', '8', '9', 'a', 'b', 'c'],
+      timeSectionName: [
+        '1',
+        '2',
+        '3',
+        '4',
+        'n',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'a',
+        'b',
+        'c'
+      ],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S'],
       periods: []
     }
   },
   watch: {
-    value (newVal) {
+    value(newVal) {
       this.dialog = newVal
     }
   },
   methods: {
-    done () {
+    done() {
       this.dialog = false
       this.$emit('close')
       this.$emit('update-periods', this.periods.slice())
     },
-    togglePeriod (period) {
+    togglePeriod(period) {
       if (this.periods.includes(period)) {
         this.periods.splice(this.periods.indexOf(period), 1)
       } else {
         this.periods.push(period)
         this.periods.sort((a, b) => {
           if (a[0] !== b[0]) {
-            return this.weekdayName.indexOf(a[0]) - this.weekdayName.indexOf(b[0])
+            return (
+              this.weekdayName.indexOf(a[0]) - this.weekdayName.indexOf(b[0])
+            )
           } else {
-            return this.timeSectionName.indexOf(a[1]) - this.timeSectionName.indexOf(b[1])
+            return (
+              this.timeSectionName.indexOf(a[1]) -
+              this.timeSectionName.indexOf(b[1])
+            )
           }
         })
       }
     },
-    clearPeriods () {
+    clearPeriods() {
       this.periods = []
     },
-    close () {
+    close() {
       this.dialog = false
       this.$emit('close')
     }
@@ -112,7 +131,6 @@ export default {
     overflow-y: auto;
 
     .weekday {
-
       hr {
         margin-top: 12px;
       }

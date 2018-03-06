@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import CoursesList from './courses-list'
 
 export default {
@@ -44,10 +44,10 @@ export default {
     CoursesList
   },
   props: {
-    'list': Array,
-    'courses': Object
+    list: Array,
+    courses: Object
   },
-  data () {
+  data() {
     return {
       title: '',
       semesterPhase: {}
@@ -63,13 +63,15 @@ export default {
       'semester',
       'phase'
     ]),
-    readableAvailableSelectionResult () {
+    readableAvailableSelectionResult() {
       let list = []
 
       for (let semester in this.availableSelectionResult) {
         for (let phase of this.availableSelectionResult[semester]) {
           list.push({
-            text: `${this.toReadableSemester(semester)} ${this.$t('phase.' + phase)}`,
+            text: `${this.toReadableSemester(semester)} ${this.$t(
+              'phase.' + phase
+            )}`,
             value: `${semester} ${phase}`
           })
         }
@@ -107,24 +109,25 @@ export default {
     }
   },
   methods: {
-    toReadableSemester (semester) {
+    toReadableSemester(semester) {
       if (!semester) {
         return ''
       }
       let seText = /(\d{3})(\d{2})/.exec(semester)
       return seText[1] + this.$t(`semester.${seText[2]}`)
     },
-    openSelectionResult (semesterPhase) {
+    openSelectionResult(semesterPhase) {
       if (!semesterPhase) {
         return
       }
       if (semesterPhase === 'current') {
-        this.$store.commit('selectCourses/setPhase', {phase: 'current'})
+        this.$store.commit('selectCourses/setPhase', { phase: 'current' })
       } else {
         let rgText = semesterPhase.split(' ')
-        this.$store.commit('selectCourses/setSemester', {semester: rgText[0]})
-        this.$store.commit('selectCourses/setPhase', {phase: rgText[1]})
-        if (!this.selectionResult[this.semester] ||
+        this.$store.commit('selectCourses/setSemester', { semester: rgText[0] })
+        this.$store.commit('selectCourses/setPhase', { phase: rgText[1] })
+        if (
+          !this.selectionResult[this.semester] ||
           !this.selectionResult[this.semester][this.phase]
         ) {
           this.$store.dispatch('selectCourses/getSelectionResult', {
@@ -134,10 +137,10 @@ export default {
         }
       }
     },
-    updatePreviewTime (number) {
+    updatePreviewTime(number) {
       this.$emit('update-preview-time', number)
     },
-    openCourseDetail (courseNumber) {
+    openCourseDetail(courseNumber) {
       this.$emit('open-course-detail', courseNumber)
     }
   }

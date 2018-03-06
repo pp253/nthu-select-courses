@@ -48,12 +48,12 @@
       <v-divider
         v-if="overview && overview[semester] && !searchText"
       />
-      
+
       <template
         v-if="scoresList.length > 0"
         v-for="(score, index) in scoresList"
       >
-      
+
         <v-subheader
           v-if="score.type && score.type === 'subheader'"
           :key="score.title"
@@ -104,29 +104,33 @@
 export default {
   name: 'ScoreList',
   props: {
-    'scores': Object,
-    'courses': Object,
-    'overview': Object
+    scores: Object,
+    courses: Object,
+    overview: Object
   },
-  data () {
+  data() {
     return {
       semester: '',
       searchText: ''
     }
   },
   watch: {
-    scores (newVal) {
+    scores(newVal) {
       if (!newVal) {
         return
       }
-      this.semester = Object.keys(newVal).reverse()[Object.keys(newVal).length > 1 ? 1 : 0]
+      this.semester = Object.keys(newVal).reverse()[
+        Object.keys(newVal).length > 1 ? 1 : 0
+      ]
     }
   },
   computed: {
-    readableSemester () {
-      return this.searchText ? this.$t('common.search', [this.searchText]) : this.toReadableSemester(this.semester)
+    readableSemester() {
+      return this.searchText
+        ? this.$t('common.search', [this.searchText])
+        : this.toReadableSemester(this.semester)
     },
-    availableSemester () {
+    availableSemester() {
       if (!this.scores) {
         return []
       }
@@ -139,7 +143,7 @@ export default {
       }
       return list
     },
-    scoresList () {
+    scoresList() {
       if (!this.scores) {
         return []
       }
@@ -150,7 +154,8 @@ export default {
           let semesterList = []
           for (let courseNumber of this.scores[semester]) {
             let course = this.courses[courseNumber]
-            if (course.courseTitle.toLowerCase().includes(searchText) ||
+            if (
+              course.courseTitle.toLowerCase().includes(searchText) ||
               course.courseNumber.toLowerCase().includes(searchText) ||
               course.grade.toLowerCase().includes(searchText)
             ) {
@@ -180,7 +185,7 @@ export default {
     }
   },
   methods: {
-    toReadableSemester (semester) {
+    toReadableSemester(semester) {
       if (!semester) {
         return this.$t('scores.selecting')
       }
@@ -188,9 +193,11 @@ export default {
       return seText[1] + this.$t(`semester.${seText[2]}`)
     }
   },
-  mounted () {
+  mounted() {
     if (this.scores) {
-      this.semester = Object.keys(this.scores).reverse()[Object.keys(this.scores).length > 1 ? 1 : 0]
+      this.semester = Object.keys(this.scores).reverse()[
+        Object.keys(this.scores).length > 1 ? 1 : 0
+      ]
     }
   }
 }

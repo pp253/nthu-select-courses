@@ -233,7 +233,7 @@ export default {
   components: {
     LayoutFooter
   },
-  data () {
+  data() {
     return {
       username: '',
       userpass: '',
@@ -241,7 +241,7 @@ export default {
     }
   },
   methods: {
-    submit () {
+    submit() {
       let loginInfo = {
         username: this.username,
         userpass: this.userpass,
@@ -250,40 +250,42 @@ export default {
 
       this.$store.commit('ui/startLoading')
 
-      this.$store.dispatch('user/getSessionToken', loginInfo)
-      .then((data) => {
-        this.$store.commit('ui/stopLoading')
-        this.$store.dispatch('ui/openSnackbar', {
-          snackbarText: '已成功登入！'
+      this.$store
+        .dispatch('user/getSessionToken', loginInfo)
+        .then(data => {
+          this.$store.commit('ui/stopLoading')
+          this.$store.dispatch('ui/openSnackbar', {
+            snackbarText: '已成功登入！'
+          })
+          this.$router.push({ name: 'Service' })
         })
-        this.$router.push({ name: 'Service' })
-      })
-      .catch((err) => {
-        this.$store.commit('ui/stopLoading')
-        this.reload()
-      })
+        .catch(err => {
+          this.$store.commit('ui/stopLoading')
+          this.reload()
+        })
     },
-    reload () {
+    reload() {
       this.userpass = ''
       this.authCheckCode = ''
 
       this.$store.commit('ui/startLoading')
 
-      this.$store.dispatch('user/getLoginToken')
-      .then((data) => {
-        this.$store.commit('ui/stopLoading')
-      })
-      .catch((err) => {
-        this.$store.commit('ui/stopLoading')
-      })
+      this.$store
+        .dispatch('user/getLoginToken')
+        .then(data => {
+          this.$store.commit('ui/stopLoading')
+        })
+        .catch(err => {
+          this.$store.commit('ui/stopLoading')
+        })
     }
   },
-  mounted () {
-    this.reload();
+  mounted() {
+    this.reload()
 
     /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
     /*
     var disqus_config = function () {
     this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
@@ -315,4 +317,3 @@ export default {
   }
 }
 </style>
-

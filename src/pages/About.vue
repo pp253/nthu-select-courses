@@ -146,10 +146,10 @@ export default {
   components: {
     LayoutFooter
   },
-  data () {
+  data() {
     return {
       list: {
-        '開發者': [
+        開發者: [
           {
             name: 'pp253',
             link: 'https://github.com/pp253',
@@ -157,10 +157,11 @@ export default {
             img: '/static/img/about/pp253.jpg'
           },
           {
-            text: '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses">GitHub</a>，然後commit個、或是PR，你就成為了開發者！'
+            text:
+              '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses">GitHub</a>，然後commit個、或是PR，你就成為了開發者！'
           }
         ],
-        '測試者': [
+        測試者: [
           {
             name: '王子齊',
             link: '',
@@ -186,12 +187,14 @@ export default {
             img: ''
           },
           {
-            text: '<b>如何成為測試者？</b>你可以透過表單申請成為新功能的測試者，只要試過任何測試版本，你都會出現在上面。'
+            text:
+              '<b>如何成為測試者？</b>你可以透過表單申請成為新功能的測試者，只要試過任何測試版本，你都會出現在上面。'
           }
         ],
-        '特別感謝': [
+        特別感謝: [
           {
-            text: '<b>如何成為特別感謝者？</b>提供建議，或是發現並回報錯誤的人，只要你同意，就可以成為特別感謝的人。'
+            text:
+              '<b>如何成為特別感謝者？</b>提供建議，或是發現並回報錯誤的人，只要你同意，就可以成為特別感謝的人。'
           }
         ]
       },

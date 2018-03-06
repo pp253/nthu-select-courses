@@ -110,7 +110,7 @@ export default {
     PeriodPicker,
     CoursesList
   },
-  data () {
+  data() {
     return {
       courses: this.$store.state.selectCourses.courses,
       catalog: this.$store.state.selectCourses.catalog,
@@ -127,48 +127,66 @@ export default {
     }
   },
   watch: {
-    onlySearchAbbr () {
+    onlySearchAbbr() {
       this.updateList()
     }
   },
   computed: {
-    searchItems () {
+    searchItems() {
       let searchText = this.searchText
-      return [{
-        type: 'suggest',
-        scope: '教授',
-        text: searchText,
-        value: 'professor:' + searchText,
-        action: () => {this.searchText = `professor:${searchText || ''}`}
-      }, {
-        type: 'suggest',
-        scope: '課名',
-        text: searchText,
-        value: 'title:' + searchText,
-        action: () => {this.searchText = `title:${searchText || ''}`}
-      }, {
-        type: 'suggest',
-        scope: '代號',
-        text: searchText,
-        value: 'number:' + searchText,
-        action: () => {this.searchText = `number:${searchText || ''}`}
-      }, {
-        type: 'suggest',
-        scope: '全部',
-        text: searchText,
-        value: '' + searchText,
-        action: () => {this.searchText = `${searchText || ''}`}
-      }, {
-        type: 'suggest',
-        scope: '時段',
-        text: searchText,
-        value: 'period:' + searchText,
-        action: () => {searchText ? this.searchText = `period:${searchText || ''}` : this.showPeriodPicker = true}
-      }]
+      return [
+        {
+          type: 'suggest',
+          scope: '教授',
+          text: searchText,
+          value: 'professor:' + searchText,
+          action: () => {
+            this.searchText = `professor:${searchText || ''}`
+          }
+        },
+        {
+          type: 'suggest',
+          scope: '課名',
+          text: searchText,
+          value: 'title:' + searchText,
+          action: () => {
+            this.searchText = `title:${searchText || ''}`
+          }
+        },
+        {
+          type: 'suggest',
+          scope: '代號',
+          text: searchText,
+          value: 'number:' + searchText,
+          action: () => {
+            this.searchText = `number:${searchText || ''}`
+          }
+        },
+        {
+          type: 'suggest',
+          scope: '全部',
+          text: searchText,
+          value: '' + searchText,
+          action: () => {
+            this.searchText = `${searchText || ''}`
+          }
+        },
+        {
+          type: 'suggest',
+          scope: '時段',
+          text: searchText,
+          value: 'period:' + searchText,
+          action: () => {
+            searchText
+              ? (this.searchText = `period:${searchText || ''}`)
+              : (this.showPeriodPicker = true)
+          }
+        }
+      ]
     }
   },
   methods: {
-    updateList () {
+    updateList() {
       let list = []
       let courses = this.courses
       let searchText = this.searchText.toLowerCase()
@@ -184,7 +202,7 @@ export default {
           }
         }
       }
-      
+
       if (searchText && searchText !== '') {
         if (searchText.startsWith('period:')) {
           this.title = this.$t('common.search', [searchPeriods.join('')])
@@ -246,7 +264,10 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.title && course.title.toLowerCase().includes(searchTitle)) {
+            if (
+              course.title &&
+              course.title.toLowerCase().includes(searchTitle)
+            ) {
               list.push({
                 number: courseNumber
               })
@@ -284,7 +305,8 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.number.toLowerCase().includes(searchText) ||
+            if (
+              course.number.toLowerCase().includes(searchText) ||
               course.title.toLowerCase().includes(searchText) ||
               course.professor.toLowerCase().includes(searchText) ||
               course.memo.toLowerCase().includes(searchText) ||
@@ -305,7 +327,9 @@ export default {
           }
         }
       } else if (abbr) {
-        this.title = this.getDepartmentDetail(abbr).chineseName || this.getDepartmentDetail(abbr).name
+        this.title =
+          this.getDepartmentDetail(abbr).chineseName ||
+          this.getDepartmentDetail(abbr).name
 
         if (abbr in this.catalog) {
           for (let courseNumber of this.catalog[abbr]) {
@@ -319,17 +343,17 @@ export default {
       }
       this.list = list
     },
-    updateDepartment (abbr) {
+    updateDepartment(abbr) {
       this.abbr = abbr
       this.updateList()
     },
-    updatePeriods (periods) {
+    updatePeriods(periods) {
       this.searchPeriods = periods
       this.searchText = 'period:' + periods.join('')
       this.updateList()
     },
-    getDepartmentDetail (abbr) {
-      if (abbr.length <= 4 && (abbr in this.departments)) {
+    getDepartmentDetail(abbr) {
+      if (abbr.length <= 4 && abbr in this.departments) {
         // Department
         return this.departments[abbr]
       } else {
@@ -343,10 +367,10 @@ export default {
         }
       }
     },
-    updatePreviewTime (number) {
+    updatePreviewTime(number) {
       this.$emit('update-preview-time', number)
     },
-    openCourseDetail (courseNumber) {
+    openCourseDetail(courseNumber) {
       this.$emit('open-course-detail', courseNumber)
     }
   }
@@ -356,7 +380,7 @@ export default {
 <style lang="scss">
 .courses-catalog {
   height: 100%;
-  
+
   .list-wrapper {
     height: calc(100% - 96px);
     overflow-x: hidden;

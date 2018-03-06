@@ -128,7 +128,7 @@ import CoursesCatalog from './components/courses-catalog'
 import SelectionResult from './components/selection-result'
 
 export default {
-  name: "SelectCourses",
+  name: 'SelectCourses',
   components: {
     TimeTable,
     CourseDetail,
@@ -148,12 +148,12 @@ export default {
           attr: 'showSelectedCoursesList',
           icon: 'playlist_add_check',
           title: 'selectedCoursesList.title'
-        },/*
+        } /*
         {
           attr: 'showFavoriteCoursesList',
           icon: 'favorite',
           title: 'favoriteCoursesList.title'
-        },*/
+        },*/,
         {
           attr: 'showTimeTable',
           icon: 'grid_on',
@@ -186,24 +186,31 @@ export default {
       'selectionResult',
       'availableSelectionResult',
       'semester',
-      'phase',
+      'phase'
     ]),
-    courses () {
+    courses() {
       let courses = this.$store.state.selectCourses.courses
       let semester = this.semester
       let phase = this.phase
 
       if (semester && phase) {
-        if (semester in this.selectionResult &&
+        if (
+          semester in this.selectionResult &&
           phase in this.selectionResult[semester]
         ) {
           let selectionResult = this.selectionResult[semester][phase]
-          courses = Object.assign({}, courses, selectionResult.status, selectionResult.randomFailed, selectionResult.waitingForRandom)
+          courses = Object.assign(
+            {},
+            courses,
+            selectionResult.status,
+            selectionResult.randomFailed,
+            selectionResult.waitingForRandom
+          )
         }
       }
       return courses
     },
-    list () {
+    list() {
       let list = []
       let semester = this.semester
       let phase = this.phase
@@ -211,11 +218,16 @@ export default {
       if (phase === 'current') {
         list = this.currentSelectedCourses
       } else if (semester && phase) {
-        if (semester in this.selectionResult &&
+        if (
+          semester in this.selectionResult &&
           phase in this.selectionResult[semester]
         ) {
           let selectionResult = this.selectionResult[semester][phase]
-          let selectionResultCatalog = ['waitingForRandom', 'status', 'randomFailed']
+          let selectionResultCatalog = [
+            'waitingForRandom',
+            'status',
+            'randomFailed'
+          ]
           for (let catalog of selectionResultCatalog) {
             let tmpList = []
             for (let courseNumber in selectionResult[catalog]) {
@@ -237,11 +249,13 @@ export default {
 
       return list
     },
-    bottomDrawerActive () {
-      let idx = this.menu.findIndex((item) => {return this.mobile[item.attr] === true})
+    bottomDrawerActive() {
+      let idx = this.menu.findIndex(item => {
+        return this.mobile[item.attr] === true
+      })
       return idx
     },
-    layoutSize () {
+    layoutSize() {
       let layoutSize = {
         coursesList: 'xs3',
         selectedCourses: 'xs3',
@@ -310,67 +324,75 @@ export default {
 
       return layoutSize
     },
-    showCoursesList () {
-      return !this.$store.state.ui.isMobile ?
-        this.pc.showCoursesList :
-        (!this.showCourseDetail && this.mobile.showCoursesList)
+    showCoursesList() {
+      return !this.$store.state.ui.isMobile
+        ? this.pc.showCoursesList
+        : !this.showCourseDetail && this.mobile.showCoursesList
     },
-    showSelectedCoursesList () {
-      return !this.$store.state.ui.isMobile ?
-        this.pc.showSelectedCoursesList :
-        (!this.showCourseDetail && this.mobile.showSelectedCoursesList)
+    showSelectedCoursesList() {
+      return !this.$store.state.ui.isMobile
+        ? this.pc.showSelectedCoursesList
+        : !this.showCourseDetail && this.mobile.showSelectedCoursesList
     },
-    showTimeTable () {
-      return !this.$store.state.ui.isMobile ?
-        (!this.showCourseDetail && this.pc.showTimeTable) :
-        (!this.showCourseDetail && this.mobile.showTimeTable)
+    showTimeTable() {
+      return !this.$store.state.ui.isMobile
+        ? !this.showCourseDetail && this.pc.showTimeTable
+        : !this.showCourseDetail && this.mobile.showTimeTable
     }
   },
   methods: {
     updatePreviewTime(courseNumber) {
-      this.previewTime = courseNumber in this.courses ? this.courses[courseNumber].time : 
-        (courseNumber in this.$store.state.selectCourses.courses ?
-          this.$store.state.selectCourses.courses[courseNumber].time :
-          courseNumber)
+      this.previewTime =
+        courseNumber in this.courses
+          ? this.courses[courseNumber].time
+          : courseNumber in this.$store.state.selectCourses.courses
+            ? this.$store.state.selectCourses.courses[courseNumber].time
+            : courseNumber
     },
-    uiMobileClearShowing () {
+    uiMobileClearShowing() {
       this.mobile.showCoursesList = false
       this.mobile.showSelectedCoursesList = false
       this.mobile.showFavoriteCoursesList = false
       this.mobile.showTimeTable = false
     },
-    openCourseDetail (courseNumber) {
+    openCourseDetail(courseNumber) {
       this.showCourseDetail = true
       this.courseDetailNumber = courseNumber
     },
-    closeCourseDetail () {
+    closeCourseDetail() {
       this.showCourseDetail = false
     }
   },
-  mounted () {
+  mounted() {
     this.hideDrawer = false
     this.$store.commit('ui/startLoading')
 
     // TODO: 應該把下面的改成並行，而非循序
-    this.$store.dispatch('selectCourses/getAvailableSelectionResult')
-    .then(() => {
-      if (this.selectionPhase || this.addOrDropPhase || this.withdrawalPhase) {
-        this.$store.dispatch('selectCourses/getCurrentSelectedCourses')
-        .then(() => {
+    this.$store
+      .dispatch('selectCourses/getAvailableSelectionResult')
+      .then(() => {
+        if (
+          this.selectionPhase ||
+          this.addOrDropPhase ||
+          this.withdrawalPhase
+        ) {
+          this.$store
+            .dispatch('selectCourses/getCurrentSelectedCourses')
+            .then(() => {
+              this.$store.commit('ui/stopLoading')
+            })
+            .catch(err => {
+              this.$router.push('/')
+              this.$store.commit('ui/stopLoading')
+            })
+        } else {
           this.$store.commit('ui/stopLoading')
-        })
-        .catch((err) => {
-          this.$router.push('/')
-          this.$store.commit('ui/stopLoading')
-        })
-      } else {
+        }
+      })
+      .catch(err => {
+        this.$router.push('/')
         this.$store.commit('ui/stopLoading')
-      }
-    })
-    .catch((err) => {
-      this.$router.push('/')
-      this.$store.commit('ui/stopLoading')
-    })
+      })
   }
 }
 </script>
@@ -415,4 +437,3 @@ export default {
   }
 }
 </style>
-

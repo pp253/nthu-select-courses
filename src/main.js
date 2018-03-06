@@ -23,4 +23,6 @@ new Vue({
   }
 })
 
-console.info('I know you are interested in source code, go https://github.com/pp253/nthu-select-courses and get it!')
+console.info(
+  'I know you are interested in source code, go https://github.com/pp253/nthu-select-courses and get it!'
+)

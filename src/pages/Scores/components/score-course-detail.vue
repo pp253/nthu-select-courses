@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import {toArray} from '@/lib/utils'
+import { toArray } from '@/lib/utils'
 import DistributionChart from './distribution-chart'
 
 export default {
@@ -90,65 +90,73 @@ export default {
     DistributionChart
   },
   props: {
-    'scores': Object,
-    'courses': Object,
+    scores: Object,
+    courses: Object,
     'course-detail-number': String
   },
-  data () {
+  data() {
     return {
       chartData: null
     }
   },
   watch: {
-    courseDetailNumber (newVal) {
+    courseDetailNumber(newVal) {
       this.$store.commit('ui/startLoading')
 
-      this.$store.dispatch('scores/getDistribution', {courseNumber: newVal})
-      .then((distribution) => {
-        this.chartData = {
-          labels: [
-            'A+',
-            'A',
-            'A-',
-            'B+',
-            'B',
-            'B-',
-            'C+',
-            'C',
-            'C-',
-            'D',
-            'E',
-            'X',
-          ],
-          datasets: [
-            {
-              label: 'Distribution of scores',
-              backgroundColor: '#f87979',
-              data: toArray(distribution).slice(0, 13)
-            }
-          ]
-        }
+      this.$store
+        .dispatch('scores/getDistribution', { courseNumber: newVal })
+        .then(distribution => {
+          this.chartData = {
+            labels: [
+              'A+',
+              'A',
+              'A-',
+              'B+',
+              'B',
+              'B-',
+              'C+',
+              'C',
+              'C-',
+              'D',
+              'E',
+              'X'
+            ],
+            datasets: [
+              {
+                label: 'Distribution of scores',
+                backgroundColor: '#f87979',
+                data: toArray(distribution).slice(0, 13)
+              }
+            ]
+          }
 
-        this.$store.commit('ui/stopLoading')
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      
-      this.$store.dispatch('scores/getSyllabus', {courseNumber: newVal})
+          this.$store.commit('ui/stopLoading')
+        })
+        .catch(err => {
+          console.error(err)
+        })
+
+      this.$store.dispatch('scores/getSyllabus', { courseNumber: newVal })
     }
   },
   computed: {
-    passRate () {
+    passRate() {
       if (!this.course || !this.course.distribution) {
         return 0
       }
 
       let sum = this.course.distribution.total
 
-      return ((1 - (this.course.distribution.D + this.course.distribution.E + this.course.distribution.X) / sum) * 100).toFixed(1)
+      return (
+        (1 -
+          (this.course.distribution.D +
+            this.course.distribution.E +
+            this.course.distribution.X) /
+            sum) *
+        100
+      ).toFixed(1)
     },
-    course () {
+    course() {
       if (!this.courseDetailNumber) {
         return {}
       }

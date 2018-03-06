@@ -10,32 +10,30 @@ export default {
     username: '',
     sessionToken: ''
   },
-  getters: {
-
-  },
   mutations: {
-    setLoginToken (state, options) {
+    setLoginToken(state, options) {
       state.loginToken = options.loginToken
     },
-    setAuthImg (state, options) {
+    setAuthImg(state, options) {
       state.authImg = options.authImg
     },
-    setLogin (state, options) {
+    setLogin(state, options) {
       state.isLogin = options.isLogin
     },
-    logout (state) {
+    logout(state) {
       state.isLogin = false
     },
-    setUsername (state, options) {
+    setUsername(state, options) {
       state.username = options.username
     },
-    setSessionToken (state, options) {
+    setSessionToken(state, options) {
       state.sessionToken = options.sessionToken
     },
-    setUser (state, options) {
+    setUser(state, options) {
       state.isLogin = options.isLogin !== undefined ? options.isLogin : true
       state.username = options.username !== undefined ? options.username : true
-      state.sessionToken = options.sessionToken !== undefined ? options.sessionToken : true
+      state.sessionToken =
+        options.sessionToken !== undefined ? options.sessionToken : true
     }
   },
   actions: {
@@ -43,17 +41,18 @@ export default {
      * Get login token and auth img for user to login.
      * @return {Promise}
      */
-    getLoginToken (context) {
+    getLoginToken(context) {
       return new Promise((resolve, reject) => {
-        api.getLoginToken()
-        .then((data) => {
-          context.commit('setLoginToken', {loginToken: data.loginToken})
-          context.commit('setAuthImg', {authImg: data.authImg})
-          resolve(data)
-        })
-        .catch((err) => {
-          reject(err)
-        })
+        api
+          .getLoginToken()
+          .then(data => {
+            context.commit('setLoginToken', { loginToken: data.loginToken })
+            context.commit('setAuthImg', { authImg: data.authImg })
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     },
     /**
@@ -62,30 +61,31 @@ export default {
      * `userpass`, `authCheckCode`.
      * @return {Promise}
      */
-    getSessionToken (context, loginInfo) {
+    getSessionToken(context, loginInfo) {
       return new Promise((resolve, reject) => {
         if (context.state.loginToken === '') {
           reject(error.ResponseErrorMsg.InvalidLoginToken())
           return
         }
 
-        api.getSessionToken({
-          username: loginInfo.username,
-          userpass: loginInfo.userpass,
-          authCheckCode: loginInfo.authCheckCode,
-          loginToken: context.state.loginToken
-        })
-        .then((data) => {
-          context.commit('setUser', {
-            isLogin: true,
-            username: data.username,
-            sessionToken: data.sessionToken
+        api
+          .getSessionToken({
+            username: loginInfo.username,
+            userpass: loginInfo.userpass,
+            authCheckCode: loginInfo.authCheckCode,
+            loginToken: context.state.loginToken
           })
-          resolve(data)
-        })
-        .catch((err) => {
-          reject(err)
-        })
+          .then(data => {
+            context.commit('setUser', {
+              isLogin: true,
+              username: data.username,
+              sessionToken: data.sessionToken
+            })
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     }
   }

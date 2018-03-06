@@ -24,110 +24,145 @@ export default {
     phase: ''
   },
   mutations: {
-    setSelectionPhase (state, options) {
+    setSelectionPhase(state, options) {
       state.selectionPhase = options.selectionPhase
     },
-    setAddOrDropPhase (state, options) {
+    setAddOrDropPhase(state, options) {
       state.addOrDropPhase = options.addOrDropPhase
     },
-    setWithdrawalPhase (state, options) {
+    setWithdrawalPhase(state, options) {
       state.withdrawalPhase = options.withdrawalPhase
     },
-    setEditable (state, options) {
+    setEditable(state, options) {
       state.editable = options.editable
     },
-    setSemester (state, options) {
+    setSemester(state, options) {
       state.semester = options.semester
     },
-    setPhase (state, options) {
+    setPhase(state, options) {
       state.phase = options.phase
     },
-    setSyllabus (state, options) {
+    setSyllabus(state, options) {
       if (!state.courses[options.courseNumber]) {
-        state.courses[options.courseNumber] = Object.assign({
-          number: options.courseNumber
-        }, options.syllabus)
+        state.courses[options.courseNumber] = Object.assign(
+          {
+            number: options.courseNumber
+          },
+          options.syllabus
+        )
       }
-      state.courses[options.courseNumber] = Object.assign({}, state.courses[options.courseNumber], {
-        syllabus: options.syllabus
-      })
+      state.courses[options.courseNumber] = Object.assign(
+        {},
+        state.courses[options.courseNumber],
+        {
+          syllabus: options.syllabus
+        }
+      )
     },
-    setAvailableSelectionResult (state, options) {
-      state.availableSelectionResult = Object.assign({}, state.availableSelectionResult, options.availableSelectionResult)
+    setAvailableSelectionResult(state, options) {
+      state.availableSelectionResult = Object.assign(
+        {},
+        state.availableSelectionResult,
+        options.availableSelectionResult
+      )
     },
-    setAvailableSelectionResultLoaded (state, options) {
-      state.setAvailableSelectionResultLoaded = options.availableSelectionResultLoaded
+    setAvailableSelectionResultLoaded(state, options) {
+      state.setAvailableSelectionResultLoaded =
+        options.availableSelectionResultLoaded
     },
-    setSelectionResult (state, options) {
+    setSelectionResult(state, options) {
       state.selectionResult = Object.assign({}, state.selectionResult, {
         [options.semester]: {
           [options.phase]: options.selectionResult
         }
       })
     },
-    setCurrentSelectedCourses (state, options) {
+    setCurrentSelectedCourses(state, options) {
       state.currentSelectedCourses = options.currentSelectedCourses
     },
-    setCurrentSelectedCoursesLoaded (state, options) {
+    setCurrentSelectedCoursesLoaded(state, options) {
       state.currentSelectedCoursesLoaded = options.currentSelectedCoursesLoaded
     }
   },
   actions: {
-    quitCourse (context, options) {
+    quitCourse(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
 
-        api.quitCourse(context.rootState.user.sessionToken, options.courseNumber)
-        .then((data) => {
-          context.commit('setCurrentSelectedCourses', {currentSelectedCourses: data.currentSelectedCourses})
-          context.commit('setCurrentSelectedCoursesLoaded', {currentSelectedCoursesLoaded: true})
-          resolve(context.state.currentSelectedCourses)
-        })
-        .catch((err) => {
-          reject(err)
-        })
+        api
+          .quitCourse(context.rootState.user.sessionToken, options.courseNumber)
+          .then(data => {
+            context.commit('setCurrentSelectedCourses', {
+              currentSelectedCourses: data.currentSelectedCourses
+            })
+            context.commit('setCurrentSelectedCoursesLoaded', {
+              currentSelectedCoursesLoaded: true
+            })
+            resolve(context.state.currentSelectedCourses)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     },
-    addCourse (context, options) {
+    addCourse(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
 
-        api.addCourse(context.rootState.user.sessionToken, options.courseNumber, options.order)
-        .then((data) => {
-          context.commit('setCurrentSelectedCourses', {currentSelectedCourses: data.currentSelectedCourses})
-          context.commit('setCurrentSelectedCoursesLoaded', {currentSelectedCoursesLoaded: true})
-          resolve(context.state.currentSelectedCourses)
-        })
-        .catch((err) => {
-          reject(err)
-        })
+        api
+          .addCourse(
+            context.rootState.user.sessionToken,
+            options.courseNumber,
+            options.order
+          )
+          .then(data => {
+            context.commit('setCurrentSelectedCourses', {
+              currentSelectedCourses: data.currentSelectedCourses
+            })
+            context.commit('setCurrentSelectedCoursesLoaded', {
+              currentSelectedCoursesLoaded: true
+            })
+            resolve(context.state.currentSelectedCourses)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     },
-    editOrder (context, options) {
+    editOrder(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
 
-        api.editOrder(context.rootState.user.sessionToken, options.newOrder, options.oldOrder)
-        .then((data) => {
-          context.commit('setCurrentSelectedCourses', {currentSelectedCourses: data.currentSelectedCourses})
-          context.commit('setCurrentSelectedCoursesLoaded', {currentSelectedCoursesLoaded: true})
-          resolve(context.state.currentSelectedCourses)
-        })
-        .catch((err) => {
-          reject(err)
-        })
+        api
+          .editOrder(
+            context.rootState.user.sessionToken,
+            options.newOrder,
+            options.oldOrder
+          )
+          .then(data => {
+            context.commit('setCurrentSelectedCourses', {
+              currentSelectedCourses: data.currentSelectedCourses
+            })
+            context.commit('setCurrentSelectedCoursesLoaded', {
+              currentSelectedCoursesLoaded: true
+            })
+            resolve(context.state.currentSelectedCourses)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     },
-    getCurrentSelectedCourses (context, options) {
+    getCurrentSelectedCourses(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
@@ -137,43 +172,55 @@ export default {
         if (context.state.currentSelectedCoursesLoaded) {
           resolve(context.state.currentSelectedCourses)
         } else {
-          api.getCurrentSelectedCourses(context.rootState.user.sessionToken)
-          .then((data) => {
-            context.commit('setCurrentSelectedCourses', {currentSelectedCourses: data.currentSelectedCourses})
-            context.commit('setCurrentSelectedCoursesLoaded', {currentSelectedCoursesLoaded: true})
-            resolve(context.state.currentSelectedCourses)
-          })
-          .catch((err) => {
-            reject(err)
-          })
+          api
+            .getCurrentSelectedCourses(context.rootState.user.sessionToken)
+            .then(data => {
+              context.commit('setCurrentSelectedCourses', {
+                currentSelectedCourses: data.currentSelectedCourses
+              })
+              context.commit('setCurrentSelectedCoursesLoaded', {
+                currentSelectedCoursesLoaded: true
+              })
+              resolve(context.state.currentSelectedCourses)
+            })
+            .catch(err => {
+              reject(err)
+            })
         }
       })
     },
-    getSyllabus (context, options) {
+    getSyllabus(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
 
-        if (context.state.courses[options.courseNumber] && context.state.courses[options.courseNumber].syllabus) {
+        if (
+          context.state.courses[options.courseNumber] &&
+          context.state.courses[options.courseNumber].syllabus
+        ) {
           resolve(context.state.courses[options.courseNumber].syllabus)
         } else {
-          api.getSyllabus(context.rootState.user.sessionToken, options.courseNumber)
-          .then((data) => {
-            context.commit('setSyllabus', {
-              courseNumber: options.courseNumber,
-              syllabus: data.syllabus
+          api
+            .getSyllabus(
+              context.rootState.user.sessionToken,
+              options.courseNumber
+            )
+            .then(data => {
+              context.commit('setSyllabus', {
+                courseNumber: options.courseNumber,
+                syllabus: data.syllabus
+              })
+              resolve(data.syllabus)
             })
-            resolve(data.syllabus)
-          })
-          .catch((err) => {
-            reject(err)
-          })
+            .catch(err => {
+              reject(err)
+            })
         }
       })
     },
-    getAvailableSelectionResult (context, options) {
+    getAvailableSelectionResult(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
@@ -183,57 +230,72 @@ export default {
         if (context.state.availableSelectionResultLoaded) {
           resolve(context.state.availableSelectionResult)
         } else {
-          api.getAvailableSelectionResult(context.rootState.user.sessionToken)
-          .then((data) => {
-            context.commit('setAvailableSelectionResult', {availableSelectionResult: data.availableSelectionResult})
-            context.commit('setAvailableSelectionResultLoaded', {availableSelectionResultLoaded: true})
-            context.commit('setSemester', {semester: data.semester})
-            context.commit('setPhase', {semester: data.phase})
-            context.commit('setEditable', {editable: data.editable})
+          api
+            .getAvailableSelectionResult(context.rootState.user.sessionToken)
+            .then(data => {
+              context.commit('setAvailableSelectionResult', {
+                availableSelectionResult: data.availableSelectionResult
+              })
+              context.commit('setAvailableSelectionResultLoaded', {
+                availableSelectionResultLoaded: true
+              })
+              context.commit('setSemester', { semester: data.semester })
+              context.commit('setPhase', { semester: data.phase })
+              context.commit('setEditable', { editable: data.editable })
 
-            resolve(data.availableSelectionResult)
-          })
-          .catch((err) => {
-            reject(err)
-          })
+              resolve(data.availableSelectionResult)
+            })
+            .catch(err => {
+              reject(err)
+            })
         }
       })
     },
-    getSelectionResult (context, options) {
+    getSelectionResult(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
 
-        if (context.state.selectionResult[options.semester] && context.state.selectionResult[options.semester][options.phase]) {
-          resolve(context.state.selectionResult[options.semester][options.phase])
+        if (
+          context.state.selectionResult[options.semester] &&
+          context.state.selectionResult[options.semester][options.phase]
+        ) {
+          resolve(
+            context.state.selectionResult[options.semester][options.phase]
+          )
         } else {
-          api.getSelectionResult(context.rootState.user.sessionToken, options.semester, options.phase)
-          .then((data) => {
-            context.commit('setSelectionResult', {
-              semester: data.semester,
-              phase: data.phase,
-              selectionResult: {
+          api
+            .getSelectionResult(
+              context.rootState.user.sessionToken,
+              options.semester,
+              options.phase
+            )
+            .then(data => {
+              context.commit('setSelectionResult', {
                 semester: data.semester,
                 phase: data.phase,
-                status: data.status,
-                randomFailed: data.randomFailed,
-                waitingForRandom: data.waitingForRandom
-              }
+                selectionResult: {
+                  semester: data.semester,
+                  phase: data.phase,
+                  status: data.status,
+                  randomFailed: data.randomFailed,
+                  waitingForRandom: data.waitingForRandom
+                }
+              })
+              resolve(data)
             })
-            resolve(data)
-          })
-          .catch((err) => {
-            reject(err)
-          })
+            .catch(err => {
+              reject(err)
+            })
         }
       })
     },
-    getDepartmentDetail (context, options) {
+    getDepartmentDetail(context, options) {
       return new Promise((resolve, reject) => {
         let abbr = options.abbr
-        if (abbr.length <= 4 && (abbr in context.state.departments)) {
+        if (abbr.length <= 4 && abbr in context.state.departments) {
           // Department
           resolve(context.state.departments[abbr])
           return
@@ -251,10 +313,12 @@ export default {
         reject(error.ResponseErrorMsg.DepartmentAbbrNotFound())
       })
     },
-    isCourseSelected (context, options) {
-      return (context.state.currentSelectedCourses.find((course) => {
-        return course.number === options.courseNumber
-      }) !== undefined)
+    isCourseSelected(context, options) {
+      return (
+        context.state.currentSelectedCourses.find(course => {
+          return course.number === options.courseNumber
+        }) !== undefined
+      )
     }
   }
 }

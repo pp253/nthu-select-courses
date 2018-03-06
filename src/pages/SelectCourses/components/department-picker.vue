@@ -65,7 +65,7 @@
                       <v-list-tile-content>總錄</v-list-tile-content>
                     </v-list-tile>
                     <template
-                      v-for="(cls, _) in departments[choosedDepartment].classes"
+                      v-for="cls in departments[choosedDepartment].classes"
                     >
                       <v-list-tile
                         ripple
@@ -96,12 +96,12 @@
 export default {
   name: 'DepartmentPicker',
   props: {
-    'value': {
+    value: {
       type: Boolean,
       default: false
     }
   },
-  data () {
+  data() {
     return {
       departments: this.$store.state.selectCourses.departments,
       choosedDepartment: '',
@@ -112,12 +112,12 @@ export default {
     }
   },
   watch: {
-    value (newVal) {
+    value(newVal) {
       this.dialog = newVal
     }
   },
   computed: {
-    searchList () {
+    searchList() {
       if (!this.searchText) {
         return this.departments
       }
@@ -126,8 +126,11 @@ export default {
       let list = {}
       for (let deptAbbr in this.departments) {
         let department = this.departments[deptAbbr]
-        if ((department.chineseName && department.chineseName.toLowerCase().includes(searchText)) ||
-          (department.name && department.name.toLowerCase().includes(searchText)) ||
+        if (
+          (department.chineseName &&
+            department.chineseName.toLowerCase().includes(searchText)) ||
+          (department.name &&
+            department.name.toLowerCase().includes(searchText)) ||
           // (department.englishName && department.englishName.toLowerCase().includes(searchText)) ||
           department.abbr.toLowerCase().includes(searchText)
         ) {
@@ -138,15 +141,18 @@ export default {
     }
   },
   methods: {
-    done () {
+    done() {
       this.dialog = false
       this.$emit('close')
       if (this.choosedDepartment !== '') {
-        this.$emit('update-department', this.choosedClass || this.choosedDepartment)
+        this.$emit(
+          'update-department',
+          this.choosedClass || this.choosedDepartment
+        )
       }
     },
-    getDepartmentDetail (abbr) {
-      if (abbr.length <= 4 && (abbr in this.departments)) {
+    getDepartmentDetail(abbr) {
+      if (abbr.length <= 4 && abbr in this.departments) {
         // Department
         return this.departments[abbr]
       } else {
@@ -161,7 +167,7 @@ export default {
       }
       return {}
     },
-    close () {
+    close() {
       this.dialog = false
       this.$emit('close')
     }
@@ -171,9 +177,11 @@ export default {
 
 <style lang="scss">
 .department-picker {
-  .flex-college, .flex-department, .flex-class {
+  .flex-college,
+  .flex-department,
+  .flex-class {
     li.list__tile--active a div {
-      color: #1976D2 !important;
+      color: #1976d2 !important;
     }
   }
 
@@ -204,5 +212,3 @@ export default {
   }
 }
 </style>
-
-

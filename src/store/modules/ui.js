@@ -12,40 +12,40 @@ export default {
     snackbarText: ''
   },
   getters: {
-    isNotMobile (state) {
+    isNotMobile(state) {
       return !state.isMobile
     }
   },
   mutations: {
-    setMobile (state, options) {
+    setMobile(state, options) {
       state.isMobile = options.isMobile
     },
-    openDialog (state, options) {
+    openDialog(state, options) {
       state.dialog = true
       state.dialogTitle = options.title
       state.dialogText = options.text
       state.dialogMore = options.more || ''
       state.dialogMode = options.mode || 'info'
     },
-    closeDialog (state) {
+    closeDialog(state) {
       state.dialog = false
     },
-    openSnackbar (state, options) {
+    openSnackbar(state, options) {
       state.snackbar = true
       state.snackbarText = options.snackbarText
     },
-    closeSnackbar (state) {
+    closeSnackbar(state) {
       state.snackbar = false
     },
-    startLoading (state) {
+    startLoading(state) {
       state.loading = true
     },
-    stopLoading (state) {
+    stopLoading(state) {
       state.loading = false
     }
   },
   actions: {
-    openSnackbar (context, options) {
+    openSnackbar(context, options) {
       context.commit('openSnackbar', {
         snackbarText: options.snackbarText
       })
@@ -53,7 +53,7 @@ export default {
         context.commit('closeSnackbar')
       }, 6000)
     },
-    openRequestDialog (context, options) {
+    openRequestDialog(context, options) {
       return new Promise((resolve, reject) => {
         context.commit('openDialog', {
           title: options.title,
@@ -62,7 +62,7 @@ export default {
           mode: options.mode || 'request'
         })
 
-        this.$bus.$once('dialog-return', (result) => {
+        this.$bus.$once('dialog-return', result => {
           switch (result) {
             case 'Yes':
               resolve(true)

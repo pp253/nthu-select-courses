@@ -88,9 +88,7 @@
       "s": "六"
     }
   },
-  "error": {
-    
-  },
+  "error": {},
   "selectCourses": {
     "name": "簡易選課系統",
     "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
@@ -103,8 +101,10 @@
     "title": "{0}的成績",
     "emptyText": "沒有成績",
     "distribution": "成績分布",
-    "requestSharingDistributionTitle": "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
-    "requestSharingDistributionText": "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。"
+    "requestSharingDistributionTitle":
+      "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
+    "requestSharingDistributionText":
+      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。"
   },
   "commentsAboutCourses": {
     "name": "簡易教學評鑑調查",

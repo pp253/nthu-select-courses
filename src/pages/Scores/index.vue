@@ -28,39 +28,36 @@ export default {
     ScoreCourseDetail,
     ScoreList
   },
-  data () {
+  data() {
     return {
       showCourseDetail: false,
       courseDetailNumber: ''
     }
   },
   computed: {
-    ...mapState('scores', [
-      'scores',
-      'courses',
-      'overview'
-    ])
+    ...mapState('scores', ['scores', 'courses', 'overview'])
   },
   methods: {
-    showDetail (courseNumber) {
+    showDetail(courseNumber) {
       this.showCourseDetail = true
       this.courseDetailNumber = courseNumber
     },
-    closeDetail () {
+    closeDetail() {
       this.showCourseDetail = false
     }
   },
-  mounted () {
+  mounted() {
     this.$store.commit('ui/startLoading')
-    this.$store.dispatch('scores/getScores')
-    .then((data) => {
-      this.$store.commit('ui/stopLoading')
-    })
-    .catch((err) => {
-      console.log(err)
-      this.$store.commit('ui/stopLoading')
-      this.$router.push('/')
-    })
+    this.$store
+      .dispatch('scores/getScores')
+      .then(data => {
+        this.$store.commit('ui/stopLoading')
+      })
+      .catch(err => {
+        console.log(err)
+        this.$store.commit('ui/stopLoading')
+        this.$router.push('/')
+      })
   }
 }
 </script>
@@ -69,4 +66,3 @@ export default {
 .scores {
 }
 </style>
-

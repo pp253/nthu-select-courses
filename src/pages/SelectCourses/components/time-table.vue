@@ -97,13 +97,27 @@ export default {
   name: 'TimeTable',
   props: {
     'preview-time': String,
-    'list': Array,
-    'title': String,
-    'courses': Object
+    list: Array,
+    title: String,
+    courses: Object
   },
-  data () {
+  data() {
     return {
-      timeSectionName: ['1', '2', '3', '4', 'n', '5', '6', '7', '8', '9', 'a', 'b', 'c'],
+      timeSectionName: [
+        '1',
+        '2',
+        '3',
+        '4',
+        'n',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'a',
+        'b',
+        'c'
+      ],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S'],
       showRoom: false,
       showProfessor: false,
@@ -111,7 +125,7 @@ export default {
     }
   },
   computed: {
-    timeTable () {
+    timeTable() {
       let table = {}
       for (let weekday of this.weekdayName) {
         table[weekday] = {}
@@ -124,7 +138,9 @@ export default {
           continue
         }
         for (let i = 0; i < this.courses[course.number].time.length; i += 2) {
-          let list = /([MTWRFS])([1-9abcnABCN])/g.exec(this.courses[course.number].time.slice(i, i + 2))
+          let list = /([MTWRFS])([1-9abcnABCN])/g.exec(
+            this.courses[course.number].time.slice(i, i + 2)
+          )
           table[list[1].toUpperCase()][list[2].toLowerCase()].push(course)
         }
       }
@@ -162,7 +178,7 @@ export default {
       display: table;
       table-layout: fixed;
 
-      .table-col{
+      .table-col {
         display: table-cell;
         height: $col-height;
         min-width: $col-width;
@@ -194,12 +210,13 @@ export default {
     .table-row.time-section-a .table-col {
       border-top: 3px double #aaa;
     }
-    
+
     .table-row.time-section-c .table-col {
       border-bottom: 1px solid #aaa;
     }
 
-    .table-head, .table-body {
+    .table-head,
+    .table-body {
       width: fit-content;
       min-width: 100%;
     }
@@ -209,7 +226,7 @@ export default {
       font-size: $title-font-size;
       border: none !important;
     }
-    
+
     .table-body {
       user-select: text;
 

@@ -8,7 +8,9 @@
       <v-card>
         <v-card-text>
           <v-layout>
-            <v-flex xs3 class="loading-icon"><v-progress-circular indeterminate color="primary" :size="50"></v-progress-circular></v-flex>
+            <v-flex xs3 class="loading-icon">
+              <v-progress-circular indeterminate color="primary" :size="50"></v-progress-circular>
+            </v-flex>
             <v-flex
               xs9
               class="loading-text"
@@ -57,7 +59,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
+
     <v-snackbar
       :timeout="6000"
       bottom
@@ -73,21 +75,24 @@
 export default {
   name: 'app',
   methods: {
-    updateIsMobile (newVal) {
+    updateIsMobile(newVal) {
       // Fix Vuetify's bug
-      if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
-        this.$store.commit('ui/setMobile', {isMobile: true})
+      if (
+        this.$vuetify.breakpoint.name === 'xs' ||
+        this.$vuetify.breakpoint.name === 'sm'
+      ) {
+        this.$store.commit('ui/setMobile', { isMobile: true })
         return true
       } else {
-        this.$store.commit('ui/setMobile', {isMobile: false})
+        this.$store.commit('ui/setMobile', { isMobile: false })
         return false
       }
     }
   },
-  mounted () {
+  mounted() {
     this.updateIsMobile(this.$vuetify.breakpoint.name)
     this.$watch('$vuetify.breakpoint.name', this.updateIsMobile)
-    
+
     this.$store.commit('ui/stopLoading')
   }
 }
@@ -100,7 +105,9 @@ html {
 }
 
 * {
-  font-family: -apple-system, 'Microsoft JhengHei', BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, 'Microsoft JhengHei', BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
 }
 
 body {
@@ -129,7 +136,8 @@ input::-webkit-inner-spin-button {
     padding-left: 10px;
   }
 
-  .display-none, .hidden {
+  .display-none,
+  .hidden {
     display: none;
   }
 
@@ -141,7 +149,8 @@ input::-webkit-inner-spin-button {
     text-decoration: none;
   }
 
-  a.underline, .underline a {
+  a.underline,
+  .underline a {
     text-decoration: underline;
   }
 

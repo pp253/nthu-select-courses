@@ -170,8 +170,8 @@ export default {
     draggable
   },
   props: {
-    'list': Array,
-    'courses': Object,
+    list: Array,
+    courses: Object,
     'empty-text': {
       default: '您還沒有加入的課程歐！'
     }
@@ -184,44 +184,56 @@ export default {
     ])
   },
   methods: {
-    addCourse (courseNumber) {
+    addCourse(courseNumber) {
       return new Promise((resolve, reject) => {
         this.$store.commit('ui/startLoading')
         let order = ''
         if (this.courses[courseNumber].random !== 0) {
-          order = this.$store.state.selectCourses.currentSelectedCourses.filter((course) => {
-            return course.status && course.status === 2 && this.courses[course.number].random === this.courses[courseNumber].random
-          }).length + 1
+          order =
+            this.$store.state.selectCourses.currentSelectedCourses.filter(
+              course => {
+                return (
+                  course.status &&
+                  course.status === 2 &&
+                  this.courses[course.number].random ===
+                    this.courses[courseNumber].random
+                )
+              }
+            ).length + 1
         }
 
-        this.$store.dispatch('selectCourses/addCourse', {
-          courseNumber: courseNumber,
-          order: order
-        })
-        .then((data) => {
-          this.$store.commit('ui/stopLoading')
-          this.$store.dispatch('ui/openSnackbar', {
-            snackbarText: this.$t('coursesList.addSuccess', [this.courses[courseNumber].title])
+        this.$store
+          .dispatch('selectCourses/addCourse', {
+            courseNumber: courseNumber,
+            order: order
           })
-          resolve(data)
-        })
-        .catch((err) => {
-          this.$store.commit('ui/stopLoading')
-          reject(err)
-        })
+          .then(data => {
+            this.$store.commit('ui/stopLoading')
+            this.$store.dispatch('ui/openSnackbar', {
+              snackbarText: this.$t('coursesList.addSuccess', [
+                this.courses[courseNumber].title
+              ])
+            })
+            resolve(data)
+          })
+          .catch(err => {
+            this.$store.commit('ui/stopLoading')
+            reject(err)
+          })
       })
     },
-    quitCourse (courseNumber) {
+    quitCourse(courseNumber) {
       return new Promise((resolve, reject) => {
-        this.$store.dispatch('ui/openRequestDialog', {
-          title: `確定退選「${this.courses[courseNumber].title}」嗎？`,
-          text: '此動作無法還原。',
-          mode: 'request'
-        })
-        .then((result) => {
-          if (result) {
-            this.$store.commit('ui/startLoading')
-            /*
+        this.$store
+          .dispatch('ui/openRequestDialog', {
+            title: `確定退選「${this.courses[courseNumber].title}」嗎？`,
+            text: '此動作無法還原。',
+            mode: 'request'
+          })
+          .then(result => {
+            if (result) {
+              this.$store.commit('ui/startLoading')
+              /*
             this.$store.dispatch('selectCourses/quitCourse', {
               courseNumber: courseNumber
             })
@@ -234,44 +246,47 @@ export default {
               reject(err)
             })
             */
-          }
-        })
+            }
+          })
       })
     },
-    addFavorite (number) {
+    addFavorite(number) {
       // this.store.addFavorateCourses(number)
     },
-    removeFavorite (number) {
+    removeFavorite(number) {
       // this.store.removeFavorateCourses(number)
     },
-    updatePreviewTime (number) {
+    updatePreviewTime(number) {
       this.$emit('update-preview-time', number)
     },
-    openCourseDetail (courseNumber) {
+    openCourseDetail(courseNumber) {
       this.$emit('open-course-detail', courseNumber)
     },
-    editOrder (catagory) {
+    editOrder(catagory) {
       this.$store.commit('ui/startLoading')
-      this.$store.dispatch('selectCourses/editOrder', {
-        newOrder: catagory.newOrder,
-        oldOrder: catagory.oldOrder
-      })
-      .then((data) => {
-        catagory.dialog = false
-        this.$store.commit('ui/stopLoading')
-      })
+      this.$store
+        .dispatch('selectCourses/editOrder', {
+          newOrder: catagory.newOrder,
+          oldOrder: catagory.oldOrder
+        })
+        .then(data => {
+          catagory.dialog = false
+          this.$store.commit('ui/stopLoading')
+        })
     },
-    cancelEditOrder (catagory) {
+    cancelEditOrder(catagory) {
       catagory.newOrder.splice(0, catagory.newOrder.length)
       for (let order of catagory.oldOrder) {
         catagory.newOrder.push(order)
       }
       catagory.dialog = false
     },
-    isCourseSelected (courseNumber) {
-      return (this.$store.state.selectCourses.currentSelectedCourses.find((course) => {
-        return course.number === courseNumber
-      }) !== undefined)
+    isCourseSelected(courseNumber) {
+      return (
+        this.$store.state.selectCourses.currentSelectedCourses.find(course => {
+          return course.number === courseNumber
+        }) !== undefined
+      )
     }
   }
 }

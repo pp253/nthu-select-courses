@@ -1,4 +1,4 @@
-export function htmlEncode (str) {
+export function htmlEncode(str) {
   if (typeof str !== 'string') {
     throw new Error('htmlEncode: str should be a string.')
   }
@@ -13,7 +13,7 @@ export function htmlEncode (str) {
   return result
 }
 
-export function toArray (obj) {
+export function toArray(obj) {
   if (typeof obj !== 'object') {
     throw new Error('toArray: obj should be an object.')
   }
