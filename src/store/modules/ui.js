@@ -1,14 +1,62 @@
 export default {
   namespaced: true,
   state: {
+    /**
+     * The state of the user device.
+     * `isMobile` will be updated by the `updateIsMobile` method
+     * in the `@/App.vue`.
+     */
     isMobile: false,
+
+    /**
+     * Control the visibility of the `now-loading`.
+     */
     loading: false,
+
+    /**
+     * Control the visibility of the dialog.
+     */
     dialog: false,
+
+    /**
+     * Title of the dialog.
+     * Note that `dialogTitle` will be parsed by the i18n.
+     */
     dialogTitle: '',
+
+    /**
+     * Content of the dialog.
+     * Note that `dialogText` will be parsed by the i18n.
+     */
     dialogText: '',
+
+    /**
+     * More text on the dialog.
+     * Note that `dialogMore` will **not** be parsed by the i18n.
+     */
     dialogMore: '',
+
+    /**
+     * Control the mode of the dialog.
+     * Available mode are, `info` and `request`.
+     *
+     * # `info` mode
+     * Actions: `OK`
+     *
+     * # `request` mode
+     * Actions: `Yes`, `No`
+     */
     dialogMode: 'info',
+
+    /**
+     * Control the visibility of the snackbar.
+     */
     snackbar: false,
+
+    /**
+     * Content of the snackbar.
+     * Note that `snackbarText` will **not** be parsed by i18n.
+     */
     snackbarText: ''
   },
   getters: {
@@ -46,13 +94,20 @@ export default {
   },
   actions: {
     openSnackbar(context, options) {
+      let timeout = 6000
       context.commit('openSnackbar', {
         snackbarText: options.snackbarText
       })
       setTimeout(() => {
         context.commit('closeSnackbar')
-      }, 6000)
+      }, timeout)
     },
+
+    /**
+     *
+     * @param {object} options
+     * @returns {Promise} result
+     */
     openRequestDialog(context, options) {
       return new Promise((resolve, reject) => {
         context.commit('openDialog', {

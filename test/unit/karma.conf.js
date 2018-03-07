@@ -5,7 +5,7 @@
 
 var webpackConfig = require('../../build/webpack.test.conf')
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
     // to run in additional browsers:
     // 1. install corresponding karma launcher
@@ -14,7 +14,7 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
     frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
     reporters: ['spec', 'coverage'],
-    files: ['./index.js'],
+    files: ['../../node_modules/babel-polyfill/dist/polyfill.js', './index.js'],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
@@ -24,10 +24,7 @@ module.exports = function (config) {
     },
     coverageReporter: {
       dir: './coverage',
-      reporters: [
-        { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
-      ]
+      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
     }
   })
 }

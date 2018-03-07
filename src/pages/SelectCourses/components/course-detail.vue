@@ -101,12 +101,10 @@
                     xs12 sm6 lg4
                   >
                     <v-container>
-                      <v-card
+                      <v-btn
                         @click.native="showCommentDialog = true"
-                        ripple
-                      >
-                        <v-card-title>撰寫您的評論</v-card-title>
-                      </v-card>
+                        block
+                      >撰寫您的評論</v-btn>
                     </v-container>
                   </v-flex>
                   <v-flex
@@ -118,7 +116,7 @@
                       pa-3
                     >
                       <v-card>
-                        <v-card-title>
+                        <v-card-title class="pb-0">
                           <span>123</span>
                           <v-spacer />
                           <span>
@@ -126,7 +124,7 @@
                           </span>
                         </v-card-title>
                         <v-card-text>任何產業均有其產業秩序及遊戲規則，利用他人著作的遊戲規則，最主要是著作權法。特別是現今多元的社會中，利用他人著作的情形，</v-card-text>
-                        <v-card-actions>
+                        <v-card-actions class="pt-0">
                           <v-btn icon>
                             <v-icon class="grey--text text--lighten-1">thumb_up</v-icon>
                           </v-btn>
@@ -167,6 +165,7 @@
       :fullscreen="$store.state.ui.isMobile"
       v-model="showCommentDialog"
       max-width="500px"
+      persistent
     >
       <v-card>
         <v-card-title class="headline">評論{{ course.title || course.chineseTitle }}</v-card-title>
@@ -191,6 +190,36 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      :fullscreen="$store.state.ui.isMobile"
+      v-model="showReportDialog"
+      max-width="500px"
+      persistent
+    >
+      <v-card>
+        <v-card-title class="headline">評論{{ course.title || course.chineseTitle }}</v-card-title>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              name="comments-name"
+              label="您的名字"
+              value="匿名"
+            ></v-text-field>
+            <v-text-field
+              name="comments-text"
+              label="您的想法"
+              multi-line
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn flat @click="showReportDialog = false">取消</v-btn>
+          <v-btn flat @click="showReportDialog = false">送出</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -208,7 +237,8 @@ export default {
       courses: this.$store.state.selectCourses.courses,
       course: {},
       tabs: 'tab-course-detail-syllabus',
-      showCommentDialog: false
+      showCommentDialog: false,
+      showReportDialog: false
     }
   },
   computed: {
