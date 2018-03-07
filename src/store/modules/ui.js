@@ -71,7 +71,7 @@ export default {
     openDialog(state, options) {
       state.dialog = true
       state.dialogTitle = options.title
-      state.dialogText = options.text
+      state.dialogText = options.text || ''
       state.dialogMore = options.more || ''
       state.dialogMode = options.mode || 'info'
     },
@@ -104,7 +104,6 @@ export default {
     },
 
     /**
-     *
      * @param {object} options
      * @returns {Promise} result
      */
