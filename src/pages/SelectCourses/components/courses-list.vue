@@ -234,18 +234,18 @@ export default {
             if (result) {
               this.$store.commit('ui/startLoading')
               /*
-            this.$store.dispatch('selectCourses/quitCourse', {
-              courseNumber: courseNumber
-            })
-            .then((data) => {
-              this.$store.commit('ui/stopLoading')
-              resolve(data)
-            })
-            .catch((err) => {
-              this.$store.commit('ui/stopLoading')
-              reject(err)
-            })
-            */
+              this.$store.dispatch('selectCourses/quitCourse', {
+                courseNumber: courseNumber
+              })
+              .then((data) => {
+                this.$store.commit('ui/stopLoading')
+                resolve(data)
+              })
+              .catch((err) => {
+                this.$store.commit('ui/stopLoading')
+                reject(err)
+              })
+              */
             }
           })
       })
