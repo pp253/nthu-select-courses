@@ -367,7 +367,6 @@ export default {
     this.hideDrawer = false
     this.$store.commit('ui/startLoading')
 
-    // TODO: 應該把下面的改成並行，而非循序
     this.$store
       .dispatch('selectCourses/getAvailableSelectionResult')
       .then(() => {
