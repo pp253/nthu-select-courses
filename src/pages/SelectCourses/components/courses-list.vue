@@ -282,7 +282,7 @@ export default {
       catagory.dialog = false
     },
     isCourseSelected(courseNumber) {
-      return (
+      return (this.$store.state.selectCourses.currentSelectedCourses && 
         this.$store.state.selectCourses.currentSelectedCourses.find(course => {
           return course.number === courseNumber
         }) !== undefined
