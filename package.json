@@ -1,12 +1,16 @@
 {
   "name": "nthu-select-courses",
   "version": "1.0.0",
-  "description": "NTHU SELECT COURSES: Make courses selection an easy, intuitive, and pleasure work.",
+  "description":
+    "NTHU SELECT COURSES: Make courses selection an easy, intuitive, and pleasure work.",
   "author": "pp253 <pp.pp253@gmail.com>",
+  "license": "Apache-2.0",
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev":
+      "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
+    "unit":
+      "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "build": "node build/build.js"
@@ -88,14 +92,8 @@
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
   "babel": {
-    "presets": [
-      "env"
-    ]
+    "presets": ["env"]
   }
 }
