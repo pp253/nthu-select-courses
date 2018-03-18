@@ -10,17 +10,17 @@ export default {
     overview: {}
   },
   mutations: {
-    setScores(state, options) {
+    SET_SCORES(state, options) {
       state.scores = Object.assign({}, state.scores, options.scores)
     },
-    setCourses(state, options) {
+    SET_COURSES(state, options) {
       state.courses = Object.assign({}, state.courses, options.courses)
     },
     /**
      * Set the distribution of an existed course.
      * @param {*} options Options should include `courseNumber`, `distribution`
      */
-    setDistribution(state, options) {
+    SET_DISTRIBUTION(state, options) {
       if (!state.courses[options.courseNumber]) {
         return
       }
@@ -36,7 +36,7 @@ export default {
      * Set the distribution of an existed course.
      * @param {object} options Options should include `courseNumber`, `syllabus`
      */
-    setSyllabus(state, options) {
+    SET_SYLLABUS(state, options) {
       if (!state.courses[options.courseNumber]) {
         return
       }
@@ -48,10 +48,10 @@ export default {
         }
       )
     },
-    setOverview(state, options) {
+    SET_OVERVIEW(state, options) {
       state.overview = Object.assign({}, state.overview, options.overview)
     },
-    setScoresLoaded(state) {
+    SET_SCORES_LOADED(state) {
       state.scoresLoaded = true
     }
   },
@@ -73,10 +73,10 @@ export default {
           api
             .getScores(context.rootState.user.sessionToken)
             .then(data => {
-              context.commit('setScores', { scores: data.scores })
-              context.commit('setCourses', { courses: data.courses })
-              context.commit('setOverview', { overview: data.overview })
-              context.commit('setScoresLoaded')
+              context.commit('SET_SCORES', { scores: data.scores })
+              context.commit('SET_COURSES', { courses: data.courses })
+              context.commit('SET_OVERVIEW', { overview: data.overview })
+              context.commit('SET_SCORES_LOADED')
               resolve(data)
             })
             .catch(err => {
@@ -103,7 +103,7 @@ export default {
             options.courseNumber
           )
           .then(data => {
-            context.commit('setDistribution', {
+            context.commit('SET_DISTRIBUTION', {
               courseNumber: options.courseNumber,
               distribution: data.distribution
             })
@@ -132,7 +132,7 @@ export default {
             options.courseNumber
           )
           .then(data => {
-            context.commit('setSyllabus', {
+            context.commit('SET_SYLLABUS', {
               courseNumber: options.courseNumber,
               syllabus: data.syllabus
             })

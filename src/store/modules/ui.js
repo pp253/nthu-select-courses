@@ -65,41 +65,41 @@ export default {
     }
   },
   mutations: {
-    setMobile(state, options) {
+    SET_MOBILE(state, options) {
       state.isMobile = options.isMobile
     },
-    openDialog(state, options) {
+    OPEN_DIALOG(state, options) {
       state.dialog = true
       state.dialogTitle = options.title
       state.dialogText = options.text || ''
       state.dialogMore = options.more || ''
       state.dialogMode = options.mode || 'info'
     },
-    closeDialog(state) {
+    CLOSE_DIALOG(state) {
       state.dialog = false
     },
-    openSnackbar(state, options) {
+    OPEN_SNACKBAR(state, options) {
       state.snackbar = true
       state.snackbarText = options.snackbarText
     },
-    closeSnackbar(state) {
+    CLOSE_SNACKBAR(state) {
       state.snackbar = false
     },
-    startLoading(state) {
+    START_LOADING(state) {
       state.loading = true
     },
-    stopLoading(state) {
+    STOP_LOADING(state) {
       state.loading = false
     }
   },
   actions: {
     openSnackbar(context, options) {
       let timeout = 6000
-      context.commit('openSnackbar', {
+      context.commit('OPEN_SNACKBAR', {
         snackbarText: options.snackbarText
       })
       setTimeout(() => {
-        context.commit('closeSnackbar')
+        context.commit('CLOSE_SNACKBAR')
       }, timeout)
     },
 
@@ -109,7 +109,7 @@ export default {
      */
     openRequestDialog(context, options) {
       return new Promise((resolve, reject) => {
-        context.commit('openDialog', {
+        context.commit('OPEN_DIALOG', {
           title: options.title,
           text: options.text,
           more: options.more,

@@ -283,7 +283,7 @@ export default {
     },
     addCourse(courseNumber) {
       return new Promise((resolve, reject) => {
-        this.$store.commit('ui/startLoading')
+        this.$store.commit('ui/START_LOADING')
         let order = ''
         if (this.courses[courseNumber].random !== 0) {
           order =
@@ -305,28 +305,28 @@ export default {
             order: order
           })
           .then(data => {
-            this.$store.commit('ui/stopLoading')
+            this.$store.commit('ui/STOP_LOADING')
             resolve(data)
           })
           .catch(err => {
-            this.$store.commit('ui/stopLoading')
+            this.$store.commit('ui/STOP_LOADING')
             reject(err)
           })
       })
     },
     quitCourse(courseNumber) {
       return new Promise((resolve, reject) => {
-        this.$store.commit('ui/startLoading')
+        this.$store.commit('ui/START_LOADING')
         this.$store
           .dispatch('selectCourses/quitCourse', {
             courseNumber: courseNumber
           })
           .then(data => {
-            this.$store.commit('ui/stopLoading')
+            this.$store.commit('ui/STOP_LOADING')
             resolve(data)
           })
           .catch(err => {
-            this.$store.commit('ui/stopLoading')
+            this.$store.commit('ui/STOP_LOADING')
             reject(err)
           })
       })

@@ -14,7 +14,7 @@
                   <v-btn
                     flat
                     class="red--text"
-                    @click="$store.commit('user/logout'); $router.push('/')"
+                    @click="$store.commit('user/LOGOUT'); $router.push('/')"
                     v-text="$t('login.logout')"
                   ></v-btn>
                 </v-card-actions>

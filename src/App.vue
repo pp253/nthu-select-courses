@@ -37,7 +37,7 @@
         >
           <v-spacer />
           <v-btn
-            @click="$store.commit('ui/closeDialog')"
+            @click="$store.commit('ui/CLOSE_DIALOG')"
             flat
             v-text="$t('dialog.OK')"
           ></v-btn>
@@ -47,12 +47,12 @@
         >
           <v-spacer />
           <v-btn
-            @click="$bus.$emit('dialog-return', 'No'), $store.commit('ui/closeDialog')"
+            @click="$bus.$emit('dialog-return', 'No'), $store.commit('ui/CLOSE_DIALOG')"
             flat
             v-text="$t('dialog.No')"
           ></v-btn>
           <v-btn
-            @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/closeDialog')"
+            @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/CLOSE_DIALOG')"
             flat
             v-text="$t('dialog.Yes')"
           ></v-btn>
@@ -66,7 +66,7 @@
       :value="$store.state.ui.snackbar"
     >
       {{ $store.state.ui.snackbarText }}
-      <v-btn flat dark @click.native="$store.commit('ui/closeSnackbar')">Close</v-btn>
+      <v-btn flat dark @click.native="$store.commit('ui/CLOSE_SNACKBAR')">Close</v-btn>
     </v-snackbar>
   </v-app>
 </template>
@@ -81,10 +81,10 @@ export default {
         this.$vuetify.breakpoint.name === 'xs' ||
         this.$vuetify.breakpoint.name === 'sm'
       ) {
-        this.$store.commit('ui/setMobile', { isMobile: true })
+        this.$store.commit('ui/SET_MOBILE', { isMobile: true })
         return true
       } else {
-        this.$store.commit('ui/setMobile', { isMobile: false })
+        this.$store.commit('ui/SET_MOBILE', { isMobile: false })
         return false
       }
     }
@@ -93,7 +93,7 @@ export default {
     this.updateIsMobile(this.$vuetify.breakpoint.name)
     this.$watch('$vuetify.breakpoint.name', this.updateIsMobile)
 
-    this.$store.commit('ui/stopLoading')
+    this.$store.commit('ui/STOP_LOADING')
   }
 }
 </script>

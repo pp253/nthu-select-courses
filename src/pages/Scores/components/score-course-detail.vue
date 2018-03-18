@@ -101,7 +101,7 @@ export default {
   },
   watch: {
     courseDetailNumber(newVal) {
-      this.$store.commit('ui/startLoading')
+      this.$store.commit('ui/START_LOADING')
 
       this.$store
         .dispatch('scores/getDistribution', { courseNumber: newVal })
@@ -130,7 +130,7 @@ export default {
             ]
           }
 
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
           console.error(err)

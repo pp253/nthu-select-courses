@@ -66,7 +66,7 @@ function legalRequest(apiPath, data) {
         if (res.data.error) {
           let err = res.data
           if (err.id) {
-            store.commit('ui/openDialog', {
+            store.commit('ui/OPEN_DIALOG', {
               title:
                 err.id in ERR_MSG
                   ? ERR_MSG[err.id].title
@@ -80,7 +80,7 @@ function legalRequest(apiPath, data) {
                 (err.more ? '<br>' + htmlEncode(err.more) : '')
             })
           } else if (err.name) {
-            store.commit('ui/openDialog', {
+            store.commit('ui/OPEN_DIALOG', {
               title: err.name,
               text: err.message,
               more:
@@ -94,7 +94,7 @@ function legalRequest(apiPath, data) {
         resolve(res.data)
       })
       .catch(function(err) {
-        store.commit('ui/openDialog', {
+        store.commit('ui/OPEN_DIALOG', {
           title: err.name,
           text: err.message,
           more:

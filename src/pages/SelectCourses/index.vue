@@ -365,7 +365,7 @@ export default {
   },
   mounted() {
     this.hideDrawer = false
-    this.$store.commit('ui/startLoading')
+    this.$store.commit('ui/START_LOADING')
 
     this.$store
       .dispatch('selectCourses/getAvailableSelectionResult')
@@ -378,19 +378,19 @@ export default {
           this.$store
             .dispatch('selectCourses/getCurrentSelectedCourses')
             .then(() => {
-              this.$store.commit('ui/stopLoading')
+              this.$store.commit('ui/STOP_LOADING')
             })
             .catch(err => {
               this.$router.push('/')
-              this.$store.commit('ui/stopLoading')
+              this.$store.commit('ui/STOP_LOADING')
             })
         } else {
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
         }
       })
       .catch(err => {
         this.$router.push('/')
-        this.$store.commit('ui/stopLoading')
+        this.$store.commit('ui/STOP_LOADING')
       })
   }
 }

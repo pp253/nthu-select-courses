@@ -11,25 +11,25 @@ export default {
     sessionToken: ''
   },
   mutations: {
-    setLoginToken(state, options) {
+    SET_LOGIN_TOKEN(state, options) {
       state.loginToken = options.loginToken
     },
-    setAuthImg(state, options) {
+    SET_AUTH_IMG(state, options) {
       state.authImg = options.authImg
     },
-    setLogin(state, options) {
+    SET_LOGIN(state, options) {
       state.isLogin = options.isLogin
     },
-    logout(state) {
+    LOGOUT(state) {
       state.isLogin = false
     },
-    setUsername(state, options) {
+    SET_USERNAME(state, options) {
       state.username = options.username
     },
-    setSessionToken(state, options) {
+    SET_SESSION_TOKEN(state, options) {
       state.sessionToken = options.sessionToken
     },
-    setUser(state, options) {
+    SET_USER(state, options) {
       state.isLogin = options.isLogin !== undefined ? options.isLogin : true
       state.username = options.username !== undefined ? options.username : true
       state.sessionToken =
@@ -46,8 +46,8 @@ export default {
         api
           .getLoginToken()
           .then(data => {
-            context.commit('setLoginToken', { loginToken: data.loginToken })
-            context.commit('setAuthImg', { authImg: data.authImg })
+            context.commit('SET_LOGIN_TOKEN', { loginToken: data.loginToken })
+            context.commit('SET_AUTH_IMG', { authImg: data.authImg })
             resolve(data)
           })
           .catch(err => {
@@ -76,7 +76,7 @@ export default {
             loginToken: context.state.loginToken
           })
           .then(data => {
-            context.commit('setUser', {
+            context.commit('SET_USER', {
               isLogin: true,
               username: data.username,
               sessionToken: data.sessionToken

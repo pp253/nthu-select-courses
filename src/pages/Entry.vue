@@ -248,19 +248,19 @@ export default {
         authCheckCode: this.authCheckCode
       }
 
-      this.$store.commit('ui/startLoading')
+      this.$store.commit('ui/START_LOADING')
 
       this.$store
         .dispatch('user/getSessionToken', loginInfo)
         .then(data => {
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
           this.$store.dispatch('ui/openSnackbar', {
             snackbarText: '已成功登入！'
           })
           this.$router.push({ name: 'Service' })
         })
         .catch(err => {
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
           this.reload()
         })
     },
@@ -268,15 +268,15 @@ export default {
       this.userpass = ''
       this.authCheckCode = ''
 
-      this.$store.commit('ui/startLoading')
+      this.$store.commit('ui/START_LOADING')
 
       this.$store
         .dispatch('user/getLoginToken')
         .then(data => {
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
         })
     }
   },

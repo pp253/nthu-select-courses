@@ -228,7 +228,7 @@ export default {
               })
             }
             if (list.length > searchLimit) {
-              this.$store.commit('ui/openDialog', {
+              this.$store.commit('ui/OPEN_DIALOG', {
                 title: '你搜尋的時段太多了',
                 text: '試著找出關鍵字吧。'
               })
@@ -248,7 +248,7 @@ export default {
                 number: courseNumber
               })
               if (list.length > searchLimit) {
-                this.$store.commit('ui/openDialog', {
+                this.$store.commit('ui/OPEN_DIALOG', {
                   title: '你搜尋的範圍太大了',
                   text: '試著找出關鍵字吧。'
                 })
@@ -272,7 +272,7 @@ export default {
                 number: courseNumber
               })
               if (list.length > searchLimit) {
-                this.$store.commit('ui/openDialog', {
+                this.$store.commit('ui/OPEN_DIALOG', {
                   title: '你搜尋的範圍太大了',
                   text: '試著找出關鍵字吧。'
                 })
@@ -293,7 +293,7 @@ export default {
                 number: courseNumber
               })
               if (list.length > searchLimit) {
-                this.$store.commit('ui/openDialog', {
+                this.$store.commit('ui/OPEN_DIALOG', {
                   title: '你搜尋的範圍太大了',
                   text: '試著找出關鍵字吧。'
                 })
@@ -318,7 +318,7 @@ export default {
               })
             }
             if (list.length > searchLimit) {
-              this.$store.commit('ui/openDialog', {
+              this.$store.commit('ui/OPEN_DIALOG', {
                 title: '你搜尋的範圍太大了',
                 text: '試著找出關鍵字吧。'
               })

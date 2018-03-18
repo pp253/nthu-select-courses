@@ -186,7 +186,7 @@ export default {
   methods: {
     addCourse(courseNumber) {
       return new Promise((resolve, reject) => {
-        this.$store.commit('ui/startLoading')
+        this.$store.commit('ui/START_LOADING')
         let order = ''
         if (this.courses[courseNumber].random !== 0) {
           order =
@@ -208,7 +208,7 @@ export default {
             order: order
           })
           .then(data => {
-            this.$store.commit('ui/stopLoading')
+            this.$store.commit('ui/STOP_LOADING')
             this.$store.dispatch('ui/openSnackbar', {
               snackbarText: this.$t('coursesList.addSuccess', [
                 this.courses[courseNumber].title
@@ -217,7 +217,7 @@ export default {
             resolve(data)
           })
           .catch(err => {
-            this.$store.commit('ui/stopLoading')
+            this.$store.commit('ui/STOP_LOADING')
             reject(err)
           })
       })
@@ -232,17 +232,17 @@ export default {
           })
           .then(result => {
             if (result) {
-              this.$store.commit('ui/startLoading')
+              this.$store.commit('ui/START_LOADING')
               /*
               this.$store.dispatch('selectCourses/quitCourse', {
                 courseNumber: courseNumber
               })
               .then((data) => {
-                this.$store.commit('ui/stopLoading')
+                this.$store.commit('ui/STOP_LOADING')
                 resolve(data)
               })
               .catch((err) => {
-                this.$store.commit('ui/stopLoading')
+                this.$store.commit('ui/STOP_LOADING')
                 reject(err)
               })
               */
@@ -263,7 +263,7 @@ export default {
       this.$emit('open-course-detail', courseNumber)
     },
     editOrder(catagory) {
-      this.$store.commit('ui/startLoading')
+      this.$store.commit('ui/START_LOADING')
       this.$store
         .dispatch('selectCourses/editOrder', {
           newOrder: catagory.newOrder,
@@ -271,7 +271,7 @@ export default {
         })
         .then(data => {
           catagory.dialog = false
-          this.$store.commit('ui/stopLoading')
+          this.$store.commit('ui/STOP_LOADING')
         })
     },
     cancelEditOrder(catagory) {
@@ -282,7 +282,7 @@ export default {
       catagory.dialog = false
     },
     isCourseSelected(courseNumber) {
-      return (this.$store.state.selectCourses.currentSelectedCourses && 
+      return (this.$store.state.selectCourses.currentSelectedCourses &&
         this.$store.state.selectCourses.currentSelectedCourses.find(course => {
           return course.number === courseNumber
         }) !== undefined

@@ -24,25 +24,25 @@ export default {
     phase: ''
   },
   mutations: {
-    setSelectionPhase(state, options) {
+    SET_SELECTION_PHASE(state, options) {
       state.selectionPhase = options.selectionPhase
     },
-    setAddOrDropPhase(state, options) {
+    SET_ADD_OR_DROP_PHASE(state, options) {
       state.addOrDropPhase = options.addOrDropPhase
     },
-    setWithdrawalPhase(state, options) {
+    SET_WITHDRAWAL_PHASE(state, options) {
       state.withdrawalPhase = options.withdrawalPhase
     },
-    setEditable(state, options) {
+    SET_EDITABLE(state, options) {
       state.editable = options.editable
     },
-    setSemester(state, options) {
+    SET_SEMESTER(state, options) {
       state.semester = options.semester
     },
-    setPhase(state, options) {
+    SET_PHASE(state, options) {
       state.phase = options.phase
     },
-    setSyllabus(state, options) {
+    SET_SYLLABUS(state, options) {
       if (!state.courses[options.courseNumber]) {
         state.courses[options.courseNumber] = Object.assign(
           {
@@ -59,28 +59,28 @@ export default {
         }
       )
     },
-    setAvailableSelectionResult(state, options) {
+    SET_AVAILABLE_SELECTION_RESULT(state, options) {
       state.availableSelectionResult = Object.assign(
         {},
         state.availableSelectionResult,
         options.availableSelectionResult
       )
     },
-    setAvailableSelectionResultLoaded(state, options) {
+    SET_AVAILABLE_SELECTION_RESULT_LOADED(state, options) {
       state.setAvailableSelectionResultLoaded =
         options.availableSelectionResultLoaded
     },
-    setSelectionResult(state, options) {
+    SET_SELECTION_RESULT(state, options) {
       state.selectionResult = Object.assign({}, state.selectionResult, {
         [options.semester]: {
           [options.phase]: options.selectionResult
         }
       })
     },
-    setCurrentSelectedCourses(state, options) {
+    SET_CURRENT_SELECTED_COURSES(state, options) {
       state.currentSelectedCourses = options.currentSelectedCourses
     },
-    setCurrentSelectedCoursesLoaded(state, options) {
+    SET_CURRENT_SELECTED_COURSES_LOADED(state, options) {
       state.currentSelectedCoursesLoaded = options.currentSelectedCoursesLoaded
     }
   },
@@ -95,10 +95,10 @@ export default {
         api
           .quitCourse(context.rootState.user.sessionToken, options.courseNumber)
           .then(data => {
-            context.commit('setCurrentSelectedCourses', {
+            context.commit('SET_CURRENT_SELECTED_COURSES', {
               currentSelectedCourses: data.currentSelectedCourses
             })
-            context.commit('setCurrentSelectedCoursesLoaded', {
+            context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
               currentSelectedCoursesLoaded: true
             })
             resolve(context.state.currentSelectedCourses)
@@ -122,10 +122,10 @@ export default {
             options.order
           )
           .then(data => {
-            context.commit('setCurrentSelectedCourses', {
+            context.commit('SET_CURRENT_SELECTED_COURSES', {
               currentSelectedCourses: data.currentSelectedCourses
             })
-            context.commit('setCurrentSelectedCoursesLoaded', {
+            context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
               currentSelectedCoursesLoaded: true
             })
             resolve(context.state.currentSelectedCourses)
@@ -149,10 +149,10 @@ export default {
             options.oldOrder
           )
           .then(data => {
-            context.commit('setCurrentSelectedCourses', {
+            context.commit('SET_CURRENT_SELECTED_COURSES', {
               currentSelectedCourses: data.currentSelectedCourses
             })
-            context.commit('setCurrentSelectedCoursesLoaded', {
+            context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
               currentSelectedCoursesLoaded: true
             })
             resolve(context.state.currentSelectedCourses)
@@ -175,10 +175,10 @@ export default {
           api
             .getCurrentSelectedCourses(context.rootState.user.sessionToken)
             .then(data => {
-              context.commit('setCurrentSelectedCourses', {
+              context.commit('SET_CURRENT_SELECTED_COURSES', {
                 currentSelectedCourses: data.currentSelectedCourses
               })
-              context.commit('setCurrentSelectedCoursesLoaded', {
+              context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
                 currentSelectedCoursesLoaded: true
               })
               resolve(context.state.currentSelectedCourses)
@@ -208,7 +208,7 @@ export default {
               options.courseNumber
             )
             .then(data => {
-              context.commit('setSyllabus', {
+              context.commit('SET_SYLLABUS', {
                 courseNumber: options.courseNumber,
                 syllabus: data.syllabus
               })
@@ -233,15 +233,15 @@ export default {
           api
             .getAvailableSelectionResult(context.rootState.user.sessionToken)
             .then(data => {
-              context.commit('setAvailableSelectionResult', {
+              context.commit('SET_AVAILABLE_SELECTION_RESULT', {
                 availableSelectionResult: data.availableSelectionResult
               })
-              context.commit('setAvailableSelectionResultLoaded', {
+              context.commit('SET_AVAILABLE_SELECTION_RESULT_LOADED', {
                 availableSelectionResultLoaded: true
               })
-              context.commit('setSemester', { semester: data.semester })
-              context.commit('setPhase', { semester: data.phase })
-              context.commit('setEditable', { editable: data.editable })
+              context.commit('SET_SEMESTER', { semester: data.semester })
+              context.commit('SET_PHASE', { semester: data.phase })
+              context.commit('SET_EDITABLE', { editable: data.editable })
 
               resolve(data.availableSelectionResult)
             })
@@ -273,7 +273,7 @@ export default {
               options.phase
             )
             .then(data => {
-              context.commit('setSelectionResult', {
+              context.commit('SET_SELECTION_RESULT', {
                 semester: data.semester,
                 phase: data.phase,
                 selectionResult: {

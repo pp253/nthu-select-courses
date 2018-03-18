@@ -121,11 +121,11 @@ export default {
         return
       }
       if (semesterPhase === 'current') {
-        this.$store.commit('selectCourses/setPhase', { phase: 'current' })
+        this.$store.commit('selectCourses/SET_PHASE', { phase: 'current' })
       } else {
         let rgText = semesterPhase.split(' ')
-        this.$store.commit('selectCourses/setSemester', { semester: rgText[0] })
-        this.$store.commit('selectCourses/setPhase', { phase: rgText[1] })
+        this.$store.commit('selectCourses/SET_SEMESTER', { semester: rgText[0] })
+        this.$store.commit('selectCourses/SET_PHASE', { phase: rgText[1] })
         if (
           !this.selectionResult[this.semester] ||
           !this.selectionResult[this.semester][this.phase]
