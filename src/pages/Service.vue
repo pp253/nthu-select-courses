@@ -85,7 +85,7 @@ export default {
           content: 'advisorPassword.description',
           icon: 'https',
           path: '/advisor_password'
-        },
+        }/*,
         {
           title: 'commentsAboutCourses.name',
           content: 'commentsAboutCourses.description',
@@ -93,6 +93,7 @@ export default {
           path: '/',
           disabled: true
         }
+        */
       ]
     }
   },
