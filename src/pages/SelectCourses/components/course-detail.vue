@@ -16,7 +16,8 @@
 
         <v-tabs-bar slot="extension">
           <v-tabs-item href="#tab-course-detail-syllabus">課程大綱</v-tabs-item>
-          <v-tabs-item href="#tab-course-detail-comments">課程評論</v-tabs-item>
+          <v-tabs-item href="#tab-course-detail-enrolled-students">同學</v-tabs-item>
+          <!-- <v-tabs-item href="#tab-course-detail-comments">課程評論</v-tabs-item> -->
           <v-tabs-slider color="grey"></v-tabs-slider>
         </v-tabs-bar>
       </v-toolbar>
@@ -74,6 +75,46 @@
             </v-flex>
           </v-layout>
         </v-tabs-content>
+
+        <v-tabs-content id="tab-course-detail-enrolled-students">
+          <v-container>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  prepend-icon="search"
+                  clearable
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-btn>全選</v-btn>
+                <v-btn>寄EMAIL給同學</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-container>
+
+          <v-list>
+            <v-subheader>
+              共{{enrolledStudents.length}}位同學
+            </v-subheader>
+            <template
+              v-for="(student, index) of enrolledStudents"
+            >
+              <v-list-tile
+                :key="`student-${index}`"
+              >
+                <v-list-tile-action>
+                  <v-checkbox
+                  ></v-checkbox>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title v-text="student.name"></v-list-tile-title>
+                  <v-list-tile-sub-title v-text="student.studentId + ' ' + student.department"></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+        </v-tabs-content>
+
         <v-tabs-content id="tab-course-detail-comments">
           <v-layout wrap justify-center>
             <v-flex xs12>
@@ -143,6 +184,7 @@
               </v-container>
 
               <v-divider />
+
               <v-container>
                 {{ course.professor }}老師還有開設以下課程
                 <v-layout>
@@ -227,7 +269,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'CoursesList',
+  name: 'CourseDetail',
   props: {
     title: String,
     'course-number': String
@@ -236,9 +278,35 @@ export default {
     return {
       courses: this.$store.state.selectCourses.courses,
       course: {},
-      tabs: 'tab-course-detail-syllabus',
+      tabs: null,
       showCommentDialog: false,
-      showReportDialog: false
+      showReportDialog: false,
+      enrolledStudents: [
+        {
+          name: '鄭建澤',
+          email: 'asd@gmail.com',
+          department: '工工系四年級',
+          studentId: '105034009'
+        },
+        {
+          name: '鄭建澤',
+          email: 'asd@gmail.com',
+          department: '工工系四年級',
+          studentId: '105034009'
+        },
+        {
+          name: '鄭建澤',
+          email: 'asd@gmail.com',
+          department: '工工系四年級',
+          studentId: '105034009'
+        },
+        {
+          name: '鄭建澤',
+          email: 'asd@gmail.com',
+          department: '工工系四年級',
+          studentId: '105034009'
+        }
+      ]
     }
   },
   computed: {
