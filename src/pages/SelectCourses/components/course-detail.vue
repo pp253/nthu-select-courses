@@ -444,8 +444,10 @@ export default {
 }
 
 .mode-mobile {
-  .tabs__content {
-    height: calc(100vh - 96px - 56px);
+  .course-detail {
+    .tabs__content {
+      height: calc(100vh - 96px - 56px);
+    }
   }
 }
 </style>

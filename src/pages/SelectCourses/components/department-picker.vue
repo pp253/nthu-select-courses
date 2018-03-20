@@ -204,10 +204,10 @@ export default {
 .mode-mobile {
   .department-picker {
     .flex-department.limit-height {
-      height: calc(100vh - 52px - 48px - 64px - 18px - 16px);
+      height: calc(100vh - 52px - 48px - 64px - 18px - 16px - 64px);
     }
     .flex-class.limit-height {
-      height: calc(100vh - 52px - 48px - 64px - 16px);
+      height: calc(100vh - 52px - 48px - 64px - 16px - 64px);
     }
   }
 }
