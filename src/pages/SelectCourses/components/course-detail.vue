@@ -15,8 +15,8 @@
         </v-btn>
 
         <v-tabs-bar slot="extension">
-          <v-tabs-item href="#tab-course-detail-syllabus">課程大綱</v-tabs-item>
-          <v-tabs-item href="#tab-course-detail-enrolled-students">同學</v-tabs-item>
+          <v-tabs-item href="#tab-course-detail-syllabus">{{ $t('coursesList.syllabus') }}</v-tabs-item>
+          <v-tabs-item href="#tab-course-detail-enrolled-students">{{ $t('courseDetail.classmates') }}</v-tabs-item>
           <!-- <v-tabs-item href="#tab-course-detail-comments">課程評論</v-tabs-item> -->
           <v-tabs-slider color="grey"></v-tabs-slider>
         </v-tabs-bar>
@@ -67,7 +67,7 @@
                   v-if="course.syllabus.file"
                   :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
                   target="_blank"
-                >下載課程大綱</v-btn>
+                >{{ $t('courseDetail.downloadSyllabus') }}</v-btn>
                 <div
                   v-html="course.syllabus.description"
                 ></div>

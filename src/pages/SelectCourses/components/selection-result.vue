@@ -1,9 +1,9 @@
 <template>
   <v-container fluid pa-0 ma-0 class="selection-result">
     <v-toolbar dense extended>
-      <v-toolbar-title>
-        選課結果
-      </v-toolbar-title>
+      <v-toolbar-title
+        v-t="'selectedCoursesList.title'"
+      />
       <v-select
         slot="extension"
         :items="readableAvailableSelectionResult"

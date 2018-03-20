@@ -9,6 +9,11 @@
     "Yes": "好的",
     "No": "不了，謝謝"
   },
+  "common": {
+    "nowLoading": "載入中...",
+    "search": "搜尋：{0}",
+    "people": "{0} 人"
+  },
   "login": {
     "username": "帳號",
     "userpass": "密碼",
@@ -77,7 +82,9 @@
     "room": "地點",
     "prerequirement": "擋修",
     "memo": "備註",
-    "close": "關閉課程資訊"
+    "close": "關閉課程資訊",
+    "classmates": "同班同學",
+    "downloadSyllabus": "下載課程大綱"
   },
   "timeTable": {
     "title": "課表",
@@ -107,7 +114,9 @@
     "requestSharingDistributionTitle":
       "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
     "requestSharingDistributionText":
-      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。"
+      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
+    "passRate": "及格率",
+    "totalStudents": "總人數"
   },
   "commentsAboutCourses": {
     "name": "簡易教學評鑑調查",
@@ -117,10 +126,6 @@
     "10": "上學期",
     "20": "下學期",
     "30": "暑期"
-  },
-  "common": {
-    "nowLoading": "載入中...",
-    "search": "搜尋：{0}"
   },
   "service": {
     "title": "你好，請選擇以下服務",

@@ -9,6 +9,11 @@
     "Yes": "Yes",
     "No": "No, Thanks"
   },
+  "common": {
+    "nowLoading": "Now Loading...",
+    "search": "Search: {0}",
+    "people": "{0} people"
+  },
   "login": {
     "username": "User Name",
     "userpass": "Password",
@@ -32,10 +37,10 @@
     "randomFailed": "Failed"
   },
   "entry": {
-    "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
-    "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請再試一遍！",
-    "AuthCheckCodeNotCorrectTitle": "驗證碼錯誤",
-    "AuthCheckCodeNotCorrectText": "驗證碼輸入錯誤，請再試一遍！",
+    "UserInfoNotCorrectTitle": "Wrong user name or password!",
+    "UserInfoNotCorrectText": "Please try again.",
+    "AuthCheckCodeNotCorrectTitle": "CAPACHA is incorrect!",
+    "AuthCheckCodeNotCorrectText": "Please try again.",
     "NTHUServerErrorTitle": "選課系統錯誤",
     "NTHUServerErrorText": "選課系統錯誤，請再試一遍！"
   },
@@ -53,8 +58,8 @@
     "title": "Courses Catalog",
     "shortTitle": "Catalog",
     "pleaseSelect":
-      "By clicking the top button, you can see the courses you want, or just search it.",
-    "emptyText": "您還沒有加入的課程歐！",
+      "By clicking the top button, you can choose the courses you want, or just search it.",
+    "emptyText": "You haven't select any course.",
     "syllabus": "Syllabus",
     "detail": "Detail",
     "editOrder": "Edit random order",
@@ -79,7 +84,9 @@
     "room": "Room",
     "prerequirement": "Prerequirement",
     "memo": "Memo",
-    "close": "Close"
+    "close": "Close",
+    "classmates": "Classmates",
+    "downloadSyllabus": "Download Syllabus"
   },
   "timeTable": {
     "title": "Time Table",
@@ -102,15 +109,17 @@
   "scores": {
     "name": "Easy Score Lookup",
     "description": "Lookup your score without any trouble.",
-    "selecting": "請選擇學期",
-    "grade": "成績",
-    "title": "{0}的成績",
-    "emptyText": "沒有成績",
-    "distribution": "成績分布",
+    "selecting": "Please select the semester",
+    "grade": "Grade",
+    "title": "{0}'s Grade",
+    "emptyText": "No grade to show.",
+    "distribution": "Distribution",
     "requestSharingDistributionTitle":
       "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
     "requestSharingDistributionText":
-      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。"
+      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
+    "passRate": "Pass Rate",
+    "totalStudents": "Total"
   },
   "commentsAboutCourses": {
     "name": "Comments about the Courses",
@@ -120,10 +129,6 @@
     "10": "First Semester",
     "20": "Second Semester",
     "30": "Summer Semester"
-  },
-  "common": {
-    "nowLoading": "Now Loading...",
-    "search": "Search: {0}"
   },
   "service": {
     "title": "Hello!",
