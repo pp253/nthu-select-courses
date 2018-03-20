@@ -11,6 +11,15 @@
                 </v-card-title>
                 <v-card-actions>
                   <v-spacer />
+                  <v-select
+                    :items="availableLangs"
+                    :label="$t('service.selectLanguege')"
+                    item-value="value"
+                    @change="setLocale"
+                    :value="$i18n.locale"
+                    single-line
+                    hide-details
+                  ></v-select>
                   <v-btn
                     flat
                     class="red--text"
@@ -61,6 +70,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { availableLangs } from '@/locale'
 import LayoutFooter from '@/components/layout-footer'
 
 export default {
@@ -103,6 +114,17 @@ export default {
       ]
     }
   },
+  computed: {
+    availableLangs() {
+      return availableLangs
+    }
+  },
+  methods: {
+    setLocale(locale) {
+      Vue.config.lang = locale
+      this.$i18n.locale = Vue.config.lang
+    }
+  },
   mounted() {
     if (!this.$store.state.user.isLogin) {
       this.$router.push('/')
@@ -116,5 +138,10 @@ export default {
   overflow: auto;
   height: 100vh;
   -webkit-overflow-scrolling: touch;
+
+  .input-group[role='combobox'] {
+    padding-top: 3px;
+    max-width: 100px;
+  }
 }
 </style>
