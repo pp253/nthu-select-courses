@@ -94,6 +94,19 @@ export default {
     this.$watch('$vuetify.breakpoint.name', this.updateIsMobile)
 
     this.$store.commit('ui/STOP_LOADING')
+
+    /**
+     * You can pass the AXICSTORE by /#/?session_token=???&username=???
+     */
+    if (this.$route.query.session_token) {
+      console.log('PRELOAD Session Token:', this.$route.query.session_token)
+      this.$store.commit('user/SET_USER', {
+        isLogin: true,
+        username: this.$route.query.username || 'UNKNOWN',
+        sessionToken: this.$route.query.session_token
+      })
+      this.$router.push('/service')
+    }
   }
 }
 </script>
@@ -102,6 +115,10 @@ export default {
 html {
   overflow-y: hidden;
   user-select: none;
+}
+
+.selectable {
+  user-select: text;
 }
 
 * {
