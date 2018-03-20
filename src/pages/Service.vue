@@ -91,8 +91,7 @@ export default {
           content:
             '這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。',
           icon: 'https',
-          path: '/teacher_password',
-          disabled: true
+          path: '/advisor_password'
         },
         {
           title: this.$t('commentsAboutCourses.name'),
