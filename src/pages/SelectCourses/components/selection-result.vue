@@ -1,7 +1,11 @@
 <template>
   <v-container fluid pa-0 ma-0 class="selection-result">
-    <v-toolbar dense>
+    <v-toolbar dense extended>
+      <v-toolbar-title>
+        選課結果
+      </v-toolbar-title>
       <v-select
+        slot="extension"
         :items="readableAvailableSelectionResult"
         @input="openSelectionResult"
         item-text="text"
@@ -124,7 +128,9 @@ export default {
         this.$store.commit('selectCourses/SET_PHASE', { phase: 'current' })
       } else {
         let rgText = semesterPhase.split(' ')
-        this.$store.commit('selectCourses/SET_SEMESTER', { semester: rgText[0] })
+        this.$store.commit('selectCourses/SET_SEMESTER', {
+          semester: rgText[0]
+        })
         this.$store.commit('selectCourses/SET_PHASE', { phase: rgText[1] })
         if (
           !this.selectionResult[this.semester] ||
@@ -156,7 +162,7 @@ export default {
   }
 
   .list-wrapper {
-    height: calc(100% - 48px);
+    height: calc(100% - 96px);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
