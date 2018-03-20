@@ -23,6 +23,11 @@ export default new Router({
       component: () => import('@/pages/SelectCourses')
     },
     {
+      path: '/advisor_password',
+      name: 'AdvisorPassword',
+      component: () => import('@/pages/AdvisorPassword')
+    },
+    {
       path: '/scores',
       name: 'Scores',
       component: () => import('@/pages/Scores')
