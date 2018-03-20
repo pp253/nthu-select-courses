@@ -158,7 +158,7 @@ export default {
   height: 100%;
 
   .input-group {
-    margin-top: 20px;
+    margin-top: 18px;
   }
 
   .list-wrapper {
