@@ -156,7 +156,7 @@
         </v-list-tile-action>
       </v-list-tile>
       <v-divider
-        v-if="courses[course.number] && index < list.length - 1"
+        v-if="courses[course.number] && index < pagedList.length - 1"
         :key="course.number + '-divider'"
       ></v-divider>
     </template>
