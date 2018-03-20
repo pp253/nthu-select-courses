@@ -142,12 +142,12 @@ export default {
         {
           attr: 'showCoursesList',
           icon: 'list',
-          title: 'coursesList.title'
+          title: 'coursesList.shortTitle'
         },
         {
           attr: 'showSelectedCoursesList',
           icon: 'playlist_add_check',
-          title: 'selectedCoursesList.title'
+          title: 'selectedCoursesList.shortTitle'
         } /*
         {
           attr: 'showFavoriteCoursesList',
@@ -157,7 +157,7 @@ export default {
         {
           attr: 'showTimeTable',
           icon: 'grid_on',
-          title: 'timeTable.title'
+          title: 'timeTable.shortTitle'
         }
       ],
       showCourseDetail: false,

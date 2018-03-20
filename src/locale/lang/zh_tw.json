@@ -46,10 +46,12 @@
     "title": "最愛課程"
   },
   "selectedCoursesList": {
-    "title": "選課結果"
+    "title": "選課結果",
+    "shortTitle": "選課結果"
   },
   "coursesList": {
     "title": "課程清單",
+    "shortTitle": "課程清單",
     "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字",
     "emptyText": "您還沒有加入的課程歐！",
     "syllabus": "課程大綱",
@@ -79,6 +81,7 @@
   },
   "timeTable": {
     "title": "課表",
+    "shortTitle": "課表",
     "weekday": {
       "m": "一",
       "t": "二",
@@ -141,5 +144,10 @@
   },
   "periodPicker": {
     "title": "查詢時段"
+  },
+  "advisorPassword": {
+    "name": "輸入教師密碼",
+    "description":
+      "這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。"
   }
 }
