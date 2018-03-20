@@ -86,13 +86,14 @@
       />
     </v-toolbar>
 
-    <v-container fluid pa-0 ma-0 class="list-wrapper">
+    <v-container fluid pa-0 ma-0 class="list-wrapper" id="courses-catalog-list">
       <courses-list
         :courses="courses"
         :list="list"
         :empty-text="$t('coursesList.pleaseSelect')"
         @update-preview-time="updatePreviewTime"
         @open-course-detail="openCourseDetail"
+        @update-page="updatePage"
       />
     </v-container>
   </v-container>
@@ -192,7 +193,6 @@ export default {
       let searchText = this.searchText.toLowerCase()
       let searchPeriods = this.searchPeriods
       let abbr = this.abbr
-      const searchLimit = 100
 
       if (this.onlySearchAbbr && abbr) {
         courses = {}
@@ -227,13 +227,6 @@ export default {
                 number: courseNumber
               })
             }
-            if (list.length > searchLimit) {
-              this.$store.commit('ui/OPEN_DIALOG', {
-                title: '你搜尋的時段太多了',
-                text: '試著找出關鍵字吧。'
-              })
-              break
-            }
           }
         } else if (searchText.startsWith('professor:')) {
           let searchProfessor = searchText.slice('professor:'.length)
@@ -247,13 +240,6 @@ export default {
               list.push({
                 number: courseNumber
               })
-              if (list.length > searchLimit) {
-                this.$store.commit('ui/OPEN_DIALOG', {
-                  title: '你搜尋的範圍太大了',
-                  text: '試著找出關鍵字吧。'
-                })
-                break
-              }
             }
           }
         } else if (searchText.startsWith('title:')) {
@@ -271,13 +257,6 @@ export default {
               list.push({
                 number: courseNumber
               })
-              if (list.length > searchLimit) {
-                this.$store.commit('ui/OPEN_DIALOG', {
-                  title: '你搜尋的範圍太大了',
-                  text: '試著找出關鍵字吧。'
-                })
-                break
-              }
             }
           }
         } else if (searchText.startsWith('number:')) {
@@ -292,13 +271,6 @@ export default {
               list.push({
                 number: courseNumber
               })
-              if (list.length > searchLimit) {
-                this.$store.commit('ui/OPEN_DIALOG', {
-                  title: '你搜尋的範圍太大了',
-                  text: '試著找出關鍵字吧。'
-                })
-                break
-              }
             }
           }
         } else {
@@ -316,13 +288,6 @@ export default {
               list.push({
                 number: courseNumber
               })
-            }
-            if (list.length > searchLimit) {
-              this.$store.commit('ui/OPEN_DIALOG', {
-                title: '你搜尋的範圍太大了',
-                text: '試著找出關鍵字吧。'
-              })
-              break
             }
           }
         }
@@ -372,6 +337,11 @@ export default {
     },
     openCourseDetail(courseNumber) {
       this.$emit('open-course-detail', courseNumber)
+    },
+    updatePage() {
+      if (window.document.getElementById('courses-catalog-list')) {
+        window.document.getElementById('courses-catalog-list').scrollTop = 0
+      }
     }
   }
 }

@@ -4,10 +4,18 @@
   <v-list
     class="courses-list"
     ripple
+    id="courses-list"
   >
+    <v-subheader
+      v-if="list.length > coursesPerPage"
+      class="mb-3"
+    >
+      有{{list.length}}個課程。第{{page}}頁，共{{getPage(list.length)}}頁。
+    </v-subheader>
+
     <template
       v-if="list.length > 0"
-      v-for="(course, index) in list"
+      v-for="(course, index) in pagedList"
     >
       <v-subheader
         v-if="course.header"
@@ -77,7 +85,7 @@
       </v-subheader>
 
       <v-list-tile
-        v-if="course.number in courses"
+        v-if="(course.number) in courses"
         ripple
         @click=""
         :key="course.number"
@@ -154,6 +162,17 @@
     </template>
 
     <div
+      v-if="list.length > coursesPerPage"
+      class="text-xs-center mt-3"
+    >
+      <v-pagination
+        :length="getPage(list.length)"
+        v-model="page"
+        :total-visible="5"
+      ></v-pagination>
+    </div>
+
+    <div
       v-if="list.length === 0"
       class="text-xs-center pt-5"
     >{{ emptyText }}</div>
@@ -176,14 +195,34 @@ export default {
       default: '您還沒有加入的課程歐！'
     }
   },
+  data() {
+    return {
+      page: 1,
+      coursesPerPage: 20
+    }
+  },
+  watch: {
+    list() {
+      this.page = 1
+    }
+  },
   computed: {
     ...mapState('selectCourses', [
       'selectionPhase',
       'addOrDropPhase',
       'withdrawalPhase'
-    ])
+    ]),
+    pagedList() {
+      this.$emit('update-page', this.page)
+
+      let start = (this.page - 1) * this.coursesPerPage
+      return this.list.slice(start, start + this.coursesPerPage)
+    }
   },
   methods: {
+    getPage(index) {
+      return parseInt((index - 1) / this.coursesPerPage) + 1
+    },
     addCourse(courseNumber) {
       return new Promise((resolve, reject) => {
         this.$store.commit('ui/START_LOADING')
@@ -282,7 +321,8 @@ export default {
       catagory.dialog = false
     },
     isCourseSelected(courseNumber) {
-      return (this.$store.state.selectCourses.currentSelectedCourses &&
+      return (
+        this.$store.state.selectCourses.currentSelectedCourses &&
         this.$store.state.selectCourses.currentSelectedCourses.find(course => {
           return course.number === courseNumber
         }) !== undefined
