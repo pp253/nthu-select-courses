@@ -115,6 +115,13 @@ export function getSessionToken(loginInfo) {
   return legalRequest('api/user/getSessionToken', loginInfo)
 }
 
+export function logout(sessionToken) {
+  let data = {
+    sessionToken: sessionToken
+  }
+  return legalRequest('api/user/logout', data)
+}
+
 export function getCurrentSelectedCourses(sessionToken) {
   let data = {
     sessionToken: sessionToken
