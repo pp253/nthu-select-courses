@@ -66,7 +66,7 @@
       :value="$store.state.ui.snackbar"
     >
       {{ $store.state.ui.snackbarText }}
-      <v-btn flat dark @click.native="$store.commit('ui/CLOSE_SNACKBAR')">Close</v-btn>
+      <v-btn flat dark @click.native="$store.commit('ui/CLOSE_SNACKBAR')" v-t="'dialog.Close'"></v-btn>
     </v-snackbar>
   </v-app>
 </template>

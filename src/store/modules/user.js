@@ -22,6 +22,10 @@ export default {
     },
     LOGOUT(state) {
       state.isLogin = false
+      state.loginToken = ''
+      state.authImg = ''
+      state.username = ''
+      state.sessionToken = ''
     },
     SET_USERNAME(state, options) {
       state.username = options.username
@@ -82,6 +86,19 @@ export default {
               sessionToken: data.sessionToken
             })
             resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    logout(context) {
+      return new Promise((resolve, reject) => {
+        api
+          .logout(context.rootState.user.sessionToken)
+          .then(data => {
+            context.commit('LOGOUT')
+            resolve()
           })
           .catch(err => {
             reject(err)

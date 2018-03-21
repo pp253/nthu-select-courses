@@ -14,7 +14,7 @@
                   <v-btn
                     flat
                     class="red--text"
-                    @click="$store.commit('user/LOGOUT'); $router.push('/')"
+                    @click="logout"
                     v-t="'login.logout'"
                   ></v-btn>
                 </v-card-actions>
@@ -85,7 +85,7 @@ export default {
           content: 'advisorPassword.description',
           icon: 'https',
           path: '/advisor_password'
-        }/*,
+        } /*,
         {
           title: 'commentsAboutCourses.name',
           content: 'commentsAboutCourses.description',
@@ -95,6 +95,23 @@ export default {
         }
         */
       ]
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.commit('ui/START_LOADING')
+      this.$store
+        .dispatch('user/logout')
+        .then(() => {
+          this.$router.push('/')
+          this.$store.commit('ui/STOP_LOADING')
+          this.$store.dispatch('ui/openSnackbar', {
+            snackbarText: '已成功登出！'
+          })
+        })
+        .catch(err => {
+          this.$store.commit('ui/STOP_LOADING')
+        })
     }
   },
   mounted() {
