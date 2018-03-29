@@ -1,7 +1,7 @@
 <template>
   <v-container fluid pa-0 ma-0 class="full-height">
     <v-toolbar dense>
-      <v-toolbar-title>{{ $t('timeTable.title') }}</v-toolbar-title>
+      <v-toolbar-title>{{ $t('SelectCourses.timeTable.title') }}</v-toolbar-title>
       <v-spacer />
       <v-menu
         offset-y
@@ -36,12 +36,12 @@
         <div class="table-head">
           <div class="table-row">
             <div class="table-col col-title"></div>
-            <div class="table-col">{{ $t('timeTable.weekday.m') }}</div>
-            <div class="table-col">{{ $t('timeTable.weekday.t') }}</div>
-            <div class="table-col">{{ $t('timeTable.weekday.w') }}</div>
-            <div class="table-col">{{ $t('timeTable.weekday.r') }}</div>
-            <div class="table-col">{{ $t('timeTable.weekday.f') }}</div>
-            <div class="table-col">{{ $t('timeTable.weekday.s') }}</div>
+            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.m') }}</div>
+            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.t') }}</div>
+            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.w') }}</div>
+            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.r') }}</div>
+            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.f') }}</div>
+            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.s') }}</div>
           </div>
         </div>
         <div class="table-body">

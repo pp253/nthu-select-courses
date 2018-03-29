@@ -7,7 +7,7 @@
   >
     <v-card class="department-picker">
       <v-card-title class="headline">
-        {{ $t('departmentPicker.title') }}
+        {{ $t('SelectCourses.departmentPicker.title') }}
       </v-card-title>
       <v-card-text class="pt-0">
         <v-tabs v-model="activeTabs">

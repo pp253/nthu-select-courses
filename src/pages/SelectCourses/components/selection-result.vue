@@ -2,7 +2,7 @@
   <v-container fluid pa-0 ma-0 class="selection-result">
     <v-toolbar dense extended>
       <v-toolbar-title
-        v-t="'selectedCoursesList.title'"
+        v-t="'SelectCourses.selectedCoursesList.title'"
       />
       <v-select
         slot="extension"
@@ -10,7 +10,7 @@
         @input="openSelectionResult"
         item-text="text"
         item-value="value"
-        :label="title || $t('selectedCoursesList.title')"
+        :label="title || $t('SelectCourses.selectedCoursesList.title')"
         single-line
         bottom
       >
@@ -74,7 +74,7 @@ export default {
         for (let phase of this.availableSelectionResult[semester]) {
           list.push({
             text: `${this.toReadableSemester(semester)} ${this.$t(
-              'phase.' + phase
+              'SelectCourses.phase.' + phase
             )}`,
             value: `${semester} ${phase}`
           })

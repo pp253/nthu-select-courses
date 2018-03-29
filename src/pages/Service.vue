@@ -7,7 +7,7 @@
             <v-container :pa-0="$vuetify.breakpoint.xsOnly" pb-3>
               <v-card>
                 <v-card-title>
-                  <span class="headline" v-t="'service.title'"></span>
+                  <span class="headline" v-t="'Service.title'"></span>
                 </v-card-title>
                 <v-card-actions>
                   <v-spacer />
@@ -41,7 +41,7 @@
                     outline
                     block
                     :disabled="service.disabled"
-                    v-text="$t('service.into', [$t(service.title)])"
+                    v-text="$t('Service.into', [$t(service.title)])"
                   ></v-btn>
                 </v-card-actions>
               </v-card>
@@ -68,21 +68,21 @@ export default {
     return {
       services: [
         {
-          title: 'scores.name',
-          content: 'scores.description',
+          title: 'Scores.name',
+          content: 'Scores.description',
           icon: 'assessment',
           path: '/scores'
         },
         {
-          title: 'selectCourses.name',
-          content: 'selectCourses.description',
+          title: 'SelectCourses.name',
+          content: 'SelectCourses.description',
           icon: 'playlist_add',
           path: '/select_courses',
           disabled: false
         },
         {
-          title: 'advisorPassword.name',
-          content: 'advisorPassword.description',
+          title: 'AdvisorPassword.name',
+          content: 'AdvisorPassword.description',
           icon: 'https',
           path: '/advisor_password'
         } /*,

@@ -15,7 +15,7 @@
         </v-btn>
 
         <v-tabs-bar slot="extension">
-          <v-tabs-item href="#tab-course-detail-syllabus">{{ $t('coursesList.syllabus') }}</v-tabs-item>
+          <v-tabs-item href="#tab-course-detail-syllabus">{{ $t('courseDetail.syllabus') }}</v-tabs-item>
           <v-tabs-item href="#tab-course-detail-enrolled-students">{{ $t('courseDetail.classmates') }}</v-tabs-item>
           <!-- <v-tabs-item href="#tab-course-detail-comments">課程評論</v-tabs-item> -->
           <v-tabs-slider color="grey"></v-tabs-slider>
@@ -42,7 +42,7 @@
                 <v-btn
                   v-if="selectionPhase && !course.canceled"
                   @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                >{{ isCourseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-btn>
+                >{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-btn>
                 <!--
                 <v-btn
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"

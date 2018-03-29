@@ -16,7 +16,7 @@
           >
             <v-layout wrap text-xs-center>
               <v-flex xs12 pb-2 class="weekday">
-                {{ $t(`timeTable.weekday.${weekday.toLowerCase()}`) }}
+                {{ $t(`SelectCourses.timeTable.weekday.${weekday.toLowerCase()}`) }}
                 <v-divider />
               </v-flex>
 

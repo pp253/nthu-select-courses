@@ -23,19 +23,6 @@
     "logout": "登出",
     "authCodeFormatError": "驗證碼應該有六位數字！"
   },
-  "action": {
-    "addCourse": "加入課程",
-    "quitCourse": "退選",
-    "addLimitedCourse": "加簽",
-    "printLimitedCourseForm": "列印加簽單",
-    "addFavorite": "加入最愛",
-    "removeFavorite": "移除最愛"
-  },
-  "selectionResult": {
-    "waitingForRandom": "待亂數",
-    "status": "已選上",
-    "randomFailed": "未選上"
-  },
   "entry": {
     "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
     "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請再試一遍！",
@@ -44,33 +31,28 @@
     "NTHUServerErrorTitle": "選課系統錯誤",
     "NTHUServerErrorText": "選課系統錯誤，請再試一遍！"
   },
-  "departmentPicker": {
-    "title": "選擇科系"
+  "Service": {
+    "title": "你好，請選擇以下服務",
+    "into": "進入{0}",
+    "selectLanguege": "選擇語言"
   },
-  "favoriteCoursesList": {
-    "title": "最愛課程"
+  "CommentsAboutCourses": {
+    "name": "簡易教學評鑑調查",
+    "description": "尚未開放。"
   },
-  "selectedCoursesList": {
-    "title": "選課結果",
-    "shortTitle": "選課結果"
+  "AdvisorPassword": {
+    "name": "輸入教師密碼",
+    "description":
+      "這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。"
   },
-  "coursesList": {
-    "title": "課程清單",
-    "shortTitle": "課程清單",
-    "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字",
-    "emptyText": "您還沒有加入的課程歐！",
-    "syllabus": "課程大綱",
-    "detail": "詳細資訊",
-    "editOrder": "編輯志願序",
-    "order": "志願{0}",
-    "courseSub": "{0}　{1}",
-    "courseDetail": "學分{0}　人限{1} ({2})　{3}",
-    "waitingForRandomTitle": "待亂數",
-    "waitingForRandomCLTitle": "通識、體育志願（待亂數）",
-    "waitingForRandomGePETitle": "大學中文志願（待亂數）",
-    "addedCoursesTitle": "已選上",
-    "failedCoursesTitle": "未選上",
-    "addSuccess": "您已成功加入{0}。"
+  "SelectCourses": {
+    "name": "簡易選課系統",
+    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+  },
+  "semester": {
+    "10": "上學期",
+    "20": "下學期",
+    "30": "暑期"
   },
   "courseDetail": {
     "title": "課程資訊",
@@ -84,26 +66,10 @@
     "memo": "備註",
     "close": "關閉課程資訊",
     "classmates": "同班同學",
+    "syllabus": "課程大綱",
     "downloadSyllabus": "下載課程大綱"
   },
-  "timeTable": {
-    "title": "課表",
-    "shortTitle": "課表",
-    "weekday": {
-      "m": "一",
-      "t": "二",
-      "w": "三",
-      "r": "四",
-      "f": "五",
-      "s": "六"
-    }
-  },
-  "error": {},
-  "selectCourses": {
-    "name": "簡易選課系統",
-    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
-  },
-  "scores": {
+  "Scores": {
     "name": "簡易成績查詢",
     "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！",
     "selecting": "請選擇學期",
@@ -117,42 +83,5 @@
       "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
     "passRate": "及格率",
     "totalStudents": "總人數"
-  },
-  "commentsAboutCourses": {
-    "name": "簡易教學評鑑調查",
-    "description": "尚未開放。"
-  },
-  "semester": {
-    "10": "上學期",
-    "20": "下學期",
-    "30": "暑期"
-  },
-  "service": {
-    "title": "你好，請選擇以下服務",
-    "into": "進入{0}",
-    "selectLanguege": "選擇語言"
-  },
-  "phase": {
-    "100": "第1次選課紀錄",
-    "100P": "第1次選課結果",
-    "101": "第2次選課紀錄",
-    "101P": "第2次選課結果",
-    "500": "新生選課紀錄",
-    "500P": "新生選課結果",
-    "200": "第3次選課紀錄",
-    "200P": "第3次選課結果",
-    "200S": "開學前選課結果",
-    "300": "加退選紀錄",
-    "300P": "加退選結果",
-    "400": "二退紀錄",
-    "400P": "二退結果"
-  },
-  "periodPicker": {
-    "title": "查詢時段"
-  },
-  "advisorPassword": {
-    "name": "輸入教師密碼",
-    "description":
-      "這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。"
   }
 }

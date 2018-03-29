@@ -53,10 +53,10 @@
               class="full-height"
             >
               <courses-catalog
-                :title="$t('coursesList.title')"
+                :title="$t('SelectCourses.coursesList.title')"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
-                :empty-text="$t('coursesList.pleaseSelect')"
+                :empty-text="$t('SelectCourses.coursesList.pleaseSelect')"
               />
             </v-flex>
 
@@ -67,7 +67,7 @@
               <selection-result
                 :courses="courses"
                 :list="list"
-                :title="$t('selectedCoursesList.title')"
+                :title="$t('SelectCourses.selectedCoursesList.title')"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
               />
@@ -142,22 +142,22 @@ export default {
         {
           attr: 'showCoursesList',
           icon: 'list',
-          title: 'coursesList.shortTitle'
+          title: 'SelectCourses.coursesList.shortTitle'
         },
         {
           attr: 'showSelectedCoursesList',
           icon: 'playlist_add_check',
-          title: 'selectedCoursesList.shortTitle'
+          title: 'SelectCourses.selectedCoursesList.shortTitle'
         } /*
         {
           attr: 'showFavoriteCoursesList',
           icon: 'favorite',
-          title: 'favoriteCoursesList.title'
+          title: 'SelectCourses.favoriteCoursesList.title'
         },*/,
         {
           attr: 'showTimeTable',
           icon: 'grid_on',
-          title: 'timeTable.shortTitle'
+          title: 'SelectCourses.timeTable.shortTitle'
         }
       ],
       showCourseDetail: false,
@@ -239,7 +239,7 @@ export default {
 
             if (tmpList.length) {
               list.push({
-                header: `selectionResult.${catalog}`
+                header: `SelectCourses.selectionResult.${catalog}`
               })
               list = list.concat(tmpList)
             }
@@ -366,6 +366,11 @@ export default {
   mounted() {
     this.hideDrawer = false
     this.$store.commit('ui/START_LOADING')
+
+    // load locale
+    import(`./lang/${this.$i18n.locale}.json`).then(msg => {
+      this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)
+    })
 
     this.$store
       .dispatch('selectCourses/getAvailableSelectionResult')

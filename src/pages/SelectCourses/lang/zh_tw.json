@@ -1,0 +1,77 @@
+{
+  "SelectCourses": {
+    "name": "簡易選課系統",
+    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！",
+    "action": {
+      "addCourse": "加入課程",
+      "quitCourse": "退選",
+      "addLimitedCourse": "加簽",
+      "printLimitedCourseForm": "列印加簽單",
+      "addFavorite": "加入最愛",
+      "removeFavorite": "移除最愛"
+    },
+    "selectionResult": {
+      "waitingForRandom": "待亂數",
+      "status": "已選上",
+      "randomFailed": "未選上"
+    },
+    "departmentPicker": {
+      "title": "選擇科系"
+    },
+    "favoriteCoursesList": {
+      "title": "最愛課程"
+    },
+    "selectedCoursesList": {
+      "title": "選課結果",
+      "shortTitle": "選課結果"
+    },
+    "coursesList": {
+      "title": "課程清單",
+      "shortTitle": "課程清單",
+      "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字",
+      "emptyText": "您還沒有加入的課程歐！",
+      "syllabus": "課程大綱",
+      "detail": "詳細資訊",
+      "editOrder": "編輯志願序",
+      "order": "志願{0}",
+      "courseSub": "{0}　{1}",
+      "courseDetail": "學分{0}　人限{1} ({2})　{3}",
+      "waitingForRandomTitle": "待亂數",
+      "waitingForRandomCLTitle": "通識、體育志願（待亂數）",
+      "waitingForRandomGePETitle": "大學中文志願（待亂數）",
+      "addedCoursesTitle": "已選上",
+      "failedCoursesTitle": "未選上",
+      "addSuccess": "您已成功加入{0}。"
+    },
+    "timeTable": {
+      "title": "課表",
+      "shortTitle": "課表",
+      "weekday": {
+        "m": "一",
+        "t": "二",
+        "w": "三",
+        "r": "四",
+        "f": "五",
+        "s": "六"
+      }
+    },
+    "phase": {
+      "100": "第1次選課紀錄",
+      "100P": "第1次選課結果",
+      "101": "第2次選課紀錄",
+      "101P": "第2次選課結果",
+      "500": "新生選課紀錄",
+      "500P": "新生選課結果",
+      "200": "第3次選課紀錄",
+      "200P": "第3次選課結果",
+      "200S": "開學前選課結果",
+      "300": "加退選紀錄",
+      "300P": "加退選結果",
+      "400": "二退紀錄",
+      "400P": "二退結果"
+    },
+    "periodPicker": {
+      "title": "查詢時段"
+    }
+  }
+}

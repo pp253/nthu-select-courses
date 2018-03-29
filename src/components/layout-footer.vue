@@ -5,7 +5,7 @@
         <v-card-text>
           <v-select
             :items="availableLangs"
-            :label="$t('service.selectLanguege')"
+            :label="$t('Service.selectLanguege')"
             item-value="value"
             @change="setLocale"
             :value="$i18n.locale"

@@ -36,12 +36,12 @@
             color="primary"
             dark
             slot="activator"
-            v-text="$t('coursesList.editOrder')"
+            v-t="'SelectCourses.coursesList.editOrder'"
           ></v-btn>
           <v-card>
             <v-card-title
               class="headline"
-              v-text="$t('coursesList.editOrder')"
+              v-t="'SelectCourses.coursesList.editOrder'"
             ></v-card-title>
             <v-card-text>
               <v-list>
@@ -54,7 +54,7 @@
                       :key="'drag-' + element.number"
                     >
                       <v-list-tile-action class="grey--text lighten-1">
-                        {{ $t('coursesList.order', [idx + 1]) }}
+                        {{ $t('SelectCourses.coursesList.order', [idx + 1]) }}
                       </v-list-tile-action>
                       <v-list-tile-content>
                         {{ courses[element.number].title }}
@@ -72,12 +72,12 @@
               <v-btn
                 @click.native="cancelEditOrder(course)"
                 flat
-                v-text="$t('dialog.Cancel')"
+                v-t="'dialog.Cancel'"
               ></v-btn>
               <v-btn
                 @click.native="editOrder(course)"
                 flat
-                v-text="$t('dialog.Apply')"
+                v-t="'dialog.Apply'"
               ></v-btn>
             </v-card-actions>
           </v-card>
@@ -106,13 +106,13 @@
             {{ courses[course.number].title }}
           </v-list-tile-title>
           <v-list-tile-sub-title class="grey--text text--darken-4">{{
-            $t('coursesList.courseSub', [
+            $t('SelectCourses.coursesList.courseSub', [
               courses[course.number].number,
               courses[course.number].professor
             ])
           }}</v-list-tile-sub-title>
           <v-list-tile-sub-title class="detail">{{
-            $t('coursesList.courseDetail', [
+            $t('SelectCourses.coursesList.courseDetail', [
               courses[course.number].credit,
               courses[course.number].size_limit,
               courses[course.number].previous_size || '-',
@@ -134,22 +134,22 @@
                   v-if="(addOrDropPhase || selectionPhase) && !courses[course.number].canceled"
                   @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
                   ripple
-                >{{ isCourseSelected(course.number) ? $t('action.quitCourse') : $t('action.addCourse') }}</v-list-tile>
+                >{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
                 <v-list-tile
                   v-if="addOrDropPhase && !courses[course.number].canceled"
                   @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
                   ripple
-                >{{ isCourseSelected(course.number) ? $t('action.addLimitedCourse') : $t('action.printLimitedCourseForm') }}</v-list-tile>
+                >{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
                 <!--
                 <v-list-tile
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
                   ripple
-                >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-list-tile>
+                >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('SelectCourses.action.addFavorite') : $t('SelectCourses.action.removeFavorite') }}</v-list-tile>
                 -->
                 <v-list-tile
                   @click="openCourseDetail(course.number)"
                   ripple
-                >{{ $t('coursesList.detail') }}</v-list-tile>
+                >{{ $t('SelectCourses.coursesList.detail') }}</v-list-tile>
               </v-list>
             </v-menu>
           </div>
@@ -260,7 +260,7 @@ export default {
                 .then(data => {
                   this.$store.commit('ui/STOP_LOADING')
                   this.$store.dispatch('ui/openSnackbar', {
-                    snackbarText: this.$t('coursesList.addSuccess', [
+                    snackbarText: this.$t('SelectCourses.coursesList.addSuccess', [
                       this.courses[courseNumber].title
                     ])
                   })
