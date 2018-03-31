@@ -2,7 +2,7 @@
   <v-container fluid pa-0 ma-0 class="courses-catalog">
     <v-toolbar dense extended>
       <v-toolbar-title>
-        {{ title || $t('SelectCourses.coursesList.title') }}
+        {{ title || $t('SelectCourses.coursesCatalog.title') }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
@@ -90,7 +90,7 @@
       <courses-list
         :courses="courses"
         :list="list"
-        :empty-text="$t('SelectCourses.coursesList.pleaseSelect')"
+        :empty-text="$t('SelectCourses.coursesCatalog.pleaseSelect')"
         @update-preview-time="updatePreviewTime"
         @open-course-detail="openCourseDetail"
         @update-page="updatePage"

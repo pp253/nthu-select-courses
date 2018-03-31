@@ -260,7 +260,7 @@ export default {
                 .then(data => {
                   this.$store.commit('ui/STOP_LOADING')
                   this.$store.dispatch('ui/openSnackbar', {
-                    snackbarText: this.$t('SelectCourses.coursesList.addSuccess', [
+                    snackbarText: this.$t('SelectCourses.action.addSuccess', [
                       this.courses[courseNumber].title
                     ])
                   })

@@ -49,25 +49,25 @@
           <v-layout class="full-height">
             <v-flex
               :class="layoutSize.coursesList"
-              :hidden="!showCoursesList"
+              :hidden="!showCoursesCatalog"
               class="full-height"
             >
               <courses-catalog
-                :title="$t('SelectCourses.coursesList.title')"
+                :title="$t('SelectCourses.coursesCatalog.title')"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
-                :empty-text="$t('SelectCourses.coursesList.pleaseSelect')"
+                :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'"
               />
             </v-flex>
 
             <v-flex
               :class="layoutSize.selectedCourses"
-              :hidden="!showSelectedCoursesList"
+              :hidden="!showSelectionResult"
             >
               <selection-result
                 :courses="courses"
                 :list="list"
-                :title="$t('SelectCourses.selectedCoursesList.title')"
+                :title="'SelectCourses.selectionResult.title'"
                 @update-preview-time="updatePreviewTime"
                 @open-course-detail="openCourseDetail"
               />
@@ -140,14 +140,14 @@ export default {
       previewTime: '',
       menu: [
         {
-          attr: 'showCoursesList',
+          attr: 'showCoursesCatalog',
           icon: 'list',
-          title: 'SelectCourses.coursesList.shortTitle'
+          title: 'SelectCourses.coursesCatalog.shortTitle'
         },
         {
-          attr: 'showSelectedCoursesList',
+          attr: 'showSelectionResult',
           icon: 'playlist_add_check',
-          title: 'SelectCourses.selectedCoursesList.shortTitle'
+          title: 'SelectCourses.selectionResult.shortTitle'
         } /*
         {
           attr: 'showFavoriteCoursesList',
@@ -164,14 +164,14 @@ export default {
       courseDetailNumber: '',
       hideDrawer: false,
       pc: {
-        showCoursesList: true,
-        showSelectedCoursesList: true,
+        showCoursesCatalog: true,
+        showSelectionResult: true,
         showFavoriteCoursesList: false,
         showTimeTable: true
       },
       mobile: {
-        showCoursesList: false,
-        showSelectedCoursesList: true,
+        showCoursesCatalog: false,
+        showSelectionResult: true,
         showFavoriteCoursesList: false,
         showTimeTable: false
       }
@@ -269,14 +269,14 @@ export default {
 
       if (this.$vuetify.breakpoint.mdAndUp) {
         if (uc.showTimeTable) {
-          if (!uc.showCoursesList && !uc.showSelectedCoursesList) {
+          if (!uc.showCoursesCatalog && !uc.showSelectionResult) {
             if (cd) {
               layoutSize.timeTable = 'xs6'
               layoutSize.courseDetail = 'xs6'
             } else {
               layoutSize.timeTable = 'xs12'
             }
-          } else if (uc.showCoursesList && uc.showSelectedCoursesList) {
+          } else if (uc.showCoursesCatalog && uc.showSelectionResult) {
             if (cd) {
               layoutSize.courseDetail = 'xs6'
             } else {
@@ -294,7 +294,7 @@ export default {
             layoutSize.selectedCourses = 'xs6'
           }
         } else {
-          if (uc.showCoursesList && uc.showSelectedCoursesList) {
+          if (uc.showCoursesCatalog && uc.showSelectionResult) {
             if (cd) {
               layoutSize.courseDetail = 'xs6'
               layoutSize.coursesList = 'xs3'
@@ -303,7 +303,7 @@ export default {
               layoutSize.coursesList = 'xs6'
               layoutSize.selectedCourses = 'xs6'
             }
-          } else if (uc.showCoursesList || uc.showSelectedCoursesList) {
+          } else if (uc.showCoursesCatalog || uc.showSelectionResult) {
             if (cd) {
               layoutSize.courseDetail = 'xs6'
               layoutSize.coursesList = 'xs6'
@@ -324,15 +324,15 @@ export default {
 
       return layoutSize
     },
-    showCoursesList() {
+    showCoursesCatalog() {
       return !this.$store.state.ui.isMobile
-        ? this.pc.showCoursesList
-        : !this.showCourseDetail && this.mobile.showCoursesList
+        ? this.pc.showCoursesCatalog
+        : !this.showCourseDetail && this.mobile.showCoursesCatalog
     },
-    showSelectedCoursesList() {
+    showSelectionResult() {
       return !this.$store.state.ui.isMobile
-        ? this.pc.showSelectedCoursesList
-        : !this.showCourseDetail && this.mobile.showSelectedCoursesList
+        ? this.pc.showSelectionResult
+        : !this.showCourseDetail && this.mobile.showSelectionResult
     },
     showTimeTable() {
       return !this.$store.state.ui.isMobile
@@ -350,8 +350,8 @@ export default {
             : courseNumber
     },
     uiMobileClearShowing() {
-      this.mobile.showCoursesList = false
-      this.mobile.showSelectedCoursesList = false
+      this.mobile.showCoursesCatalog = false
+      this.mobile.showSelectionResult = false
       this.mobile.showFavoriteCoursesList = false
       this.mobile.showTimeTable = false
     },
@@ -363,14 +363,15 @@ export default {
       this.showCourseDetail = false
     }
   },
-  mounted() {
-    this.hideDrawer = false
-    this.$store.commit('ui/START_LOADING')
-
+  beforeCreate() {
     // load locale
     import(`./lang/${this.$i18n.locale}.json`).then(msg => {
       this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)
     })
+  },
+  mounted() {
+    this.hideDrawer = false
+    this.$store.commit('ui/START_LOADING')
 
     this.$store
       .dispatch('selectCourses/getAvailableSelectionResult')

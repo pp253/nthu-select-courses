@@ -1,16 +1,16 @@
 <template>
   <v-container fluid pa-0 ma-0 class="selection-result">
     <v-toolbar dense extended>
-      <v-toolbar-title
-        v-t="'SelectCourses.selectedCoursesList.title'"
-      />
+      <v-toolbar-title>
+        {{$t('SelectCourses.selectionResult.title')}}
+      </v-toolbar-title>
       <v-select
         slot="extension"
         :items="readableAvailableSelectionResult"
         @input="openSelectionResult"
         item-text="text"
         item-value="value"
-        :label="title || $t('SelectCourses.selectedCoursesList.title')"
+        :label="$t('SelectCourses.selectionResult.title')"
         single-line
         bottom
       >

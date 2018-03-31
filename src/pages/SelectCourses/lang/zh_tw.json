@@ -8,9 +8,12 @@
       "addLimitedCourse": "加簽",
       "printLimitedCourseForm": "列印加簽單",
       "addFavorite": "加入最愛",
-      "removeFavorite": "移除最愛"
+      "removeFavorite": "移除最愛",
+      "addSuccess": "您已成功加入{0}。"
     },
     "selectionResult": {
+      "title": "選課結果",
+      "shortTitle": "選課結果",
       "waitingForRandom": "待亂數",
       "status": "已選上",
       "randomFailed": "未選上"
@@ -21,14 +24,12 @@
     "favoriteCoursesList": {
       "title": "最愛課程"
     },
-    "selectedCoursesList": {
-      "title": "選課結果",
-      "shortTitle": "選課結果"
-    },
-    "coursesList": {
+    "coursesCatalog": {
       "title": "課程清單",
       "shortTitle": "課程清單",
-      "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字",
+      "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字"
+    },
+    "coursesList": {
       "emptyText": "您還沒有加入的課程歐！",
       "syllabus": "課程大綱",
       "detail": "詳細資訊",
@@ -40,8 +41,7 @@
       "waitingForRandomCLTitle": "通識、體育志願（待亂數）",
       "waitingForRandomGePETitle": "大學中文志願（待亂數）",
       "addedCoursesTitle": "已選上",
-      "failedCoursesTitle": "未選上",
-      "addSuccess": "您已成功加入{0}。"
+      "failedCoursesTitle": "未選上"
     },
     "timeTable": {
       "title": "課表",

@@ -7,7 +7,7 @@
     <v-card
       class="period-picker"
     >
-      <v-card-title class="headline">{{ $t('periodPicker.title') }}</v-card-title>
+      <v-card-title class="headline">{{ $t('SelectCourses.periodPicker.title') }}</v-card-title>
       <v-card-text>
         <v-layout>
           <v-flex
