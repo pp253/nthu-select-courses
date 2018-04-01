@@ -49,6 +49,10 @@
     "name": "簡易選課系統",
     "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
   },
+  "Scores": {
+    "name": "簡易成績查詢",
+    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！"
+  },
   "semester": {
     "10": "上學期",
     "20": "下學期",
@@ -68,20 +72,5 @@
     "classmates": "同班同學",
     "syllabus": "課程大綱",
     "downloadSyllabus": "下載課程大綱"
-  },
-  "Scores": {
-    "name": "簡易成績查詢",
-    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！",
-    "selecting": "請選擇學期",
-    "grade": "成績",
-    "title": "{0}的成績",
-    "emptyText": "沒有成績",
-    "distribution": "成績分布",
-    "requestSharingDistributionTitle":
-      "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
-    "requestSharingDistributionText":
-      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
-    "passRate": "及格率",
-    "totalStudents": "總人數"
   }
 }

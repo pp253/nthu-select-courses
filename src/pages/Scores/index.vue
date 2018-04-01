@@ -22,6 +22,7 @@
 import { mapState } from 'vuex'
 import ScoreCourseDetail from './components/score-course-detail'
 import ScoreList from './components/score-list'
+import store from './store'
 
 export default {
   components: {
@@ -45,6 +46,15 @@ export default {
     closeDetail() {
       this.showCourseDetail = false
     }
+  },
+  beforeCreate () {
+    // load store
+    this.$store.registerModule('scores', store)
+
+    // load locale
+    import(`./lang/${this.$i18n.locale}.json`).then(msg => {
+      this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)
+    })
   },
   mounted() {
     this.$store.commit('ui/START_LOADING')

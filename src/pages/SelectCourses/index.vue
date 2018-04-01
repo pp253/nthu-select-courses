@@ -126,6 +126,7 @@ import TimeTable from './components/time-table'
 import CourseDetail from './components/course-detail'
 import CoursesCatalog from './components/courses-catalog'
 import SelectionResult from './components/selection-result'
+import store from './store'
 
 export default {
   name: 'SelectCourses',
@@ -364,6 +365,9 @@ export default {
     }
   },
   beforeCreate() {
+    // load store
+    this.$store.registerModule('selectCourses', store)
+
     // load locale
     import(`./lang/${this.$i18n.locale}.json`).then(msg => {
       this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)

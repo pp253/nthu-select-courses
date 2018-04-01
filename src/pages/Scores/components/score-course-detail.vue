@@ -11,8 +11,8 @@
         <v-toolbar-title v-if="course && course.syllabus">{{ course.syllabus.chineseTitle }}</v-toolbar-title>
 
         <v-tabs-bar slot="extension">
-          <v-tabs-item href="#tab-distribution">{{ $t('scores.distribution') }}</v-tabs-item>
-          <v-tabs-item href="#tab-syllabus">{{ $t('coursesList.syllabus') }}</v-tabs-item>
+          <v-tabs-item href="#tab-distribution">{{ $t('Scores.distribution') }}</v-tabs-item>
+          <v-tabs-item href="#tab-syllabus">{{ $t('courseDetail.syllabus') }}</v-tabs-item>
           <v-tabs-slider color="grey"></v-tabs-slider>
         </v-tabs-bar>
       </v-toolbar>
@@ -22,9 +22,9 @@
             <v-flex xs12 lg8 xl6>
               <v-container v-if="course && course.distribution">
                 <v-layout>
-                  <v-flex xs2 class="grey--text text--darken-2" v-t="'scores.totalStudents'"></v-flex>
+                  <v-flex xs2 class="grey--text text--darken-2" v-t="'Scores.totalStudents'"></v-flex>
                   <v-flex xs4>{{ $t('common.people', [course.distribution.total]) }}</v-flex>
-                  <v-flex xs2 class="grey--text text--darken-2" v-t="'scores.passRate'"></v-flex>
+                  <v-flex xs2 class="grey--text text--darken-2" v-t="'Scores.passRate'"></v-flex>
                   <v-flex xs4>{{ passRate }}%</v-flex>
                 </v-layout>
               </v-container>

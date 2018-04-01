@@ -15,7 +15,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "chart.js": "^2.7.2",
-    "chartjs-plugin-datalabels": "^0.2.0",
+    "chartjs-plugin-datalabels": "0.2.0",
     "vue": "^2.5.16",
     "vue-chartjs": "^3.2.1",
     "vue-i18n": "^7.6.0",

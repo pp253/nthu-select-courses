@@ -119,6 +119,7 @@ export default {
       if (!newVal) {
         return
       }
+      // Take the first one or second one as default semester.
       this.semester = Object.keys(newVal).reverse()[
         Object.keys(newVal).length > 1 ? 1 : 0
       ]

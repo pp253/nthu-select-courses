@@ -10,7 +10,7 @@ export default {
   props: {
     options: {
       type: Object,
-      default: () => {
+      default() {
         return {
           responsive: true,
           maintainAspectRatio: false,
@@ -18,7 +18,7 @@ export default {
             yAxes: [
               {
                 ticks: {
-                  callback: function(value, index, values) {
+                  callback(value, index, values) {
                     return value + '人'
                   },
                   fontSize: 12
