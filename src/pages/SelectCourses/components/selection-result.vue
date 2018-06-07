@@ -4,16 +4,7 @@
       <v-toolbar-title>
         {{$t('SelectCourses.selectionResult.title')}}
       </v-toolbar-title>
-      <v-select
-        slot="extension"
-        :items="readableAvailableSelectionResult"
-        @input="openSelectionResult"
-        item-text="text"
-        item-value="value"
-        :label="$t('SelectCourses.selectionResult.title')"
-        single-line
-        bottom
-      >
+      <v-select slot="extension" :items="readableAvailableSelectionResult" @input="(semesterPhase) => {openSelectionResult(semesterPhase); selectedSemesterPhase = semesterPhase}" item-text="text" item-value="value" :value="selectedSemesterPhase" :label="$t('SelectCourses.selectionResult.title')" single-line bottom>
         <template slot="item" slot-scope="data">
           <template v-if="data.item.type === 'divider'">
             <v-divider />
@@ -28,12 +19,7 @@
     </v-toolbar>
 
     <v-container fluid pa-0 ma-0 class="list-wrapper">
-      <courses-list
-        :courses="courses"
-        :list="list"
-        @update-preview-time="updatePreviewTime"
-        @open-course-detail="openCourseDetail"
-      />
+      <courses-list :courses="courses" :list="list" :result="$store.state.selectCourses.phase === 'current'" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" />
     </v-container>
   </v-container>
 </template>
@@ -54,7 +40,8 @@ export default {
   data() {
     return {
       title: '',
-      semesterPhase: {}
+      semesterPhase: {},
+      selectedSemesterPhase: 'current'
     }
   },
   computed: {
@@ -103,7 +90,7 @@ export default {
 
       if (this.selectionPhase || this.addOrDropPhase || this.withdrawPhase) {
         list.push({
-          text: '加退選狀況',
+          text: '目前選課狀況',
           value: `current`
         })
       }
@@ -113,6 +100,9 @@ export default {
     }
   },
   methods: {
+    log(m) {
+      console.log(m)
+    },
     toReadableSemester(semester) {
       if (!semester) {
         return ''

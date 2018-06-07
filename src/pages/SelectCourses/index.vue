@@ -2,41 +2,18 @@
   <v-container fluid pa-0 class="select-courses full-height">
     <keep-alive>
       <v-layout row class="full-height">
-        <v-flex
-          :hidden="hideDrawer"
-          class="navdrawer"
-        >
-          <v-navigation-drawer
-            permanent
-            light
-            :mini-variant="true"
-            :value="!$store.state.ui.isMobile"
-            :hidden="hideDrawer"
-          >
+        <v-flex :hidden="hideDrawer" class="navdrawer">
+          <v-navigation-drawer permanent light :mini-variant="true" :value="!$store.state.ui.isMobile" :hidden="hideDrawer">
             <v-list pt-0>
-              <v-list-tile
-                @click="$router.push('/service')"
-                ripple
-                class="mb-3"
-              >
+              <v-list-tile @click="$router.push('/service')" ripple class="mb-3">
                 <v-list-tile-action>
                   <v-icon>arrow_back</v-icon>
                 </v-list-tile-action>
               </v-list-tile>
-              <v-tooltip
-                v-for="item in menu"
-                :key="item.title"
-                right
-              >
-                <v-list-tile
-                  slot="activator"
-                  @click="pc[item.attr] = !pc[item.attr]"
-                  ripple
-                >
+              <v-tooltip v-for="item in menu" :key="item.title" right>
+                <v-list-tile slot="activator" @click="pc[item.attr] = !pc[item.attr]" ripple>
                   <v-list-tile-action>
-                    <v-icon
-                      :class="pc[item.attr] ? 'blue--text' : ''"
-                    >{{item.icon}}</v-icon>
+                    <v-icon :class="pc[item.attr] ? 'blue--text' : ''">{{item.icon}}</v-icon>
                   </v-list-tile-action>
                 </v-list-tile>
                 <span>{{ $t(item.title) }}</span>
@@ -47,68 +24,24 @@
 
         <v-flex class="main">
           <v-layout class="full-height">
-            <v-flex
-              :class="layoutSize.coursesList"
-              :hidden="!showCoursesCatalog"
-              class="full-height"
-            >
-              <courses-catalog
-                :title="$t('SelectCourses.coursesCatalog.title')"
-                @update-preview-time="updatePreviewTime"
-                @open-course-detail="openCourseDetail"
-                :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'"
-              />
+            <v-flex :class="layoutSize.coursesList" :hidden="!showCoursesCatalog" class="full-height">
+              <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
             </v-flex>
 
-            <v-flex
-              :class="layoutSize.selectedCourses"
-              :hidden="!showSelectionResult"
-            >
-              <selection-result
-                :courses="courses"
-                :list="list"
-                :title="'SelectCourses.selectionResult.title'"
-                @update-preview-time="updatePreviewTime"
-                @open-course-detail="openCourseDetail"
-              />
+            <v-flex :class="layoutSize.selectedCourses" :hidden="!showSelectionResult">
+              <selection-result :courses="courses" :list="list" :title="'SelectCourses.selectionResult.title'" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" />
             </v-flex>
 
-            <v-flex
-              :class="layoutSize.timeTable"
-              :hidden="!showTimeTable"
-            >
-              <time-table
-                :courses="courses"
-                :preview-time="previewTime"
-                :list="list"
-                @update-preview-time="updatePreviewTime"
-              ></time-table>
+            <v-flex :class="layoutSize.timeTable" :hidden="!showTimeTable">
+              <time-table :courses="courses" :preview-time="previewTime" :list="list" @update-preview-time="updatePreviewTime"></time-table>
             </v-flex>
 
-            <v-flex
-              :class="layoutSize.courseDetail"
-              :hidden="!showCourseDetail"
-            >
-              <course-detail
-                :title="$t('courseDetail.title')"
-                :course-number="courseDetailNumber"
-                @close-course-detail="closeCourseDetail"
-              ></course-detail>
+            <v-flex :class="layoutSize.courseDetail" :hidden="!showCourseDetail">
+              <course-detail :title="$t('courseDetail.title')" :course-number="courseDetailNumber" @close-course-detail="closeCourseDetail"></course-detail>
             </v-flex>
 
-            <v-bottom-nav
-              fixed
-              :value="$store.state.ui.isMobile"
-              :hidden="hideDrawer"
-              :active="bottomDrawerActive"
-              color="white"
-            >
-              <v-btn
-                v-for="item in menu"
-                :key="item.title + '-btn'"
-                @click="uiMobileClearShowing(); mobile[item.attr] = !mobile[item.attr]"
-                flat
-              >
+            <v-bottom-nav fixed :value="$store.state.ui.isMobile" :hidden="hideDrawer" :active="bottomDrawerActive" color="white">
+              <v-btn v-for="item in menu" :key="item.title + '-btn'" @click="uiMobileClearShowing(); mobile[item.attr] = !mobile[item.attr]" flat>
                 <span v-text="$t(item.title)"></span>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-btn>
@@ -388,6 +321,9 @@ export default {
           this.$store
             .dispatch('selectCourses/getCurrentSelectedCourses')
             .then(() => {
+              this.$store.commit('selectCourses/SET_PHASE', {
+                phase: 'current'
+              })
               this.$store.commit('ui/STOP_LOADING')
             })
             .catch(err => {

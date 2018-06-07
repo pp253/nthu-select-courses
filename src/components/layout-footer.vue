@@ -3,24 +3,15 @@
     <v-container :pa-0="$store.state.ui.isMobile" mb-5>
       <v-card class="transparent elevation-0">
         <v-card-text>
-          <v-select
-            :items="availableLangs"
-            :label="$t('Service.selectLanguege')"
-            item-value="value"
-            @change="setLocale"
-            :value="$i18n.locale"
-            single-line
-            hide-details
-          ></v-select>
+          <v-select :items="availableLangs" :label="$t('Service.selectLanguege')" item-value="value" @change="setLocale" :value="$i18n.locale" single-line hide-details></v-select>
         </v-card-text>
       </v-card>
       <v-card class="transparent elevation-0">
         <v-card-text>
-          <p
-            v-if="$store.state.user.isLogin"
-            class="selectable"
-          >Session Token: {{ $store.state.user.sessionToken }}</p>
-          <p>在 {{beWithText[beWithIndex]}} 的陪伴下製作 — <a href="https://github.com/pp253">pp253</a></p>
+          <p v-if="$store.state.user.isLogin" class="selectable">Session Token: {{ $store.state.user.sessionToken }}</p>
+          <p>在 {{beWithText[beWithIndex]}} 的陪伴下製作 —
+            <a href="https://github.com/pp253">pp253</a>
+          </p>
           <p class="underline">
             <a @click="$router.push('/about')" target="_blank">關於</a> ．
             <a href="https://github.com/pp253/nthu-select-courses" target="_blank">程式碼 GitHub</a> ．

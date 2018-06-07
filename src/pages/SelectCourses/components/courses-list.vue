@@ -1,58 +1,24 @@
 <!-- eslint-disable vue/valid-v-on -->
 
 <template>
-  <v-list
-    class="courses-list"
-    ripple
-    id="courses-list"
-  >
-    <v-subheader
-      v-if="list.length > coursesPerPage"
-      class="mb-3"
-    >
+  <v-list class="courses-list" ripple id="courses-list">
+    <v-subheader v-if="list.length > coursesPerPage" class="mb-3">
       有{{list.length}}個課程。第{{page}}頁，共{{getPage(list.length)}}頁。
     </v-subheader>
 
-    <template
-      v-if="list.length > 0"
-      v-for="(course, index) in pagedList"
-    >
-      <v-subheader
-        v-if="course.header"
-        :key="course.header"
-        class="pr-0"
-      >
+    <template v-if="list.length > 0" v-for="(course, index) in adjustedList">
+      <v-subheader v-if="course.header" :key="course.header" class="pr-0">
         {{ $t(course.header) }}
         <v-spacer></v-spacer>
-        <v-dialog
-          v-if="course.orderable"
-          v-model="course.dialog"
-          persistent
-          :fullscreen="$store.state.ui.isMobile"
-          max-width="350"
-          scrollable
-        >
-          <v-btn
-            color="primary"
-            dark
-            slot="activator"
-            v-t="'SelectCourses.coursesList.editOrder'"
-          ></v-btn>
+        <v-dialog v-if="course.orderable" v-model="course.dialog" persistent :fullscreen="$store.state.ui.isMobile" max-width="350" scrollable>
+          <v-btn color="primary" dark slot="activator" v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
           <v-card>
-            <v-card-title
-              class="headline"
-              v-t="'SelectCourses.coursesList.editOrder'"
-            ></v-card-title>
+            <v-card-title class="headline" v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
             <v-card-text>
               <v-list>
                 <draggable v-model="course.newOrder" :options="{handle:'.drag-handle'}">
-                  <template
-                    v-for="(element, idx) in course.newOrder"
-                  >
-                    <v-list-tile
-                      avatar
-                      :key="'drag-' + element.number"
-                    >
+                  <template v-for="(element, idx) in course.newOrder">
+                    <v-list-tile avatar :key="'drag-' + element.number">
                       <v-list-tile-action class="grey--text lighten-1">
                         {{ $t('SelectCourses.coursesList.order', [idx + 1]) }}
                       </v-list-tile-action>
@@ -69,56 +35,24 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                @click.native="cancelEditOrder(course)"
-                flat
-                v-t="'dialog.Cancel'"
-              ></v-btn>
-              <v-btn
-                @click.native="editOrder(course)"
-                flat
-                v-t="'dialog.Apply'"
-              ></v-btn>
+              <v-btn @click.native="cancelEditOrder(course)" flat v-t="'dialog.Cancel'"></v-btn>
+              <v-btn @click.native="editOrder(course)" flat v-t="'dialog.Apply'"></v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-subheader>
 
-      <v-list-tile
-        v-if="(course.number) in courses"
-        ripple
-        @click=""
-        :key="course.number"
-        @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
-        @mouseleave="updatePreviewTime('')"
-        @dblclick="openCourseDetail(course.number)"
-      >
+      <v-list-tile v-if="(course.number) in courses" ripple @click="" :key="course.number" @mouseover="updatePreviewTime(courses[course.number].time || course.number)" @mouseleave="updatePreviewTime('')" @dblclick="openCourseDetail(course.number)">
         <v-list-tile-content>
           <v-list-tile-title>
-            <span
-              v-if="courses[course.number].canceled"
-              class="red--text"
-            >停開</span>
-            <span
-              v-if="courses[course.number].required"
-              class="red--text"
-            >{{ courses[course.number].required }}</span>
+            <span v-if="courses[course.number].canceled" class="red--text">停開</span>
+            <span v-if="courses[course.number].required" class="red--text">{{ courses[course.number].required }}</span>
             {{ courses[course.number].title }}
           </v-list-tile-title>
-          <v-list-tile-sub-title class="grey--text text--darken-4">{{
-            $t('SelectCourses.coursesList.courseSub', [
-              courses[course.number].number,
-              courses[course.number].professor
-            ])
-          }}</v-list-tile-sub-title>
-          <v-list-tile-sub-title class="detail">{{
-            $t('SelectCourses.coursesList.courseDetail', [
-              courses[course.number].credit,
-              courses[course.number].size_limit,
-              courses[course.number].previous_size || '-',
-              courses[course.number].room
-            ])
-          }}</v-list-tile-sub-title>
+          <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ courses[course.number].number, courses[course.number].professor ]) }}
+          </v-list-tile-sub-title>
+          <v-list-tile-sub-title class="detail">{{ $t('SelectCourses.coursesList.courseDetail', [ courses[course.number].credit, courses[course.number].size_limit, courses[course.number].previous_size || '-', courses[course.number].room ]) }}
+          </v-list-tile-sub-title>
           <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
         </v-list-tile-content>
 
@@ -130,52 +64,28 @@
                 <v-icon>more_vert</v-icon>
               </v-btn>
               <v-list>
-                <v-list-tile
-                  v-if="(addOrDropPhase || selectionPhase) && !courses[course.number].canceled"
-                  @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                  ripple
-                >{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
-                <v-list-tile
-                  v-if="addOrDropPhase && !courses[course.number].canceled"
-                  @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                  ripple
-                >{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
+                <v-list-tile v-if="(addOrDropPhase || selectionPhase) && !courses[course.number].canceled" @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)" ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
+                <v-list-tile v-if="addOrDropPhase && !courses[course.number].canceled" @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)" ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
                 <!--
                 <v-list-tile
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
                   ripple
                 >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('SelectCourses.action.addFavorite') : $t('SelectCourses.action.removeFavorite') }}</v-list-tile>
                 -->
-                <v-list-tile
-                  @click="openCourseDetail(course.number)"
-                  ripple
-                >{{ $t('SelectCourses.coursesList.detail') }}</v-list-tile>
+                <v-list-tile @click="openCourseDetail(course.number)" ripple>{{ $t('SelectCourses.coursesList.detail') }}</v-list-tile>
               </v-list>
             </v-menu>
           </div>
         </v-list-tile-action>
       </v-list-tile>
-      <v-divider
-        v-if="courses[course.number] && index < pagedList.length - 1"
-        :key="course.number + '-divider'"
-      ></v-divider>
+      <v-divider v-if="courses[course.number] && index < adjustedList.length - 1" :key="course.number + '-divider'"></v-divider>
     </template>
 
-    <div
-      v-if="list.length > coursesPerPage"
-      class="text-xs-center mt-3"
-    >
-      <v-pagination
-        :length="getPage(list.length)"
-        v-model="page"
-        :total-visible="5"
-      ></v-pagination>
+    <div v-if="list.length > coursesPerPage" class="text-xs-center mt-3">
+      <v-pagination :length="getPage(list.length)" v-model="page" :total-visible="5"></v-pagination>
     </div>
 
-    <div
-      v-if="list.length === 0"
-      class="text-xs-center pt-5"
-    >{{ emptyText }}</div>
+    <div v-if="list.length === 0" class="text-xs-center pt-5">{{ emptyText }}</div>
   </v-list>
 </template>
 
@@ -193,12 +103,17 @@ export default {
     courses: Object,
     'empty-text': {
       default: '您還沒有加入的課程歐！'
+    },
+    result: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       page: 1,
-      coursesPerPage: 20
+      coursesPerPage: 20,
+      resultList: []
     }
   },
   watch: {
@@ -212,11 +127,114 @@ export default {
       'addOrDropPhase',
       'withdrawalPhase'
     ]),
-    pagedList() {
+    adjustedList() {
       this.$emit('update-page', this.page)
 
-      let start = (this.page - 1) * this.coursesPerPage
-      return this.list.slice(start, start + this.coursesPerPage)
+      if (!this.result) {
+        let start = (this.page - 1) * this.coursesPerPage
+        return this.list.slice(start, start + this.coursesPerPage)
+      }
+
+      this.resultList = []
+
+      // 待亂數
+      let waitingForRandomCoursesList = this.list.filter(course => {
+        return (
+          course.status &&
+          course.status === 2 &&
+          !['通', '體', '中'].includes(course.orderCatalog)
+        )
+      })
+      if (waitingForRandomCoursesList.length > 0) {
+        this.resultList.push({
+          header: this.$t('SelectCourses.coursesList.waitingForRandomTitle'),
+          newOrder: waitingForRandomCoursesList,
+          oldOrder: waitingForRandomCoursesList.slice(
+            0,
+            waitingForRandomCoursesList.length
+          ),
+          dialog: false,
+          orderable: false
+        })
+        for (let course of waitingForRandomCoursesList) {
+          this.resultList.push(course)
+        }
+      }
+
+      // 通識、體育志願（待亂數）
+      let waitingForRandomGePeCoursesList = this.list
+        .filter(course => {
+          return (
+            course.status &&
+            course.status === 2 &&
+            this.courses[course.number].random === 20
+          )
+        })
+        .sort((courseA, courseB) => {
+          return courseA.order - courseB.order
+        })
+      if (waitingForRandomGePeCoursesList.length > 0) {
+        this.resultList.push({
+          header: '通識、體育志願（待亂數）',
+          newOrder: waitingForRandomGePeCoursesList,
+          oldOrder: waitingForRandomGePeCoursesList.slice(
+            0,
+            waitingForRandomGePeCoursesList.length
+          ),
+          dialog: false,
+          orderable: true
+        })
+        for (let course of waitingForRandomGePeCoursesList) {
+          this.resultList.push(course)
+        }
+      }
+
+      // 大學中文志願（待亂數）
+      let waitingForRandomCLCoursesList = this.list
+        .filter(course => {
+          return (
+            course.status &&
+            course.status === 2 &&
+            this.courses[course.number].random === 5
+          )
+        })
+        .sort((courseA, courseB) => {
+          return courseA.order - courseB.order
+        })
+      if (waitingForRandomCLCoursesList.length > 0) {
+        this.resultList.push({
+          header: '大學中文志願（待亂數）',
+          newOrder: waitingForRandomCLCoursesList,
+          oldOrder: waitingForRandomCLCoursesList.slice(
+            0,
+            waitingForRandomCLCoursesList.length
+          ),
+          dialog: false,
+          orderable: true
+        })
+        for (let course of waitingForRandomCLCoursesList) {
+          this.resultList.push(course)
+        }
+      }
+
+      // 已選上
+      let addedCourses = this.list.filter(course => {
+        return course.status && course.status === 1
+      })
+      if (addedCourses.length > 0) {
+        this.resultList.push({
+          header: '已選上',
+          newOrder: addedCourses,
+          oldOrder: addedCourses.slice(0, addedCourses.length),
+          dialog: false,
+          orderable: false
+        })
+        for (let course of addedCourses) {
+          this.resultList.push(course)
+        }
+      }
+
+      return this.resultList
     }
   },
   methods: {
@@ -314,24 +332,24 @@ export default {
     openCourseDetail(courseNumber) {
       this.$emit('open-course-detail', courseNumber)
     },
-    editOrder(catagory) {
+    editOrder(category) {
       this.$store.commit('ui/START_LOADING')
       this.$store
         .dispatch('selectCourses/editOrder', {
-          newOrder: catagory.newOrder,
-          oldOrder: catagory.oldOrder
+          newOrder: category.newOrder,
+          oldOrder: category.oldOrder
         })
         .then(data => {
-          catagory.dialog = false
+          category.dialog = false
           this.$store.commit('ui/STOP_LOADING')
         })
     },
-    cancelEditOrder(catagory) {
-      catagory.newOrder.splice(0, catagory.newOrder.length)
-      for (let order of catagory.oldOrder) {
-        catagory.newOrder.push(order)
+    cancelEditOrder(category) {
+      category.newOrder.splice(0, category.newOrder.length)
+      for (let order of category.oldOrder) {
+        category.newOrder.push(order)
       }
-      catagory.dialog = false
+      category.dialog = false
     },
     isCourseSelected(courseNumber) {
       return (
