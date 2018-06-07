@@ -23,56 +23,39 @@
     "logout": "Logout",
     "authCodeFormatError": "CAPTCHA should have 6 digits."
   },
-  "action": {
-    "addCourse": "Enroll",
-    "quitCourse": "Quit",
-    "addLimitedCourse": "Add",
-    "printLimitedCourseForm": "Print out",
-    "addFavorite": "加入最愛",
-    "removeFavorite": "移除最愛"
-  },
-  "selectionResult": {
-    "waitingForRandom": "Waiting for random process",
-    "status": "Enrolled",
-    "randomFailed": "Failed"
-  },
   "entry": {
     "UserInfoNotCorrectTitle": "Wrong user name or password!",
     "UserInfoNotCorrectText": "Please try again.",
     "AuthCheckCodeNotCorrectTitle": "CAPACHA is incorrect!",
     "AuthCheckCodeNotCorrectText": "Please try again.",
-    "NTHUServerErrorTitle": "選課系統錯誤",
-    "NTHUServerErrorText": "選課系統錯誤，請再試一遍！"
+    "NTHUServerErrorTitle": "NTHU Server Error",
+    "NTHUServerErrorText": "NTHU server error, please try again!"
   },
-  "departmentPicker": {
-    "title": "Choose the Department"
+  "Service": {
+    "title": "Hello!",
+    "into": "Get into {0}",
+    "selectLanguege": "Select Languege"
   },
-  "favoriteCoursesList": {
-    "title": "最愛課程"
+  "CommentsAboutCourses": {
+    "name": "Comments About the Courses",
+    "description": "WIP"
   },
-  "selectedCoursesList": {
-    "title": "Courses Selecting Status",
-    "shortTitle": "Status"
+  "AdvisorPassword": {
+    "name": "Enter Advisor's Password",
+    "description": "WIP"
   },
-  "coursesList": {
-    "title": "Courses Catalog",
-    "shortTitle": "Catalog",
-    "pleaseSelect":
-      "By clicking the top button, you can choose the courses you want, or just search it.",
-    "emptyText": "You haven't select any course.",
-    "syllabus": "Syllabus",
-    "detail": "Detail",
-    "editOrder": "Edit random order",
-    "order": "Order {0}",
-    "courseSub": "{0}　{1}",
-    "courseDetail": "Cre.{0}　Lm.{1} ({2})　{3}",
-    "waitingForRandomTitle": "Waiting For Random Process",
-    "waitingForRandomCLTitle":
-      "General Education, PE (Waiting For Random Process)",
-    "waitingForRandomGePETitle": "Chinese Waiting For Random Process",
-    "addedCoursesTitle": "Enrolled",
-    "failedCoursesTitle": "Failed For Enrollment",
-    "addSuccess": "You have already enrolled {0}."
+  "SelectCourses": {
+    "name": "Easy Selecting Courses",
+    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+  },
+  "Scores": {
+    "name": "Easy Score",
+    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！"
+  },
+  "semester": {
+    "10": "First Semester",
+    "20": "Second Semester",
+    "30": "Summer Semester"
   },
   "courseDetail": {
     "title": "Title",
@@ -87,74 +70,5 @@
     "close": "Close",
     "classmates": "Classmates",
     "downloadSyllabus": "Download Syllabus"
-  },
-  "timeTable": {
-    "title": "Time Table",
-    "shortTitle": "Table",
-    "weekday": {
-      "m": "Mon",
-      "t": "Tue",
-      "w": "Wed",
-      "r": "Thu",
-      "f": "Fri",
-      "s": "Sat"
-    }
-  },
-  "error": {},
-  "selectCourses": {
-    "name": "NTHU Easy Courses",
-    "description":
-      "The goal of the NTHU SELECT COURSES is to make courses selecting an easy, intuitive, and pleasure journey."
-  },
-  "scores": {
-    "name": "Easy Score Lookup",
-    "description": "Lookup your score without any trouble.",
-    "selecting": "Please select the semester",
-    "grade": "Grade",
-    "title": "{0}'s Grade",
-    "emptyText": "No grade to show.",
-    "distribution": "Distribution",
-    "requestSharingDistributionTitle":
-      "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
-    "requestSharingDistributionText":
-      "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
-    "passRate": "Pass Rate",
-    "totalStudents": "Total"
-  },
-  "commentsAboutCourses": {
-    "name": "Comments about the Courses",
-    "description": "Work in Progress."
-  },
-  "semester": {
-    "10": "First Semester",
-    "20": "Second Semester",
-    "30": "Summer Semester"
-  },
-  "service": {
-    "title": "Hello!",
-    "into": "Get into {0}",
-    "selectLanguege": "Select Lannguege"
-  },
-  "phase": {
-    "100": "第1次選課紀錄",
-    "100P": "第1次選課結果",
-    "101": "第2次選課紀錄",
-    "101P": "第2次選課結果",
-    "500": "新生選課紀錄",
-    "500P": "新生選課結果",
-    "200": "第3次選課紀錄",
-    "200P": "第3次選課結果",
-    "200S": "開學前選課結果",
-    "300": "加退選紀錄",
-    "300P": "加退選結果",
-    "400": "二退紀錄",
-    "400P": "二退結果"
-  },
-  "periodPicker": {
-    "title": "Search The Periods"
-  },
-  "advisorPassword": {
-    "name": "Advisor Password",
-    "description": "Key in Advisor's Password"
   }
 }

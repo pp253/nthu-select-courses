@@ -1,3 +1,111 @@
 {
-  "SelectCourses": {}
+  "SelectCourses": {
+    "action": {
+      "addCourse": "Enroll",
+      "quitCourse": "Quit",
+      "addLimitedCourse": "Add",
+      "printLimitedCourseForm": "Print out",
+      "addFavorite": "加入最愛",
+      "removeFavorite": "移除最愛"
+    },
+    "selectionResult": {
+      "waitingForRandom": "Waiting for random process",
+      "status": "Enrolled",
+      "randomFailed": "Failed"
+    },
+    "departmentPicker": {
+      "title": "Choose the Department"
+    },
+    "favoriteCoursesList": {
+      "title": "最愛課程"
+    },
+    "selectedCoursesList": {
+      "title": "Courses Selecting Status",
+      "shortTitle": "Status"
+    },
+    "coursesList": {
+      "title": "Courses Catalog",
+      "shortTitle": "Catalog",
+      "pleaseSelect":
+        "By clicking the top button, you can choose the courses you want, or just search it.",
+      "emptyText": "You haven't select any course.",
+      "syllabus": "Syllabus",
+      "detail": "Detail",
+      "editOrder": "Edit random order",
+      "order": "Order {0}",
+      "courseSub": "{0}　{1}",
+      "courseDetail": "Cre.{0}　Lm.{1} ({2})　{3}",
+      "waitingForRandomTitle": "Waiting For Random Process",
+      "waitingForRandomCLTitle":
+        "General Education, PE (Waiting For Random Process)",
+      "waitingForRandomGePETitle": "Chinese Waiting For Random Process",
+      "addedCoursesTitle": "Enrolled",
+      "failedCoursesTitle": "Failed For Enrollment",
+      "addSuccess": "You have already enrolled {0}."
+    },
+    "timeTable": {
+      "title": "Time Table",
+      "shortTitle": "Table",
+      "weekday": {
+        "m": "Mon",
+        "t": "Tue",
+        "w": "Wed",
+        "r": "Thu",
+        "f": "Fri",
+        "s": "Sat"
+      }
+    },
+    "error": {},
+    "selectCourses": {
+      "name": "NTHU Easy Courses",
+      "description":
+        "The goal of the NTHU SELECT COURSES is to make courses selecting an easy, intuitive, and pleasure journey."
+    },
+    "scores": {
+      "name": "Easy Score Lookup",
+      "description": "Lookup your score without any trouble.",
+      "selecting": "Please select the semester",
+      "grade": "Grade",
+      "title": "{0}'s Grade",
+      "emptyText": "No grade to show.",
+      "distribution": "Distribution",
+      "requestSharingDistributionTitle":
+        "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
+      "requestSharingDistributionText":
+        "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
+      "passRate": "Pass Rate",
+      "totalStudents": "Total"
+    },
+    "commentsAboutCourses": {
+      "name": "Comments about the Courses",
+      "description": "Work in Progress."
+    },
+    "service": {
+      "title": "Hello!",
+      "into": "Get into {0}",
+      "selectLanguege": "Select Lannguege"
+    },
+    "phase": {
+      "100": "第1次選課紀錄",
+      "100P": "第1次選課結果",
+      "101": "第2次選課紀錄",
+      "101P": "第2次選課結果",
+      "500": "新生選課紀錄",
+      "500P": "新生選課結果",
+      "200": "第3次選課紀錄",
+      "200P": "第3次選課結果",
+      "200S": "開學前選課結果",
+      "300": "加退選紀錄",
+      "300P": "加退選結果",
+      "400": "二退紀錄",
+      "400P": "二退結果"
+    },
+    "periodPicker": {
+      "title": "Search The Periods"
+    },
+    "advisorPassword": {
+      "name": "Advisor Password",
+      "description": "Key in Advisor's Password"
+    }
+  }
 }
