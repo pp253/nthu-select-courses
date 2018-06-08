@@ -23,63 +23,28 @@
                     <div>
                       <div class="headline">登入</div>
                       <div class="grey--text darken-1">請使用你在校務資訊系統登入的帳號。常見問題請見頁底。</div>
+                      <div class="red--text darken-1">本系統目前尚處測試階段，選課完請前往校務資訊系統確認！</div>
                     </div>
                   </v-card-title>
                   <v-card-text>
-                    <v-text-field
-                      name="input-username"
-                      :label="$t('login.username')"
-                      value=""
-                      autocomplete="on"
-                      v-model="username"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      type="password"
-                      name="input-userpass"
-                      :label="$t('login.userpass')"
-                      value=""
-                      autocomplete="on"
-                      v-model="userpass"
-                      required
-                    ></v-text-field>
+                    <v-text-field name="input-username" :label="$t('login.username')" value="" autocomplete="on" v-model="username" required></v-text-field>
+                    <v-text-field type="password" name="input-userpass" :label="$t('login.userpass')" value="" autocomplete="on" v-model="userpass" required></v-text-field>
                     <v-layout>
                       <v-flex xs5 sm3 md4 lg4 xl3>
                         <img :src="'data:image/png;base64,' + $store.state.user.authImg" class="auth-img">
                       </v-flex>
                       <v-flex xs7 sm9 md8 lg8 xl9>
-                        <v-text-field
-                          name="input-authCheckCode"
-                          :label="$t('login.auth_img')"
-                          value=""
-                          v-model="authCheckCode"
-                          autocomplete="off"
-                          :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]"
-                          validate-on-blur
-                          type="number"
-                          required
-                          @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"
-                        ></v-text-field>
+                        <v-text-field name="input-authCheckCode" :label="$t('login.auth_img')" value="" v-model="authCheckCode" autocomplete="off" :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]" validate-on-blur type="number" required @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"></v-text-field>
                       </v-flex>
                     </v-layout>
                   </v-card-text>
                   <v-card-actions>
                     <v-layout wrap>
-                      <v-flex
-                        v-if="$store.state.user.isLogin"
-                        xs12
-                        mb-3
-                        text-xs-right
-                      >
-                        <v-btn
-                          @click="$router.push('/service')"
-                        >{{ $t('login.directLogin') }}</v-btn>
+                      <v-flex v-if="$store.state.user.isLogin" xs12 mb-3 text-xs-right>
+                        <v-btn @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
                       </v-flex>
                       <v-flex xs12 text-xs-right>
-                        <v-btn
-                          @click="submit"
-                          :disabled="!username || !userpass || !authCheckCode"
-                        >{{ $t('login.login') }}</v-btn>
+                        <v-btn @click="submit" :disabled="!username || !userpass || !authCheckCode">{{ $t('login.login') }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-card-actions>
@@ -159,8 +124,10 @@
                     <div slot="header">這個網站會記錄我的帳號和密碼嗎？</div>
                     <v-card>
                       <v-card-text class="grey lighten-3">
-                        不會。你可以把這個網站想成是矇了眼的銀行櫃員，他在你和清大校務資訊系統間傳遞資訊，但他看不到上面寫什麼，所以你的資訊在這個網站上並不會有紀錄。<br>
-                        若有任何疑慮，我們有提供這個網站的<a href="https://github.com/pp253/nthu-select-courses">所有程式碼</a>（以及<a href="https://github.com/pp253/nthu-select-courses-server">伺服器程式碼</a>）。如果這樣還是無法讓你安心的話，請左轉<a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">清大校務資訊系統</a>。
+                        不會。你可以把這個網站想成是矇了眼的銀行櫃員，他在你和清大校務資訊系統間傳遞資訊，但他看不到上面寫什麼，所以你的資訊在這個網站上並不會有紀錄。<br> 若有任何疑慮，我們有提供這個網站的
+                        <a href="https://github.com/pp253/nthu-select-courses">所有程式碼</a>（以及
+                        <a href="https://github.com/pp253/nthu-select-courses-server">伺服器程式碼</a>）。如果這樣還是無法讓你安心的話，請左轉
+                        <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">清大校務資訊系統</a>。
                       </v-card-text>
                     </v-card>
                   </v-expansion-panel-content>
@@ -168,7 +135,8 @@
                     <div slot="header">這是清大官方的選課系統嗎？</div>
                     <v-card>
                       <v-card-text class="grey lighten-3">
-                        不是。這個是由<a @click="$router.push('/about')">在校學生</a>自發架設的簡易選課系統，旨在提供更提供清爽、直覺和方便的選課系統。
+                        不是。這個是由
+                        <a @click="$router.push('/about')">在校學生</a>自發架設的簡易選課系統，旨在提供更提供清爽、直覺和方便的選課系統。目前簡易選課系統正在與本校校務資訊組研討合併至官方選課系統的可能性。
                       </v-card-text>
                     </v-card>
                   </v-expansion-panel-content>
@@ -176,10 +144,9 @@
                     <div slot="header">我發現問題了，可以怎麼反應？</div>
                     <v-card>
                       <v-card-text class="grey lighten-3">
-                        太棒了！你有兩種方式可以告訴清大簡易選課系統，<br>
-                        一、填寫<a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a><br>
-                        二、直接在GitHub上面開個issue<br>
-                        感恩你，讚嘆你！
+                        太棒了！你有兩種方式可以告訴清大簡易選課系統，<br> 一、填寫
+                        <a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a><br> 二、直接在GitHub上面開個issue
+                        <br> 感恩你，讚嘆你！
                       </v-card-text>
                     </v-card>
                   </v-expansion-panel-content>
@@ -213,7 +180,9 @@
         <v-layout>
           <v-flex xs12>
             <div id="disqus_thread"></div>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <noscript>Please enable JavaScript to view the
+              <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+            </noscript>
           </v-flex>
         </v-layout>
 

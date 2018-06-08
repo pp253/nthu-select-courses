@@ -285,25 +285,25 @@ export default {
         {
           name: '鄭建澤',
           email: 'asd@gmail.com',
-          department: '工工系四年級',
+          department: '工工系二年級',
           studentId: '105034009'
         },
         {
           name: '鄭建澤',
           email: 'asd@gmail.com',
-          department: '工工系四年級',
+          department: '工工系二年級',
           studentId: '105034009'
         },
         {
           name: '鄭建澤',
           email: 'asd@gmail.com',
-          department: '工工系四年級',
+          department: '工工系二年級',
           studentId: '105034009'
         },
         {
           name: '鄭建澤',
           email: 'asd@gmail.com',
-          department: '工工系四年級',
+          department: '工工系二年級',
           studentId: '105034009'
         }
       ]
