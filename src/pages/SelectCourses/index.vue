@@ -18,6 +18,14 @@
                 </v-list-tile>
                 <span>{{ $t(item.title) }}</span>
               </v-tooltip>
+              <v-tooltip right style="position: absolute; bottom: 16px;">
+                <v-list-tile @click="" href="https://goo.gl/FruSFf" target="_blank" slot="activator" ripple>
+                  <v-list-tile-action>
+                    <v-icon>feedback</v-icon>
+                  </v-list-tile-action>
+                </v-list-tile>
+                <span>意見回饋</span>
+              </v-tooltip>
             </v-list>
           </v-navigation-drawer>
         </v-flex>
