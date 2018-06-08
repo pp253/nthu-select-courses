@@ -3,7 +3,7 @@
 <template>
   <v-list class="courses-list" ripple id="courses-list">
     <v-subheader v-if="list.length > coursesPerPage" class="mb-3">
-      有{{list.length}}個課程。第{{page}}頁，共{{getPage(list.length)}}頁。
+      {{$t('SelectCourses.coursesList.pages', [list.length, page, getPage(list.length)])}}
     </v-subheader>
 
     <template v-if="list.length > 0" v-for="(course, index) in adjustedList">
@@ -11,7 +11,7 @@
         {{ $t(course.header) }}
         <v-spacer></v-spacer>
         <v-dialog v-if="course.orderable" v-model="course.dialog" persistent :fullscreen="$store.state.ui.isMobile" max-width="350" scrollable>
-          <v-btn color="primary" dark slot="activator" v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
+          <v-btn outline slot="activator" v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
           <v-card>
             <v-card-title class="headline" v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
             <v-card-text>
@@ -303,19 +303,18 @@ export default {
           .then(result => {
             if (result) {
               this.$store.commit('ui/START_LOADING')
-              /*
-              this.$store.dispatch('selectCourses/quitCourse', {
-                courseNumber: courseNumber
-              })
-              .then((data) => {
-                this.$store.commit('ui/STOP_LOADING')
-                resolve(data)
-              })
-              .catch((err) => {
-                this.$store.commit('ui/STOP_LOADING')
-                reject(err)
-              })
-              */
+              this.$store
+                .dispatch('selectCourses/quitCourse', {
+                  courseNumber: courseNumber
+                })
+                .then(data => {
+                  this.$store.commit('ui/STOP_LOADING')
+                  resolve(data)
+                })
+                .catch(err => {
+                  this.$store.commit('ui/STOP_LOADING')
+                  reject(err)
+                })
             }
           })
       })

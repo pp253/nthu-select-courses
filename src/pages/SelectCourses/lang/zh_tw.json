@@ -41,7 +41,9 @@
       "waitingForRandomCLTitle": "通識、體育志願（待亂數）",
       "waitingForRandomGePETitle": "大學中文志願（待亂數）",
       "addedCoursesTitle": "已選上",
-      "failedCoursesTitle": "未選上"
+      "failedCoursesTitle": "未選上",
+      "pages":
+        "有{0}個課程。第{1}頁，共{2}頁。"
     },
     "timeTable": {
       "title": "課表",
