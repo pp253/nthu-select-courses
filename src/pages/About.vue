@@ -153,7 +153,7 @@ export default {
           {
             name: 'pp253',
             link: 'https://github.com/pp253',
-            description: '清大工工20級。雖然腦袋不太好，但還是很喜歡動動他。',
+            description: '開發者，清大工工20級',
             img: '/static/img/about/pp253.jpg'
           },
           {
