@@ -45,7 +45,7 @@
     </v-toolbar>
 
     <v-container fluid pa-0 ma-0 class="list-wrapper" id="courses-catalog-list">
-      <courses-list :courses="courses" :list="list" :empty-text="$t('SelectCourses.coursesCatalog.pleaseSelect')" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" @update-page="updatePage" />
+      <courses-list :courses="courses" :list="list" :empty-text="$t('SelectCourses.coursesCatalog.pleaseSelect')" :result="false" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" @update-page="updatePage" />
     </v-container>
   </v-container>
 </template>
@@ -54,6 +54,7 @@
 import CoursesList from './courses-list'
 import DepartmentPicker from './department-picker'
 import PeriodPicker from './period-picker'
+import { mapState } from 'vuex'
 
 export default {
   name: 'CoursesCatalog',
@@ -64,9 +65,6 @@ export default {
   },
   data() {
     return {
-      courses: this.$store.state.selectCourses.courses,
-      catalog: this.$store.state.selectCourses.catalog,
-      departments: this.$store.state.selectCourses.departments,
       searchText: '',
       searchPeriods: '',
       onlySearchAbbr: true,
@@ -84,6 +82,11 @@ export default {
     }
   },
   computed: {
+    ...mapState('selectCourses', [
+      'courses',
+      'catalog',
+      'departments'
+    ]),
     searchItems() {
       let searchText = this.searchText
       return [
