@@ -3,30 +3,15 @@
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('SelectCourses.timeTable.title') }}</v-toolbar-title>
       <v-spacer />
-      <v-menu
-        offset-y
-        :close-on-click="true"
-        :close-on-content-click="false"
-        min-width="250"
-        max-width="250"
-      >
+      <v-menu offset-y :close-on-click="true" :close-on-content-click="false" min-width="250" max-width="250">
         <v-btn icon slot="activator">
           <v-icon>more_vert</v-icon>
         </v-btn>
         <v-card>
           <v-card-text>
-            <v-switch
-              v-model="showRoom"
-              :label="`顯示地點`"
-            />
-            <v-switch
-              v-model="showProfessor"
-              :label="`顯示授課教師`"
-            />
-            <v-switch
-              v-model="showCourseNumber"
-              :label="`顯示科號`"
-            />
+            <v-switch v-model="showRoom" :label="`顯示地點`" />
+            <v-switch v-model="showProfessor" :label="`顯示授課教師`" />
+            <v-switch v-model="showCourseNumber" :label="`顯示科號`" />
           </v-card-text>
         </v-card>
       </v-menu>
@@ -45,44 +30,20 @@
           </div>
         </div>
         <div class="table-body">
-          <div
-            v-for="timeSection in timeSectionName"
-            :key="timeSection"
-            :class="'table-row time-section-' + timeSection"
-          >
+          <div v-for="timeSection in timeSectionName" :key="timeSection" :class="'table-row time-section-' + timeSection">
             <div class="table-col col-title">{{ timeSection }}</div>
-            <div
-              v-for="weekday in weekdayName"
-              :key="weekday"
-              :class="'table-col' + (previewTime.includes(weekday + timeSection) ? ' cyan lighten-4 preview' : '')"
-            >
-              <div
-                v-for="course in timeTable[weekday][timeSection]"
-                :key="course.number"
-                @mouseover="$emit('update-preview-time', course.number)"
-                @mouseleave="$emit('update-preview-time', '')"
-                :class="course.status === 'waitingForRandom' ? 'light-blue--text' : (course.status === 'randomFailed' ? 'red--text ' : '')"
-              >
-                <span
-                >{{ courses[course.number].title }}</span>
-                <span
-                  v-if="showCourseNumber"
-                  class="grey--text text--darken-1"
-                ><br>{{ courses[course.number].number }}</span>
-                <span
-                  v-if="showProfessor"
-                  class="grey--text text--darken-1"
-                ><br>{{ courses[course.number].professor }}</span>
-                <span
-                  v-if="showRoom"
-                  class="grey--text text--darken-1"
-                ><br>{{ courses[course.number].room }}</span>
+            <div v-for="weekday in weekdayName" :key="weekday" :class="'table-col' + (previewTime.includes(weekday + timeSection) ? ' cyan lighten-4 preview' : '')">
+              <div v-for="course in timeTable[weekday][timeSection]" :key="course.number" @mouseover="$emit('update-preview-time', course.number)" @mouseleave="$emit('update-preview-time', '')" :class="course.status === 'waitingForRandom' ? 'light-blue--text' : (course.status === 'randomFailed' ? 'red--text ' : '')">
+                <span>{{ courses[course.number].title }}</span>
+                <span v-if="showCourseNumber" class="grey--text text--darken-1"><br>{{ courses[course.number].number }}</span>
+                <span v-if="showProfessor" class="grey--text text--darken-1"><br>{{ courses[course.number].professor }}</span>
+                <span v-if="showRoom" class="grey--text text--darken-1"><br>{{ courses[course.number].room }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <v-layout pb-5>
+      <v-layout pb-5 v-if="$store.state.selectCourses.phase !== 'current'">
         <v-flex xs12>
           <span class="light-blue--text">藍字</span>：待亂數，目前未選上。<br>
           <span class="red--text">紅字</span>：亂數失敗，未選上。
