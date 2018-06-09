@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :fullscreen="$store.state.ui.isMobile"
-    max-width="500px"
-    persistent
-  >
+  <v-dialog v-model="dialog" :fullscreen="$store.state.ui.isMobile" max-width="500px" persistent>
     <v-card class="department-picker">
       <v-card-title class="headline">
         {{ $t('SelectCourses.departmentPicker.title') }}
@@ -15,28 +10,20 @@
             <v-tabs-content id="department">
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field
-                    v-model="searchText"
-                    type="text"
-                    value=""
-                    prepend-icon="search"
-                    clearable
-                    hide-details
-                    class="pl-3 pr-3 pb-3"
-                  />
+                  <v-text-field v-model="searchText" type="text" value="" prepend-icon="search" clearable hide-details class="pl-3 pr-3 pb-3" />
                 </v-flex>
                 <v-flex xs12 class="limit-height flex-department">
                   <v-list>
-                    <template
-                      v-for="(department, departmentAbbr) in searchList"
-                    >
-                      <v-list-tile
-                        ripple
-                        :key="departmentAbbr"
-                        @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'"
-                        :class="choosedDepartment === departmentAbbr ? 'list__tile--active' : ''"
-                      >
-                        <v-list-tile-content>{{ department.chineseName }} {{ department.abbr }}</v-list-tile-content>
+                    <template v-for="(department, departmentAbbr) in searchList">
+                      <v-list-tile ripple :key="departmentAbbr" @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'" :class="choosedDepartment === departmentAbbr ? 'list__tile--active' : ''">
+                        <v-list-tile-content>
+                          <v-container px-0>
+                            <v-layout>
+                              <v-flex xs3 md2>{{ department.abbr }}</v-flex>
+                              <v-flex xs9 md10>{{ department.chineseName }}</v-flex>
+                            </v-layout>
+                          </v-container>
+                        </v-list-tile-content>
                       </v-list-tile>
                       <v-divider :key="departmentAbbr + '-divider'" />
                     </template>
@@ -53,28 +40,16 @@
                   <span class="toolbar__title ml-0">{{choosedDepartment}} {{getDepartmentDetail(choosedDepartment).chineseName || getDepartmentDetail(choosedDepartment).name}}</span>
                 </v-flex>
                 <v-flex xs12 class="limit-height flex-class">
-                  <v-list
-                    v-if="choosedDepartment !== ''"
-                  >
-                    <v-list-tile
-                      ripple
-                      :key="choosedDepartment"
-                      @click="choosedClass = ''"
-                      :class="choosedClass === '' ? 'list__tile--active' : ''"
-                    >
+                  <v-list v-if="choosedDepartment !== ''">
+                    <v-list-tile ripple :key="choosedDepartment" @click="choosedClass = ''" :class="choosedClass === '' ? 'list__tile--active' : ''">
                       <v-list-tile-content>總錄</v-list-tile-content>
                     </v-list-tile>
-                    <template
-                      v-for="cls in departments[choosedDepartment].classes"
-                    >
-                      <v-list-tile
-                        ripple
-                        :key="cls.abbr"
-                        @click="choosedClass = cls.abbr"
-                        :class="choosedClass === cls.abbr ? 'list__tile--active' : ''"
-                      >
-                        <v-list-tile-content>{{ cls.abbr }} {{ cls.name }}</v-list-tile-content>
+                    <v-divider />
+                    <template v-for="cls in departments[choosedDepartment].classes">
+                      <v-list-tile ripple :key="cls.abbr" @click="choosedClass = cls.abbr" :class="choosedClass === cls.abbr ? 'list__tile--active' : ''">
+                        <v-list-tile-content>{{ cls.name }} {{ cls.abbr }}</v-list-tile-content>
                       </v-list-tile>
+                      <v-divider :key="cls.abbr + '-divider'" />
                     </template>
                   </v-list>
                 </v-flex>
