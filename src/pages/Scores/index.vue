@@ -49,8 +49,10 @@ export default {
   },
   beforeCreate () {
     // load store
-    this.$store.registerModule('scores', store)
-
+    if (!this.$store.state.scores) {
+      this.$store.registerModule('scores', store)
+    }
+    
     // load locale
     import(`./lang/${this.$i18n.locale}.json`).then(msg => {
       this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)

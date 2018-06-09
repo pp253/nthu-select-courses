@@ -307,7 +307,9 @@ export default {
   },
   beforeCreate() {
     // load store
-    this.$store.registerModule('selectCourses', store)
+    if (!this.$store.state.selectCourses) {
+      this.$store.registerModule('selectCourses', store)
+    }
 
     // load locale
     import(`./lang/${this.$i18n.locale}.json`).then(msg => {
