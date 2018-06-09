@@ -2,7 +2,7 @@
 
 <template>
   <v-list class="courses-list" ripple id="courses-list">
-    <v-subheader v-if="list.length > coursesPerPage" class="mb-3">
+    <v-subheader v-if="moreThanOnePage" class="mb-3">
       {{$t('SelectCourses.coursesList.pages', [list.length, page, getPage(list.length)])}}
     </v-subheader>
 
@@ -10,7 +10,7 @@
       <v-subheader v-if="course.header" :key="course.header" class="pr-0">
         {{ $t(course.header) }}
         <v-spacer></v-spacer>
-        <v-dialog v-if="course.orderable" v-model="course.dialog" persistent :fullscreen="$store.state.ui.isMobile" max-width="350" scrollable>
+        <v-dialog v-if="course.orderable" v-model="course.dialog" persistent :fullscreen="$store.state.ui.isMobile" max-width="500" scrollable>
           <v-btn outline slot="activator" v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
           <v-card>
             <v-card-title class="headline" v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
@@ -20,7 +20,7 @@
                   <template v-for="(element, idx) in course.newOrder">
                     <v-list-tile avatar :key="'drag-' + element.number">
                       <v-list-tile-action class="grey--text lighten-1">
-                        {{ $t('SelectCourses.coursesList.order', [idx + 1]) }}
+                        {{ $t('SelectCourses.coursesList.order', [element.order]) }}
                       </v-list-tile-action>
                       <v-list-tile-content>
                         {{ courses[element.number].title }}
@@ -64,7 +64,7 @@
                 <v-icon>more_vert</v-icon>
               </v-btn>
               <v-list>
-                <v-list-tile v-if="(addOrDropPhase || selectionPhase) && !courses[course.number].canceled" @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)" ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
+                <v-list-tile v-if="isCurrentSemester(course.number) && (addOrDropPhase || selectionPhase) && !courses[course.number].canceled" @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)" ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
                 <v-list-tile v-if="addOrDropPhase && !courses[course.number].canceled" @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)" ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
                 <!--
                 <v-list-tile
@@ -81,7 +81,7 @@
       <v-divider v-if="courses[course.number] && index < adjustedList.length - 1" :key="course.number + '-divider'"></v-divider>
     </template>
 
-    <div v-if="list.length > coursesPerPage" class="text-xs-center mt-3">
+    <div v-if="moreThanOnePage" class="text-xs-center mt-3">
       <v-pagination :length="getPage(list.length)" v-model="page" :total-visible="5"></v-pagination>
     </div>
 
@@ -91,7 +91,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'CoursesList',
@@ -125,8 +125,14 @@ export default {
     ...mapState('selectCourses', [
       'selectionPhase',
       'addOrDropPhase',
-      'withdrawalPhase'
+      'withdrawalPhase',
+      'currentSemester',
+      'currentSelectedCourses'
     ]),
+    ...mapGetters('selectCourses', ['isCurrentSemester', 'isCourseSelected']),
+    moreThanOnePage() {
+      return !this.result && this.list.length > this.coursesPerPage
+    },
     adjustedList() {
       this.$emit('update-page', this.page)
 
@@ -136,6 +142,9 @@ export default {
       }
 
       this.resultList = []
+      let sorting = (courseA, courseB) => {
+        return courseA.order - courseB.order
+      }
 
       // 待亂數
       let waitingForRandomCoursesList = this.list.filter(course => {
@@ -149,10 +158,7 @@ export default {
         this.resultList.push({
           header: this.$t('SelectCourses.coursesList.waitingForRandomTitle'),
           newOrder: waitingForRandomCoursesList,
-          oldOrder: waitingForRandomCoursesList.slice(
-            0,
-            waitingForRandomCoursesList.length
-          ),
+          oldOrder: waitingForRandomCoursesList.slice(0),
           dialog: false,
           orderable: false
         })
@@ -167,20 +173,15 @@ export default {
           return (
             course.status &&
             course.status === 2 &&
-            this.courses[course.number].random === 20
+            ['通', '體'].includes(course.orderCatalog)
           )
         })
-        .sort((courseA, courseB) => {
-          return courseA.order - courseB.order
-        })
+        .sort(sorting)
       if (waitingForRandomGePeCoursesList.length > 0) {
         this.resultList.push({
           header: '通識、體育志願（待亂數）',
           newOrder: waitingForRandomGePeCoursesList,
-          oldOrder: waitingForRandomGePeCoursesList.slice(
-            0,
-            waitingForRandomGePeCoursesList.length
-          ),
+          oldOrder: waitingForRandomGePeCoursesList.slice(0),
           dialog: false,
           orderable: true
         })
@@ -195,20 +196,15 @@ export default {
           return (
             course.status &&
             course.status === 2 &&
-            this.courses[course.number].random === 5
+            ['中'].includes(course.orderCatalog)
           )
         })
-        .sort((courseA, courseB) => {
-          return courseA.order - courseB.order
-        })
+        .sort(sorting)
       if (waitingForRandomCLCoursesList.length > 0) {
         this.resultList.push({
           header: '大學中文志願（待亂數）',
           newOrder: waitingForRandomCLCoursesList,
-          oldOrder: waitingForRandomCLCoursesList.slice(
-            0,
-            waitingForRandomCLCoursesList.length
-          ),
+          oldOrder: waitingForRandomCLCoursesList.slice(0),
           dialog: false,
           orderable: true
         })
@@ -225,7 +221,7 @@ export default {
         this.resultList.push({
           header: '已選上',
           newOrder: addedCourses,
-          oldOrder: addedCourses.slice(0, addedCourses.length),
+          oldOrder: addedCourses.slice(0),
           dialog: false,
           orderable: false
         })
@@ -255,19 +251,17 @@ export default {
               let order = ''
               if (
                 this.courses[courseNumber].random !== 0 &&
-                this.$store.state.selectCourses.currentSelectedCourses
+                this.currentSelectedCourses
               ) {
                 order =
-                  this.$store.state.selectCourses.currentSelectedCourses.filter(
-                    course => {
-                      return (
-                        course.status &&
-                        course.status === 2 &&
-                        this.courses[course.number].random ===
-                          this.courses[courseNumber].random
-                      )
-                    }
-                  ).length + 1
+                  this.currentSelectedCourses.filter(course => {
+                    return (
+                      course.status &&
+                      course.status === 2 &&
+                      this.courses[course.number].random ===
+                        this.courses[courseNumber].random
+                    )
+                  }).length + 1
               }
 
               this.$store
@@ -342,6 +336,9 @@ export default {
           category.dialog = false
           this.$store.commit('ui/STOP_LOADING')
         })
+        .catch(err => {
+          this.$store.commit('ui/STOP_LOADING')
+        })
     },
     cancelEditOrder(category) {
       category.newOrder.splice(0, category.newOrder.length)
@@ -349,14 +346,6 @@ export default {
         category.newOrder.push(order)
       }
       category.dialog = false
-    },
-    isCourseSelected(courseNumber) {
-      return (
-        this.$store.state.selectCourses.currentSelectedCourses &&
-        this.$store.state.selectCourses.currentSelectedCourses.find(course => {
-          return course.number === courseNumber
-        }) !== undefined
-      )
     }
   }
 }
