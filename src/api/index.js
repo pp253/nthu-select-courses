@@ -2,8 +2,8 @@ import axios from 'axios'
 import store from '@/store'
 import { htmlEncode } from '@/lib/utils'
 
-const SERVER_BASE = 'https://nthu-course.ddns.net/' // 'http://localhost/'
-const ERR_MSG = {
+export const SERVER_BASE = 'https://nthu-course.ddns.net/' // 'http://localhost/'
+export const ERR_MSG = {
   20: {
     title: 'entry.UserInfoNotCorrectTitle',
     text: 'entry.UserInfoNotCorrectText'
@@ -58,7 +58,7 @@ const ERR_MSG = {
   }
 }
 
-function legalRequest(apiPath, data) {
+export function legalRequest(apiPath, data) {
   return new Promise((resolve, reject) => {
     axios
       .post(SERVER_BASE + apiPath, data)
@@ -122,6 +122,13 @@ export function logout(sessionToken) {
   return legalRequest('api/user/logout', data)
 }
 
+export function getCoursesDB() {
+  let data = {
+    sessionToken: sessionToken
+  }
+  return legalRequest('api/select_course/getCoursesDB', data)
+}
+
 export function getCurrentSelectedCourses(sessionToken) {
   let data = {
     sessionToken: sessionToken
@@ -163,21 +170,6 @@ export function getSyllabus(sessionToken, courseNumber) {
   return legalRequest('api/select_course/getSyllabus', data)
 }
 
-export function getScores(sessionToken) {
-  let data = {
-    sessionToken: sessionToken
-  }
-  return legalRequest('api/scores/getScores', data)
-}
-
-export function getDistribution(sessionToken, courseNumber) {
-  let data = {
-    sessionToken: sessionToken,
-    courseNumber: courseNumber
-  }
-  return legalRequest('api/scores/getDistribution', data)
-}
-
 export function getAvailableSelectionResult(sessionToken) {
   let data = {
     sessionToken: sessionToken
@@ -192,4 +184,19 @@ export function getSelectionResult(sessionToken, semester, phase) {
     phase: phase
   }
   return legalRequest('api/select_course/getSelectionResult', data)
+}
+
+export function getScores(sessionToken) {
+  let data = {
+    sessionToken: sessionToken
+  }
+  return legalRequest('api/scores/getScores', data)
+}
+
+export function getDistribution(sessionToken, courseNumber) {
+  let data = {
+    sessionToken: sessionToken,
+    courseNumber: courseNumber
+  }
+  return legalRequest('api/scores/getDistribution', data)
 }
