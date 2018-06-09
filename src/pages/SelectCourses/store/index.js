@@ -18,10 +18,35 @@ export default {
     addOrDropPhase: false,
     withdrawalPhase: false,
     editable: false,
-    currentSemester: '10602',
-    currentPhase: '',
+    currentSemester: '10710',
+    currentPhase: '100',
     semester: '',
     phase: ''
+  },
+  getters: {
+    isCurrentSemester(state, getters) {
+      return courseNumber => {
+        return (
+          courseNumber !== undefined &&
+          getters.getCourseSemester(courseNumber) === state.currentSemester
+        )
+      }
+    },
+    getCourseSemester() {
+      return courseNumber => {
+        return courseNumber.slice(0, 5)
+      }
+    },
+    isCourseSelected(state) {
+      return courseNumber => {
+        return (
+          courseNumber !== undefined &&
+          state.currentSelectedCourses.find(course => {
+            return course.number === courseNumber
+          }) !== undefined
+        )
+      }
+    }
   },
   mutations: {
     SET_SELECTION_PHASE(state, options) {
@@ -142,19 +167,36 @@ export default {
           return
         }
 
+        let adjustedOldOrder = []
+        for (
+          let order = 0, idx = 0;
+          order < options.oldOrder[options.oldOrder.length - 1].order;
+          order++
+        ) {
+          let course = options.oldOrder[idx]
+          if (course.order === order + 1) {
+            adjustedOldOrder[order] = course
+            idx++
+          } else {
+            adjustedOldOrder[order] = undefined
+          }
+        }
+
         api
           .editOrder(
             context.rootState.user.sessionToken,
             options.newOrder,
-            options.oldOrder
+            adjustedOldOrder
           )
           .then(data => {
-            context.commit('SET_CURRENT_SELECTED_COURSES', {
-              currentSelectedCourses: data.currentSelectedCourses
-            })
-            context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
-              currentSelectedCoursesLoaded: true
-            })
+            if ('currentSelectedCourses' in data) {
+              context.commit('SET_CURRENT_SELECTED_COURSES', {
+                currentSelectedCourses: data.currentSelectedCourses
+              })
+              context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
+                currentSelectedCoursesLoaded: true
+              })
+            }
             resolve(context.state.currentSelectedCourses)
           })
           .catch(err => {
