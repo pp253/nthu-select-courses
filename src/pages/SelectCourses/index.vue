@@ -13,7 +13,7 @@
               <v-tooltip v-for="item in menu" :key="item.title" right>
                 <v-list-tile slot="activator" @click="pc[item.attr] = !pc[item.attr]" ripple>
                   <v-list-tile-action>
-                    <v-icon :class="pc[item.attr] ? 'blue--text' : ''">{{item.icon}}</v-icon>
+                    <v-icon :class="pc[item.attr] ? 'primary--text' : ''">{{item.icon}}</v-icon>
                   </v-list-tile-action>
                 </v-list-tile>
                 <span>{{ $t(item.title) }}</span>

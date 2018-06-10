@@ -11,23 +11,12 @@
                 </v-card-title>
                 <v-card-actions>
                   <v-spacer />
-                  <v-btn
-                    flat
-                    class="red--text"
-                    @click="logout"
-                    v-t="'login.logout'"
-                  ></v-btn>
+                  <v-btn flat class="error--text" @click="logout" v-t="'login.logout'"></v-btn>
                 </v-card-actions>
               </v-card>
             </v-container>
           </v-flex>
-          <v-flex
-            v-for="service in services"
-            :key="service.title"
-            xs12
-            sm6
-            lg4
-          >
+          <v-flex v-for="service in services" :key="service.title" xs12 sm6 lg4>
             <v-container :pa-0="$vuetify.breakpoint.xsOnly" pb-3>
               <v-card>
                 <v-card-title>
@@ -36,13 +25,7 @@
                 </v-card-title>
                 <v-card-text v-t="service.content"></v-card-text>
                 <v-card-actions>
-                  <v-btn
-                    @click="$router.push(service.path)"
-                    outline
-                    block
-                    :disabled="service.disabled"
-                    v-text="$t('Service.into', [$t(service.title)])"
-                  ></v-btn>
+                  <v-btn @click="$router.push(service.path)" outline block :disabled="service.disabled" v-text="$t('Service.into', [$t(service.title)])"></v-btn>
                 </v-card-actions>
               </v-card>
             </v-container>

@@ -29,14 +29,14 @@
         <v-card-actions v-if="$store.state.ui.dialogMode === 'request'">
           <v-spacer />
           <v-btn @click="$bus.$emit('dialog-return', 'No'), $store.commit('ui/CLOSE_DIALOG')" flat v-text="$t('dialog.No')"></v-btn>
-          <v-btn @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/CLOSE_DIALOG')" flat v-text="$t('dialog.Yes')"></v-btn>
+          <v-btn color="primary" @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/CLOSE_DIALOG')" flat v-text="$t('dialog.Yes')"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <v-snackbar :timeout="6000" bottom :value="$store.state.ui.snackbar">
       {{ $store.state.ui.snackbarText }}
-      <v-btn flat dark @click.native="$store.commit('ui/CLOSE_SNACKBAR')" v-t="'dialog.Close'"></v-btn>
+      <v-btn color="primary" flat dark @click.native="$store.commit('ui/CLOSE_SNACKBAR')" v-t="'dialog.Close'"></v-btn>
     </v-snackbar>
   </v-app>
 </template>
@@ -147,14 +147,14 @@ input::-webkit-inner-spin-button {
     }
   }
 
-  .z-index-high {
-    z-index: 100000 !important;
-  }
-
   .dialog .card.dialog-full-scrollable {
     .card__title {
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
       z-index: 100000;
+    }
+
+    .card__text {
+      -webkit-overflow-scrolling: touch;
     }
 
     .card__actions {

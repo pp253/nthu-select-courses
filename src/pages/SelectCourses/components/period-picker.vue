@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" :fullscreen="$store.state.ui.isMobile" max-width="300px">
+  <v-dialog v-model="dialog" :fullscreen="$store.state.ui.isMobile" max-width="300px" scrollable>
     <v-card class="period-picker dialog-full-scrollable">
       <v-card-title class="headline">{{ $t('SelectCourses.periodPicker.title') }}</v-card-title>
       <v-card-text>
@@ -22,7 +22,7 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn flat @click="clearPeriods" color="red">{{ $t('dialog.Clear') }}</v-btn>
+        <v-btn flat @click="clearPeriods" color="error">{{ $t('dialog.Clear') }}</v-btn>
         <v-spacer></v-spacer>
         <v-btn flat @click="close()">{{ $t('dialog.Cancel') }}</v-btn>
         <v-btn color="primary" flat @click="done()">{{ $t('dialog.Apply') }}</v-btn>

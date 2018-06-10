@@ -159,7 +159,7 @@ export default {
 
       if (searchText && searchText !== '') {
         if (searchText.startsWith('period:')) {
-          this.title = this.$t('common.search', [searchPeriods.join('')])
+          this.title = this.$t('common.search', [searchPeriods ? searchPeriods.join('') : ''])
           if (searchPeriods.length === 0) {
             return
           }

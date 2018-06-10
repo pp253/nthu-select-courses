@@ -44,7 +44,7 @@
                         <v-btn @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
                       </v-flex>
                       <v-flex xs12 text-xs-right>
-                        <v-btn @click="submit" :disabled="!username || !userpass || !authCheckCode">{{ $t('login.login') }}</v-btn>
+                        <v-btn @click="submit" :disabled="!username || !userpass || !authCheckCode" color="primary">{{ $t('login.login') }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-card-actions>
