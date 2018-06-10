@@ -1,33 +1,63 @@
 <template>
-  <v-container fluid pa-0 ma-0 class="courses-catalog">
-    <v-toolbar dense extended>
+  <v-container fluid
+               pa-0
+               ma-0
+               class="courses-catalog">
+    <v-toolbar dense
+               extended>
       <v-toolbar-title>
         {{ title || $t('SelectCourses.coursesCatalog.title') }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
-        <v-btn slot="activator" @click="showDepartmentPicker = true" icon flat>
+        <v-btn slot="activator"
+               @click="showDepartmentPicker = true"
+               icon
+               flat>
           <v-icon>list</v-icon>
         </v-btn>
         <span>選擇科系</span>
       </v-tooltip>
-      <department-picker :value="showDepartmentPicker" @update-department="updateDepartment" @close="showDepartmentPicker = false" />
+      <department-picker :value="showDepartmentPicker"
+                         @update-department="updateDepartment"
+                         @close="showDepartmentPicker = false" />
 
-      <v-text-field slot="extension" v-model="searchText" type="text" value="" prepend-icon="search" clearable @focus="showMenu = true" @input="(str) => {str === null && (searchText = '', updateList(), showMenu = false)}" @keyup.native="(e) => {e.key === 'Enter' && (updateList(), showMenu = false)}">
+      <v-text-field slot="extension"
+                    v-model="searchText"
+                    type="text"
+                    value=""
+                    prepend-icon="search"
+                    clearable
+                    @focus="showMenu = true"
+                    @input="(str) => {str === null && (searchText = '', updateList(), showMenu = false)}"
+                    @keyup.native="(e) => {e.key === 'Enter' && (updateList(), showMenu = false)}">
       </v-text-field>
-      <v-menu v-model="showMenu" absolute :position-x="($store.state.ui.isMobile ? 0 : 64) + 16" :position-y="96 + ($store.state.ui.isMobile ? 0 : 16)" :close-on-click="false" :close-on-content-click="false" min-width="250" max-width="250">
+      <v-menu v-model="showMenu"
+              absolute
+              :position-x="($store.state.ui.isMobile ? 0 : 64) + 16"
+              :position-y="96 + ($store.state.ui.isMobile ? 0 : 16)"
+              :close-on-click="false"
+              :close-on-content-click="false"
+              min-width="250"
+              max-width="250">
         <v-card v-if="!$store.state.ui.isMobile || abbr">
           <v-card-title class="pa-0">
             <v-spacer></v-spacer>
-            <v-btn @click="showMenu = false" flat class="pr-0">
+            <v-btn @click="showMenu = false"
+                   flat
+                   class="pr-0">
               <span style="position: relative; top: -1px;">關閉搜尋方框</span>
               <v-icon>close</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text v-if="!$store.state.ui.isMobile" class="py-0 px-0">
+          <v-card-text v-if="!$store.state.ui.isMobile"
+                       class="py-0 px-0">
             <v-list class="pa-0">
               <v-divider />
-              <v-list-tile v-for="item in searchItems" :key="item.value" @click="showMenu = false; item.action && item.action(); updateList()" ripple>
+              <v-list-tile v-for="item in searchItems"
+                           :key="item.value"
+                           @click="showMenu = false; item.action && item.action(); updateList()"
+                           ripple>
                 <v-list-tile-title>
                   <span class="grey--text lighten-1">{{`搜尋${item.scope} `}}</span>
                   {{ item.text }}
@@ -37,15 +67,32 @@
             </v-list>
           </v-card-text>
           <v-card-actions>
-            <v-switch v-if="abbr" v-model="onlySearchAbbr" :label="`只搜尋「${getDepartmentDetail(abbr).chineseName || getDepartmentDetail(abbr).name}」`" hide-details class="pt-2 ml-3 mr-3" />
+            <v-switch v-if="abbr"
+                      v-model="onlySearchAbbr"
+                      :label="`只搜尋「${getDepartmentDetail(abbr).chineseName || getDepartmentDetail(abbr).name}」`"
+                      hide-details
+                      color="primary"
+                      class="pt-2 ml-3 mr-3" />
           </v-card-actions>
         </v-card>
       </v-menu>
-      <period-picker :value="showPeriodPicker" @update-periods="updatePeriods" @close="showPeriodPicker = false" />
+      <period-picker :value="showPeriodPicker"
+                     @update-periods="updatePeriods"
+                     @close="showPeriodPicker = false" />
     </v-toolbar>
 
-    <v-container fluid pa-0 ma-0 class="list-wrapper" id="courses-catalog-list">
-      <courses-list :courses="courses" :list="list" :empty-text="$t('SelectCourses.coursesCatalog.pleaseSelect')" :result="false" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" @update-page="updatePage" />
+    <v-container fluid
+                 pa-0
+                 ma-0
+                 class="list-wrapper"
+                 id="courses-catalog-list">
+      <courses-list :courses="courses"
+                    :list="list"
+                    :empty-text="$t('SelectCourses.coursesCatalog.pleaseSelect')"
+                    :result="false"
+                    @update-preview-time="updatePreviewTime"
+                    @open-course-detail="openCourseDetail"
+                    @update-page="updatePage" />
     </v-container>
   </v-container>
 </template>

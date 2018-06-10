@@ -1,20 +1,17 @@
 <template>
-  <v-container pa-0 ma-0 fluid class="scores">
-    <score-list
-      @show-score-detail="showDetail"
-      :scores="scores"
-      :courses="courses"
-      :overview="overview"
-      :hidden="showCourseDetail"
-    >
-    </score-list>
-    <score-course-detail
-      @close-score-detail="closeDetail"
-      :courses="courses"
-      :course-detail-number="courseDetailNumber"
-      :hidden="!showCourseDetail"
-    >
-    </score-course-detail>
+  <v-container pa-0
+               ma-0
+               fluid
+               class="scores">
+    <score-list @show-score-detail="showDetail"
+                :scores="scores"
+                :courses="courses"
+                :overview="overview"
+                :hidden="showCourseDetail" />
+    <score-course-detail @close-score-detail="closeDetail"
+                         :courses="courses"
+                         :course-detail-number="courseDetailNumber"
+                         :hidden="!showCourseDetail" />
   </v-container>
 </template>
 
@@ -52,7 +49,7 @@ export default {
     if (!this.$store.state.scores) {
       this.$store.registerModule('scores', store)
     }
-    
+
     // load locale
     import(`./lang/${this.$i18n.locale}.json`).then(msg => {
       this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)
