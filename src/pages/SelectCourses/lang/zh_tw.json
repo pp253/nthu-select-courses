@@ -9,7 +9,9 @@
       "printLimitedCourseForm": "列印加簽單",
       "addFavorite": "加入最愛",
       "removeFavorite": "移除最愛",
-      "addSuccess": "您已成功加入{0}。"
+      "addSuccess": "您已成功加選「{0}」。",
+      "quitSuccess": "您已成功退選「{0}」",
+      "editOrderSuccess": "您已成功編輯志願序"
     },
     "selectionResult": {
       "title": "選課結果",
@@ -42,8 +44,7 @@
       "waitingForRandomGePETitle": "大學中文志願（待亂數）",
       "addedCoursesTitle": "已選上",
       "failedCoursesTitle": "未選上",
-      "pages":
-        "有{0}個課程。第{1}頁，共{2}頁。"
+      "pages": "有{0}個課程。第{1}頁，共{2}頁。"
     },
     "timeTable": {
       "title": "課表",
