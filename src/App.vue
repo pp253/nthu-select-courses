@@ -1,7 +1,5 @@
 <template>
-  <v-app
-    :class="`app mode-${$store.state.ui.isMobile ? 'mobile' : 'pc'}`"
-  >
+  <v-app :class="`app mode-${$store.state.ui.isMobile ? 'mobile' : 'pc'}`">
     <router-view />
 
     <v-dialog v-model="$store.state.ui.loading" max-width="250px" persistent>
@@ -11,11 +9,7 @@
             <v-flex xs3 class="loading-icon">
               <v-progress-circular indeterminate color="primary" :size="50"></v-progress-circular>
             </v-flex>
-            <v-flex
-              xs9
-              class="loading-text"
-              v-text="$t('common.nowLoading')"
-            ></v-flex>
+            <v-flex xs9 class="loading-text" v-text="$t('common.nowLoading')"></v-flex>
           </v-layout>
         </v-card-text>
       </v-card>
@@ -25,46 +19,22 @@
       <v-card>
         <v-card-title class="headline">{{ $t($store.state.ui.dialogTitle) }}</v-card-title>
         <v-card-text>
-          <div
-            v-html="$t($store.state.ui.dialogText)"
-          ></div>
-          <div
-            v-html="$store.state.ui.dialogMore"
-          ></div>
+          <div v-html="$t($store.state.ui.dialogText)"></div>
+          <div v-html="$store.state.ui.dialogMore"></div>
         </v-card-text>
-        <v-card-actions
-          v-if="$store.state.ui.dialogMode === 'info'"
-        >
+        <v-card-actions v-if="$store.state.ui.dialogMode === 'info'">
           <v-spacer />
-          <v-btn
-            @click="$store.commit('ui/CLOSE_DIALOG')"
-            flat
-            v-text="$t('dialog.OK')"
-          ></v-btn>
+          <v-btn @click="$store.commit('ui/CLOSE_DIALOG')" flat v-text="$t('dialog.OK')"></v-btn>
         </v-card-actions>
-        <v-card-actions
-          v-if="$store.state.ui.dialogMode === 'request'"
-        >
+        <v-card-actions v-if="$store.state.ui.dialogMode === 'request'">
           <v-spacer />
-          <v-btn
-            @click="$bus.$emit('dialog-return', 'No'), $store.commit('ui/CLOSE_DIALOG')"
-            flat
-            v-text="$t('dialog.No')"
-          ></v-btn>
-          <v-btn
-            @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/CLOSE_DIALOG')"
-            flat
-            v-text="$t('dialog.Yes')"
-          ></v-btn>
+          <v-btn @click="$bus.$emit('dialog-return', 'No'), $store.commit('ui/CLOSE_DIALOG')" flat v-text="$t('dialog.No')"></v-btn>
+          <v-btn @click="$bus.$emit('dialog-return', 'Yes'), $store.commit('ui/CLOSE_DIALOG')" flat v-text="$t('dialog.Yes')"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-snackbar
-      :timeout="6000"
-      bottom
-      :value="$store.state.ui.snackbar"
-    >
+    <v-snackbar :timeout="6000" bottom :value="$store.state.ui.snackbar">
       {{ $store.state.ui.snackbarText }}
       <v-btn flat dark @click.native="$store.commit('ui/CLOSE_SNACKBAR')" v-t="'dialog.Close'"></v-btn>
     </v-snackbar>
@@ -174,6 +144,22 @@ input::-webkit-inner-spin-button {
   a {
     .avatar {
       text-decoration: none;
+    }
+  }
+
+  .z-index-high {
+    z-index: 100000 !important;
+  }
+
+  .dialog .card.dialog-full-scrollable {
+    .card__title {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+      z-index: 100000;
+    }
+
+    .card__actions {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+      z-index: 100000;
     }
   }
 }
