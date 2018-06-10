@@ -10,9 +10,10 @@
       <v-subheader v-if="course.header" :key="course.header" class="pr-0">
         {{ $t(course.header) }}
         <v-spacer></v-spacer>
+
         <v-dialog v-if="course.orderable" v-model="course.dialog" persistent :fullscreen="$store.state.ui.isMobile" max-width="500" scrollable>
           <v-btn outline slot="activator" v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
-          <v-card>
+          <v-card class="dialog-full-scrollable">
             <v-card-title class="headline" v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
             <v-card-text>
               <v-list>
@@ -303,6 +304,11 @@ export default {
                 })
                 .then(data => {
                   this.$store.commit('ui/STOP_LOADING')
+                  this.$store.dispatch('ui/openSnackbar', {
+                    snackbarText: this.$t('SelectCourses.action.quitSuccess', [
+                      this.courses[courseNumber].title
+                    ])
+                  })
                   resolve(data)
                 })
                 .catch(err => {
@@ -334,6 +340,9 @@ export default {
         })
         .then(data => {
           category.dialog = false
+          this.$store.dispatch('ui/openSnackbar', {
+            snackbarText: this.$t('SelectCourses.action.editOrderSuccess')
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

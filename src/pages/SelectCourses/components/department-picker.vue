@@ -1,59 +1,57 @@
 <template>
-  <v-dialog v-model="dialog" :fullscreen="$store.state.ui.isMobile" max-width="500px" persistent>
-    <v-card class="department-picker">
-      <v-card-title class="headline">
-        {{ $t('SelectCourses.departmentPicker.title') }}
+  <v-dialog v-model="dialog" :fullscreen="$store.state.ui.isMobile" max-width="500px" persistent scrollable>
+    <v-card class="department-picker dialog-full-scrollable">
+      <v-card-title>
+        <v-container class="ma-0 pa-0">
+          <v-layout>
+            <v-flex xs12 class="headline">{{ $t('SelectCourses.departmentPicker.title') }}</v-flex>
+          </v-layout>
+          <v-layout wrap>
+            <v-flex xs12 v-if="activeTabs === 'department'">
+              <v-text-field v-model="searchText" type="text" value="" prepend-icon="search" clearable hide-details />
+            </v-flex>
+            <v-flex xs12 v-else-if="activeTabs === 'class'" class="toolbar__content">
+              <v-btn icon flat @click="activeTabs = 'department'" class="ml-0 mb-0" style="margin-top: 14px;">
+                <v-icon>arrow_back</v-icon>
+              </v-btn>
+              <span class="toolbar__title ml-0" style="margin-top: 14px;">{{choosedDepartment}} {{getDepartmentDetail(choosedDepartment).chineseName || getDepartmentDetail(choosedDepartment).name}}</span>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </v-card-title>
-      <v-card-text class="pt-0">
+      <v-card-text class="limit-height pa-0">
         <v-tabs v-model="activeTabs">
           <v-tabs-items>
             <v-tabs-content id="department">
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-text-field v-model="searchText" type="text" value="" prepend-icon="search" clearable hide-details class="pl-3 pr-3 pb-3" />
-                </v-flex>
-                <v-flex xs12 class="limit-height flex-department">
-                  <v-list>
-                    <template v-for="(department, departmentAbbr) in searchList">
-                      <v-list-tile ripple :key="departmentAbbr" @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'" :class="choosedDepartment === departmentAbbr ? 'list__tile--active' : ''">
-                        <v-list-tile-content>
-                          <v-container px-0>
-                            <v-layout>
-                              <v-flex xs3 md2>{{ department.abbr }}</v-flex>
-                              <v-flex xs9 md10>{{ department.chineseName }}</v-flex>
-                            </v-layout>
-                          </v-container>
-                        </v-list-tile-content>
-                      </v-list-tile>
-                      <v-divider :key="departmentAbbr + '-divider'" />
-                    </template>
-                  </v-list>
-                </v-flex>
-              </v-layout>
+              <v-list>
+                <template v-for="(department, departmentAbbr) in searchList">
+                  <v-list-tile ripple :key="departmentAbbr" @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'" :class="choosedDepartment === departmentAbbr ? 'list__tile--active' : ''">
+                    <v-list-tile-content>
+                      <v-container px-0>
+                        <v-layout>
+                          <v-flex xs3 md2>{{ department.abbr }}</v-flex>
+                          <v-flex xs9 md10>{{ department.chineseName }}</v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider :key="departmentAbbr + '-divider'" />
+                </template>
+              </v-list>
             </v-tabs-content>
             <v-tabs-content id="class">
-              <v-layout wrap>
-                <v-flex xs12 class="toolbar__content">
-                  <v-btn icon flat @click="activeTabs = 'department'">
-                    <v-icon>arrow_back</v-icon>
-                  </v-btn>
-                  <span class="toolbar__title ml-0">{{choosedDepartment}} {{getDepartmentDetail(choosedDepartment).chineseName || getDepartmentDetail(choosedDepartment).name}}</span>
-                </v-flex>
-                <v-flex xs12 class="limit-height flex-class">
-                  <v-list v-if="choosedDepartment !== ''">
-                    <v-list-tile ripple :key="choosedDepartment" @click="choosedClass = ''" :class="choosedClass === '' ? 'list__tile--active' : ''">
-                      <v-list-tile-content>總錄</v-list-tile-content>
-                    </v-list-tile>
-                    <v-divider />
-                    <template v-for="cls in departments[choosedDepartment].classes">
-                      <v-list-tile ripple :key="cls.abbr" @click="choosedClass = cls.abbr" :class="choosedClass === cls.abbr ? 'list__tile--active' : ''">
-                        <v-list-tile-content>{{ cls.name }} {{ cls.abbr }}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-divider :key="cls.abbr + '-divider'" />
-                    </template>
-                  </v-list>
-                </v-flex>
-              </v-layout>
+              <v-list v-if="choosedDepartment !== ''">
+                <v-list-tile ripple :key="choosedDepartment" @click="choosedClass = ''" :class="choosedClass === '' ? 'list__tile--active' : ''">
+                  <v-list-tile-content>總錄</v-list-tile-content>
+                </v-list-tile>
+                <v-divider />
+                <template v-for="cls in departments[choosedDepartment].classes">
+                  <v-list-tile ripple :key="cls.abbr" @click="choosedClass = cls.abbr" :class="choosedClass === cls.abbr ? 'list__tile--active' : ''">
+                    <v-list-tile-content>{{ cls.name }} {{ cls.abbr }}</v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider :key="cls.abbr + '-divider'" />
+                </template>
+              </v-list>
             </v-tabs-content>
           </v-tabs-items>
         </v-tabs>
@@ -152,12 +150,8 @@ export default {
 
 <style lang="scss">
 .department-picker {
-  .flex-college,
-  .flex-department,
-  .flex-class {
-    li.list__tile--active a div {
-      color: #1976d2 !important;
-    }
+  li.list__tile--active a div {
+    color: #1976d2 !important;
   }
 
   .layout {
@@ -166,13 +160,10 @@ export default {
 
   .limit-height {
     min-width: 156px;
-    height: 50vh;
+    height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-  }
-  .flex-class.limit-height {
-    height: calc(50vh + 18px);
   }
 }
 

@@ -1,42 +1,21 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :fullscreen="$store.state.ui.isMobile"
-    max-width="300px"
-  >
-    <v-card
-      class="period-picker"
-    >
+  <v-dialog v-model="dialog" :fullscreen="$store.state.ui.isMobile" max-width="300px">
+    <v-card class="period-picker dialog-full-scrollable">
       <v-card-title class="headline">{{ $t('SelectCourses.periodPicker.title') }}</v-card-title>
       <v-card-text>
         <v-layout>
-          <v-flex
-            v-for="weekday in weekdayName"
-            :key="weekday"
-          >
+          <v-flex v-for="weekday in weekdayName" :key="weekday">
             <v-layout wrap text-xs-center>
               <v-flex xs12 pb-2 class="weekday">
                 {{ $t(`SelectCourses.timeTable.weekday.${weekday.toLowerCase()}`) }}
                 <v-divider />
               </v-flex>
 
-              <v-flex
-                v-for="timeSection in timeSectionName"
-                :key="timeSection"
-                xs12
-              >
-                <v-btn
-                  @click="togglePeriod(weekday + timeSection)"
-                  :flat="!periods.includes(weekday + timeSection)"
-                  :color="periods.includes(weekday + timeSection) ? 'primary' : ''"
-                  icon
-                  small
-                >
+              <v-flex v-for="timeSection in timeSectionName" :key="timeSection" xs12>
+                <v-btn @click="togglePeriod(weekday + timeSection)" :flat="!periods.includes(weekday + timeSection)" :color="periods.includes(weekday + timeSection) ? 'primary' : ''" icon small>
                   {{timeSection}}
                 </v-btn>
-                <v-divider
-                  v-if="['4', 'n', '9'].includes(timeSection)"
-                />
+                <v-divider v-if="['4', 'n', '9'].includes(timeSection)" />
               </v-flex>
             </v-layout>
           </v-flex>
