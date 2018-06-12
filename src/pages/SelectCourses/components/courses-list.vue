@@ -180,97 +180,98 @@ export default {
     adjustedList() {
       this.$emit('update-page', this.page)
 
+      if (!this.list) {
+        return []
+      }
+
       if (!this.result) {
         let start = (this.page - 1) * this.coursesPerPage
         return this.list.slice(start, start + this.coursesPerPage)
+      }
+
+      let randomCoursesSet = {}
+      for (let course of this.list) {
+        if (!course.status) {
+          console.error('Course should have course status.', course)
+          continue
+        }
+        if (!(course.status in randomCoursesSet)) {
+          randomCoursesSet[course.status] = []
+        }
+        if (course.status === 2) {
+          if (!course.status) {
+            console.error('Course should have course orderCatalog.', course)
+            continue
+          }
+          if (!(course.orderCatalog in randomCoursesSet[course.status])) {
+            randomCoursesSet[course.status][course.orderCatalog] = []
+          }
+          randomCoursesSet[course.status][course.orderCatalog].push(course)
+        } else {
+          randomCoursesSet[course.status].push(course)
+        }
       }
 
       this.resultList = []
       let sorting = (courseA, courseB) => {
         return courseA.order - courseB.order
       }
-
-      // 待亂數
-      let waitingForRandomCoursesList = this.list.filter(course => {
-        return (
-          course.status &&
-          course.status === 2 &&
-          !['通', '體', '中'].includes(course.orderCatalog)
-        )
-      })
-      if (waitingForRandomCoursesList.length > 0) {
-        this.resultList.push({
-          header: this.$t('SelectCourses.coursesList.waitingForRandomTitle'),
-          newOrder: waitingForRandomCoursesList,
-          oldOrder: waitingForRandomCoursesList.slice(0),
-          dialog: false,
-          orderable: false
-        })
-        for (let course of waitingForRandomCoursesList) {
-          this.resultList.push(course)
-        }
-      }
-
-      // 通識、體育志願（待亂數）
-      let waitingForRandomGePeCoursesList = this.list
-        .filter(course => {
-          return (
-            course.status &&
-            course.status === 2 &&
-            ['通', '體'].includes(course.orderCatalog)
-          )
-        })
-        .sort(sorting)
-      if (waitingForRandomGePeCoursesList.length > 0) {
-        this.resultList.push({
+      let randomCoursesFilteringConfig = [
+        {
           header: '通識、體育志願（待亂數）',
-          newOrder: waitingForRandomGePeCoursesList,
-          oldOrder: waitingForRandomGePeCoursesList.slice(0),
-          dialog: false,
-          orderable: true
-        })
-        for (let course of waitingForRandomGePeCoursesList) {
-          this.resultList.push(course)
-        }
-      }
-
-      // 大學中文志願（待亂數）
-      let waitingForRandomCLCoursesList = this.list
-        .filter(course => {
-          return (
-            course.status &&
-            course.status === 2 &&
-            ['中'].includes(course.orderCatalog)
-          )
-        })
-        .sort(sorting)
-      if (waitingForRandomCLCoursesList.length > 0) {
-        this.resultList.push({
+          status: 2,
+          orderable: true,
+          includesCatalogs: ['通', '體']
+        },
+        {
           header: '大學中文志願（待亂數）',
-          newOrder: waitingForRandomCLCoursesList,
-          oldOrder: waitingForRandomCLCoursesList.slice(0),
-          dialog: false,
-          orderable: true
-        })
-        for (let course of waitingForRandomCLCoursesList) {
-          this.resultList.push(course)
-        }
-      }
-
-      // 已選上
-      let addedCourses = this.list.filter(course => {
-        return course.status && course.status === 1
-      })
-      if (addedCourses.length > 0) {
-        this.resultList.push({
-          header: '已選上',
-          newOrder: addedCourses,
-          oldOrder: addedCourses.slice(0),
-          dialog: false,
+          status: 2,
+          orderable: true,
+          includesCatalogs: ['中']
+        },
+        {
+          header: 'SelectCourses.coursesList.waitingForRandomTitle',
+          status: 2,
           orderable: false
-        })
-        for (let course of addedCourses) {
-          this.resultList.push(course)
+        },
+        {
+          header: '已選上',
+          status: 1
+        },
+        {
+          header: '未選上',
+          status: 0
+        }
+      ]
+      for (let item of randomCoursesFilteringConfig) {
+        if (item.status === 2) {
+          if (item.orderable === true) {
+            let list = []
+            for (let catalog of item.includesCatalogs) {
+              list.concat(randomCoursesSet[item.status][catalog])
+            }
+            if (list.length === 0) {
+              continue
+            }
+            list.sort(sorting)
+            this.resultList.push({
+              header: item.header,
+              newOrder: list,
+              oldOrder: list.slice(0),
+              dialog: false,
+              orderable: false
+            })
+          } else if ('' in randomCoursesSet[item.status]) {
+            this.resultList.push({
+              header: item.header
+            })
+            this.resultList.concat(randomCoursesSet[item.status][''])
+          }
+        } else if (item.status in randomCoursesSet) {
+          this.resultList.push({
+            header: item.header
+          })
+          this.resultList.concat(randomCoursesSet[item.status])
         }
       }
 
