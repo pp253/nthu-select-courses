@@ -14,7 +14,7 @@ export default {
     currentSelectedCourses: [],
     currentSelectedCoursesLoaded: false,
     favoriteCourses: [],
-    selectionPhase: true,
+    selectionPhase: false,
     addOrDropPhase: false,
     withdrawalPhase: false,
     editable: false,
