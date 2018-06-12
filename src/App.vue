@@ -92,9 +92,9 @@ html {
 }
 
 * {
-  font-family: -apple-system, 'Microsoft JhengHei', BlinkMacSystemFont,
-    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, '微軟正黑體', 'Microsoft JhengHei',
+    BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
