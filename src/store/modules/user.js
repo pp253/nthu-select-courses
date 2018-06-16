@@ -66,6 +66,10 @@ export default {
      * @return {Promise}
      */
     getSessionToken(context, loginInfo) {
+      context.dispatch('loading/start', 'user.getSessionToken', {
+        root: true
+      })
+
       return new Promise((resolve, reject) => {
         if (context.state.loginToken === '') {
           reject(error.ResponseErrorMsg.InvalidLoginToken())
@@ -85,9 +89,16 @@ export default {
               username: data.username,
               sessionToken: data.sessionToken
             })
+
+            context.dispatch('loading/end', 'user.getSessionToken', {
+              root: true
+            })
             resolve(data)
           })
           .catch(err => {
+            context.dispatch('loading/end', 'user.getSessionToken', {
+              root: true
+            })
             reject(err)
           })
       })
