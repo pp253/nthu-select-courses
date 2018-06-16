@@ -1,11 +1,24 @@
 <template>
-  <v-container fluid pa-0 ma-0 class="selection-result">
-    <v-toolbar dense extended>
+  <v-container fluid
+               pa-0
+               ma-0
+               class="selection-result">
+    <v-toolbar dense
+               extended>
       <v-toolbar-title>
         {{$t('SelectCourses.selectionResult.title')}}
       </v-toolbar-title>
-      <v-select slot="extension" :items="readableAvailableSelectionResult" @input="(semesterPhase) => {openSelectionResult(semesterPhase); selectedSemesterPhase = semesterPhase}" item-text="text" item-value="value" :value="selectedSemesterPhase" :label="$t('SelectCourses.selectionResult.title')" single-line bottom>
-        <template slot="item" slot-scope="data">
+      <v-select slot="extension"
+                :items="readableAvailableSelectionResult"
+                @input="(semesterPhase) => {openSelectionResult(semesterPhase); selectedSemesterPhase = semesterPhase}"
+                item-text="text"
+                item-value="value"
+                :value="selectedSemesterPhase"
+                :label="$t('SelectCourses.selectionResult.title')"
+                single-line
+                bottom>
+        <template slot="item"
+                  slot-scope="data">
           <template v-if="data.item.type === 'divider'">
             <v-divider />
           </template>
@@ -18,8 +31,15 @@
       </v-select>
     </v-toolbar>
 
-    <v-container fluid pa-0 ma-0 class="list-wrapper">
-      <courses-list :courses="courses" :list="list" :result="$store.state.selectCourses.phase === 'current'" @update-preview-time="updatePreviewTime" @open-course-detail="openCourseDetail" />
+    <v-container fluid
+                 pa-0
+                 ma-0
+                 class="list-wrapper">
+      <courses-list :courses="courses"
+                    :list="list"
+                    :result="$store.state.selectCourses.phase === 'current'"
+                    @update-preview-time="updatePreviewTime"
+                    @open-course-detail="openCourseDetail" />
     </v-container>
   </v-container>
 </template>

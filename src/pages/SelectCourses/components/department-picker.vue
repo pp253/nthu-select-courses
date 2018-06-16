@@ -150,10 +150,6 @@ export default {
 
 <style lang="scss">
 .department-picker {
-  li.list__tile--active a div {
-    // color: #1976d2 !important;
-  }
-
   .layout {
     overflow-x: auto;
   }
