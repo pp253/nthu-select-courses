@@ -8,13 +8,12 @@ export default {
     departments: coursesDb.departments,
     catalog: coursesDb.catalog,
     courses: coursesDb.courses,
-    availableSelectionResult: [],
-    availableSelectionResultLoaded: false,
+    availableSelectionResult: null,
     selectionResult: {},
-    currentSelectedCourses: [],
-    currentSelectedCoursesLoaded: false,
+    currentSelectedCourses: null,
     favoriteCourses: [],
-    selectionPhase: false,
+
+    selectionPhase: true,
     addOrDropPhase: false,
     withdrawalPhase: false,
     editable: false,
@@ -39,6 +38,9 @@ export default {
     },
     isCourseSelected(state) {
       return courseNumber => {
+        if (!'currentSelectedCourses' in state) {
+          return false
+        }
         return (
           courseNumber !== undefined &&
           state.currentSelectedCourses.find(course => {
@@ -91,10 +93,6 @@ export default {
         options.availableSelectionResult
       )
     },
-    SET_AVAILABLE_SELECTION_RESULT_LOADED(state, options) {
-      state.setAvailableSelectionResultLoaded =
-        options.availableSelectionResultLoaded
-    },
     SET_SELECTION_RESULT(state, options) {
       state.selectionResult = Object.assign({}, state.selectionResult, {
         [options.semester]: {
@@ -104,9 +102,6 @@ export default {
     },
     SET_CURRENT_SELECTED_COURSES(state, options) {
       state.currentSelectedCourses = options.currentSelectedCourses
-    },
-    SET_CURRENT_SELECTED_COURSES_LOADED(state, options) {
-      state.currentSelectedCoursesLoaded = options.currentSelectedCoursesLoaded
     }
   },
   actions: {
@@ -122,9 +117,6 @@ export default {
           .then(data => {
             context.commit('SET_CURRENT_SELECTED_COURSES', {
               currentSelectedCourses: data.currentSelectedCourses
-            })
-            context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
-              currentSelectedCoursesLoaded: true
             })
             resolve(context.state.currentSelectedCourses)
           })
@@ -149,9 +141,6 @@ export default {
           .then(data => {
             context.commit('SET_CURRENT_SELECTED_COURSES', {
               currentSelectedCourses: data.currentSelectedCourses
-            })
-            context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
-              currentSelectedCoursesLoaded: true
             })
             resolve(context.state.currentSelectedCourses)
           })
@@ -193,9 +182,6 @@ export default {
               context.commit('SET_CURRENT_SELECTED_COURSES', {
                 currentSelectedCourses: data.currentSelectedCourses
               })
-              context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
-                currentSelectedCoursesLoaded: true
-              })
             }
             resolve(context.state.currentSelectedCourses)
           })
@@ -211,7 +197,7 @@ export default {
           return
         }
 
-        if (context.state.currentSelectedCoursesLoaded) {
+        if (context.state.currentSelectedCourses !== null) {
           resolve(context.state.currentSelectedCourses)
         } else {
           api
@@ -219,9 +205,6 @@ export default {
             .then(data => {
               context.commit('SET_CURRENT_SELECTED_COURSES', {
                 currentSelectedCourses: data.currentSelectedCourses
-              })
-              context.commit('SET_CURRENT_SELECTED_COURSES_LOADED', {
-                currentSelectedCoursesLoaded: true
               })
               resolve(context.state.currentSelectedCourses)
             })
@@ -269,7 +252,7 @@ export default {
           return
         }
 
-        if (context.state.availableSelectionResultLoaded) {
+        if (context.state.availableSelectionResult !== null) {
           resolve(context.state.availableSelectionResult)
         } else {
           api
@@ -278,12 +261,13 @@ export default {
               context.commit('SET_AVAILABLE_SELECTION_RESULT', {
                 availableSelectionResult: data.availableSelectionResult
               })
-              context.commit('SET_AVAILABLE_SELECTION_RESULT_LOADED', {
-                availableSelectionResultLoaded: true
+              context.commit('SET_SEMESTER', {
+                semester: data.semester
               })
-              context.commit('SET_SEMESTER', { semester: data.semester })
               context.commit('SET_PHASE', { semester: data.phase })
-              context.commit('SET_EDITABLE', { editable: data.editable })
+              context.commit('SET_EDITABLE', {
+                editable: data.editable
+              })
 
               resolve(data.availableSelectionResult)
             })
