@@ -1,0 +1,4 @@
+cd ./nthu-select-courses-server/public
+put -r ./dist/*
+exit
+username
