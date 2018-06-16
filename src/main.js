@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+import VueWait from 'vue-wait'
 import locale from '@/locale'
 import router from '@/router'
 import store from '@/store'
@@ -19,6 +20,8 @@ Vue.use(Vuetify, {
   }
 })
 
+Vue.use(VueWait)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -27,6 +30,17 @@ new Vue({
   store,
   router,
   i18n: locale,
+  wait: new VueWait({
+    // Defaults values are following:
+    useVuex: true, // Uses Vuex to manage wait state
+    vuexModuleName: 'loading', // Vuex module name
+
+    registerComponent: true, // Registers `v-wait` component
+    componentName: 'v-wait', // <v-wait> component name, you can set `my-loader` etc.
+
+    registerDirective: true, // Registers `v-wait` directive
+    directiveName: 'wait' // <span v-wait /> directive name, you can set `my-loader` etc.
+  }),
   template: '<App/>',
   components: {
     App

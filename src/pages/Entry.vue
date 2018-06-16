@@ -1,10 +1,13 @@
 <template>
   <v-container class="entry">
-    <v-layout wrap justify-center>
-      <v-flex xs12 xl8>
+    <v-layout wrap
+              justify-center>
+      <v-flex xs12
+              xl8>
         <v-layout>
           <v-flex xs12>
-            <v-container :pa-0="$store.state.ui.isMobile" mb-3>
+            <v-container :pa-0="$store.state.ui.isMobile"
+                         mb-3>
               <v-card class="transparent elevation-0">
                 <v-card-text>
                   <h1>清大簡易選課系統</h1>
@@ -15,8 +18,15 @@
         </v-layout>
 
         <v-layout wrap>
-          <v-flex xs12 order-xs1 md5 order-md2 lg4 xl4 class="login">
-            <v-container :pa-0="$store.state.ui.isMobile" mb-3>
+          <v-flex xs12
+                  order-xs1
+                  md5
+                  order-md2
+                  lg4
+                  xl4
+                  class="login">
+            <v-container :pa-0="$store.state.ui.isMobile"
+                         mb-3>
               <form>
                 <v-card ref="form">
                   <v-card-title>
@@ -27,24 +37,59 @@
                     </div>
                   </v-card-title>
                   <v-card-text>
-                    <v-text-field name="input-username" :label="$t('login.username')" value="" autocomplete="on" v-model="username" required></v-text-field>
-                    <v-text-field type="password" name="input-userpass" :label="$t('login.userpass')" value="" autocomplete="on" v-model="userpass" required></v-text-field>
+                    <v-text-field name="input-username"
+                                  :label="$t('login.username')"
+                                  value=""
+                                  autocomplete="on"
+                                  v-model="username"
+                                  required></v-text-field>
+                    <v-text-field type="password"
+                                  name="input-userpass"
+                                  :label="$t('login.userpass')"
+                                  value=""
+                                  autocomplete="on"
+                                  v-model="userpass"
+                                  required></v-text-field>
                     <v-layout>
-                      <v-flex xs5 sm3 md4 lg4 xl3>
-                        <img :src="'data:image/png;base64,' + $store.state.user.authImg" class="auth-img">
+                      <v-flex xs5
+                              sm3
+                              md4
+                              lg4
+                              xl3>
+                        <img :src="'data:image/png;base64,' + $store.state.user.authImg"
+                             class="auth-img">
                       </v-flex>
-                      <v-flex xs7 sm9 md8 lg8 xl9>
-                        <v-text-field name="input-authCheckCode" :label="$t('login.auth_img')" value="" v-model="authCheckCode" autocomplete="off" :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]" validate-on-blur type="number" required @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"></v-text-field>
+                      <v-flex xs7
+                              sm9
+                              md8
+                              lg8
+                              xl9>
+                        <v-text-field name="input-authCheckCode"
+                                      :label="$t('login.auth_img')"
+                                      value=""
+                                      v-model="authCheckCode"
+                                      autocomplete="off"
+                                      :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]"
+                                      validate-on-blur
+                                      type="number"
+                                      required
+                                      @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"></v-text-field>
                       </v-flex>
                     </v-layout>
                   </v-card-text>
                   <v-card-actions>
                     <v-layout wrap>
-                      <v-flex v-if="$store.state.user.isLogin" xs12 mb-3 text-xs-right>
+                      <v-flex v-if="$store.state.user.isLogin"
+                              xs12
+                              mb-3
+                              text-xs-right>
                         <v-btn @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
                       </v-flex>
-                      <v-flex xs12 text-xs-right>
-                        <v-btn @click="submit" :disabled="!username || !userpass || !authCheckCode" color="primary">{{ $t('login.login') }}</v-btn>
+                      <v-flex xs12
+                              text-xs-right>
+                        <v-btn @click="submit"
+                               :disabled="!username || !userpass || !authCheckCode"
+                               color="primary">{{ $t('login.login') }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-card-actions>
@@ -53,8 +98,15 @@
             </v-container>
           </v-flex>
 
-          <v-flex xs12 order-xs2 md7 order-md1 lg8 xl8 class="introduction">
-            <v-container :pa-0="$store.state.ui.isMobile" mb-5>
+          <v-flex xs12
+                  order-xs2
+                  md7
+                  order-md1
+                  lg8
+                  xl8
+                  class="introduction">
+            <v-container :pa-0="$store.state.ui.isMobile"
+                         mb-5>
               <v-card class="mb-3">
                 <v-card-title>
                   <div>
@@ -64,25 +116,29 @@
                 </v-card-title>
                 <v-card-text>
                   <v-layout wrap>
-                    <v-flex xs12 sm6>
+                    <v-flex xs12
+                            sm6>
                       <v-container :pa-0="$vuetify.breakpoint.xsOnly">
                         <h2>📱手機也能輕鬆選課</h2>
                         <p>從此，選課不再是電腦的專利了。清大簡易選課系統提供適合手機瀏覽的介面，讓你隨時隨地都能選課。</p>
                       </v-container>
                     </v-flex>
-                    <v-flex xs12 sm6>
+                    <v-flex xs12
+                            sm6>
                       <v-container :pa-0="$vuetify.breakpoint.xsOnly">
                         <h2>💨快速的排志願序</h2>
                         <p>你不再需要為了調整志願序而重複的退選又加選，改用更直覺的方式排志願序吧！</p>
                       </v-container>
                     </v-flex>
-                    <v-flex xs12 sm6>
+                    <v-flex xs12
+                            sm6>
                       <v-container :pa-0="$vuetify.breakpoint.xsOnly">
                         <h2>🔍聰明搜尋</h2>
                         <p>有了搜尋功能後，選課變得更快樂了呢～你除了能搜尋課程名稱、教師以外，還可以搜尋時段。</p>
                       </v-container>
                     </v-flex>
-                    <v-flex xs12 sm6>
+                    <v-flex xs12
+                            sm6>
                       <v-container :pa-0="$vuetify.breakpoint.xsOnly">
                         <h2>👁一目瞭然的課表</h2>
                         <p>濃縮不必要的資訊後，清爽的課表讓你能更專注在選課上。</p>
@@ -99,13 +155,15 @@
                 </v-card-title>
                 <v-card-text>
                   <v-layout wrap>
-                    <v-flex xs12 sm6>
+                    <v-flex xs12
+                            sm6>
                       <v-container :pa-0="$vuetify.breakpoint.xsOnly">
                         <h2>簡易成績查詢</h2>
                         <p>簡易成績查詢讓你用更好的介面，看到更好的成績！</p>
                       </v-container>
                     </v-flex>
-                    <v-flex xs12 sm6>
+                    <v-flex xs12
+                            sm6>
                       <v-container :pa-0="$vuetify.breakpoint.xsOnly">
                         <h2>簡易教學評量</h2>
                         <p>未來開放。</p>
@@ -217,19 +275,19 @@ export default {
         authCheckCode: this.authCheckCode
       }
 
-      this.$store.commit('ui/START_LOADING')
+      //this.$store.commit('ui/START_LOADING')
 
       this.$store
         .dispatch('user/getSessionToken', loginInfo)
         .then(data => {
-          this.$store.commit('ui/STOP_LOADING')
+          //this.$store.commit('ui/STOP_LOADING')
           this.$store.dispatch('ui/openSnackbar', {
             snackbarText: '已成功登入！'
           })
           this.$router.push({ name: 'Service' })
         })
         .catch(err => {
-          this.$store.commit('ui/STOP_LOADING')
+          //this.$store.commit('ui/STOP_LOADING')
           this.reload()
         })
     },
