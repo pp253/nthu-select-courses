@@ -244,11 +244,17 @@ export default {
         }
       ]
       for (let item of randomCoursesFilteringConfig) {
+        if (!(item.status in randomCoursesSet)) {
+          continue
+        }
         if (item.status === 2) {
           if (item.orderable === true) {
             let list = []
             for (let catalog of item.includesCatalogs) {
-              list.concat(randomCoursesSet[item.status][catalog])
+              if (!(catalog in randomCoursesSet[item.status])) {
+                continue
+              }
+              list = list.concat(randomCoursesSet[item.status][catalog])
             }
             if (list.length === 0) {
               continue
@@ -257,24 +263,29 @@ export default {
             this.resultList.push({
               header: item.header,
               newOrder: list,
-              oldOrder: list.slice(0),
+              oldOrder: item.orderable && list.slice(0),
               dialog: false,
-              orderable: false
+              orderable: item.orderable
             })
+            this.resultList = this.resultList.concat(list)
           } else if ('' in randomCoursesSet[item.status]) {
             this.resultList.push({
               header: item.header
             })
-            this.resultList.concat(randomCoursesSet[item.status][''])
+            this.resultList = this.resultList.concat(
+              randomCoursesSet[item.status]['']
+            )
           }
         } else if (item.status in randomCoursesSet) {
           this.resultList.push({
             header: item.header
           })
-          this.resultList.concat(randomCoursesSet[item.status])
+          this.resultList = this.resultList.concat(
+            randomCoursesSet[item.status]
+          )
         }
       }
-
+      
       return this.resultList
     }
   },
