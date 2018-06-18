@@ -127,6 +127,10 @@ body {
   height: 100vh;
 }
 
+.fill-height {
+  -webkit-overflow-scrolling: touch;
+}
+
 input[type='number'] {
   -moz-appearance: textfield;
 }
@@ -148,10 +152,6 @@ input::-webkit-inner-spin-button {
   .display-none,
   .hidden {
     display: none;
-  }
-
-  .full-height {
-    height: 100%;
   }
 
   a {

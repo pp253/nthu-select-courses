@@ -1,8 +1,7 @@
 <template>
   <v-container fluid
                pa-0
-               ma-0
-               class="full-height">
+               ma-0>
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('SelectCourses.timeTable.title') }}</v-toolbar-title>
       <v-spacer />
@@ -16,7 +15,20 @@
           <v-icon>more_vert</v-icon>
         </v-btn>
         <v-card>
-          <v-card-text>
+          <v-subheader>縮放大小</v-subheader>
+          <v-list>
+            <v-list-tile v-for="index in [50, 75, 100]"
+                         :key="index"
+                         @click="zoom = `${index}%`"
+                         ripple>
+              <v-list-tile-title>{{`${index}%`}}</v-list-tile-title>
+              <v-list-tile-avatar v-if="zoom === `${index}%`">
+                <v-icon>check</v-icon>
+              </v-list-tile-avatar>
+            </v-list-tile>
+          </v-list>
+          <v-subheader>顯示</v-subheader>
+          <v-card-text class="py-0">
             <v-switch v-model="showRoom"
                       :label="`顯示地點`"
                       color="primary" />
@@ -31,7 +43,8 @@
       </v-menu>
     </v-toolbar>
     <v-container fluid
-                 class="time-table">
+                 class="time-table"
+                 :style="`zoom: ${zoom};`">
       <v-wait for="*">
         <loading-container slot="waiting" />
         <div class="table">
@@ -115,7 +128,8 @@ export default {
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S'],
       showRoom: false,
       showProfessor: false,
-      showCourseNumber: false
+      showCourseNumber: false,
+      zoom: '100%'
     }
   },
   computed: {

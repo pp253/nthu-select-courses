@@ -29,11 +29,11 @@
           <v-card class="dialog-full-scrollable">
             <v-card-title class="headline"
                           v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
-            <v-card-text>
+            <v-card-text class="fill-height">
               <v-list subheader>
                 <draggable v-model="course.newOrder"
                            :options="{handle:'.drag-handle'}">
-                  <template v-for="(element, idx) in course.newOrder">
+                  <template v-for="element in course.newOrder">
                     <v-list-tile avatar
                                  :key="'drag-' + element.number">
                       <v-list-tile-action class="grey--text lighten-1">
@@ -285,7 +285,7 @@ export default {
           )
         }
       }
-      
+
       return this.resultList
     }
   },

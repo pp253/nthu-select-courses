@@ -1,10 +1,10 @@
 <template>
   <v-container fluid
                pa-0
-               class="select-courses full-height">
+               class="select-courses fill-height">
     <keep-alive>
       <v-layout row
-                class="full-height">
+                class="fill-height">
         <v-flex :hidden="hideDrawer"
                 class="navdrawer">
           <v-navigation-drawer permanent
@@ -50,7 +50,7 @@
         </v-flex>
 
         <v-flex class="main">
-          <v-layout class="full-height">
+          <v-layout class="fill-height">
             <v-flex :class="layoutSize.coursesList"
                     :hidden="!showCoursesCatalog">
               <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
