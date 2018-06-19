@@ -38,10 +38,8 @@ export default {
     },
     isCourseSelected(state) {
       return courseNumber => {
-        if (!'currentSelectedCourses' in state) {
-          return false
-        }
         return (
+          state.currentSelectedCourses != null &&
           courseNumber !== undefined &&
           state.currentSelectedCourses.find(course => {
             return course.number === courseNumber
