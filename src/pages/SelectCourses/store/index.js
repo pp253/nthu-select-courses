@@ -225,6 +225,9 @@ export default {
         ) {
           resolve(context.state.courses[options.courseNumber].syllabus)
         } else {
+          context.dispatch('loading/start', 'selectCourses.getSyllabus', {
+            root: true
+          })
           api
             .getSyllabus(
               context.rootState.user.sessionToken,
@@ -235,9 +238,15 @@ export default {
                 courseNumber: options.courseNumber,
                 syllabus: data.syllabus
               })
+              context.dispatch('loading/end', 'selectCourses.getSyllabus', {
+                root: true
+              })
               resolve(data.syllabus)
             })
             .catch(err => {
+              context.dispatch('loading/end', 'selectCourses.getSyllabus', {
+                root: true
+              })
               reject(err)
             })
         }
@@ -253,6 +262,13 @@ export default {
         if (context.state.availableSelectionResult !== null) {
           resolve(context.state.availableSelectionResult)
         } else {
+          context.dispatch(
+            'loading/start',
+            'selectCourses.getAvailableSelectionResult',
+            {
+              root: true
+            }
+          )
           api
             .getAvailableSelectionResult(context.rootState.user.sessionToken)
             .then(data => {
@@ -266,10 +282,24 @@ export default {
               context.commit('SET_EDITABLE', {
                 editable: data.editable
               })
+              context.dispatch(
+                'loading/end',
+                'selectCourses.getAvailableSelectionResult',
+                {
+                  root: true
+                }
+              )
 
               resolve(data.availableSelectionResult)
             })
             .catch(err => {
+              context.dispatch(
+                'loading/end',
+                'selectCourses.getAvailableSelectionResult',
+                {
+                  root: true
+                }
+              )
               reject(err)
             })
         }
@@ -290,6 +320,13 @@ export default {
             context.state.selectionResult[options.semester][options.phase]
           )
         } else {
+          context.dispatch(
+            'loading/start',
+            'selectCourses.getSelectionResult',
+            {
+              root: true
+            }
+          )
           api
             .getSelectionResult(
               context.rootState.user.sessionToken,
@@ -308,9 +345,23 @@ export default {
                   waitingForRandom: data.waitingForRandom
                 }
               })
+              context.dispatch(
+                'loading/end',
+                'selectCourses.getSelectionResult',
+                {
+                  root: true
+                }
+              )
               resolve(data)
             })
             .catch(err => {
+              context.dispatch(
+                'loading/end',
+                'selectCourses.getSelectionResult',
+                {
+                  root: true
+                }
+              )
               reject(err)
             })
         }

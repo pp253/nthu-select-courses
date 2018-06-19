@@ -129,11 +129,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('selectCourses', [
-      'courses',
-      'catalog',
-      'departments'
-    ]),
+    ...mapState('selectCourses', ['courses', 'catalog', 'departments']),
     searchItems() {
       let searchText = this.searchText
       return [
@@ -206,7 +202,9 @@ export default {
 
       if (searchText && searchText !== '') {
         if (searchText.startsWith('period:')) {
-          this.title = this.$t('common.search', [searchPeriods ? searchPeriods.join('') : ''])
+          this.title = this.$t('common.search', [
+            searchPeriods ? searchPeriods.join('') : ''
+          ])
           if (searchPeriods.length === 0) {
             return
           }

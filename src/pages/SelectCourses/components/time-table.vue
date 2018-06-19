@@ -52,9 +52,13 @@
         </v-card>
       </v-menu>
     </v-toolbar>
-    <v-container fluid
+    <loading-container v-if="$wait.is('selectCourses.getSelectionResult')"
+                       slot="waiting" />
+    <v-container v-else
+                 fluid
                  class="time-table"
                  :style="`zoom: ${zoom};`">
+
       <div class="table">
         <div class="table-head">
           <div class="table-row">

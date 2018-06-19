@@ -2,7 +2,7 @@
   <v-app :class="`app mode-${$store.state.ui.isMobile ? 'mobile' : 'pc'}`">
     <router-view />
 
-    <v-dialog :value="$store.state.ui.loading || $wait.any"
+    <v-dialog :value="$store.state.ui.loading"
               max-width="250px"
               persistent>
       <v-card>

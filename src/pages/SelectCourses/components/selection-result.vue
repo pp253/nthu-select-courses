@@ -35,7 +35,10 @@
                  pa-0
                  ma-0
                  class="list-wrapper">
-      <courses-list :courses="courses"
+      <loading-container v-if="$wait.is('selectCourses.getSelectionResult')"
+                         slot="waiting" />
+      <courses-list v-else
+                    :courses="courses"
                     :list="list"
                     :result="$store.state.selectCourses.phase === 'current'"
                     @update-preview-time="updatePreviewTime"
@@ -46,12 +49,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import LoadingContainer from '@/components/loading-container'
 import CoursesList from './courses-list'
 
 export default {
   name: 'SelectionResult',
   components: {
-    CoursesList
+    CoursesList,
+    LoadingContainer
   },
   props: {
     list: Array,
