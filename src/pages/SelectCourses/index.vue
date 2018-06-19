@@ -1,10 +1,10 @@
 <template>
   <v-container fluid
                pa-0
-               class="select-courses fill-height">
+               class="select-courses h-100">
     <keep-alive>
       <v-layout row
-                class="fill-height">
+                class="h-100">
         <v-flex :hidden="hideDrawer"
                 class="navdrawer">
           <v-navigation-drawer permanent
@@ -51,7 +51,7 @@
 
         <v-flex class="main">
           <v-layout class="fill-height">
-            <v-flex :class="layoutSize.coursesList"
+            <v-flex :class="'column ' + layoutSize.coursesList"
                     :hidden="!showCoursesCatalog">
               <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
                                @update-preview-time="updatePreviewTime"
@@ -59,16 +59,16 @@
                                :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
             </v-flex>
 
-            <v-flex :class="layoutSize.selectedCourses"
+            <v-flex :class="'column ' + layoutSize.selectedCourses"
                     :hidden="!showSelectionResult">
               <selection-result :courses="courses"
                                 :list="list"
-                                :title="'SelectCourses.selectionResult.title'"
+                                :title="$t('SelectCourses.selectionResult.title')"
                                 @update-preview-time="updatePreviewTime"
                                 @open-course-detail="openCourseDetail" />
             </v-flex>
 
-            <v-flex :class="layoutSize.timeTable"
+            <v-flex :class="'column ' + layoutSize.timeTable"
                     :hidden="!showTimeTable">
               <time-table :courses="courses"
                           :preview-time="previewTime"
@@ -76,7 +76,7 @@
                           @update-preview-time="updatePreviewTime"></time-table>
             </v-flex>
 
-            <v-flex :class="layoutSize.courseDetail"
+            <v-flex :class="'column ' + layoutSize.courseDetail"
                     :hidden="!showCourseDetail">
               <course-detail :title="$t('courseDetail.title')"
                              :course-number="courseDetailNumber"
@@ -412,7 +412,7 @@ export default {
     width: 100vw;
     height: 100vh;
 
-    .flex {
+    .column {
       overflow: hidden;
       border-right: 1px solid #ccc;
     }

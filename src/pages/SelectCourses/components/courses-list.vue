@@ -4,12 +4,12 @@
   <v-list class="courses-list"
           ripple
           id="courses-list">
-    <v-subheader v-if="moreThanOnePage"
+    <v-subheader v-if="list && moreThanOnePage"
                  class="mb-3">
       {{ $t('SelectCourses.coursesList.pages', [list.length, page, getPage(list.length)]) }}
     </v-subheader>
 
-    <template v-if="list.length > 0"
+    <template v-if="list && list.length > 0"
               v-for="(course, index) in adjustedList">
       <v-subheader v-if="course.header"
                    :key="course.header"
@@ -69,6 +69,7 @@
                    ripple
                    @click=""
                    :key="course.number"
+                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${courses[course.number].professor} ${course.number}\n${courses[course.number].room}`"
                    @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
                    @mouseleave="updatePreviewTime('')"
                    @dblclick="openCourseDetail(course.number)">
@@ -81,7 +82,7 @@
                   class="course-tag">{{ courses[course.number].required }}</span> -->
             {{ courses[course.number].title }}
           </v-list-tile-title>
-          <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ courses[course.number].number, courses[course.number].professor ]) }}
+          <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ courses[course.number].professor, courses[course.number].number ]) }}
           </v-list-tile-sub-title>
           <v-list-tile-sub-title class="detail">{{ $t('SelectCourses.coursesList.courseDetail', [ courses[course.number].credit, courses[course.number].size_limit, courses[course.number].previous_size || '-', courses[course.number].room ]) }}
           </v-list-tile-sub-title>
@@ -121,14 +122,14 @@
                  :key="course.number + '-divider'"></v-divider>
     </template>
 
-    <div v-if="moreThanOnePage"
+    <div v-if="list && moreThanOnePage"
          class="text-xs-center mt-3">
       <v-pagination :length="getPage(list.length)"
                     v-model="page"
                     :total-visible="5"></v-pagination>
     </div>
 
-    <div v-if="list.length === 0"
+    <div v-if="list && list.length === 0"
          class="text-xs-center pt-5">{{ emptyText }}</div>
   </v-list>
 </template>
@@ -175,7 +176,7 @@ export default {
     ]),
     ...mapGetters('selectCourses', ['isCurrentSemester', 'isCourseSelected']),
     moreThanOnePage() {
-      return !this.result && this.list.length > this.coursesPerPage
+      return !this.result && this.list && this.list.length > this.coursesPerPage
     },
     adjustedList() {
       this.$emit('update-page', this.page)

@@ -140,6 +140,18 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
+.h-100 {
+  height: 100%;
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
 .app {
   .loading-icon {
     margin-top: 6px;
