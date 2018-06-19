@@ -37,11 +37,14 @@
           </v-layout>
         </v-container>
       </v-card-title>
-      <v-card-text class="fill-height pa-0">
-        <v-tabs v-model="activeTabs">
-          <v-tabs-items>
-            <v-tabs-content id="department">
-              <v-list>
+      <v-card-text class="vh-100 pa-0">
+        <v-tabs v-model="activeTabs"
+                class="h-100">
+          <v-tabs-items class="h-100">
+            <v-tabs-content class="h-100"
+                            id="department">
+              <v-list class="h-100 overflow-auto">
+                <v-subheader>先選科系，再選班級</v-subheader>
                 <template v-for="(department, departmentAbbr) in searchList">
                   <v-list-tile ripple
                                :key="departmentAbbr"
@@ -61,8 +64,10 @@
                 </template>
               </v-list>
             </v-tabs-content>
-            <v-tabs-content id="class">
-              <v-list v-if="choosedDepartment !== ''">
+            <v-tabs-content class="h-100"
+                            id="class">
+              <v-list class="h-100 overflow-auto"
+                      v-if="choosedDepartment !== ''">
                 <v-list-tile ripple
                              :key="choosedDepartment"
                              @click="choosedClass = ''">
