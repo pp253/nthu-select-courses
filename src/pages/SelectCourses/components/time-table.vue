@@ -62,6 +62,7 @@
       <div class="table">
         <div class="table-head">
           <div class="table-row">
+            <div class="table-col col-title col-title-time"></div>
             <div class="table-col col-title"></div>
             <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.m') }}</div>
             <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.t') }}</div>
@@ -73,13 +74,14 @@
         </div>
         <div class="table-body">
           <div v-for="timeSection in timeSectionName"
-               :key="timeSection"
-               :class="'table-row time-section-' + timeSection">
-            <div class="table-col col-title">{{ timeSection }}</div>
+               :key="timeSection.name"
+               :class="'table-row time-section-' + timeSection.name">
+            <div class="table-col col-title col-title-time">{{ timeSection.startTime }}<br>{{ timeSection.endTime }}</div>
+            <div class="table-col col-title">{{ timeSection.name }}</div>
             <div v-for="weekday in weekdayName"
                  :key="weekday"
-                 :class="'table-col' + (previewTime.includes(weekday + timeSection) ? ' purple lighten-4 preview' : '')">
-              <div v-for="course in timeTable[weekday][timeSection]"
+                 :class="'table-col' + (previewTime.includes(weekday + timeSection.name) ? ' purple lighten-4 preview' : '')">
+              <div v-for="course in timeTable[weekday][timeSection.name]"
                    :key="course.number"
                    :title="`${courses[course.number].title} ${courses[course.number].time}\n${courses[course.number].professor} ${course.number}\n${courses[course.number].room}`"
                    @mouseover="$emit('update-preview-time', course.number)"
@@ -100,6 +102,7 @@
       <v-layout pb-5
                 v-if="$store.state.selectCourses.phase !== 'current'">
         <v-flex xs12>
+          <span class="">黑字</span>：已選上。<br>
           <span class="info--text">藍字</span>：待亂數，目前未選上。<br>
           <span class="error--text">紅字</span>：亂數失敗，未選上。
         </v-flex>
@@ -123,19 +126,19 @@ export default {
   data() {
     return {
       timeSectionName: [
-        '1',
-        '2',
-        '3',
-        '4',
-        'n',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        'a',
-        'b',
-        'c'
+        {name: '1', startTime: '08:00', endTime: '08:50'},
+        {name: '2', startTime: '09:00', endTime: '09:50'},
+        {name: '3', startTime: '10:10', endTime: '11:00'},
+        {name: '4', startTime: '11:10', endTime: '12:00'},
+        {name: 'n', startTime: '12:10', endTime: '13:00'},
+        {name: '5', startTime: '13:20', endTime: '14:10'},
+        {name: '6', startTime: '14:20', endTime: '15:10'},
+        {name: '7', startTime: '15:30', endTime: '16:20'},
+        {name: '8', startTime: '16:30', endTime: '17:20'},
+        {name: '9', startTime: '17:30', endTime: '18:20'},
+        {name: 'a', startTime: '18:30', endTime: '19:20'},
+        {name: 'b', startTime: '19:30', endTime: '20:20'},
+        {name: 'c', startTime: '20:30', endTime: '21:30'}
       ],
       weekdayName: ['M', 'T', 'W', 'R', 'F', 'S'],
       showRoom: false,
@@ -150,7 +153,7 @@ export default {
       for (let weekday of this.weekdayName) {
         table[weekday] = {}
         for (let timeSection of this.timeSectionName) {
-          table[weekday][timeSection] = []
+          table[weekday][timeSection.name] = []
         }
       }
       if (!this.list) {
@@ -225,6 +228,10 @@ export default {
         min-width: $title-width;
         border: none !important;
         font-size: $title-font-size;
+      }
+
+      .table-col.col-title.col-title-time {
+        width: 60px;
       }
     }
 
