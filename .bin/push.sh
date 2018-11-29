@@ -1,6 +1,6 @@
 #!/bin/bash
-host='35.201.137.92'
-username='pp_pp253'
+host='140.114.212.43'
+username='linaro'
 
 echo "Connecting to $host via sftp."
 
