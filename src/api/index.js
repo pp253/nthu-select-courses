@@ -92,8 +92,8 @@ export function legalRequest(apiPath, data) {
                   ? ERR_MSG[err.id].text + '<br>'
                   : '',
               more:
-                '如果你覺得這不應該發生，請試著向清大簡易選課反映。' +
-                (err.more ? '<br>' + htmlEncode(err.more) : '')
+                (err.more ? '<br>' + htmlEncode(err.more) : '') +
+                '如果你覺得這不應該發生，請試著向清大簡易選課反映。'
             })
           } else if (err.name) {
             store.commit('ui/OPEN_DIALOG', {

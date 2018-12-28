@@ -36,7 +36,7 @@
                       <div class="red--text darken-1">本系統目前尚處測試階段，選課完請前往校務資訊系統確認！</div>
                     </div>
                   </v-card-title>
-                  <v-card-text>
+                  <v-card-text v-if="!usingACIXSTORE">
                     <v-text-field name="input-username"
                                   :label="$t('login.username')"
                                   value=""
@@ -77,21 +77,26 @@
                       </v-flex>
                     </v-layout>
                   </v-card-text>
+                  <v-card-text v-if="usingACIXSTORE">
+                    <v-text-field name="input-ACIXSTORE"
+                                  :label="$t('login.ACIXSTORE')"
+                                  value=""
+                                  autocomplete="off"
+                                  :rules="[() => ACIXSTORE.length === 26 || $t('login.ACIXSTOREFormatError')]"
+                                  v-model="ACIXSTORE"
+                                  required></v-text-field>
+                  </v-card-text>
+                  <v-card-actions v-if="$store.state.user.isLogin">
+                    <v-btn small
+                           @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
+                  </v-card-actions>
                   <v-card-actions>
-                    <v-layout wrap>
-                      <v-flex v-if="$store.state.user.isLogin"
-                              xs12
-                              mb-3
-                              text-xs-right>
-                        <v-btn @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
-                      </v-flex>
-                      <v-flex xs12
-                              text-xs-right>
-                        <v-btn @click="submit"
-                               :disabled="!username || !userpass || !authCheckCode"
-                               color="primary">{{ $t('login.login') }}</v-btn>
-                      </v-flex>
-                    </v-layout>
+                    <v-btn @click="usingACIXSTORE = !usingACIXSTORE"
+                           flat>{{ $t(usingACIXSTORE ? 'login.usingPassword' : 'login.usingACIXSTORE') }}</v-btn>
+                    <v-spacer />
+                    <v-btn @click="submit"
+                           :disabled="(!usingACIXSTORE && (!username || !userpass || !authCheckCode)) || (usingACIXSTORE && !(ACIXSTORE.length === 26))"
+                           color="primary">{{ $t('login.login') }}</v-btn>
                   </v-card-actions>
                 </v-card>
               </form>
@@ -218,15 +223,18 @@
                 <v-card-text class="underline">
                   <v-list>
                     <v-list-tile>
-                      <a href="http://nthu-course.cf/">向第一個清大簡易預排系統致敬！</a>
+                      <a href="http://nthu-course.cf/"
+                         target="_blank">向第一個清大簡易預排系統致敬！（失效）</a>
                     </v-list-tile>
                     <v-divider></v-divider>
                     <v-list-tile>
-                      <a href="https://nthu-plus.com/">向第一個清大課程評價網站致敬！</a>
+                      <a href="https://nthu-plus.com/"
+                         target="_blank">向第一個清大課程評價網站致敬！（失效）</a>
                     </v-list-tile>
                     <v-divider></v-divider>
                     <v-list-tile>
-                      <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">清大校務資訊系統</a>
+                      <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/"
+                         target="_blank">清大校務資訊系統</a>
                     </v-list-tile>
                   </v-list>
                 </v-card-text>
@@ -264,32 +272,41 @@ export default {
     return {
       username: '',
       userpass: '',
-      authCheckCode: ''
+      authCheckCode: '',
+      usingACIXSTORE: false,
+      ACIXSTORE: ''
     }
   },
   methods: {
     submit() {
-      let loginInfo = {
-        username: this.username,
-        userpass: this.userpass,
-        authCheckCode: this.authCheckCode
-      }
-
       //this.$store.commit('ui/START_LOADING')
-
-      this.$store
-        .dispatch('user/getSessionToken', loginInfo)
-        .then(data => {
-          //this.$store.commit('ui/STOP_LOADING')
-          this.$store.dispatch('ui/openSnackbar', {
-            snackbarText: '已成功登入！'
+      if (this.usingACIXSTORE) {
+        this.$store.commit('user/SET_USER', {
+          isLogin: true,
+          username: 'UNKNOWN',
+          sessionToken: this.ACIXSTORE
+        })
+        this.$router.push('/service')
+      } else {
+        let loginInfo = {
+          username: this.username,
+          userpass: this.userpass,
+          authCheckCode: this.authCheckCode
+        }
+        this.$store
+          .dispatch('user/getSessionToken', loginInfo)
+          .then(data => {
+            //this.$store.commit('ui/STOP_LOADING')
+            this.$store.dispatch('ui/openSnackbar', {
+              snackbarText: '已成功登入！'
+            })
+            this.$router.push({ name: 'Service' })
           })
-          this.$router.push({ name: 'Service' })
-        })
-        .catch(err => {
-          //this.$store.commit('ui/STOP_LOADING')
-          this.reload()
-        })
+          .catch(err => {
+            //this.$store.commit('ui/STOP_LOADING')
+            this.reload()
+          })
+      }
     },
     reload() {
       this.userpass = ''

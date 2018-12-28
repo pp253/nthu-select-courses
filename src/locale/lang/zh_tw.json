@@ -21,7 +21,11 @@
     "login": "登入",
     "directLogin": "您還保持登入，直接進入",
     "logout": "登出",
-    "authCodeFormatError": "驗證碼應該有六位數字！"
+    "authCodeFormatError": "驗證碼應該有六位數字！",
+    "ACIXSTORE": "ACIXSTORE 碼",
+    "usingACIXSTORE": "使用ACIXSTORE登入",
+    "usingPassword": "使用帳密登入",
+    "ACIXSTOREFormatError": "ACIXSTORE應該有26位字母與數字！"
   },
   "entry": {
     "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
@@ -42,8 +46,7 @@
   },
   "AdvisorPassword": {
     "name": "輸入教師密碼",
-    "description":
-      "這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。"
+    "description": "這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。"
   },
   "SelectCourses": {
     "name": "簡易選課系統",

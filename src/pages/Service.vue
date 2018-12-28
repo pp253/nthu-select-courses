@@ -80,13 +80,13 @@ export default {
           icon: 'playlist_add',
           path: '/select_courses',
           disabled: false
-        },
+        } /*,
         {
           title: 'AdvisorPassword.name',
           content: 'AdvisorPassword.description',
           icon: 'https',
           path: '/advisor_password'
-        } /*,
+        },
         {
           title: 'commentsAboutCourses.name',
           content: 'commentsAboutCourses.description',
