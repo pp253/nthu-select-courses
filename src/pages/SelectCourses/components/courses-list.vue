@@ -140,7 +140,8 @@
     </div>
 
     <div v-if="list && list.length === 0"
-         class="text-xs-center pt-5">{{ emptyText }}</div>
+         class="text-xs-center pt-5"
+         v-t="emptyText"></div>
   </v-list>
 </template>
 
@@ -185,7 +186,7 @@ export default {
     list: Array,
     courses: Object,
     'empty-text': {
-      default: '您還沒有加入的課程歐！'
+      default: 'SelectCourses.coursesList.emptyText'
     },
     result: {
       type: Boolean,
@@ -413,9 +414,11 @@ export default {
           })
       })
     },
+    // eslint-disable-next-line
     addFavorite(number) {
       // this.store.addFavorateCourses(number)
     },
+    // eslint-disable-next-line
     removeFavorite(number) {
       // this.store.removeFavorateCourses(number)
     },
@@ -432,7 +435,7 @@ export default {
           newOrder: category.newOrder,
           oldOrder: category.oldOrder
         })
-        .then(data => {
+        .then(() => {
           category.dialog = false
           this.$store.dispatch('ui/openSnackbar', {
             snackbarText: this.$t('SelectCourses.action.editOrderSuccess')
@@ -440,6 +443,7 @@ export default {
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
+          console.error(err)
           this.$store.commit('ui/STOP_LOADING')
         })
     },

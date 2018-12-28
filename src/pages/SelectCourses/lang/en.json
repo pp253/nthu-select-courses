@@ -26,8 +26,7 @@
     "coursesList": {
       "title": "Courses Catalog",
       "shortTitle": "Catalog",
-      "pleaseSelect":
-        "By clicking the top button, you can choose the courses you want, or just search it.",
+      "pleaseSelect": "By clicking the top button, you can choose the courses you want, or just search it.",
       "emptyText": "You haven't select any course.",
       "syllabus": "Syllabus",
       "detail": "Detail",
@@ -36,8 +35,7 @@
       "courseSub": "{0}　{1}",
       "courseDetail": "Cre.{0}　Lm.{1} ({2})　{3}",
       "waitingForRandomTitle": "Waiting For Random Process",
-      "waitingForRandomCLTitle":
-        "General Education, PE (Waiting For Random Process)",
+      "waitingForRandomCLTitle": "General Education, PE (Waiting For Random Process)",
       "waitingForRandomGePETitle": "Chinese Waiting For Random Process",
       "addedCoursesTitle": "Enrolled",
       "failedCoursesTitle": "Failed For Enrollment",
@@ -57,22 +55,19 @@
     },
     "error": {},
     "selectCourses": {
-      "name": "NTHU Easy Courses",
-      "description":
-        "The goal of the NTHU SELECT COURSES is to make courses selecting an easy, intuitive, and pleasure journey."
+      "name": "NTHU Simple Courses",
+      "description": "The goal of the NTHU SELECT COURSES is to make courses selecting an simple, intuitive, and pleasure journey."
     },
     "scores": {
-      "name": "Easy Score Lookup",
+      "name": "Simple Score Lookup",
       "description": "Lookup your score without any trouble.",
       "selecting": "Please select the semester",
       "grade": "Grade",
       "title": "{0}'s Grade",
       "emptyText": "No grade to show.",
       "distribution": "Distribution",
-      "requestSharingDistributionTitle":
-        "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
-      "requestSharingDistributionText":
-        "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
+      "requestSharingDistributionTitle": "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
+      "requestSharingDistributionText": "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
       "passRate": "Pass Rate",
       "totalStudents": "Total"
     },

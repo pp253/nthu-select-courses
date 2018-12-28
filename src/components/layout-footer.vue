@@ -40,9 +40,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { VSelect } from 'vuetify/lib'
-import { availableLangs } from '@/locale'
+import { availableLangs, setI18nLanguage } from '@/locale'
 
 export default {
   name: 'LayoutFooter',
@@ -88,9 +87,8 @@ export default {
         }, 2000)
       }
     },
-    setLocale(locale) {
-      Vue.config.lang = locale
-      this.$i18n.locale = Vue.config.lang
+    setLocale(lang) {
+      setI18nLanguage(lang)
     }
   },
   mounted() {

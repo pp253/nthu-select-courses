@@ -35,7 +35,7 @@
         </v-tooltip>
         <v-tooltip right
                    style="position: absolute; bottom: 64px;">
-          <v-list-tile @click=""
+          <v-list-tile @click="() => {}"
                        href="https://goo.gl/FruSFf"
                        target="_blank"
                        rel="noreferrer"
@@ -53,7 +53,6 @@
     <v-content>
       <v-layout row
                 class="h-100">
-
         <v-flex class="main">
           <v-layout class="fill-height">
             <v-flex :class="'column ' + layoutSize.coursesList"
@@ -114,14 +113,11 @@ import {
   VTooltip,
   VList,
   VListTile,
-  VListTileActionText,
   VListTileAction,
   VListTileTitle,
   VListTileContent,
   VBottomNav,
   VNavigationDrawer,
-  VToolbar,
-  VToolbarTitle,
   VContent,
   VIcon
 } from 'vuetify/lib'
@@ -143,14 +139,11 @@ export default {
     VTooltip,
     VList,
     VListTile,
-    VListTileActionText,
     VListTileAction,
     VListTileTitle,
     VListTileContent,
     VBottomNav,
     VNavigationDrawer,
-    VToolbar,
-    VToolbarTitle,
     VContent,
     VIcon
   },
@@ -414,6 +407,7 @@ export default {
               this.$store.commit('ui/STOP_LOADING')
             })
             .catch(err => {
+              console.error(err)
               this.$router.push('/')
               this.$store.commit('ui/STOP_LOADING')
             })
@@ -422,6 +416,7 @@ export default {
         }
       })
       .catch(err => {
+        console.error(err)
         this.$router.push('/')
         this.$store.commit('ui/STOP_LOADING')
       })

@@ -31,56 +31,64 @@
                 <v-card ref="form">
                   <v-card-title>
                     <div>
-                      <div class="headline">登入</div>
+                      <div class="headline"
+                           v-t="'login.login'"></div>
                       <div class="grey--text darken-1">請使用你在校務資訊系統登入的帳號。常見問題請見頁底。</div>
                       <div class="red--text darken-1">本系統目前尚處測試階段，選課完請前往校務資訊系統確認！</div>
                     </div>
                   </v-card-title>
-                  <v-card-text v-if="!usingACIXSTORE">
-                    <v-text-field name="input-username"
-                                  :label="$t('login.username')"
-                                  value=""
-                                  autocomplete="on"
-                                  v-model="username"
-                                  required></v-text-field>
-                    <v-text-field type="password"
-                                  name="input-userpass"
-                                  :label="$t('login.userpass')"
-                                  value=""
-                                  autocomplete="on"
-                                  v-model="userpass"
-                                  required></v-text-field>
-                    <v-layout>
-                      <v-flex mr-3>
-                        <img :src="'data:image/png;base64,' + $store.state.user.authImg"
-                             class="auth-img">
-                      </v-flex>
-                      <v-flex xs12>
-                        <v-text-field name="input-authCheckCode"
-                                      :label="$t('login.auth_img')"
+                  <v-window v-model="usingACIXSTORE"
+                            vertical>
+                    <v-window-item :value="false">
+                      <v-card-text>
+                        <v-text-field name="input-username"
+                                      :label="$t('login.username')"
                                       value=""
-                                      v-model="authCheckCode"
+                                      autocomplete="on"
+                                      v-model="username"
+                                      required></v-text-field>
+                        <v-text-field type="password"
+                                      name="input-userpass"
+                                      :label="$t('login.userpass')"
+                                      value=""
+                                      autocomplete="on"
+                                      v-model="userpass"
+                                      required></v-text-field>
+                        <v-layout>
+                          <v-flex mr-3>
+                            <img :src="'data:image/png;base64,' + $store.state.user.authImg"
+                                 class="auth-img">
+                          </v-flex>
+                          <v-flex xs12>
+                            <v-text-field name="input-authCheckCode"
+                                          :label="$t('login.auth_img')"
+                                          value=""
+                                          v-model="authCheckCode"
+                                          autocomplete="off"
+                                          :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]"
+                                          validate-on-blur
+                                          type="number"
+                                          required
+                                          @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-card-text>
+                    </v-window-item>
+                    <v-window-item :value="true">
+                      <v-card-text>
+                        <v-text-field name="input-ACIXSTORE"
+                                      :label="$t('login.ACIXSTORE')"
+                                      value=""
                                       autocomplete="off"
-                                      :rules="[() => authCheckCode.length === 6 || $t('login.authCodeFormatError')]"
-                                      validate-on-blur
-                                      type="number"
-                                      required
-                                      @keyup.native="(e) => {e.key === 'Enter' && (username && userpass && authCheckCode) && submit()}"></v-text-field>
-                      </v-flex>
-                    </v-layout>
-                  </v-card-text>
-                  <v-card-text v-if="usingACIXSTORE">
-                    <v-text-field name="input-ACIXSTORE"
-                                  :label="$t('login.ACIXSTORE')"
-                                  value=""
-                                  autocomplete="off"
-                                  :rules="[() => ACIXSTORE.length === 26 || $t('login.ACIXSTOREFormatError')]"
-                                  v-model="ACIXSTORE"
-                                  required></v-text-field>
-                  </v-card-text>
+                                      :rules="[() => ACIXSTORE.length === 26 || $t('login.ACIXSTOREFormatError')]"
+                                      v-model="ACIXSTORE"
+                                      required></v-text-field>
+                      </v-card-text>
+                    </v-window-item>
+                  </v-window>
                   <v-card-actions v-if="$store.state.user.isLogin">
-                    <v-btn small
-                           @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="$router.push('/service')">{{ $t('login.directLogin') }}</v-btn>
                   </v-card-actions>
                   <v-card-actions>
                     <v-btn @click="usingACIXSTORE = !usingACIXSTORE"
@@ -275,15 +283,13 @@
 
 <script>
 import {
-  VApp,
-  VBtn,
-  VSnackbar,
-  VDialog,
   VTextField,
   VList,
   VListTile,
   VExpansionPanel,
-  VExpansionPanelContent
+  VExpansionPanelContent,
+  VWindow,
+  VWindowItem
 } from 'vuetify/lib'
 import LayoutFooter from '@/components/layout-footer'
 
@@ -291,14 +297,13 @@ export default {
   name: 'Entry',
   components: {
     LayoutFooter,
-    VApp,
-    VSnackbar,
-    VDialog,
     VTextField,
     VList,
     VListTile,
     VExpansionPanel,
-    VExpansionPanelContent
+    VExpansionPanelContent,
+    VWindow,
+    VWindowItem
   },
   data() {
     return {
@@ -327,7 +332,7 @@ export default {
         }
         this.$store
           .dispatch('user/getSessionToken', loginInfo)
-          .then(data => {
+          .then(() => {
             //this.$store.commit('ui/STOP_LOADING')
             this.$store.dispatch('ui/openSnackbar', {
               snackbarText: '已成功登入！'
@@ -335,6 +340,7 @@ export default {
             this.$router.push({ name: 'Service' })
           })
           .catch(err => {
+            console.error(err)
             //this.$store.commit('ui/STOP_LOADING')
             this.reload()
           })
@@ -348,10 +354,11 @@ export default {
 
       this.$store
         .dispatch('user/getLoginToken')
-        .then(data => {
+        .then(() => {
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
+          console.error(err)
           this.$store.commit('ui/STOP_LOADING')
         })
     }

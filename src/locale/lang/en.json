@@ -12,7 +12,7 @@
   "common": {
     "nowLoading": "Now Loading...",
     "search": "Search: {0}",
-    "people": "{0} people"
+    "people": "{0} students"
   },
   "login": {
     "username": "User Name",
@@ -21,7 +21,11 @@
     "login": "Login",
     "directLogin": "You're still logged in",
     "logout": "Logout",
-    "authCodeFormatError": "CAPTCHA should have 6 digits."
+    "authCodeFormatError": "CAPTCHA should have 6 digits!",
+    "ACIXSTORE": "ACIXSTORE Code",
+    "usingACIXSTORE": "Using ACIXSTORE",
+    "usingPassword": "Using Password",
+    "ACIXSTOREFormatError": "ACIXSTORE should have 26 digits!"
   },
   "entry": {
     "UserInfoNotCorrectTitle": "Wrong user name or password!",
@@ -32,8 +36,8 @@
     "NTHUServerErrorText": "NTHU server error, please try again!"
   },
   "Service": {
-    "title": "Hello!",
-    "into": "Get into {0}",
+    "title": "Hello! How can I help you?",
+    "into": "GOTO {0}",
     "selectLanguege": "Select Languege"
   },
   "CommentsAboutCourses": {
@@ -45,12 +49,12 @@
     "description": "WIP"
   },
   "SelectCourses": {
-    "name": "Easy Selecting Courses",
-    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+    "name": "Simple Selecting Courses",
+    "description": "Simplie, easy, and intuitive."
   },
   "Scores": {
-    "name": "Easy Score",
-    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！"
+    "name": "Simple Score",
+    "description": "Simplie, easy, and intuitive."
   },
   "semester": {
     "10": "First Semester",

@@ -10,7 +10,8 @@ import Vuetify, {
   VCardActions,
   VDivider,
   VSubheader,
-  VBtn
+  VBtn,
+  VIcon
 } from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
 import VueWait from 'vue-wait'
@@ -32,7 +33,8 @@ Vue.use(Vuetify, {
     VCardActions,
     VDivider,
     VSubheader,
-    VBtn
+    VBtn,
+    VIcon
   },
   theme: {
     primary: '#9C27B0',

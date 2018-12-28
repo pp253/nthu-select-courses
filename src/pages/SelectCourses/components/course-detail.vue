@@ -96,8 +96,7 @@
                   v-if="course.syllabus">
             <v-divider></v-divider>
             <v-container>
-              <v-btn v-if="course.syllabus.file"
-                     :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
+              <v-btn :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
                      target="_blank"
                      rel="noreferrer">{{ $t('courseDetail.downloadSyllabus') }}</v-btn>
               <div v-html="course.syllabus.description"></div>

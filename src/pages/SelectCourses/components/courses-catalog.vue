@@ -5,8 +5,7 @@
                class="courses-catalog">
     <v-toolbar dense
                extended>
-      <v-toolbar-title>
-        {{ title || $t('SelectCourses.coursesCatalog.title') }}
+      <v-toolbar-title v-t="title || 'SelectCourses.coursesCatalog.title'">
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
@@ -42,7 +41,7 @@
                  id="courses-catalog-list">
       <courses-list :courses="courses"
                     :list="list"
-                    :empty-text="$t('SelectCourses.coursesCatalog.pleaseSelect')"
+                    empty-text="SelectCourses.coursesCatalog.pleaseSelect"
                     :result="false"
                     @update-preview-time="updatePreviewTime"
                     @open-course-detail="openCourseDetail"
@@ -55,8 +54,7 @@
               <v-btn flat
                      small
                      outline
-                     @click="showPeriodPicker = true"
-                     class="mr-0">
+                     @click="showPeriodPicker = true">
                 <v-icon>event</v-icon>搜尋時段
               </v-btn>
               <v-menu bottom
@@ -364,6 +362,11 @@ export default {
         window.document.getElementById('courses-catalog-list').scrollTop = 0
       }
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.$forceUpdate()
+    }, 3 * 1000)
   }
 }
 </script>
