@@ -55,6 +55,22 @@ export const ERR_MSG = {
   38: {
     title: '此課程代碼不正確',
     text: ''
+  },
+  39: {
+    title: 'New order cannot more than old order',
+    text: ''
+  },
+  40: {
+    title: '順位不得為零',
+    text: ''
+  },
+  41: {
+    title: 'Old order must includes all elements in new order',
+    text: ''
+  },
+  42: {
+    title: 'Violate course rule',
+    text: ''
   }
 }
 

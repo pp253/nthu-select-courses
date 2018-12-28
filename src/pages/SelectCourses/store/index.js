@@ -61,6 +61,9 @@ export default {
     SET_EDITABLE(state, options) {
       state.editable = options.editable
     },
+    SET_CURRENT_SEMESTER(state, options) {
+      state.currentSemester = options.currentSemester
+    },
     SET_SEMESTER(state, options) {
       state.semester = options.semester
     },
@@ -277,6 +280,9 @@ export default {
               })
               context.commit('SET_SEMESTER', {
                 semester: data.semester
+              })
+              context.commit('SET_CURRENT_SEMESTER', {
+                currentSemester: data.semester
               })
               context.commit('SET_PHASE', { semester: data.phase })
               context.commit('SET_EDITABLE', {
