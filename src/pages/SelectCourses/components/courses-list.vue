@@ -127,9 +127,13 @@
 
     <div v-if="list && moreThanOnePage"
          class="text-xs-center mt-3">
+      <v-container v-if="page < getPage(list.length)">
+        <v-btn block
+               @click="page++">下一頁</v-btn>
+      </v-container>
       <v-pagination :length="getPage(list.length)"
                     v-model="page"
-                    :total-visible="5"></v-pagination>
+                    :total-visible="4"></v-pagination>
     </div>
 
     <div v-if="list && list.length === 0"
