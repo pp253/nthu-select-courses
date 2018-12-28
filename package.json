@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode production --target app --modern --dashboard",
     "lint": "vue-cli-service lint",
     "push": "bash ./.bin/push.sh"
   },
