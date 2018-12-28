@@ -45,6 +45,27 @@
                             id="department">
               <v-list class="h-100 overflow-auto">
                 <v-subheader>先選科系，再選班級</v-subheader>
+                <v-subheader v-if="!searchText">常用</v-subheader>
+                <template v-if="!searchText"
+                          v-for="(department, departmentAbbr) in preallocate">
+                  <v-list-tile ripple
+                               :key="departmentAbbr + '-popular'"
+                               @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'">
+                    <v-list-tile-content :class="choosedDepartment === departmentAbbr ? 'primary--text' : ''">
+                      <v-container px-0>
+                        <v-layout>
+                          <v-flex xs3
+                                  md2>{{ department.abbr }}</v-flex>
+                          <v-flex xs9
+                                  md10>{{ department.chineseName }}</v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider :key="departmentAbbr + '-popular-divider'" />
+                </template>
+
+                <v-subheader>全部</v-subheader>
                 <template v-for="(department, departmentAbbr) in searchList">
                   <v-list-tile ripple
                                :key="departmentAbbr"
@@ -115,7 +136,33 @@ export default {
       choosedClass: '',
       searchText: '',
       dialog: false,
-      activeTabs: 'department'
+      activeTabs: 'department',
+      preallocate: {
+        GE: {
+          abbr: 'GE',
+          chineseName: '通識中心',
+          englishName: 'General Education Center',
+          classes: []
+        },
+        GEC: {
+          abbr: 'GEC',
+          chineseName: '通識核心',
+          englishName: 'General Education Core Courses',
+          classes: []
+        },
+        PE: {
+          abbr: 'PE',
+          chineseName: '體育',
+          englishName: 'Physical Education',
+          classes: []
+        },
+        LANG: {
+          abbr: 'LANG',
+          chineseName: '語言中心',
+          englishName: 'Language Center',
+          classes: []
+        }
+      }
     }
   },
   watch: {
