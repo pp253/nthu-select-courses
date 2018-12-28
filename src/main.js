@@ -1,6 +1,18 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.css'
+import Vuetify, {
+  VContainer,
+  VLayout,
+  VFlex,
+  VSpacer,
+  VCard,
+  VCardText,
+  VCardTitle,
+  VCardActions,
+  VDivider,
+  VSubheader,
+  VBtn
+} from 'vuetify/lib'
+import 'vuetify/src/stylus/app.styl'
 import VueWait from 'vue-wait'
 import locale from '@/locale'
 import router from '@/router'
@@ -9,6 +21,19 @@ import App from '@/App'
 import '@/lib/bus'
 
 Vue.use(Vuetify, {
+  components: {
+    VContainer,
+    VLayout,
+    VFlex,
+    VSpacer,
+    VCard,
+    VCardText,
+    VCardTitle,
+    VCardActions,
+    VDivider,
+    VSubheader,
+    VBtn
+  },
   theme: {
     primary: '#9C27B0',
     secondary: '#FF6F00',
@@ -30,6 +55,7 @@ new Vue({
   store,
   router,
   i18n: locale,
+  $i18n: locale,
   wait: new VueWait({
     // Defaults values are following:
     useVuex: true, // Uses Vuex to manage wait state

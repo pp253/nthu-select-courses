@@ -58,12 +58,14 @@
 </template>
 
 <script>
+import { VIcon } from 'vuetify/lib'
 import LayoutFooter from '@/components/layout-footer'
 
 export default {
   name: 'Service',
   components: {
-    LayoutFooter
+    LayoutFooter,
+    VIcon
   },
   data() {
     return {

@@ -2,53 +2,57 @@
   <v-container fluid
                pa-0
                class="select-courses h-100">
-    <keep-alive>
+    <v-navigation-drawer light
+                         :mini-variant="true"
+                         :mini-variant-width="80"
+                         :value="!$store.state.ui.isMobile"
+                         app
+                         stateless
+                         class="navdrawer">
+      <v-list pt-0>
+        <v-list-tile @click="$router.push('/service')"
+                     ripple
+                     class="mb-3">
+          <v-list-tile-action>
+            <v-icon>arrow_back</v-icon>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-tooltip v-for="item in menu"
+                   :key="item.title"
+                   right>
+          <v-list-tile slot="activator"
+                       @click="pc[item.attr] = !pc[item.attr]"
+                       ripple>
+            <v-list-tile-action>
+              <v-icon :class="pc[item.attr] ? 'primary--text' : ''">{{item.icon}}</v-icon>
+            </v-list-tile-action>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ $t(item.title) }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <span>{{ `顯示/關閉 ` + $t(item.title) }}</span>
+        </v-tooltip>
+        <v-tooltip right
+                   style="position: absolute; bottom: 64px;">
+          <v-list-tile @click=""
+                       href="https://goo.gl/FruSFf"
+                       target="_blank"
+                       rel="noreferrer"
+                       slot="activator"
+                       ripple>
+            <v-list-tile-action>
+              <v-icon>feedback</v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+          <span>意見回饋</span>
+        </v-tooltip>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-content>
       <v-layout row
                 class="h-100">
-        <v-flex :hidden="hideDrawer"
-                class="navdrawer">
-          <v-navigation-drawer permanent
-                               light
-                               :mini-variant="true"
-                               :value="!$store.state.ui.isMobile"
-                               :hidden="hideDrawer">
-            <v-list pt-0>
-              <v-list-tile @click="$router.push('/service')"
-                           ripple
-                           class="mb-3">
-                <v-list-tile-action>
-                  <v-icon>arrow_back</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-              <v-tooltip v-for="item in menu"
-                         :key="item.title"
-                         right>
-                <v-list-tile slot="activator"
-                             @click="pc[item.attr] = !pc[item.attr]"
-                             ripple>
-                  <v-list-tile-action>
-                    <v-icon :class="pc[item.attr] ? 'primary--text' : ''">{{item.icon}}</v-icon>
-                  </v-list-tile-action>
-                </v-list-tile>
-                <span>{{ $t(item.title) }}</span>
-              </v-tooltip>
-              <v-tooltip right
-                         style="position: absolute; bottom: 16px;">
-                <v-list-tile @click=""
-                             href="https://goo.gl/FruSFf"
-                             target="_blank"
-                             rel="noreferrer"
-                             slot="activator"
-                             ripple>
-                  <v-list-tile-action>
-                    <v-icon>feedback</v-icon>
-                  </v-list-tile-action>
-                </v-list-tile>
-                <span>意見回饋</span>
-              </v-tooltip>
-            </v-list>
-          </v-navigation-drawer>
-        </v-flex>
 
         <v-flex class="main">
           <v-layout class="fill-height">
@@ -100,11 +104,27 @@
           </v-layout>
         </v-flex>
       </v-layout>
-    </keep-alive>
+    </v-content>
   </v-container>
 </template>
 
 <script>
+import {
+  VBtn,
+  VTooltip,
+  VList,
+  VListTile,
+  VListTileActionText,
+  VListTileAction,
+  VListTileTitle,
+  VListTileContent,
+  VBottomNav,
+  VNavigationDrawer,
+  VToolbar,
+  VToolbarTitle,
+  VContent,
+  VIcon
+} from 'vuetify/lib'
 import { mapState } from 'vuex'
 import TimeTable from './components/time-table'
 import CourseDetail from './components/course-detail'
@@ -118,7 +138,21 @@ export default {
     TimeTable,
     CourseDetail,
     CoursesCatalog,
-    SelectionResult
+    SelectionResult,
+    VBtn,
+    VTooltip,
+    VList,
+    VListTile,
+    VListTileActionText,
+    VListTileAction,
+    VListTileTitle,
+    VListTileContent,
+    VBottomNav,
+    VNavigationDrawer,
+    VToolbar,
+    VToolbarTitle,
+    VContent,
+    VIcon
   },
   data() {
     return {
@@ -397,18 +431,6 @@ export default {
 
 <style lang="scss">
 .select-courses {
-  .navdrawer {
-    display: none;
-    z-index: 1;
-    aside.navigation-drawer--mini-variant {
-      width: 64px !important;
-
-      .list__tile {
-        padding: 0 8px;
-      }
-    }
-  }
-
   .main {
     width: 100vw;
     height: 100vh;
@@ -432,9 +454,6 @@ export default {
 }
 
 .mode-pc .select-courses {
-  .navdrawer {
-    display: block;
-  }
   .main {
     width: calc(100vw - 64px);
   }

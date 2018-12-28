@@ -65,8 +65,31 @@
 </template>
 
 <script>
+import {
+  VApp,
+  VBtn,
+  VSnackbar,
+  VDialog,
+  VCard,
+  VCardText,
+  VCardTitle,
+  VCardActions,
+  VProgressCircular
+} from 'vuetify/lib'
+
 export default {
   name: 'app',
+  components: {
+    VApp,
+    VBtn,
+    VSnackbar,
+    VDialog,
+    VCard,
+    VCardText,
+    VCardTitle,
+    VCardActions,
+    VProgressCircular
+  },
   methods: {
     updateIsMobile(newVal) {
       // Fix Vuetify's bug
@@ -182,20 +205,25 @@ input::-webkit-inner-spin-button {
     }
   }
 
-  .dialog .card.dialog-full-scrollable {
-    .card__title {
+  .v-dialog .v-card.dialog-full-scrollable {
+    .v-card__title {
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
       z-index: 100000;
     }
 
-    .card__text {
+    .v-card__text {
       -webkit-overflow-scrolling: touch;
     }
 
-    .card__actions {
+    .v-card__actions {
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
       z-index: 100000;
     }
+  }
+
+  // FIXME: Bug in vuetify
+  .theme--light.v-tabs__bar {
+    background-color: unset;
   }
 }
 

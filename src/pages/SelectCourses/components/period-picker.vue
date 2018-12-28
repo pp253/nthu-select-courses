@@ -51,8 +51,14 @@
 </template>
 
 <script>
+import { VDialog, VBtn } from 'vuetify/lib'
+
 export default {
   name: 'PeriodPicker',
+  components: {
+    VDialog,
+    VBtn
+  },
   props: {
     value: {
       type: Boolean,
@@ -124,7 +130,7 @@ export default {
 
 <style lang="scss">
 .period-picker {
-  .card__text {
+  .v-card__text {
     max-height: calc(100vh - 64px - 52px);
     overflow-y: auto;
 
@@ -134,7 +140,7 @@ export default {
       }
     }
 
-    .btn {
+    .v-btn {
       font-size: 14px;
       font-weight: bold;
     }

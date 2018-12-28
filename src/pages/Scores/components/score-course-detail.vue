@@ -3,24 +3,28 @@
                ma-0
                fluid
                class="score-course-detail">
-    <v-tabs fixed
-            centered>
-      <v-toolbar dense
-                 class="elevation-1">
-        <v-btn @click="$emit('close-score-detail')"
-               icon>
-          <v-icon>arrow_back</v-icon>
-        </v-btn>
-        <v-toolbar-title v-if="course && course.syllabus">{{ course.syllabus.chineseTitle }}</v-toolbar-title>
+    <v-toolbar dense
+               app
+               tabs
+               class="elevation-1">
+      <v-btn @click="$emit('close-score-detail')"
+             icon>
+        <v-icon>arrow_back</v-icon>
+      </v-btn>
+      <v-toolbar-title v-if="course && course.syllabus">{{ course.syllabus.chineseTitle }}</v-toolbar-title>
 
-        <v-tabs-bar slot="extension">
-          <v-tabs-item href="#tab-distribution">{{ $t('Scores.distribution') }}</v-tabs-item>
-          <v-tabs-item href="#tab-syllabus">{{ $t('courseDetail.syllabus') }}</v-tabs-item>
-          <v-tabs-slider color="grey"></v-tabs-slider>
-        </v-tabs-bar>
-      </v-toolbar>
-      <v-tabs-items>
-        <v-tabs-content id="tab-distribution">
+      <v-tabs slot="extension"
+              v-model="tabs"
+              centered
+              slider-color="grey">
+        <v-tab href="#tab-distribution">{{ $t('Scores.distribution') }}</v-tab>
+        <v-tab href="#tab-syllabus">{{ $t('courseDetail.syllabus') }}</v-tab>
+      </v-tabs>
+    </v-toolbar>
+
+    <v-content>
+      <v-tabs-items v-model="tabs">
+        <v-tab-item value="tab-distribution">
           <v-layout wrap
                     justify-center>
             <v-flex xs12
@@ -45,9 +49,9 @@
               </v-container>
             </v-flex>
           </v-layout>
-        </v-tabs-content>
+        </v-tab-item>
 
-        <v-tabs-content id="tab-syllabus">
+        <v-tab-item value="tab-syllabus">
           <v-layout wrap
                     justify-center>
             <v-flex xs12
@@ -101,20 +105,40 @@
               </v-container>
             </v-flex>
           </v-layout>
-        </v-tabs-content>
+        </v-tab-item>
       </v-tabs-items>
-    </v-tabs>
+    </v-content>
   </v-container>
 </template>
 
 <script>
+import {
+  VTabs,
+  VTab,
+  VTabsItems,
+  VTabItem,
+  VBtn,
+  VIcon,
+  VToolbar,
+  VToolbarTitle,
+  VContent
+} from 'vuetify/lib'
 import { toArray } from '@/lib/utils'
 import DistributionChart from './distribution-chart'
 
 export default {
   name: 'ScoreCourseDetail',
   components: {
-    DistributionChart
+    DistributionChart,
+    VTabs,
+    VTab,
+    VTabsItems,
+    VTabItem,
+    VBtn,
+    VIcon,
+    VToolbar,
+    VToolbarTitle,
+    VContent
   },
   props: {
     scores: Object,
@@ -123,7 +147,8 @@ export default {
   },
   data() {
     return {
-      chartData: null
+      chartData: null,
+      tabs: 'tab-distribution'
     }
   },
   watch: {
@@ -200,13 +225,16 @@ export default {
 
 <style lang="scss">
 .score-course-detail {
-  .tabs__content {
-    height: calc(100vh - 96px);
-    overflow-x: hidden;
+  .v-content {
+    padding-top: 0 !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 64px;
-    user-select: text;
+    height: calc(100vh - 96px);
+    margin-top: 96px;
+  }
+
+  .v-toolbar__title:not(:first-child) {
+    margin-left: 0;
   }
 }
 </style>

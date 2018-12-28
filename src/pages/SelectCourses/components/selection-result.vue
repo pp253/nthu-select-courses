@@ -16,7 +16,7 @@
                 :value="selectedSemesterPhase"
                 :label="$t('SelectCourses.selectionResult.title')"
                 single-line
-                bottom>
+                menu-props="bottom">
         <template slot="item"
                   slot-scope="data">
           <template v-if="data.item.type === 'divider'">
@@ -48,6 +48,13 @@
 </template>
 
 <script>
+import {
+  VToolbar,
+  VToolbarTitle,
+  VSelect,
+  VListTileTitle,
+  VListTileContent
+} from 'vuetify/lib'
 import { mapState } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
 import CoursesList from './courses-list'
@@ -56,7 +63,12 @@ export default {
   name: 'SelectionResult',
   components: {
     CoursesList,
-    LoadingContainer
+    LoadingContainer,
+    VToolbar,
+    VToolbarTitle,
+    VSelect,
+    VListTileTitle,
+    VListTileContent
   },
   props: {
     list: Array,

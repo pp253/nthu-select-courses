@@ -8,18 +8,19 @@
       <v-spacer />
       <v-menu bottom
               left
+              lazy
               :close-on-click="true"
               :close-on-content-click="false"
-              min-width="250"
-              max-width="250">
+              min-width="200"
+              max-width="200">
         <v-btn icon
                slot="activator">
-          <v-icon>more_vert</v-icon>
+          <v-icon>zoom_in</v-icon>
         </v-btn>
         <v-card>
           <v-subheader>縮放大小</v-subheader>
           <v-list>
-            <v-list-tile v-for="index in [50, 75, 100]"
+            <v-list-tile v-for="index in [50, 75, 100, 150, 200]"
                          :key="index"
                          @click="zoom = `${index}%`"
                          ripple>
@@ -29,27 +30,36 @@
               </v-list-tile-avatar>
             </v-list-tile>
           </v-list>
+        </v-card>
+      </v-menu>
+
+      <v-menu bottom
+              left
+              lazy
+              :close-on-click="true"
+              :close-on-content-click="false"
+              min-width="200"
+              max-width="200">
+        <v-btn icon
+               slot="activator">
+          <v-icon>more_vert</v-icon>
+        </v-btn>
+        <v-card>
           <v-subheader>顯示</v-subheader>
-          <v-list>
-            <v-list-tile>
-              <v-switch v-model="showRoom"
+          <v-card-text class="pt-0">
+            <v-checkbox v-model="showRoom"
                         :label="`顯示地點`"
                         color="primary"
                         hide-details />
-            </v-list-tile>
-            <v-list-tile>
-              <v-switch v-model="showProfessor"
+            <v-checkbox v-model="showProfessor"
                         :label="`顯示授課教師`"
                         color="primary"
                         hide-details />
-            </v-list-tile>
-            <v-list-tile>
-              <v-switch v-model="showCourseNumber"
+            <v-checkbox v-model="showCourseNumber"
                         :label="`顯示科號`"
                         color="primary"
                         hide-details />
-            </v-list-tile>
-          </v-list>
+          </v-card-text>
         </v-card>
       </v-menu>
     </v-toolbar>
@@ -113,17 +123,45 @@
 </template>
 
 <script>
+import {
+  VMenu,
+  VToolbar,
+  VToolbarTitle,
+  VBtn,
+  VList,
+  VListTile,
+  VListTileActionText,
+  VListTileAction,
+  VListTileAvatar,
+  VListTileTitle,
+  VCheckbox,
+  VIcon
+} from 'vuetify/lib'
 import LoadingContainer from '@/components/loading-container'
 
 export default {
   name: 'TimeTable',
+  components: {
+    LoadingContainer,
+    VMenu,
+    VToolbar,
+    VToolbarTitle,
+    VBtn,
+    VList,
+    VListTile,
+    VListTileActionText,
+    VListTileAction,
+    VListTileAvatar,
+    VListTileTitle,
+    VCheckbox,
+    VIcon
+  },
   props: {
     'preview-time': String,
     list: Array,
     title: String,
     courses: Object
   },
-  components: { LoadingContainer },
   data() {
     return {
       timeSectionName: [

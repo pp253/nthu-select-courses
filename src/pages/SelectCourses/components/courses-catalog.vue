@@ -13,7 +13,8 @@
         <v-btn slot="activator"
                @click="showDepartmentPicker = true"
                icon
-               flat>
+               flat
+               class="ma-0 pa-0">
           <v-icon>list</v-icon>
         </v-btn>
         <span>選擇科系</span>
@@ -53,6 +54,7 @@
                     text-xs-right>
               <v-btn flat
                      small
+                     outline
                      @click="showPeriodPicker = true"
                      class="mr-0">
                 <v-icon>event</v-icon>搜尋時段
@@ -64,14 +66,14 @@
                       max-width="250">
                 <v-btn flat
                        small
+                       outline
                        slot="activator"
                        class="ml-0">
                   <v-icon>filter_list</v-icon>進階搜尋
                 </v-btn>
                 <v-card>
-                  <v-card-text class="py-0 px-0">
+                  <v-card-text class="px-0">
                     <v-list class="pa-0">
-                      <v-divider />
                       <v-list-tile v-for="item in searchItems"
                                    :key="item.value"
                                    @click="showMenu = false; item.action && item.action(); updateList()"
@@ -83,15 +85,13 @@
                       </v-list-tile>
                       <v-divider v-if="abbr" />
                     </v-list>
+                    <v-checkbox v-if="abbr"
+                                v-model="onlySearchAbbr"
+                                :label="`只搜尋「${getDepartmentDetail(abbr).chineseName || getDepartmentDetail(abbr).name}」`"
+                                hide-details
+                                color="primary"
+                                class="pt-2 ml-3 mr-3" />
                   </v-card-text>
-                  <v-card-actions>
-                    <v-switch v-if="abbr"
-                              v-model="onlySearchAbbr"
-                              :label="`只搜尋「${getDepartmentDetail(abbr).chineseName || getDepartmentDetail(abbr).name}」`"
-                              hide-details
-                              color="primary"
-                              class="pt-2 ml-3 mr-3" />
-                  </v-card-actions>
                 </v-card>
               </v-menu>
             </v-flex>
@@ -107,6 +107,19 @@
 </template>
 
 <script>
+import {
+  VMenu,
+  VBtn,
+  VIcon,
+  VTooltip,
+  VToolbar,
+  VToolbarTitle,
+  VTextField,
+  VCheckbox,
+  VList,
+  VListTile,
+  VListTileTitle
+} from 'vuetify/lib'
 import CoursesList from './courses-list'
 import DepartmentPicker from './department-picker'
 import PeriodPicker from './period-picker'
@@ -117,7 +130,18 @@ export default {
   components: {
     DepartmentPicker,
     PeriodPicker,
-    CoursesList
+    CoursesList,
+    VMenu,
+    VBtn,
+    VIcon,
+    VTooltip,
+    VToolbar,
+    VToolbarTitle,
+    VTextField,
+    VCheckbox,
+    VList,
+    VListTile,
+    VListTileTitle
   },
   data() {
     return {

@@ -5,108 +5,103 @@
             persistent
             scrollable>
     <v-card class="department-picker dialog-full-scrollable">
-      <v-card-title>
-        <v-container class="ma-0 pa-0">
-          <v-layout>
-            <v-flex xs12
-                    class="headline">{{ $t('SelectCourses.departmentPicker.title') }}</v-flex>
-          </v-layout>
-          <v-layout wrap>
-            <v-flex xs12
-                    v-if="activeTabs === 'department'">
-              <v-text-field v-model="searchText"
-                            type="text"
-                            value=""
-                            prepend-icon="search"
-                            clearable
-                            hide-details />
-            </v-flex>
-            <v-flex xs12
-                    v-else-if="activeTabs === 'class'"
-                    class="toolbar__content">
-              <v-btn icon
-                     flat
-                     @click="activeTabs = 'department'"
-                     class="ml-0 mb-0"
-                     style="margin-top: 14px;">
-                <v-icon>arrow_back</v-icon>
-              </v-btn>
-              <span class="toolbar__title ml-0"
-                    style="margin-top: 14px;">{{choosedDepartment}} {{getDepartmentDetail(choosedDepartment).chineseName || getDepartmentDetail(choosedDepartment).name}}</span>
-            </v-flex>
-          </v-layout>
-        </v-container>
+      <v-card-title primary-title>
+        <div>
+          <h3 class="headline mb-0">{{ $t('SelectCourses.departmentPicker.title') }}</h3>
+          <div>先選科系，再選班級</div>
+        </div>
+        <template>
+          <div v-if="activeWin === 0"
+               style="display: block; width: 100%;">
+            <v-text-field v-model="searchText"
+                          type="text"
+                          value=""
+                          prepend-icon="search"
+                          clearable
+                          hide-details />
+          </div>
+          <div v-else
+               style="display: block; width: 100%;">
+            <v-btn icon
+                   flat
+                   @click="activeWin = 0"
+                   class="ml-0 mb-0"
+                   style="margin-top: 12px;">
+              <v-icon>arrow_back</v-icon>
+            </v-btn>
+            <span class="v-toolbar__title ml-0"
+                  style="position: relative; top: 9px;">{{choosedDepartment}} {{getDepartmentDetail(choosedDepartment).chineseName || getDepartmentDetail(choosedDepartment).name}}</span>
+          </div>
+        </template>
       </v-card-title>
       <v-card-text class="vh-100 pa-0">
-        <v-tabs v-model="activeTabs"
-                class="h-100">
-          <v-tabs-items class="h-100">
-            <v-tabs-content class="h-100"
-                            id="department">
-              <v-list class="h-100 overflow-auto">
-                <v-subheader>先選科系，再選班級</v-subheader>
-                <v-subheader v-if="!searchText">常用</v-subheader>
-                <template v-if="!searchText"
-                          v-for="(department, departmentAbbr) in preallocate">
-                  <v-list-tile ripple
-                               :key="departmentAbbr + '-popular'"
-                               @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'">
-                    <v-list-tile-content :class="choosedDepartment === departmentAbbr ? 'primary--text' : ''">
-                      <v-container px-0>
-                        <v-layout>
-                          <v-flex xs3
-                                  md2>{{ department.abbr }}</v-flex>
-                          <v-flex xs9
-                                  md10>{{ department.chineseName }}</v-flex>
-                        </v-layout>
-                      </v-container>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-divider :key="departmentAbbr + '-popular-divider'" />
-                </template>
-
-                <v-subheader>全部</v-subheader>
-                <template v-for="(department, departmentAbbr) in searchList">
-                  <v-list-tile ripple
-                               :key="departmentAbbr"
-                               @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeTabs = 'class'">
-                    <v-list-tile-content :class="choosedDepartment === departmentAbbr ? 'primary--text' : ''">
-                      <v-container px-0>
-                        <v-layout>
-                          <v-flex xs3
-                                  md2>{{ department.abbr }}</v-flex>
-                          <v-flex xs9
-                                  md10>{{ department.chineseName }}</v-flex>
-                        </v-layout>
-                      </v-container>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-divider :key="departmentAbbr + '-divider'" />
-                </template>
-              </v-list>
-            </v-tabs-content>
-            <v-tabs-content class="h-100"
-                            id="class">
-              <v-list class="h-100 overflow-auto"
-                      v-if="choosedDepartment !== ''">
+        <v-window v-model="activeWin"
+                  class="h-100">
+          <v-window-item class="h-100"
+                         key="department">
+            <v-list class="h-100 overflow-auto">
+              <v-subheader v-if="!searchText">常用</v-subheader>
+              <template v-if="!searchText"
+                        v-for="(department, departmentAbbr) in preallocate">
                 <v-list-tile ripple
-                             :key="choosedDepartment"
-                             @click="choosedClass = ''">
-                  <v-list-tile-content :class="choosedClass === '' ? 'primary--text' : ''">總錄</v-list-tile-content>
+                             :key="departmentAbbr + '-popular'"
+                             @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeWin = 1">
+                  <v-list-tile-content :class="choosedDepartment === departmentAbbr ? 'primary--text' : ''">
+                    <v-container px-0>
+                      <v-layout>
+                        <v-flex xs3
+                                md2>{{ department.abbr }}</v-flex>
+                        <v-flex xs9
+                                md10>{{ department.chineseName }}</v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-list-tile-content>
                 </v-list-tile>
-                <v-divider />
-                <template v-for="cls in departments[choosedDepartment].classes">
-                  <v-list-tile ripple
-                               :key="cls.abbr"
-                               @click="choosedClass = cls.abbr">
-                    <v-list-tile-content :class="choosedClass === cls.abbr ? 'primary--text' : ''">{{ cls.name }} {{ cls.abbr }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-divider :key="cls.abbr + '-divider'" />
-                </template>
-              </v-list>
-            </v-tabs-content>
-          </v-tabs-items>
-        </v-tabs>
+                <v-divider :key="departmentAbbr + '-popular-divider'" />
+              </template>
+
+              <v-subheader>全部</v-subheader>
+              <template v-for="(department, departmentAbbr) in searchList">
+                <v-list-tile ripple
+                             :key="departmentAbbr"
+                             @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeWin = 1">
+                  <v-list-tile-content :class="choosedDepartment === departmentAbbr ? 'primary--text' : ''">
+                    <v-container px-0>
+                      <v-layout>
+                        <v-flex xs3
+                                md2>{{ department.abbr }}</v-flex>
+                        <v-flex xs9
+                                md10>{{ department.chineseName }}</v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-divider :key="departmentAbbr + '-divider'" />
+              </template>
+            </v-list>
+          </v-window-item>
+
+          <v-window-item class="h-100"
+                         key="class">
+            <v-list class="h-100 overflow-auto"
+                    v-if="choosedDepartment !== ''">
+              <v-list-tile ripple
+                           :key="choosedDepartment"
+                           @click="choosedClass = ''">
+                <v-list-tile-content :class="choosedClass === '' ? 'primary--text' : ''">總錄</v-list-tile-content>
+              </v-list-tile>
+              <v-divider />
+              <template v-for="cls in departments[choosedDepartment].classes">
+                <v-list-tile ripple
+                             :key="cls.abbr"
+                             @click="choosedClass = cls.abbr">
+                  <v-list-tile-content :class="choosedClass === cls.abbr ? 'primary--text' : ''">{{ cls.name }} {{ cls.abbr }}</v-list-tile-content>
+                </v-list-tile>
+                <v-divider :key="cls.abbr + '-divider'" />
+              </template>
+            </v-list>
+          </v-window-item>
+        </v-window>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -121,8 +116,43 @@
 </template>
 
 <script>
+import {
+  VDialog,
+  VWindow,
+  VWindowItem,
+  VTextField,
+  VBtn,
+  VTooltip,
+  VList,
+  VListTile,
+  VListTileActionText,
+  VListTileAction,
+  VListTileTitle,
+  VListTileContent,
+  VBottomNav,
+  VNavigationDrawer,
+  VIcon
+} from 'vuetify/lib'
+
 export default {
   name: 'DepartmentPicker',
+  components: {
+    VDialog,
+    VWindow,
+    VWindowItem,
+    VTextField,
+    VBtn,
+    VTooltip,
+    VList,
+    VListTile,
+    VListTileActionText,
+    VListTileAction,
+    VListTileTitle,
+    VListTileContent,
+    VBottomNav,
+    VNavigationDrawer,
+    VIcon
+  },
   props: {
     value: {
       type: Boolean,
@@ -136,7 +166,7 @@ export default {
       choosedClass: '',
       searchText: '',
       dialog: false,
-      activeTabs: 'department',
+      activeWin: 0,
       preallocate: {
         GE: {
           abbr: 'GE',

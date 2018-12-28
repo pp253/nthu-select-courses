@@ -51,19 +51,11 @@
                                   v-model="userpass"
                                   required></v-text-field>
                     <v-layout>
-                      <v-flex xs5
-                              sm3
-                              md4
-                              lg4
-                              xl3>
+                      <v-flex mr-3>
                         <img :src="'data:image/png;base64,' + $store.state.user.authImg"
                              class="auth-img">
                       </v-flex>
-                      <v-flex xs7
-                              sm9
-                              md8
-                              lg8
-                              xl9>
+                      <v-flex xs12>
                         <v-text-field name="input-authCheckCode"
                                       :label="$t('login.auth_img')"
                                       value=""
@@ -119,32 +111,44 @@
                     <span class="subheading">重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！</span>
                   </div>
                 </v-card-title>
-                <v-card-text>
+                <v-card-text class="pl-0 pr-0">
                   <v-layout wrap>
                     <v-flex xs12
                             sm6>
-                      <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
                         <h2>📱手機也能輕鬆選課</h2>
                         <p>從此，選課不再是電腦的專利了。清大簡易選課系統提供適合手機瀏覽的介面，讓你隨時隨地都能選課。</p>
                       </v-container>
                     </v-flex>
                     <v-flex xs12
                             sm6>
-                      <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
                         <h2>💨快速的排志願序</h2>
                         <p>你不再需要為了調整志願序而重複的退選又加選，改用更直覺的方式排志願序吧！</p>
                       </v-container>
                     </v-flex>
                     <v-flex xs12
                             sm6>
-                      <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
                         <h2>🔍聰明搜尋</h2>
                         <p>有了搜尋功能後，選課變得更快樂了呢～你除了能搜尋課程名稱、教師以外，還可以搜尋時段。</p>
                       </v-container>
                     </v-flex>
                     <v-flex xs12
                             sm6>
-                      <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
                         <h2>👁一目瞭然的課表</h2>
                         <p>濃縮不必要的資訊後，清爽的課表讓你能更專注在選課上。</p>
                       </v-container>
@@ -158,18 +162,24 @@
                     <span class="headline">其他服務</span>
                   </div>
                 </v-card-title>
-                <v-card-text>
+                <v-card-text class="pl-0 pr-0">
                   <v-layout wrap>
                     <v-flex xs12
                             sm6>
-                      <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
                         <h2>簡易成績查詢</h2>
                         <p>簡易成績查詢讓你用更好的介面，看到更好的成績！</p>
                       </v-container>
                     </v-flex>
                     <v-flex xs12
                             sm6>
-                      <v-container :pa-0="$vuetify.breakpoint.xsOnly">
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
                         <h2>簡易教學評量</h2>
                         <p>未來開放。</p>
                       </v-container>
@@ -264,12 +274,31 @@
 </template>
 
 <script>
+import {
+  VApp,
+  VBtn,
+  VSnackbar,
+  VDialog,
+  VTextField,
+  VList,
+  VListTile,
+  VExpansionPanel,
+  VExpansionPanelContent
+} from 'vuetify/lib'
 import LayoutFooter from '@/components/layout-footer'
 
 export default {
   name: 'Entry',
   components: {
-    LayoutFooter
+    LayoutFooter,
+    VApp,
+    VSnackbar,
+    VDialog,
+    VTextField,
+    VList,
+    VListTile,
+    VExpansionPanel,
+    VExpansionPanelContent
   },
   data() {
     return {

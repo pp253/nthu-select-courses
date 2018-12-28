@@ -10,7 +10,6 @@
                     item-value="value"
                     @change="setLocale"
                     :value="$i18n.locale"
-                    single-line
                     hide-details></v-select>
         </v-card-text>
       </v-card>
@@ -42,10 +41,14 @@
 
 <script>
 import Vue from 'vue'
+import { VSelect } from 'vuetify/lib'
 import { availableLangs } from '@/locale'
 
 export default {
   name: 'LayoutFooter',
+  components: {
+    VSelect
+  },
   data() {
     return {
       beWithText: [

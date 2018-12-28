@@ -4,7 +4,8 @@
                fluid
                class="score-list">
     <v-toolbar dense
-               extended>
+               extended
+               app>
       <v-btn @click="$router.push('/service')"
              icon>
         <v-icon>arrow_back</v-icon>
@@ -32,63 +33,99 @@
                     clearable></v-text-field>
     </v-toolbar>
 
-    <v-list two-line
-            ripple>
-      <v-list-tile v-if="overview && overview[semester] && !searchText"
-                   class="three-line-list-tile">
-        <v-list-tile-content>
-          <v-list-tile-title>
-            GPA：{{overview[semester].gpa}}
-          </v-list-tile-title>
-          <v-list-tile-sub-title>班排名：{{overview[semester].classRanking}}　系排名：{{overview[semester].departmentRanking}}</v-list-tile-sub-title>
-          <v-list-tile-sub-title>應得學分：{{overview[semester].credit}}　實得學分：{{overview[semester].deservedCredit}}</v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-divider v-if="overview && overview[semester] && !searchText" />
-
-      <template v-if="scoresList.length > 0"
-                v-for="(score, index) in scoresList">
-
-        <v-subheader v-if="score.type && score.type === 'subheader'"
-                     :key="score.title">
-          {{ score.title }}
-        </v-subheader>
-        <v-list-tile v-if="!score.type && score.type !== 'subheader'"
-                     @click="$emit('show-score-detail', score.courseNumber)"
-                     :key="score.number"
-                     ripple>
+    <v-content>
+      <v-list two-line
+              ripple
+              class="list-wrapper">
+        <v-list-tile v-if="overview && overview[semester] && !searchText"
+                     class="three-line-list-tile">
           <v-list-tile-content>
-            <v-list-tile-title>{{ score.courseTitle }}</v-list-tile-title>
-            <v-list-tile-sub-title>{{ score.courseNumber + ' 學分' + score.credit }}</v-list-tile-sub-title>
+            <v-list-tile-title>
+              GPA：{{overview[semester].gpa}}
+            </v-list-tile-title>
+            <v-list-tile-sub-title>班排名：{{overview[semester].classRanking}}　系排名：{{overview[semester].departmentRanking}}</v-list-tile-sub-title>
+            <v-list-tile-sub-title>應得學分：{{overview[semester].credit}}　實得學分：{{overview[semester].deservedCredit}}</v-list-tile-sub-title>
           </v-list-tile-content>
-
-          <v-list-tile-action>
-            <div class="text-xs-center">
-              <v-list-tile-action-text>{{ score.grade }}</v-list-tile-action-text>
-              <v-menu offset-y
-                      left>
-                <v-btn slot="activator"
-                       icon>
-                  <v-icon>keyboard_arrow_right</v-icon>
-                </v-btn>
-              </v-menu>
-            </div>
-          </v-list-tile-action>
         </v-list-tile>
-        <v-divider v-if="(!score.type && score.type !== 'subheader') && index < scoresList.length - 1"
-                   :key="score.courseNumber + '-divider-' + Math.random()"></v-divider>
-      </template>
+        <v-divider v-if="overview && overview[semester] && !searchText" />
 
-      <div v-if="scoresList.length === 0"
-           class="text-xs-center pt-5"
-           v-text="$t('scores.emptyText')"></div>
-    </v-list>
+        <template v-if="scoresList.length > 0"
+                  v-for="(score, index) in scoresList">
+
+          <v-subheader v-if="score.type && score.type === 'subheader'"
+                       :key="score.title">
+            {{ score.title }}
+          </v-subheader>
+          <v-list-tile v-if="!score.type && score.type !== 'subheader'"
+                       @click="$emit('show-score-detail', score.courseNumber)"
+                       :key="score.number"
+                       ripple>
+            <v-list-tile-content>
+              <v-list-tile-title>{{ score.courseTitle }}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ score.courseNumber + ' 學分' + score.credit }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+
+            <v-list-tile-action>
+              <div class="text-xs-center">
+                <v-list-tile-action-text>{{ score.grade }}</v-list-tile-action-text>
+                <v-menu offset-y
+                        left>
+                  <v-btn slot="activator"
+                         icon>
+                    <v-icon>keyboard_arrow_right</v-icon>
+                  </v-btn>
+                </v-menu>
+              </div>
+            </v-list-tile-action>
+          </v-list-tile>
+          <v-divider v-if="(!score.type && score.type !== 'subheader') && index < scoresList.length - 1"
+                     :key="score.courseNumber + '-divider-' + Math.random()"></v-divider>
+        </template>
+
+        <div v-if="scoresList.length === 0"
+             class="text-xs-center pt-5"
+             v-text="$t('scores.emptyText')"></div>
+      </v-list>
+    </v-content>
   </v-container>
 </template>
 
 <script>
+import {
+  VTextField,
+  VList,
+  VListTile,
+  VListTileActionText,
+  VListTileAction,
+  VListTileSubTitle,
+  VListTileTitle,
+  VListTileContent,
+  VIcon,
+  VMenu,
+  VToolbar,
+  VToolbarTitle,
+  VContent,
+  VSubheader
+} from 'vuetify/lib'
+
 export default {
   name: 'ScoreList',
+  components: {
+    VTextField,
+    VList,
+    VListTile,
+    VListTileActionText,
+    VListTileAction,
+    VListTileSubTitle,
+    VListTileTitle,
+    VListTileContent,
+    VIcon,
+    VMenu,
+    VToolbar,
+    VToolbarTitle,
+    VContent,
+    VSubheader
+  },
   props: {
     scores: Object,
     courses: Object,
@@ -192,27 +229,21 @@ export default {
 
 <style lang="scss">
 .score-list {
-  ul {
-    height: calc(100vh - 96px);
-    overflow-x: hidden;
+  .v-content {
+    padding-top: 0 !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 96px);
+    margin-top: 96px;
+  }
+
+  .v-list {
     padding-bottom: 64px;
 
-    .three-line-list-tile {
-      .list__tile {
-        height: 88px;
-      }
-    }
-
-    .list__tile__action {
-      min-width: 100px;
-
-      .list__tile__action-text {
-        font-size: 16px;
-        position: relative;
-        top: 3px;
-      }
+    .v-list__tile__action-text {
+      font-size: 16px;
+      position: relative;
+      top: 2px;
     }
   }
 }

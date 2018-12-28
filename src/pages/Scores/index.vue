@@ -44,7 +44,7 @@ export default {
       this.showCourseDetail = false
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     // load store
     if (!this.$store.state.scores) {
       this.$store.registerModule('scores', store)

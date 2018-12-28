@@ -16,16 +16,18 @@
       <v-subheader v-if="course.header"
                    :key="course.header"
                    class="pr-0">
-        {{ $t(course.header) }}
-        <v-spacer></v-spacer>
-
+        {{ $t(course.header) }}</v-subheader>
+      <v-subheader v-if="course.orderable"
+                   :key="course.header + '-btn'">
         <v-dialog v-if="course.orderable"
                   v-model="course.dialog"
                   persistent
                   :fullscreen="$store.state.ui.isMobile"
                   max-width="500"
-                  scrollable>
+                  scrollable
+                  style="width: 100%;">
           <v-btn outline
+                 block
                  slot="activator"
                  v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
           <v-card class="dialog-full-scrollable">
@@ -129,7 +131,8 @@
          class="text-xs-center mt-3">
       <v-container v-if="page < getPage(list.length)">
         <v-btn block
-               @click="page++">下一頁</v-btn>
+               @click="page++"
+               color="white">下一頁</v-btn>
       </v-container>
       <v-pagination :length="getPage(list.length)"
                     v-model="page"
@@ -142,13 +145,41 @@
 </template>
 
 <script>
+import {
+  VList,
+  VListTile,
+  VListTileAvatar,
+  VListTileActionText,
+  VListTileSubTitle,
+  VListTileAction,
+  VListTileTitle,
+  VListTileContent,
+  VPagination,
+  VIcon,
+  VDialog,
+  VBtn,
+  VMenu
+} from 'vuetify/lib'
 import draggable from 'vuedraggable'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'CoursesList',
   components: {
-    draggable
+    draggable,
+    VList,
+    VListTile,
+    VListTileAvatar,
+    VListTileActionText,
+    VListTileSubTitle,
+    VListTileAction,
+    VListTileTitle,
+    VListTileContent,
+    VPagination,
+    VIcon,
+    VDialog,
+    VBtn,
+    VMenu
   },
   props: {
     list: Array,
@@ -427,17 +458,11 @@ export default {
 .courses-list {
   min-height: 100%;
   padding-bottom: 64px;
-  /*
-  .menu {
-    position: relative;
-    bottom: 20px;
-  }
-  */
 
-  .list__tile {
+  .v-list__tile {
     height: 88px + 16px !important;
 
-    .list__tile__action-text {
+    .v-list__tile__action-text {
       font-size: 16px;
     }
 
