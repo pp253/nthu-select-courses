@@ -29,7 +29,8 @@
         <v-card-title class="headline">{{ $t($store.state.ui.dialogTitle) }}</v-card-title>
         <v-card-text>
           <div v-html="$t($store.state.ui.dialogText)"></div>
-          <div v-html="$store.state.ui.dialogMore"></div>
+          <div v-html="$store.state.ui.dialogMore"
+               style="word-break: break-word;"></div>
         </v-card-text>
         <v-card-actions v-if="$store.state.ui.dialogMode === 'info'">
           <v-spacer />
