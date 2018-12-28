@@ -37,6 +37,7 @@
                 <v-list-tile @click=""
                              href="https://goo.gl/FruSFf"
                              target="_blank"
+                             rel="noreferrer"
                              slot="activator"
                              ripple>
                   <v-list-tile-action>

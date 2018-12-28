@@ -20,15 +20,19 @@
              class="selectable">Session Token: {{ $store.state.user.sessionToken }}</p>
           <p>在 {{beWithText[beWithIndex]}} 的陪伴下製作 —
             <a href="https://github.com/pp253"
-               target="_blank">工工20 鄭建澤</a>
+               target="_blank"
+               rel="noreferrer">工工20 鄭建澤</a>
           </p>
           <p class="underline">
             <a @click="$router.push('/about')"
-               target="_blank">關於</a> ．
+               target="_blank"
+               rel="noreferrer">關於</a> ．
             <a href="https://github.com/pp253/nthu-select-courses-server"
-               target="_blank">程式碼</a> ．
+               target="_blank"
+               rel="noreferrer">程式碼</a> ．
             <a href="http://www.apache.org/licenses/LICENSE-2.0"
-               target="_blank">條款與聲明</a>
+               target="_blank"
+               rel="noreferrer">條款與聲明</a>
           </p>
         </v-card-text>
       </v-card>

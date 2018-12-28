@@ -224,17 +224,20 @@
                   <v-list>
                     <v-list-tile>
                       <a href="http://nthu-course.cf/"
-                         target="_blank">向第一個清大簡易預排系統致敬！（失效）</a>
+                         target="_blank"
+                         rel="noreferrer">向第一個清大簡易預排系統致敬！（失效）</a>
                     </v-list-tile>
                     <v-divider></v-divider>
                     <v-list-tile>
                       <a href="https://nthu-plus.com/"
-                         target="_blank">向第一個清大課程評價網站致敬！（失效）</a>
+                         target="_blank"
+                         rel="noreferrer">向第一個清大課程評價網站致敬！（失效）</a>
                     </v-list-tile>
                     <v-divider></v-divider>
                     <v-list-tile>
                       <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/"
-                         target="_blank">清大校務資訊系統</a>
+                         target="_blank"
+                         rel="noreferrer">清大校務資訊系統</a>
                     </v-list-tile>
                   </v-list>
                 </v-card-text>

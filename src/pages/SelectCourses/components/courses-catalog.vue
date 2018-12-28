@@ -58,6 +58,7 @@
               </v-btn>
               <v-menu bottom
                       left
+                      lazy
                       min-width="250"
                       max-width="250">
                 <v-btn flat

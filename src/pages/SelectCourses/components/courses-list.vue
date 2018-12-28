@@ -95,7 +95,8 @@
           <v-list-tile-action-text>{{ courses[course.number].time }}</v-list-tile-action-text>
           <div class="text-xs-center">
             <v-menu top
-                    left>
+                    left
+                    lazy>
               <v-btn icon
                      slot="activator">
                 <v-icon>more_vert</v-icon>
