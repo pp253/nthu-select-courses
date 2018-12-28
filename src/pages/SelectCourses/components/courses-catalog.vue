@@ -52,6 +52,7 @@
             <v-flex xs12
                     text-xs-right>
               <v-btn flat
+                     small
                      @click="showPeriodPicker = true"
                      class="mr-0">
                 <v-icon>event</v-icon>搜尋時段
@@ -62,6 +63,7 @@
                       min-width="250"
                       max-width="250">
                 <v-btn flat
+                       small
                        slot="activator"
                        class="ml-0">
                   <v-icon>filter_list</v-icon>進階搜尋
