@@ -4,6 +4,8 @@
   <v-list class="courses-list"
           ripple
           id="courses-list">
+    <slot name="header"></slot>
+
     <v-subheader v-if="list && moreThanOnePage"
                  class="mb-3">
       {{ $t('SelectCourses.coursesList.pages', [list.length, page, getPage(list.length)]) }}
@@ -92,7 +94,7 @@
         <v-list-tile-action>
           <v-list-tile-action-text>{{ courses[course.number].time }}</v-list-tile-action-text>
           <div class="text-xs-center">
-            <v-menu offset-y
+            <v-menu top
                     left>
               <v-btn icon
                      slot="activator">
@@ -420,11 +422,12 @@ export default {
 .courses-list {
   min-height: 100%;
   padding-bottom: 64px;
-
+  /*
   .menu {
     position: relative;
     bottom: 20px;
   }
+  */
 
   .list__tile {
     height: 88px + 16px !important;
