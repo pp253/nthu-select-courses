@@ -6,7 +6,8 @@
     <v-toolbar dense>
       <v-toolbar-title>{{ $t('SelectCourses.timeTable.title') }}</v-toolbar-title>
       <v-spacer />
-      <v-menu offset-y
+      <v-menu bottom
+              left
               :close-on-click="true"
               :close-on-content-click="false"
               min-width="250"
@@ -112,12 +113,12 @@
 </template>
 
 <script>
-import LoadingContainer from "@/components/loading-container";
+import LoadingContainer from '@/components/loading-container'
 
 export default {
-  name: "TimeTable",
+  name: 'TimeTable',
   props: {
-    "preview-time": String,
+    'preview-time': String,
     list: Array,
     title: String,
     courses: Object
@@ -126,54 +127,54 @@ export default {
   data() {
     return {
       timeSectionName: [
-        { name: "1", startTime: "08:00", endTime: "08:50" },
-        { name: "2", startTime: "09:00", endTime: "09:50" },
-        { name: "3", startTime: "10:10", endTime: "11:00" },
-        { name: "4", startTime: "11:10", endTime: "12:00" },
-        { name: "n", startTime: "12:10", endTime: "13:00" },
-        { name: "5", startTime: "13:20", endTime: "14:10" },
-        { name: "6", startTime: "14:20", endTime: "15:10" },
-        { name: "7", startTime: "15:30", endTime: "16:20" },
-        { name: "8", startTime: "16:30", endTime: "17:20" },
-        { name: "9", startTime: "17:30", endTime: "18:20" },
-        { name: "a", startTime: "18:30", endTime: "19:20" },
-        { name: "b", startTime: "19:30", endTime: "20:20" },
-        { name: "c", startTime: "20:30", endTime: "21:30" }
+        { name: '1', startTime: '08:00', endTime: '08:50' },
+        { name: '2', startTime: '09:00', endTime: '09:50' },
+        { name: '3', startTime: '10:10', endTime: '11:00' },
+        { name: '4', startTime: '11:10', endTime: '12:00' },
+        { name: 'n', startTime: '12:10', endTime: '13:00' },
+        { name: '5', startTime: '13:20', endTime: '14:10' },
+        { name: '6', startTime: '14:20', endTime: '15:10' },
+        { name: '7', startTime: '15:30', endTime: '16:20' },
+        { name: '8', startTime: '16:30', endTime: '17:20' },
+        { name: '9', startTime: '17:30', endTime: '18:20' },
+        { name: 'a', startTime: '18:30', endTime: '19:20' },
+        { name: 'b', startTime: '19:30', endTime: '20:20' },
+        { name: 'c', startTime: '20:30', endTime: '21:30' }
       ],
-      weekdayName: ["M", "T", "W", "R", "F", "S"],
+      weekdayName: ['M', 'T', 'W', 'R', 'F', 'S'],
       showRoom: false,
       showProfessor: false,
       showCourseNumber: false,
-      zoom: "100%"
-    };
+      zoom: '100%'
+    }
   },
   computed: {
     timeTable() {
-      let table = {};
+      let table = {}
       for (let weekday of this.weekdayName) {
-        table[weekday] = {};
+        table[weekday] = {}
         for (let timeSection of this.timeSectionName) {
-          table[weekday][timeSection.name] = [];
+          table[weekday][timeSection.name] = []
         }
       }
       if (!this.list) {
-        return table;
+        return table
       }
       for (let course of this.list) {
         if (course.header) {
-          continue;
+          continue
         }
         for (let i = 0; i < this.courses[course.number].time.length; i += 2) {
           let list = /([MTWRFS])([1-9abcnABCN])/g.exec(
             this.courses[course.number].time.slice(i, i + 2)
-          );
-          table[list[1].toUpperCase()][list[2].toLowerCase()].push(course);
+          )
+          table[list[1].toUpperCase()][list[2].toLowerCase()].push(course)
         }
       }
-      return table;
+      return table
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

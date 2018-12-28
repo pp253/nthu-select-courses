@@ -64,7 +64,7 @@
                 <v-btn flat
                        slot="activator"
                        class="ml-0">
-                  <v-icon>filter_list</v-icon>篩選
+                  <v-icon>filter_list</v-icon>進階搜尋
                 </v-btn>
                 <v-card>
                   <v-card-text class="py-0 px-0">
