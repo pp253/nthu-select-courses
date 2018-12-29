@@ -1,5 +1,5 @@
 <script>
-import { Bar, HorizontalBar, mixins } from 'vue-chartjs'
+import { Bar, mixins } from 'vue-chartjs'
 import datalabels from 'chartjs-plugin-datalabels'
 const { reactiveProp } = mixins
 
@@ -18,7 +18,7 @@ export default {
             yAxes: [
               {
                 ticks: {
-                  callback(value, index, values) {
+                  callback(value) {
                     return value + '人'
                   },
                   fontSize: 12

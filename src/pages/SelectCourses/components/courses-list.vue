@@ -10,128 +10,128 @@
                  class="mb-3">
       {{ $t('SelectCourses.coursesList.pages', [list.length, page, getPage(list.length)]) }}
     </v-subheader>
+    <template v-if="list && list.length > 0">
+      <template v-for="(course, index) in adjustedList">
+        <v-subheader v-if="course.header"
+                     :key="course.header"
+                     class="pr-0">
+          {{ $t(course.header) }}</v-subheader>
+        <v-subheader v-if="course.orderable"
+                     :key="course.header + '-btn'">
 
-    <template v-if="list && list.length > 0"
-              v-for="(course, index) in adjustedList">
-      <v-subheader v-if="course.header"
-                   :key="course.header"
-                   class="pr-0">
-        {{ $t(course.header) }}</v-subheader>
-      <v-subheader v-if="course.orderable"
-                   :key="course.header + '-btn'">
+          <v-dialog v-if="course.orderable"
+                    v-model="course.dialog"
+                    persistent
+                    :fullscreen="$store.state.ui.isMobile"
+                    max-width="500"
+                    scrollable
+                    style="width: 100%;">
+            <v-btn slot="activator"
+                   outline
+                   block
+                   v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
+            <v-card class="dialog-full-scrollable">
+              <v-card-title class="headline"
+                            v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
+              <v-card-text class="fill-height">
+                <v-list subheader>
+                  <draggable v-model="course.newOrder"
+                             :options="{handle:'.drag-handle'}">
+                    <template v-for="element in course.newOrder">
+                      <v-list-tile avatar
+                                   :key="'drag-' + element.number">
+                        <v-list-tile-action class="grey--text lighten-1">
+                          {{ $t('SelectCourses.coursesList.order', [element.order]) }}
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                          <v-list-tile-title>{{ courses[element.number].title }}</v-list-tile-title>
+                          <v-list-tile-sub-title>{{ toReadableProfessor(courses[element.number].professor) }} {{ courses[element.number].time }}</v-list-tile-sub-title>
+                        </v-list-tile-content>
+                        <v-list-tile-avatar class="drag-handle">
+                          <v-icon>drag_handle</v-icon>
+                        </v-list-tile-avatar>
+                      </v-list-tile>
+                    </template>
+                  </draggable>
+                </v-list>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click.native="cancelEditOrder(course)"
+                       flat
+                       v-t="'dialog.Cancel'"></v-btn>
+                <v-btn @click.native="editOrder(course)"
+                       color="primary"
+                       flat
+                       v-t="'dialog.Apply'"></v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
-        <v-dialog v-if="course.orderable"
-                  v-model="course.dialog"
-                  persistent
-                  :fullscreen="$store.state.ui.isMobile"
-                  max-width="500"
-                  scrollable
-                  style="width: 100%;">
-          <v-btn slot="activator"
-                 outline
-                 block
-                 v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
-          <v-card class="dialog-full-scrollable">
-            <v-card-title class="headline"
-                          v-t="'SelectCourses.coursesList.editOrder'"></v-card-title>
-            <v-card-text class="fill-height">
-              <v-list subheader>
-                <draggable v-model="course.newOrder"
-                           :options="{handle:'.drag-handle'}">
-                  <template v-for="element in course.newOrder">
-                    <v-list-tile avatar
-                                 :key="'drag-' + element.number">
-                      <v-list-tile-action class="grey--text lighten-1">
-                        {{ $t('SelectCourses.coursesList.order', [element.order]) }}
-                      </v-list-tile-action>
-                      <v-list-tile-content>
-                        <v-list-tile-title>{{ courses[element.number].title }}</v-list-tile-title>
-                        <v-list-tile-sub-title>{{ toReadableProfessor(courses[element.number].professor) }} {{ courses[element.number].time }}</v-list-tile-sub-title>
-                      </v-list-tile-content>
-                      <v-list-tile-avatar class="drag-handle">
-                        <v-icon>drag_handle</v-icon>
-                      </v-list-tile-avatar>
-                    </v-list-tile>
-                  </template>
-                </draggable>
-              </v-list>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn @click.native="cancelEditOrder(course)"
-                     flat
-                     v-t="'dialog.Cancel'"></v-btn>
-              <v-btn @click.native="editOrder(course)"
-                     color="primary"
-                     flat
-                     v-t="'dialog.Apply'"></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        </v-subheader>
 
-      </v-subheader>
-
-      <v-list-tile v-if="(course.number) in courses"
-                   ripple
-                   @click=""
-                   :key="course.number"
-                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${toReadableProfessor(courses[course.number].professor)} ${course.number}\n${courses[course.number].room}`"
-                   @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
-                   @mouseleave="updatePreviewTime('')"
-                   @dblclick="openCourseDetail(course.number)">
-        <v-list-tile-content>
-          <v-list-tile-title>
-            <span v-if="courses[course.number].canceled"
-                  class="course-tag">停開</span>
-            <span v-if="courses[course.number].ge_degree"
-                  class="course-tag"
-                  :title="`${courses[course.number].ge_degree}`">
-              {{$t(`SelectCourses.geDegreeShort.${geDegreeCode[courses[course.number].ge_degree]}`)}}
-            </span>
-            <!--
+        <v-list-tile v-if="(course.number) in courses"
+                     ripple
+                     @click=""
+                     :key="course.number"
+                     :title="`${courses[course.number].title} ${courses[course.number].time}\n${toReadableProfessor(courses[course.number].professor)} ${course.number}\n${courses[course.number].room}`"
+                     @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
+                     @mouseleave="updatePreviewTime('')"
+                     @dblclick="openCourseDetail(course.number)">
+          <v-list-tile-content>
+            <v-list-tile-title>
+              <span v-if="courses[course.number].canceled"
+                    class="course-tag">停開</span>
+              <span v-if="courses[course.number].ge_degree"
+                    class="course-tag"
+                    :title="`${courses[course.number].ge_degree}`">
+                {{$t(`SelectCourses.geDegreeShort.${geDegreeCode[courses[course.number].ge_degree]}`)}}
+              </span>
+              <!--
             <span v-if="courses[course.number].required"
                   class="course-tag">{{ courses[course.number].required }}</span> -->
-            {{ courses[course.number].title }}
-          </v-list-tile-title>
-          <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ toReadableProfessor(courses[course.number].professor), courses[course.number].number ]) }}
-          </v-list-tile-sub-title>
-          <v-list-tile-sub-title class="detail">{{ $t('SelectCourses.coursesList.courseDetail', [ courses[course.number].credit, courses[course.number].size_limit, courses[course.number].previous_size || '-', courses[course.number].room ]) }}
-          </v-list-tile-sub-title>
-          <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
-        </v-list-tile-content>
+              {{ courses[course.number].title }}
+            </v-list-tile-title>
+            <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ toReadableProfessor(courses[course.number].professor), courses[course.number].number ]) }}
+            </v-list-tile-sub-title>
+            <v-list-tile-sub-title class="detail">{{ $t('SelectCourses.coursesList.courseDetail', [ courses[course.number].credit, courses[course.number].size_limit, courses[course.number].previous_size || '-', courses[course.number].room ]) }}
+            </v-list-tile-sub-title>
+            <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
+          </v-list-tile-content>
 
-        <v-list-tile-action>
-          <v-list-tile-action-text>{{ courses[course.number].time }}</v-list-tile-action-text>
-          <div class="text-xs-center">
-            <v-menu top
-                    left
-                    lazy>
-              <v-btn icon
-                     slot="activator">
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-              <v-list>
-                <v-list-tile v-if="isCurrentSemester(course.number) && (addOrDropPhase || selectionPhase) && !courses[course.number].canceled"
-                             @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                             ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
-                <v-list-tile v-if="addOrDropPhase && !courses[course.number].canceled"
-                             @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                             ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
-                <!--
+          <v-list-tile-action>
+            <v-list-tile-action-text>{{ courses[course.number].time }}</v-list-tile-action-text>
+            <div class="text-xs-center">
+              <v-menu top
+                      left
+                      lazy>
+                <v-btn icon
+                       slot="activator">
+                  <v-icon>more_vert</v-icon>
+                </v-btn>
+                <v-list>
+                  <v-list-tile v-if="isCurrentSemester(course.number) && (addOrDropPhase || selectionPhase) && !courses[course.number].canceled"
+                               @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
+                               ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
+                  <v-list-tile v-if="addOrDropPhase && !courses[course.number].canceled"
+                               @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
+                               ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
+                  <!--
                 <v-list-tile
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
                   ripple
                 >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('SelectCourses.action.addFavorite') : $t('SelectCourses.action.removeFavorite') }}</v-list-tile>
                 -->
-                <v-list-tile @click="openCourseDetail(course.number)"
-                             ripple>{{ $t('SelectCourses.coursesList.detail') }}</v-list-tile>
-              </v-list>
-            </v-menu>
-          </div>
-        </v-list-tile-action>
-      </v-list-tile>
-      <v-divider v-if="courses[course.number] && index < adjustedList.length - 1"
-                 :key="course.number + '-divider'"></v-divider>
+                  <v-list-tile @click="openCourseDetail(course.number)"
+                               ripple>{{ $t('SelectCourses.coursesList.detail') }}</v-list-tile>
+                </v-list>
+              </v-menu>
+            </div>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-divider v-if="courses[course.number] && index < adjustedList.length - 1"
+                   :key="course.number + '-divider'"></v-divider>
+      </template>
     </template>
 
     <div v-if="list && moreThanOnePage"
@@ -254,6 +254,12 @@ export default {
        * Performing the result of selection.
        * Process each courses filtering configuration to fulfill it.
        */
+      /**
+       * Why we need to modify the this.resultList?
+       * Because we have to maintain dialog property to be directive,
+       * if we just return a new local variable, it will not work.
+       */
+      /* eslint-disable-next-line */
       this.resultList = []
 
       for (let item of this.coursesFilteringConfig) {
@@ -269,6 +275,7 @@ export default {
          * If item.status is randomized (status=2) and orderable.
          */
         if (item.status === 2 && item.orderable === true) {
+          /* eslint-disable-next-line */
           this.resultList.push({
             header: item.header,
             newOrder: list,
@@ -276,11 +283,14 @@ export default {
             dialog: false,
             orderable: true
           })
+          /* eslint-disable-next-line */
           this.resultList = this.resultList.concat(list)
         } else {
+          /* eslint-disable-next-line */
           this.resultList.push({
             header: item.header
           })
+          /* eslint-disable-next-line */
           this.resultList = this.resultList.concat(
             this.coursesFiltering[item.header]
           )

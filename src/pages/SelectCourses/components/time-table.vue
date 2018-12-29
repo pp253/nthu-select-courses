@@ -126,7 +126,6 @@
 </template>
 
 <script>
-import colors from 'vuetify/es5/util/colors'
 import {
   VMenu,
   VToolbar,

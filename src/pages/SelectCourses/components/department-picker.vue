@@ -66,23 +66,24 @@
                          key="department">
             <v-list class="h-100 overflow-auto">
               <v-subheader v-if="!searchText && popularList">常用</v-subheader>
-              <template v-if="!searchText"
-                        v-for="department in popularList">
-                <v-list-tile ripple
-                             :key="department.abbr + '-popular'"
-                             @click="choosedDepartment = department.abbr; choosedClass = ''; activeWin = 1">
-                  <v-list-tile-content :class="choosedDepartment === department.abbr ? 'primary--text' : ''">
-                    <v-container px-0>
-                      <v-layout>
-                        <v-flex xs3
-                                md2>{{ department.abbr }}</v-flex>
-                        <v-flex xs9
-                                md10>{{ department.chineseName }}</v-flex>
-                      </v-layout>
-                    </v-container>
-                  </v-list-tile-content>
-                </v-list-tile>
-                <v-divider :key="department.abbr + '-popular-divider'" />
+              <template v-if="!searchText">
+                <template v-for="department in popularList">
+                  <v-list-tile ripple
+                               :key="department.abbr + '-popular'"
+                               @click="choosedDepartment = department.abbr; choosedClass = ''; activeWin = 1">
+                    <v-list-tile-content :class="choosedDepartment === department.abbr ? 'primary--text' : ''">
+                      <v-container px-0>
+                        <v-layout>
+                          <v-flex xs3
+                                  md2>{{ department.abbr }}</v-flex>
+                          <v-flex xs9
+                                  md10>{{ department.chineseName }}</v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider :key="department.abbr + '-popular-divider'" />
+                </template>
               </template>
 
               <v-subheader>全部</v-subheader>
@@ -133,16 +134,17 @@
         <v-list v-if="activeTab !== 0"
                 class="h-100 overflow-auto">
           <v-subheader v-if="!searchText && popularList && popularList.length > 0">常用</v-subheader>
-          <template v-if="!searchText"
-                    v-for="item in popularList">
-            <v-list-tile ripple
-                         :key="item + '-popular'"
-                         @click="choosedTab = activeTab; choosedItem = item">
-              <v-list-tile-content :class="choosedTab === activeTab && item === choosedItem ? 'primary--text' : ''">
-                {{ item }}
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-divider :key="item + '-popular-divider'" />
+          <template v-if="!searchText">
+            <template v-for="item in popularList">
+              <v-list-tile ripple
+                           :key="item + '-popular'"
+                           @click="choosedTab = activeTab; choosedItem = item">
+                <v-list-tile-content :class="choosedTab === activeTab && item === choosedItem ? 'primary--text' : ''">
+                  {{ item }}
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-divider :key="item + '-popular-divider'" />
+            </template>
           </template>
 
           <v-subheader>全部</v-subheader>

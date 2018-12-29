@@ -113,6 +113,7 @@ export default {
           })
         })
         .catch(err => {
+          console.error(err)
           this.$store.commit('ui/STOP_LOADING')
         })
     }

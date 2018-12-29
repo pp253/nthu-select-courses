@@ -59,7 +59,7 @@ export default {
     this.$store.commit('ui/START_LOADING')
     this.$store
       .dispatch('scores/getScores')
-      .then(data => {
+      .then(() => {
         this.$store.commit('ui/STOP_LOADING')
       })
       .catch(err => {

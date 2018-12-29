@@ -182,6 +182,7 @@ export default {
           text: searchText,
           value: 'professor:' + searchText,
           action: () => {
+            /* eslint-disable-next-line */
             this.searchText = `professor:${splitSearchText(searchText) || ''}`
           }
         },
@@ -191,6 +192,7 @@ export default {
           text: searchText,
           value: 'title:' + searchText,
           action: () => {
+            /* eslint-disable-next-line */
             this.searchText = `title:${splitSearchText(searchText) || ''}`
           }
         },
@@ -200,6 +202,7 @@ export default {
           text: searchText,
           value: 'number:' + searchText,
           action: () => {
+            /* eslint-disable-next-line */
             this.searchText = `number:${splitSearchText(searchText) || ''}`
           }
         },
@@ -209,6 +212,7 @@ export default {
           text: searchText,
           value: '' + searchText,
           action: () => {
+            /* eslint-disable-next-line */
             this.searchText = `${splitSearchText(searchText) || ''}`
           }
         }

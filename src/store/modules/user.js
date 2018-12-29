@@ -107,7 +107,7 @@ export default {
       return new Promise((resolve, reject) => {
         api
           .logout(context.rootState.user.sessionToken)
-          .then(data => {
+          .then(() => {
             context.commit('LOGOUT')
             resolve()
           })

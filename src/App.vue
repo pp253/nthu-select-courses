@@ -91,7 +91,7 @@ export default {
     VProgressCircular
   },
   methods: {
-    updateIsMobile(newVal) {
+    updateIsMobile() {
       // Fix Vuetify's bug
       if (
         this.$vuetify.breakpoint.name === 'xs' ||

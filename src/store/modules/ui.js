@@ -108,7 +108,7 @@ export default {
      * @returns {Promise} result
      */
     openRequestDialog(context, options) {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         context.commit('OPEN_DIALOG', {
           title: options.title,
           text: options.text,
