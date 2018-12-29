@@ -79,14 +79,14 @@ export function legalRequest(apiPath, data) {
     axios
       .post(SERVER_BASE + apiPath, data)
       .then(res => {
-        if (res.data.error) {
+        if (res.data.error || res.data.warning) {
           let err = res.data
           if (err.id) {
             store.commit('ui/OPEN_DIALOG', {
               title:
-                err.id in ERR_MSG
-                  ? ERR_MSG[err.id].title
-                  : '對不起，系統發生錯誤了！',
+                (err.id in ERR_MSG && ERR_MSG[err.id].title) ||
+                err.msg ||
+                '對不起，系統發生錯誤了！',
               text:
                 err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
                   ? ERR_MSG[err.id].text + '<br>'
@@ -97,11 +97,11 @@ export function legalRequest(apiPath, data) {
             })
           } else if (err.name) {
             store.commit('ui/OPEN_DIALOG', {
-              title: err.name,
-              text: err.message,
+              title: err.name || err.title || err.msg,
+              text: err.message || err.more || err.msg,
               more:
-                '如果你覺得這不應該發生，請試著向清大簡易選課反映。' +
-                (err.more ? '<br>' + htmlEncode(err.more) : '')
+                (err.more ? '<br>' + htmlEncode(err.more) : '') +
+                '如果你覺得這不應該發生，請試著向清大簡易選課反映。'
             })
           }
           reject(res.data)
@@ -138,81 +138,10 @@ export function logout(sessionToken) {
   return legalRequest('api/user/logout', data)
 }
 
-export function getCoursesDB() {
-  let data = {
-    sessionToken: sessionToken
-  }
-  return legalRequest('api/select_course/getCoursesDB', data)
-}
-
-export function getCurrentSelectedCourses(sessionToken) {
-  let data = {
-    sessionToken: sessionToken
-  }
-  return legalRequest('api/select_course/getCurrentSelectedCourses', data)
-}
-
-export function editOrder(sessionToken, newOrder, oldOrder) {
-  let data = {
-    sessionToken: sessionToken,
-    newOrder: newOrder,
-    oldOrder: oldOrder
-  }
-  return legalRequest('api/select_course/editOrder', data)
-}
-
-export function addCourse(sessionToken, courseNumber, order) {
-  let data = {
-    sessionToken: sessionToken,
-    courseNumber: courseNumber,
-    order: order
-  }
-  return legalRequest('api/select_course/addCourse', data)
-}
-
-export function quitCourse(sessionToken, courseNumber) {
-  let data = {
-    sessionToken: sessionToken,
-    courseNumber: courseNumber
-  }
-  return legalRequest('api/select_course/quitCourse', data)
-}
-
 export function getSyllabus(sessionToken, courseNumber) {
   let data = {
     sessionToken: sessionToken,
     courseNumber: courseNumber
   }
   return legalRequest('api/select_course/getSyllabus', data)
-}
-
-export function getAvailableSelectionResult(sessionToken) {
-  let data = {
-    sessionToken: sessionToken
-  }
-  return legalRequest('api/select_course/getAvailableSelectionResult', data)
-}
-
-export function getSelectionResult(sessionToken, semester, phase) {
-  let data = {
-    sessionToken: sessionToken,
-    semester: semester,
-    phase: phase
-  }
-  return legalRequest('api/select_course/getSelectionResult', data)
-}
-
-export function getScores(sessionToken) {
-  let data = {
-    sessionToken: sessionToken
-  }
-  return legalRequest('api/scores/getScores', data)
-}
-
-export function getDistribution(sessionToken, courseNumber) {
-  let data = {
-    sessionToken: sessionToken,
-    courseNumber: courseNumber
-  }
-  return legalRequest('api/scores/getDistribution', data)
 }
