@@ -69,7 +69,8 @@
                                 :list="list"
                                 :title="$t('SelectCourses.selectionResult.title')"
                                 @update-preview-time="updatePreviewTime"
-                                @open-course-detail="openCourseDetail" />
+                                @open-course-detail="openCourseDetail"
+                                @refresh="refresh" />
             </v-flex>
 
             <v-flex :class="'column ' + layoutSize.timeTable"
@@ -373,6 +374,22 @@ export default {
     },
     closeCourseDetail() {
       this.showCourseDetail = false
+    },
+    refresh() {
+      if (this.selectionPhase || this.addOrDropPhase || this.withdrawalPhase) {
+        this.$store.commit('ui/START_LOADING')
+
+        this.$store
+          .dispatch('selectCourses/getCurrentSelectedCourses')
+          .then(() => {
+            this.$store.commit('ui/STOP_LOADING')
+          })
+          .catch(err => {
+            console.error(err)
+            this.$router.push('/')
+            this.$store.commit('ui/STOP_LOADING')
+          })
+      }
     }
   },
   beforeCreate() {
@@ -386,6 +403,9 @@ export default {
       this.$i18n.mergeLocaleMessage(this.$i18n.locale, msg)
     })
   },
+  beforeDestroy() {
+    window.removeEventListener('focus', this.refresh)
+  },
   mounted() {
     this.hideDrawer = false
     this.$store.commit('ui/START_LOADING')
@@ -393,24 +413,17 @@ export default {
     this.$store
       .dispatch('selectCourses/getAvailableSelectionResult')
       .then(() => {
+        window.addEventListener('focus', this.refresh)
+
         if (
           this.selectionPhase ||
           this.addOrDropPhase ||
           this.withdrawalPhase
         ) {
-          this.$store
-            .dispatch('selectCourses/getCurrentSelectedCourses')
-            .then(() => {
-              this.$store.commit('selectCourses/SET_PHASE', {
-                phase: 'current'
-              })
-              this.$store.commit('ui/STOP_LOADING')
-            })
-            .catch(err => {
-              console.error(err)
-              this.$router.push('/')
-              this.$store.commit('ui/STOP_LOADING')
-            })
+          this.refresh()
+          this.$store.commit('selectCourses/SET_PHASE', {
+            phase: 'current'
+          })
         } else {
           this.$store.commit('ui/STOP_LOADING')
         }

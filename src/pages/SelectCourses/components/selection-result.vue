@@ -8,6 +8,16 @@
       <v-toolbar-title>
         {{$t('SelectCourses.selectionResult.title')}}
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-tooltip bottom>
+        <v-btn slot="activator"
+               icon
+               flat
+               @click="$emit('refresh')">
+          <v-icon>refresh</v-icon>
+        </v-btn>
+        <span>重新整理</span>
+      </v-tooltip>
       <v-select slot="extension"
                 :items="readableAvailableSelectionResult"
                 @input="(semesterPhase) => {openSelectionResult(semesterPhase); selectedSemesterPhase = semesterPhase}"
@@ -52,6 +62,7 @@ import {
   VToolbar,
   VToolbarTitle,
   VSelect,
+  VTooltip,
   VListTileTitle,
   VListTileContent
 } from 'vuetify/lib'
@@ -67,6 +78,7 @@ export default {
     VToolbar,
     VToolbarTitle,
     VSelect,
+    VTooltip,
     VListTileTitle,
     VListTileContent
   },
@@ -137,9 +149,6 @@ export default {
     }
   },
   methods: {
-    log(m) {
-      console.log(m)
-    },
     toReadableSemester(semester) {
       if (!semester) {
         return ''
@@ -183,10 +192,6 @@ export default {
 <style lang="scss">
 .selection-result {
   height: 100%;
-
-  .input-group {
-    margin-top: 18px;
-  }
 
   .list-wrapper {
     height: calc(100% - 96px);

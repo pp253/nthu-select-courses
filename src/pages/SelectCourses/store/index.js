@@ -191,28 +191,24 @@ export default {
           })
       })
     },
-    getCurrentSelectedCourses(context, options) {
+    getCurrentSelectedCourses(context) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
 
-        if (context.state.currentSelectedCourses !== null) {
-          resolve(context.state.currentSelectedCourses)
-        } else {
-          api
-            .getCurrentSelectedCourses(context.rootState.user.sessionToken)
-            .then(data => {
-              context.commit('SET_CURRENT_SELECTED_COURSES', {
-                currentSelectedCourses: data.currentSelectedCourses
-              })
-              resolve(context.state.currentSelectedCourses)
+        api
+          .getCurrentSelectedCourses(context.rootState.user.sessionToken)
+          .then(data => {
+            context.commit('SET_CURRENT_SELECTED_COURSES', {
+              currentSelectedCourses: data.currentSelectedCourses
             })
-            .catch(err => {
-              reject(err)
-            })
-        }
+            resolve(context.state.currentSelectedCourses)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     },
     getSyllabus(context, options) {
@@ -255,7 +251,7 @@ export default {
         }
       })
     },
-    getAvailableSelectionResult(context, options) {
+    getAvailableSelectionResult(context) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
@@ -318,59 +314,46 @@ export default {
           return
         }
 
-        if (
-          context.state.selectionResult[options.semester] &&
-          context.state.selectionResult[options.semester][options.phase]
-        ) {
-          resolve(
-            context.state.selectionResult[options.semester][options.phase]
+        context.dispatch('loading/start', 'selectCourses.getSelectionResult', {
+          root: true
+        })
+        api
+          .getSelectionResult(
+            context.rootState.user.sessionToken,
+            options.semester,
+            options.phase
           )
-        } else {
-          context.dispatch(
-            'loading/start',
-            'selectCourses.getSelectionResult',
-            {
-              root: true
-            }
-          )
-          api
-            .getSelectionResult(
-              context.rootState.user.sessionToken,
-              options.semester,
-              options.phase
-            )
-            .then(data => {
-              context.commit('SET_SELECTION_RESULT', {
+          .then(data => {
+            context.commit('SET_SELECTION_RESULT', {
+              semester: data.semester,
+              phase: data.phase,
+              selectionResult: {
                 semester: data.semester,
                 phase: data.phase,
-                selectionResult: {
-                  semester: data.semester,
-                  phase: data.phase,
-                  status: data.status,
-                  randomFailed: data.randomFailed,
-                  waitingForRandom: data.waitingForRandom
-                }
-              })
-              context.dispatch(
-                'loading/end',
-                'selectCourses.getSelectionResult',
-                {
-                  root: true
-                }
-              )
-              resolve(data)
+                status: data.status,
+                randomFailed: data.randomFailed,
+                waitingForRandom: data.waitingForRandom
+              }
             })
-            .catch(err => {
-              context.dispatch(
-                'loading/end',
-                'selectCourses.getSelectionResult',
-                {
-                  root: true
-                }
-              )
-              reject(err)
-            })
-        }
+            context.dispatch(
+              'loading/end',
+              'selectCourses.getSelectionResult',
+              {
+                root: true
+              }
+            )
+            resolve(data)
+          })
+          .catch(err => {
+            context.dispatch(
+              'loading/end',
+              'selectCourses.getSelectionResult',
+              {
+                root: true
+              }
+            )
+            reject(err)
+          })
       })
     },
     getDepartmentDetail(context, options) {
