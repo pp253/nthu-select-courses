@@ -20,7 +20,8 @@
       </v-tooltip>
       <department-picker :value="showDepartmentPicker"
                          @update-department="updateDepartment"
-                         @close="showDepartmentPicker = false" />
+                         @close="showDepartmentPicker = false"
+                         @search="t => {searchText = t; onlySearchAbbr = false; updateList()}" />
 
       <v-text-field slot="extension"
                     v-model="searchText"
@@ -141,6 +142,9 @@ export default {
     VListTile,
     VListTileTitle
   },
+  props: {
+    search: String
+  },
   data() {
     return {
       searchText: '',
@@ -163,6 +167,14 @@ export default {
     ...mapState('selectCourses', ['courses', 'catalog', 'departments']),
     searchItems() {
       let searchText = this.searchText
+      const splitReg = /^(.*?:)?(.*)$/
+      let splitSearchText = text => {
+        if (!text) {
+          return ''
+        }
+        let executed = text.match(splitReg)
+        return executed[executed.length - 1]
+      }
       return [
         {
           type: 'suggest',
@@ -170,7 +182,7 @@ export default {
           text: searchText,
           value: 'professor:' + searchText,
           action: () => {
-            this.searchText = `professor:${searchText || ''}`
+            this.searchText = `professor:${splitSearchText(searchText) || ''}`
           }
         },
         {
@@ -179,7 +191,7 @@ export default {
           text: searchText,
           value: 'title:' + searchText,
           action: () => {
-            this.searchText = `title:${searchText || ''}`
+            this.searchText = `title:${splitSearchText(searchText) || ''}`
           }
         },
         {
@@ -188,7 +200,7 @@ export default {
           text: searchText,
           value: 'number:' + searchText,
           action: () => {
-            this.searchText = `number:${searchText || ''}`
+            this.searchText = `number:${splitSearchText(searchText) || ''}`
           }
         },
         {
@@ -197,7 +209,7 @@ export default {
           text: searchText,
           value: '' + searchText,
           action: () => {
-            this.searchText = `${searchText || ''}`
+            this.searchText = `${splitSearchText(searchText) || ''}`
           }
         }
       ]
@@ -232,6 +244,9 @@ export default {
             let atleast = false
             let meet = true
             let course = courses[courseNumber]
+            if (!course.time) {
+              continue
+            }
             for (let idx = 0; idx < course.time.length; idx += 2) {
               let period = course.time.slice(idx, idx + 2)
               if (searchPeriods.indexOf(period) === -1) {
@@ -255,7 +270,13 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
-            if (course.professor.toLowerCase().includes(searchProfessor)) {
+            if (
+              course.professor &&
+              course.professor
+                .join(' ')
+                .toLowerCase()
+                .includes(searchProfessor)
+            ) {
               list.push({
                 number: courseNumber
               })
@@ -270,8 +291,10 @@ export default {
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (
-              course.title &&
-              course.title.toLowerCase().includes(searchTitle)
+              (course.title &&
+                course.title.toLowerCase().includes(searchTitle)) ||
+              (course.title_eng &&
+                course.title_eng.toLowerCase().includes(searchText))
             ) {
               list.push({
                 number: courseNumber
@@ -292,17 +315,92 @@ export default {
               })
             }
           }
+        } else if (searchText.startsWith('ge_degree:')) {
+          let searchGEDegree = searchText.slice('ge_degree:'.length)
+          if (searchGEDegree === '') {
+            return
+          }
+          this.title = this.$t('common.search', [searchText])
+          for (let courseNumber in courses) {
+            let course = courses[courseNumber]
+            if (
+              course.ge_degree &&
+              course.ge_degree.toLowerCase().includes(searchGEDegree)
+            ) {
+              list.push({
+                number: courseNumber
+              })
+            }
+          }
+        } else if (searchText.startsWith('double:')) {
+          let searchDouble = searchText.slice('double:'.length)
+          if (searchDouble === '') {
+            return
+          }
+          this.title = this.$t('common.search', [searchText])
+          for (let courseNumber in courses) {
+            let course = courses[courseNumber]
+            if (
+              course.double &&
+              course.double.find(v => v.toLowerCase().includes(searchDouble))
+            ) {
+              list.push({
+                number: courseNumber
+              })
+            }
+          }
+        } else if (searchText.startsWith('program:')) {
+          let searchProgram = searchText.slice('program:'.length)
+          if (searchProgram === '') {
+            return
+          }
+          this.title = this.$t('common.search', [searchText])
+          for (let courseNumber in courses) {
+            let course = courses[courseNumber]
+            if (
+              course.program &&
+              course.program.find(v => v.toLowerCase().includes(searchProgram))
+            ) {
+              list.push({
+                number: courseNumber
+              })
+            }
+          }
+        } else if (searchText.startsWith('required:')) {
+          let searchRequired = searchText.slice('required:'.length)
+          if (searchRequired === '') {
+            return
+          }
+          this.title = this.$t('common.search', [searchText])
+          for (let courseNumber in courses) {
+            let course = courses[courseNumber]
+            if (
+              course.required &&
+              course.required.find(v =>
+                v.toLowerCase().includes(searchRequired)
+              )
+            ) {
+              list.push({
+                number: courseNumber
+              })
+            }
+          }
         } else {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
             if (
               course.number.toLowerCase().includes(searchText) ||
-              course.title.toLowerCase().includes(searchText) ||
-              course.professor.toLowerCase().includes(searchText) ||
-              course.memo.toLowerCase().includes(searchText) ||
-              course.time.toLowerCase().includes(searchText) ||
-              course.room.toLowerCase().includes(searchText)
+              (course.title &&
+                course.title.toLowerCase().includes(searchText)) ||
+              (course.title_eng &&
+                course.title_eng.toLowerCase().includes(searchText)) ||
+              (course.professor &&
+                course.professor.find(v =>
+                  v.toLowerCase().includes(searchText)
+                )) ||
+              (course.time && course.time.toLowerCase().includes(searchText)) ||
+              (course.room && course.room.toLowerCase().includes(searchText))
             ) {
               list.push({
                 number: courseNumber
@@ -329,6 +427,8 @@ export default {
     },
     updateDepartment(abbr) {
       this.abbr = abbr
+      this.searchText = ''
+      this.onlySearchAbbr = true
       this.updateList()
     },
     updatePeriods(periods) {

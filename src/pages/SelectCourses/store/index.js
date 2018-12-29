@@ -1,11 +1,24 @@
-import * as api from '@/api'
+import * as api from '../api'
 import error from '@/lib/error'
-import coursesDb from './courses_db.json'
+import coursesDb from './courses_db.min.json'
 
 export default {
   namespaced: true,
   state: {
     departments: coursesDb.departments,
+    geDegreeTypes: [
+      '社會科學領域 Elective GE course: Social Sciences',
+      '人文學領域 Elective GE course: Humanities',
+      '自然科學領域 Elective GE course: Natural Sciences',
+      '核心通識Core GE courses 1',
+      '核心通識Core GE courses 2',
+      '核心通識Core GE courses 3',
+      '核心通識Core GE courses 4',
+      '核心通識Core GE courses 5',
+      '核心通識Core GE courses 6'
+    ],
+    doubleTypes: coursesDb.doubleTypes.sort(),
+    programTypes: coursesDb.programTypes.sort(),
     catalog: coursesDb.catalog,
     courses: coursesDb.courses,
     availableSelectionResult: null,
@@ -60,7 +73,34 @@ export default {
         header: 'SelectCourses.coursesList.failedCoursesTitle',
         status: 0
       }
-    ]
+    ],
+    geDegreeCode: {
+      '自然科學領域 Elective GE course: Natural Sciences': 'GENaturalSciences',
+      '社會科學領域 Elective GE course: Social Sciences': 'GESocialSciences',
+      '人文學領域 Elective GE course: Humanities': 'GEHumanities',
+      '核心通識Core GE courses 1': 'GEC1',
+      '核心通識Core GE courses 2': 'GEC2',
+      '核心通識Core GE courses 3': 'GEC3',
+      '核心通識Core GE courses 4': 'GEC4',
+      '核心通識Core GE courses 5': 'GEC5',
+      '核心通識Core GE courses 6': 'GEC6'
+    },
+
+    /**
+     * Store popular item in <department-picker>
+     */
+    popular: {
+      departments: [
+        coursesDb.departments['GE'],
+        coursesDb.departments['GEC'],
+        coursesDb.departments['PE'],
+        coursesDb.departments['LANG']
+      ],
+      geDegree: [],
+      double: [],
+      program: []
+    },
+    popularLimit: 7
   },
   getters: {
     isCurrentSemester(state, getters) {
@@ -85,6 +125,18 @@ export default {
             return course.number === courseNumber
           }) !== undefined
         )
+      }
+    },
+    toReadableProfessor() {
+      return professorList => {
+        if (!professorList) {
+          return ''
+        }
+        let name = ''
+        for (let p of professorList) {
+          name += p.split('\t')[0] + ' '
+        }
+        return name
       }
     },
     coursesFiltering(state) {
@@ -253,6 +305,20 @@ export default {
     },
     SET_CURRENT_SELECTED_COURSES(state, options) {
       state.currentSelectedCourses = options.currentSelectedCourses
+    },
+    SET_POPULAR(state, options) {
+      /**
+       * If the options.item already exist, remove it and insert it
+       * to the front.
+       */
+      if (state.popular[options.type].find(v => v === options.item)) {
+        state.popular[options.type].splice(
+          state.popular[options.type].indexOf(options.item),
+          1
+        )
+      }
+      state.popular[options.type].unshift(options.item)
+      state.popular[options.type].splice(state.popularLimit)
     }
   },
   actions: {

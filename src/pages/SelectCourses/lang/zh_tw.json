@@ -75,6 +75,28 @@
     },
     "periodPicker": {
       "title": "查詢時段"
+    },
+    "geDegreeShort": {
+      "GEHumanities": "通人",
+      "GESocialSciences": "通社",
+      "GENaturalSciences": "通自",
+      "GEC1": "核1",
+      "GEC2": "核2",
+      "GEC3": "核3",
+      "GEC4": "核4",
+      "GEC5": "核5",
+      "GEC6": "核6"
+    },
+    "geDegree": {
+      "GEHumanities": "人文學領域",
+      "GESocialSciences": "社會科學領域",
+      "GENaturalSciences": "自然科學領域",
+      "GEC1": "核心通識1",
+      "GEC2": "核心通識2",
+      "GEC3": "核心通識3",
+      "GEC4": "核心通識4",
+      "GEC5": "核心通識5",
+      "GEC6": "核心通識6"
     }
   }
 }

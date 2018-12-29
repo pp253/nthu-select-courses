@@ -8,6 +8,7 @@
                          :value="!$store.state.ui.isMobile"
                          app
                          stateless
+                         touchless
                          class="navdrawer">
       <v-list pt-0>
         <v-list-tile @click="$router.push('/service')"
@@ -60,6 +61,8 @@
               <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
                                @update-preview-time="updatePreviewTime"
                                @open-course-detail="openCourseDetail"
+                               :search="searchText"
+                               ref="coursesCatalog"
                                :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
             </v-flex>
 
@@ -85,7 +88,9 @@
                     :hidden="!showCourseDetail">
               <course-detail :title="$t('courseDetail.title')"
                              :course-number="courseDetailNumber"
-                             @close-course-detail="closeCourseDetail"></course-detail>
+                             @close-course-detail="closeCourseDetail"
+                             @search="search"
+                             @goto-panel-courses-catalog="uiMobileClearShowing(); mobile['showCoursesCatalog'] = true"></course-detail>
             </v-flex>
 
             <v-bottom-nav fixed
@@ -95,7 +100,7 @@
                           color="white">
               <v-btn v-for="item in menu"
                      :key="item.title + '-btn'"
-                     @click="uiMobileClearShowing(); mobile[item.attr] = !mobile[item.attr]"
+                     @click="uiMobileClearShowing(); mobile[item.attr] = true"
                      flat>
                 <span v-text="$t(item.title)"></span>
                 <v-icon>{{ item.icon }}</v-icon>
@@ -150,6 +155,7 @@ export default {
   },
   data() {
     return {
+      searchText: null,
       previewTime: '',
       menu: [
         {
@@ -390,6 +396,12 @@ export default {
             this.$store.commit('ui/STOP_LOADING')
           })
       }
+    },
+    search(text) {
+      this.searchText = text
+      this.$refs.coursesCatalog.searchText = this.searchText
+      this.$refs.coursesCatalog.onlySearchAbbr = false
+      this.$refs.coursesCatalog.updateList()
     }
   },
   beforeCreate() {
@@ -413,8 +425,6 @@ export default {
     this.$store
       .dispatch('selectCourses/getAvailableSelectionResult')
       .then(() => {
-        window.addEventListener('focus', this.refresh)
-
         if (
           this.selectionPhase ||
           this.addOrDropPhase ||
@@ -424,6 +434,7 @@ export default {
           this.$store.commit('selectCourses/SET_PHASE', {
             phase: 'current'
           })
+          // window.addEventListener('focus', this.refresh)
         } else {
           this.$store.commit('ui/STOP_LOADING')
         }
