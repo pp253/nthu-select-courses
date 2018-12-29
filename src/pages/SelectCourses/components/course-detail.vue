@@ -257,7 +257,6 @@
 import {
   VList,
   VListTile,
-  VListTileActionText,
   VListTileSubTitle,
   VListTileAction,
   VListTileTitle,
@@ -269,7 +268,6 @@ import {
   VBtn,
   VToolbar,
   VToolbarTitle,
-  VContent,
   VCheckbox,
   VTextField,
   VIcon
@@ -281,7 +279,6 @@ export default {
   components: {
     VList,
     VListTile,
-    VListTileActionText,
     VListTileSubTitle,
     VListTileAction,
     VListTileTitle,
@@ -293,7 +290,6 @@ export default {
     VBtn,
     VToolbar,
     VToolbarTitle,
-    VContent,
     VCheckbox,
     VTextField,
     VIcon
@@ -427,9 +423,11 @@ export default {
           })
       })
     },
+    /* eslint-disable-next-line */
     addFavorite(number) {
       // store.addFavorateCourses(number)
     },
+    /* eslint-disable-next-line */
     removeFavorite(number) {
       // store.removeFavorateCourses(number)
     },

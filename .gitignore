@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+courses_db.json
 
 # local env files
 .env.local
@@ -19,3 +20,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+src/pages/SelectCourses/store/courses_db.json

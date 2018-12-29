@@ -5,8 +5,9 @@
   "author": "pp253 <pp.pp253@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {
+    "dev": "npm run serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --mode production --target app --modern --dashboard",
+    "build": "vue-cli-service build --mode production --target app --modern --dashboard --no-clean",
     "lint": "vue-cli-service lint",
     "push": "bash ./.bin/push.sh"
   },

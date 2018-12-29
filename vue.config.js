@@ -2,15 +2,17 @@
 module.exports = {
   runtimeCompiler: true,
   filenameHashing: true,
-  productionSourceMap: undefined,
-
+  productionSourceMap: true,
   css: {
     sourceMap: true,
-    modules: true
+    modules: false
   },
-
-  baseUrl: undefined,
-  outputDir: undefined,
-  assetsDir: undefined,
-  parallel: undefined
+  configureWebpack: {
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000
+      }
+    }
+  }
 }
