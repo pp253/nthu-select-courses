@@ -59,6 +59,10 @@
                         :label="`顯示科號`"
                         color="primary"
                         hide-details />
+            <v-checkbox v-model="showColor"
+                        :label="`為課堂上色`"
+                        color="primary"
+                        hide-details />
           </v-card-text>
         </v-card>
       </v-menu>
@@ -91,20 +95,19 @@
             <div class="table-col col-title">{{ timeSection.name }}</div>
             <div v-for="weekday in weekdayName"
                  :key="weekday"
-                 :class="'table-col' + (previewTime.includes(weekday + timeSection.name) ? ' purple lighten-4 preview' : '')">
+                 :class="'table-col' + (previewTime && previewTime.includes(weekday + timeSection.name) ? ' purple lighten-4 preview' : '')">
               <div v-for="course in timeTable[weekday][timeSection.name]"
                    :key="course.number"
-                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${courses[course.number].professor} ${course.number}\n${courses[course.number].room}`"
+                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${toReadableProfessor(courses[course.number].professor)} ${course.number}\n${courses[course.number].room}`"
                    @mouseover="$emit('update-preview-time', course.number)"
                    @mouseleave="$emit('update-preview-time', '')"
-                   :class="course.status === 'waitingForRandom' ? 'light-blue--text' : (course.status === 'randomFailed' ? 'red--text ' : '')">
+                   :class="course.status === 'waitingForRandom' ? 'light-blue--text' : (course.status === 'randomFailed' ? 'red--text ' : '')"
+                   :style="showColor && course.color && `background-color: ${course.color[0]}; color: ${course.color[1]};`">
                 <span>{{ courses[course.number].title }}</span>
-                <span v-if="showCourseNumber"
-                      class="grey--text text--darken-1"><br>{{ courses[course.number].number }}</span>
-                <span v-if="showProfessor"
-                      class="grey--text text--darken-1"><br>{{ courses[course.number].professor }}</span>
-                <span v-if="showRoom"
-                      class="grey--text text--darken-1"><br>{{ courses[course.number].room }}</span>
+                <span v-if="
+                      showCourseNumber"><br>{{ courses[course.number].number }}</span>
+                <span v-if="showProfessor"><br>{{ toReadableProfessor(courses[course.number].professor) }}</span>
+                <span v-if="showRoom"><br>{{ courses[course.number].room }}</span>
               </div>
             </div>
           </div>
@@ -123,6 +126,7 @@
 </template>
 
 <script>
+import colors from 'vuetify/es5/util/colors'
 import {
   VMenu,
   VToolbar,
@@ -130,13 +134,12 @@ import {
   VBtn,
   VList,
   VListTile,
-  VListTileActionText,
-  VListTileAction,
   VListTileAvatar,
   VListTileTitle,
   VCheckbox,
   VIcon
 } from 'vuetify/lib'
+import { mapGetters, mapState } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
 
 export default {
@@ -149,8 +152,6 @@ export default {
     VBtn,
     VList,
     VListTile,
-    VListTileActionText,
-    VListTileAction,
     VListTileAvatar,
     VListTileTitle,
     VCheckbox,
@@ -183,10 +184,49 @@ export default {
       showRoom: false,
       showProfessor: false,
       showCourseNumber: false,
-      zoom: '100%'
+      showColor: true,
+      zoom: '100%',
+
+      /**
+       * These color is from
+       * https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/
+       */
+      colorPair: [
+        ['#e6194B', '#fff'],
+        ['#3cb44b', '#fff'],
+        ['#ffe119', '#000'],
+        ['#4363d8', '#fff'],
+        ['#f58231', '#fff'],
+        ['#911eb4', '#fff'],
+        ['#42d4f4', '#000'],
+        ['#f032e6', '#fff'],
+        ['#bfef45', '#000'],
+        ['#fabebe', '#000'],
+        ['#469990', '#fff'],
+        ['#e6beff', '#000'],
+        ['#9A6324', '#fff'],
+        ['#800000', '#fff'],
+        ['#aaffc3', '#000'],
+        ['#808000', '#fff'],
+        ['#ffd8b1', '#000'],
+        ['#000075', '#fff'],
+        ['#a9a9a9', '#000']
+      ],
+      colorPairCount: 0
+    }
+  },
+  watch: {
+    phase(newVal) {
+      if (newVal !== 'current') {
+        this.showColor = false
+      } else {
+        this.showColor = true
+      }
     }
   },
   computed: {
+    ...mapState('selectCourses', ['phase']),
+    ...mapGetters('selectCourses', ['toReadableProfessor']),
     timeTable() {
       let table = {}
       for (let weekday of this.weekdayName) {
@@ -206,10 +246,20 @@ export default {
           let list = /([MTWRFS])([1-9abcnABCN])/g.exec(
             this.courses[course.number].time.slice(i, i + 2)
           )
+          if (this.showColor && !course.color) {
+            course.color = this.getRandomColor()
+          }
           table[list[1].toUpperCase()][list[2].toLowerCase()].push(course)
         }
       }
       return table
+    }
+  },
+  methods: {
+    getRandomColor() {
+      let color = this.colorPair[this.colorPairCount]
+      this.colorPairCount = (this.colorPairCount + 1) % this.colorPair.length
+      return color
     }
   }
 }
@@ -254,6 +304,7 @@ export default {
 
         .course {
           background-color: #999;
+          height: 100%;
         }
 
         > div {
