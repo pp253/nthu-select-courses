@@ -19,6 +19,7 @@
         {{ $t(course.header) }}</v-subheader>
       <v-subheader v-if="course.orderable"
                    :key="course.header + '-btn'">
+
         <v-dialog v-if="course.orderable"
                   v-model="course.dialog"
                   persistent
@@ -26,9 +27,9 @@
                   max-width="500"
                   scrollable
                   style="width: 100%;">
-          <v-btn outline
+          <v-btn slot="activator"
+                 outline
                  block
-                 slot="activator"
                  v-t="'SelectCourses.coursesList.editOrder'"></v-btn>
           <v-card class="dialog-full-scrollable">
             <v-card-title class="headline"
@@ -67,6 +68,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
       </v-subheader>
 
       <v-list-tile v-if="(course.number) in courses"
@@ -211,117 +213,69 @@ export default {
       'addOrDropPhase',
       'withdrawalPhase',
       'currentSemester',
-      'currentSelectedCourses'
+      'currentSelectedCourses',
+      'coursesFilteringConfig'
     ]),
-    ...mapGetters('selectCourses', ['isCurrentSemester', 'isCourseSelected']),
+    ...mapGetters('selectCourses', [
+      'isCurrentSemester',
+      'isCourseSelected',
+      'coursesFiltering'
+    ]),
     moreThanOnePage() {
       return !this.result && this.list && this.list.length > this.coursesPerPage
     },
     adjustedList() {
       this.$emit('update-page', this.page)
 
+      /**
+       * If there is no list to perform, return an empty list.
+       */
       if (!this.list) {
         return []
       }
 
+      /**
+       * If is not performing the result of selection,
+       * return the paged list.
+       */
       if (!this.result) {
         let start = (this.page - 1) * this.coursesPerPage
         return this.list.slice(start, start + this.coursesPerPage)
       }
 
-      let randomCoursesSet = {}
-      for (let course of this.list) {
-        if (!course.status) {
-          console.error('Course should have course status.', course)
-          continue
-        }
-        if (!(course.status in randomCoursesSet)) {
-          randomCoursesSet[course.status] = []
-        }
-        if (course.status === 2) {
-          if (!course.status) {
-            console.error('Course should have course orderCatalog.', course)
-            continue
-          }
-          if (!(course.orderCatalog in randomCoursesSet[course.status])) {
-            randomCoursesSet[course.status][course.orderCatalog] = []
-          }
-          randomCoursesSet[course.status][course.orderCatalog].push(course)
-        } else {
-          randomCoursesSet[course.status].push(course)
-        }
-      }
-
+      /**
+       * Performing the result of selection.
+       * Process each courses filtering configuration to fulfill it.
+       */
       this.resultList = []
-      let sorting = (courseA, courseB) => {
-        return courseA.order - courseB.order
-      }
-      let randomCoursesFilteringConfig = [
-        {
-          header: '通識、體育志願（待亂數）',
-          status: 2,
-          orderable: true,
-          includesCatalogs: ['通', '體']
-        },
-        {
-          header: '大學中文志願（待亂數）',
-          status: 2,
-          orderable: true,
-          includesCatalogs: ['中']
-        },
-        {
-          header: 'SelectCourses.coursesList.waitingForRandomTitle',
-          status: 2,
-          orderable: false
-        },
-        {
-          header: '已選上',
-          status: 1
-        },
-        {
-          header: '未選上',
-          status: 0
-        }
-      ]
-      for (let item of randomCoursesFilteringConfig) {
-        if (!(item.status in randomCoursesSet)) {
+
+      for (let item of this.coursesFilteringConfig) {
+        /**
+         * If item.status not appear in the course status of courses
+         * in the coursesSet, skip it.
+         */
+        if (!(item.header in this.coursesFiltering)) {
           continue
         }
-        if (item.status === 2) {
-          if (item.orderable === true) {
-            let list = []
-            for (let catalog of item.includesCatalogs) {
-              if (!(catalog in randomCoursesSet[item.status])) {
-                continue
-              }
-              list = list.concat(randomCoursesSet[item.status][catalog])
-            }
-            if (list.length === 0) {
-              continue
-            }
-            list.sort(sorting)
-            this.resultList.push({
-              header: item.header,
-              newOrder: list,
-              oldOrder: item.orderable && list.slice(0),
-              dialog: false,
-              orderable: item.orderable
-            })
-            this.resultList = this.resultList.concat(list)
-          } else if ('' in randomCoursesSet[item.status]) {
-            this.resultList.push({
-              header: item.header
-            })
-            this.resultList = this.resultList.concat(
-              randomCoursesSet[item.status]['']
-            )
-          }
-        } else if (item.status in randomCoursesSet) {
+        let list = this.coursesFiltering[item.header]
+        /**
+         * If item.status is randomized (status=2) and orderable.
+         */
+        if (item.status === 2 && item.orderable === true) {
+          this.resultList.push({
+            header: item.header,
+            newOrder: list,
+            oldOrder: item.orderable && list.slice(0),
+            dialog: false,
+            orderable: true
+          })
+          this.resultList = this.resultList.concat(list)
+        } else {
           this.resultList.push({
             header: item.header
           })
           this.resultList = this.resultList.concat(
-            randomCoursesSet[item.status]
+            this.coursesFiltering[item.header]
           )
         }
       }
@@ -341,44 +295,30 @@ export default {
             text: this.courses[courseNumber].memo,
             mode: 'request'
           })
-          .then(result => {
-            if (result) {
-              this.$store.commit('ui/START_LOADING')
-              let order = ''
-              if (
-                this.courses[courseNumber].random !== 0 &&
-                this.currentSelectedCourses
-              ) {
-                order =
-                  this.currentSelectedCourses.filter(course => {
-                    return (
-                      course.status &&
-                      course.status === 2 &&
-                      this.courses[course.number].random ===
-                        this.courses[courseNumber].random
-                    )
-                  }).length + 1
-              }
-
-              this.$store
-                .dispatch('selectCourses/addCourse', {
-                  courseNumber: courseNumber,
-                  order: order
-                })
-                .then(data => {
-                  this.$store.commit('ui/STOP_LOADING')
-                  this.$store.dispatch('ui/openSnackbar', {
-                    snackbarText: this.$t('SelectCourses.action.addSuccess', [
-                      this.courses[courseNumber].title
-                    ])
-                  })
-                  resolve(data)
-                })
-                .catch(err => {
-                  this.$store.commit('ui/STOP_LOADING')
-                  reject(err)
-                })
+          .then(response => {
+            if (!response) {
+              resolve()
+              return
             }
+            this.$store.commit('ui/START_LOADING')
+
+            this.$store
+              .dispatch('selectCourses/addCourse', {
+                courseNumber: courseNumber
+              })
+              .then(data => {
+                this.$store.commit('ui/STOP_LOADING')
+                this.$store.dispatch('ui/openSnackbar', {
+                  snackbarText: this.$t('SelectCourses.action.addSuccess', [
+                    this.courses[courseNumber].title
+                  ])
+                })
+                resolve(data)
+              })
+              .catch(err => {
+                this.$store.commit('ui/STOP_LOADING')
+                reject(err)
+              })
           })
       })
     },
@@ -390,27 +330,92 @@ export default {
             text: '此動作無法還原。',
             mode: 'request'
           })
-          .then(result => {
-            if (result) {
-              this.$store.commit('ui/START_LOADING')
-              this.$store
-                .dispatch('selectCourses/quitCourse', {
-                  courseNumber: courseNumber
-                })
-                .then(data => {
-                  this.$store.commit('ui/STOP_LOADING')
-                  this.$store.dispatch('ui/openSnackbar', {
-                    snackbarText: this.$t('SelectCourses.action.quitSuccess', [
-                      this.courses[courseNumber].title
-                    ])
-                  })
-                  resolve(data)
-                })
-                .catch(err => {
-                  this.$store.commit('ui/STOP_LOADING')
-                  reject(err)
-                })
+          .then(response => {
+            if (!response) {
+              resolve()
+              return
             }
+
+            /**
+             * If the courses prepare to quit is a orderable course,
+             * suggest user to reorder the list.
+             */
+            let suggestReorder = this.courses[courseNumber].random > 1
+            let header = null
+            if (suggestReorder) {
+              for (header in this.coursesFiltering) {
+                if (
+                  this.coursesFiltering[header].find(
+                    c => c.number === courseNumber
+                  )
+                ) {
+                  break
+                }
+              }
+            }
+
+            this.$store.commit('ui/START_LOADING')
+            this.$store
+              .dispatch('selectCourses/quitCourse', {
+                courseNumber: courseNumber
+              })
+              .then(() => {
+                this.$store.commit('ui/STOP_LOADING')
+                this.$store.dispatch('ui/openSnackbar', {
+                  snackbarText: this.$t('SelectCourses.action.quitSuccess', [
+                    this.courses[courseNumber].title
+                  ])
+                })
+
+                /**
+                 * Check whether the course is a randomized and orderable course,
+                 * if it is, we suggest user to perform editOrder().
+                 */
+                if (this.courses[courseNumber].random === 0) {
+                  resolve()
+                  return
+                }
+
+                return this.$store.dispatch('ui/openRequestDialog', {
+                  title: `請問是否要自動補齊空缺的志願序？`,
+                  text:
+                    '補齊空缺的志願序可能會花些時間，如果要大量退選的話，建議稍後再自動補齊空缺的志願序。你可以透過「編輯志願序」按鈕補齊空缺的志願序。',
+                  mode: 'request'
+                })
+              })
+              .then(response => {
+                if (!response) {
+                  resolve()
+                  return
+                }
+
+                let list = this.coursesFiltering[header]
+
+                this.$store.commit('ui/START_LOADING')
+                this.$store
+                  .dispatch('selectCourses/editOrder', {
+                    newOrder: list,
+                    oldOrder: list
+                  })
+                  .then(() => {
+                    this.$store.dispatch('ui/openSnackbar', {
+                      snackbarText: this.$t(
+                        'SelectCourses.action.editOrderSuccess'
+                      )
+                    })
+                    this.$store.commit('ui/STOP_LOADING')
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    this.$store.commit('ui/STOP_LOADING')
+                  })
+
+                resolve()
+              })
+              .catch(err => {
+                this.$store.commit('ui/STOP_LOADING')
+                reject(err)
+              })
           })
       })
     },

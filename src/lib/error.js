@@ -47,6 +47,12 @@ export const ResponseErrorMsg = {
       id: 1010,
       msg: `Department's abbr was not found.`
     })
+  },
+  NotInSelectionPhase() {
+    return ResponseErrorJSON({
+      id: 1011,
+      msg: `We are not in selection phase right now.`
+    })
   }
 }
 

@@ -17,10 +17,50 @@ export default {
     addOrDropPhase: false,
     withdrawalPhase: false,
     editable: false,
-    currentSemester: '10710',
+    currentSemester: '10720',
     currentPhase: '100',
     semester: '',
-    phase: ''
+    /**
+     * phase
+     *   - 'current': we are in selection phase right now.
+     *   - otherwise: semester of the result
+     */
+    phase: '',
+
+    /**
+     * Configuration of the sorting of courses stauts,
+     * - header: their title to be shown in the <CourseList>
+     * - status: course.status (0, 1, 2)
+     * - orderable: set orderable=true to show the reorder button in <CourseList>.
+     * - includesCatalogs: the catalog of random course
+     */
+    coursesFilteringConfig: [
+      {
+        header: 'SelectCourses.coursesList.waitingForRandomGEPETitle',
+        status: 2,
+        orderable: true,
+        includesCatalogs: ['通', '體']
+      },
+      {
+        header: 'SelectCourses.coursesList.waitingForRandomCLTTitle',
+        status: 2,
+        orderable: true,
+        includesCatalogs: ['中']
+      },
+      {
+        header: 'SelectCourses.coursesList.waitingForRandomTitle',
+        status: 2,
+        orderable: false
+      },
+      {
+        header: 'SelectCourses.coursesList.addedCoursesTitle',
+        status: 1
+      },
+      {
+        header: 'SelectCourses.coursesList.failedCoursesTitle',
+        status: 0
+      }
+    ]
   },
   getters: {
     isCurrentSemester(state, getters) {
@@ -46,9 +86,119 @@ export default {
           }) !== undefined
         )
       }
+    },
+    coursesFiltering(state) {
+      /**
+       * If we are not in selection phase, skip it and return
+       * an empty list.
+       */
+      if (state.phase !== 'current' || !state.currentSelectedCourses) {
+        return []
+      }
+
+      /**
+       * Performing the result of selection.
+       * First, we put there types of course status (0, 1, 2) into
+       * 3 list in
+       *   coursesSet[course.status] = [course, ...]
+       *
+       * And the random course (status = 2) is in the
+       *   coursesSet[course.status][course.orderCatalog]
+       *     = [course, ...]
+       */
+      let coursesSet = {}
+      for (let course of state.currentSelectedCourses) {
+        if (!course.status) {
+          console.error('Course should have course status.', course)
+          continue
+        }
+        if (!(course.status in coursesSet)) {
+          coursesSet[course.status] = []
+        }
+        if (course.status === 2) {
+          if (!course.status) {
+            console.error(
+              'Course which is ordarable should have course orderCatalog.',
+              course
+            )
+            continue
+          }
+          if (!(course.orderCatalog in coursesSet[course.status])) {
+            coursesSet[course.status][course.orderCatalog] = []
+          }
+          coursesSet[course.status][course.orderCatalog].push(course)
+        } else {
+          coursesSet[course.status].push(course)
+        }
+      }
+
+      let resultSet = {}
+      /**
+       * Process each courses filtering configuration to fulfill it.
+       */
+      for (let item of state.coursesFilteringConfig) {
+        /**
+         * If item.status not appear in the course status of courses
+         * in the coursesSet, skip it.
+         */
+        if (!(item.status in coursesSet)) {
+          continue
+        }
+        /**
+         * If item.status is randomized (status=2).
+         */
+        if (item.status === 2) {
+          if (item.orderable === true) {
+            let list = []
+            for (let catalog of item.includesCatalogs) {
+              if (!(catalog in coursesSet[item.status])) {
+                continue
+              }
+              list = list.concat(coursesSet[item.status][catalog])
+            }
+            if (list.length === 0) {
+              continue
+            }
+            let sorting = (courseA, courseB) => {
+              return courseA.order - courseB.order
+            }
+            list.sort(sorting)
+
+            resultSet[item.header] = list
+          } else if ('' in coursesSet[item.status]) {
+            resultSet[item.header] = coursesSet[item.status]['']
+          }
+        } else if (item.status in coursesSet) {
+          /**
+           * Otherwise, item.status is 0, 1, which to be success selected
+           * or failed.
+           */
+          resultSet[item.header] = coursesSet[item.status]
+        }
+      }
+      return resultSet
     }
   },
   mutations: {
+    RESET_STATE(state) {
+      state.departments = coursesDb.departments
+      state.catalog = coursesDb.catalog
+      state.courses = coursesDb.courses
+      state.availableSelectionResult = null
+      state.selectionResult = {}
+      state.currentSelectedCourses = null
+      state.favoriteCourses = []
+
+      state.selectionPhase = true
+      state.addOrDropPhase = false
+      state.withdrawalPhase = false
+      state.editable = false
+      state.currentSemester = '10720'
+      state.currentPhase = '100'
+      state.semester = ''
+
+      state.phase = ''
+    },
     SET_SELECTION_PHASE(state, options) {
       state.selectionPhase = options.selectionPhase
     },
@@ -112,6 +262,10 @@ export default {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
+        if (!(context.state.phase === 'current')) {
+          reject(error.ResponseErrorMsg.NotInSelectionPhase())
+          return
+        }
 
         api
           .quitCourse(context.rootState.user.sessionToken, options.courseNumber)
@@ -131,6 +285,35 @@ export default {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
+        }
+        if (
+          !(context.state.phase === 'current') ||
+          !context.state.currentSelectedCourses
+        ) {
+          reject(error.ResponseErrorMsg.NotInSelectionPhase())
+          return
+        }
+
+        /**
+         * Check whether the course is a randomized and orderable course,
+         * if it is, we have to get the order.
+         * Course order is the largest order of the current selectd courses.
+         */
+        if (
+          !options.order &&
+          context.state.courses[options.courseNumber].random !== 0
+        ) {
+          options.order =
+            context.state.currentSelectedCourses
+              .filter(course => {
+                return (
+                  course.status &&
+                  course.status === 2 &&
+                  context.state.courses[course.number].random ===
+                    context.state.courses[course.number].random
+                )
+              })
+              .reduce((a, c) => (c.order > a.order ? c : a)).order + 1
         }
 
         api
