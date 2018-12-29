@@ -434,7 +434,7 @@ export default {
           this.$store.commit('selectCourses/SET_PHASE', {
             phase: 'current'
           })
-          // window.addEventListener('focus', this.refresh)
+          window.addEventListener('focus', this.refresh)
         } else {
           this.$store.commit('ui/STOP_LOADING')
         }
