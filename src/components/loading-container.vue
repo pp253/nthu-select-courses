@@ -8,3 +8,14 @@
                          :size="50"></v-progress-circular>
   </v-container>
 </template>
+
+<script>
+import { VProgressCircular } from 'vuetify/lib'
+
+export default {
+  name: 'LoadingContainer',
+  components: {
+    VProgressCircular
+  }
+}
+</script>
