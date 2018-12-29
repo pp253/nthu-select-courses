@@ -158,6 +158,7 @@
 <script>
 import { VAvatar, VIcon } from 'vuetify/lib'
 import LayoutFooter from '@/components/layout-footer'
+import img_pp253 from '@/assets/pp253.jpg'
 
 export default {
   name: 'About',
@@ -174,7 +175,7 @@ export default {
             name: 'pp253',
             link: 'https://github.com/pp253',
             description: '開發者，清大工工20級',
-            img: '/static/img/about/pp253.jpg'
+            img: img_pp253
           },
           {
             text:
