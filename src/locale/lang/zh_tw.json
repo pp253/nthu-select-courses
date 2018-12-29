@@ -74,6 +74,15 @@
     "close": "關閉課程資訊",
     "classmates": "同班同學",
     "syllabus": "課程大綱",
-    "downloadSyllabus": "下載課程大綱"
+    "downloadSyllabus": "下載課程大綱",
+    "course_rule": "課程限制",
+    "ge_degree": "通識類別",
+    "ge_object": "通識對象",
+    "language": "授課語言",
+    "required": "必選修",
+    "program": "學分學程",
+    "reserved": "新生保留",
+    "double": "第一二專長",
+    "add": "不可加簽說明"
   }
 }

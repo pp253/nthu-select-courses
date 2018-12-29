@@ -46,7 +46,7 @@
                       </v-list-tile-action>
                       <v-list-tile-content>
                         <v-list-tile-title>{{ courses[element.number].title }}</v-list-tile-title>
-                        <v-list-tile-sub-title>{{ courses[element.number].professor }} {{ courses[element.number].time }}</v-list-tile-sub-title>
+                        <v-list-tile-sub-title>{{ toReadableProfessor(courses[element.number].professor) }} {{ courses[element.number].time }}</v-list-tile-sub-title>
                       </v-list-tile-content>
                       <v-list-tile-avatar class="drag-handle">
                         <v-icon>drag_handle</v-icon>
@@ -75,7 +75,7 @@
                    ripple
                    @click=""
                    :key="course.number"
-                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${courses[course.number].professor} ${course.number}\n${courses[course.number].room}`"
+                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${toReadableProfessor(courses[course.number].professor)} ${course.number}\n${courses[course.number].room}`"
                    @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
                    @mouseleave="updatePreviewTime('')"
                    @dblclick="openCourseDetail(course.number)">
@@ -83,12 +83,17 @@
           <v-list-tile-title>
             <span v-if="courses[course.number].canceled"
                   class="course-tag">停開</span>
+            <span v-if="courses[course.number].ge_degree"
+                  class="course-tag"
+                  :title="`${courses[course.number].ge_degree}`">
+              {{$t(`SelectCourses.geDegreeShort.${geDegreeCode[courses[course.number].ge_degree]}`)}}
+            </span>
             <!--
             <span v-if="courses[course.number].required"
                   class="course-tag">{{ courses[course.number].required }}</span> -->
             {{ courses[course.number].title }}
           </v-list-tile-title>
-          <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ courses[course.number].professor, courses[course.number].number ]) }}
+          <v-list-tile-sub-title class="grey--text text--darken-4">{{ $t('SelectCourses.coursesList.courseSub', [ toReadableProfessor(courses[course.number].professor), courses[course.number].number ]) }}
           </v-list-tile-sub-title>
           <v-list-tile-sub-title class="detail">{{ $t('SelectCourses.coursesList.courseDetail', [ courses[course.number].credit, courses[course.number].size_limit, courses[course.number].previous_size || '-', courses[course.number].room ]) }}
           </v-list-tile-sub-title>
@@ -214,12 +219,14 @@ export default {
       'withdrawalPhase',
       'currentSemester',
       'currentSelectedCourses',
-      'coursesFilteringConfig'
+      'coursesFilteringConfig',
+      'geDegreeCode'
     ]),
     ...mapGetters('selectCourses', [
       'isCurrentSemester',
       'isCourseSelected',
-      'coursesFiltering'
+      'coursesFiltering',
+      'toReadableProfessor'
     ]),
     moreThanOnePage() {
       return !this.result && this.list && this.list.length > this.coursesPerPage
@@ -485,7 +492,7 @@ export default {
   .course-tag {
     background-color: rgba(244, 64, 51, 0.05);
     border-radius: 3px;
-    color: #f44336;
+    color: #cf0e00;
     margin-right: 3px;
     padding-left: 2px;
     padding-right: 2px;
