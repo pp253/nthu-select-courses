@@ -1,4 +1,5 @@
 import { legalRequest } from '@/api'
+export * from '@/api'
 
 export function getCurrentSelectedCourses(sessionToken) {
   let data = {
