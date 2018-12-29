@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuetify, {
+  VApp,
   VContainer,
   VLayout,
   VFlex,
@@ -23,6 +24,7 @@ import '@/lib/bus'
 
 Vue.use(Vuetify, {
   components: {
+    VApp,
     VContainer,
     VLayout,
     VFlex,
