@@ -2,7 +2,7 @@
   <v-container pa-0
                ma-0
                fluid
-               class="course-detail">
+               class="course-detail h-100">
     <v-toolbar dense
                tabs>
       <v-toolbar-title>
@@ -25,171 +25,178 @@
       </v-tabs>
     </v-toolbar>
 
-    <v-tabs-items v-model="tabs">
-      <v-tab-item value="tab-course-detail-syllabus"
-                  :key="0">
-        <v-layout wrap
-                  justify-center>
-          <v-flex xs12>
-            <v-container>
-              <v-layout wrap>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ course.number }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">
-                  <a href="http://curricul.web.nthu.edu.tw/files/13-1073-12448.php"
-                     rel="noreferrer"
-                     target="_blank">{{ $t('courseDetail.time') }}</a></v-flex>
-                <v-flex xs9
-                        md4>{{ course.time || '' }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ toReadableProfessor(course.professor) }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ course.credit }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ course.size_limit + ` (${course.previous_size || '-'})` }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.reserved') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ course.reserved }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ course.room }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">{{ $t('courseDetail.language') }}</v-flex>
-                <v-flex xs9
-                        md4>{{ course.language }}</v-flex>
-                <v-flex xs3
-                        md2
-                        class="grey--text text--darken-2">
-                  <a href="http://cge.gec.nthu.edu.tw/course-3/"
-                     rel="noreferrer"
-                     target="_blank">{{ $t('courseDetail.ge_object') }}</a>
-                </v-flex>
-                <v-flex xs9
-                        md4>{{ course.ge_object }}</v-flex>
-              </v-layout>
-              <v-layout wrap
-                        pb-3>
-                <template v-for="key in ['ge_degree']">
-                  <template v-if="course[key]">
-                    <v-flex :key="key"
-                            xs3
-                            md2
-                            class="grey--text text--darken-2">{{ $t(`courseDetail.${key}`) }}</v-flex>
-                    <v-flex :key="key + '-content'"
-                            xs9
-                            md10>
-                      <v-chip @click="search(`${key}:${course[key]}`)">{{course[key]}}</v-chip>
-                    </v-flex>
-                  </template>
-                </template>
-                <template v-for="key in ['required', 'double', 'program']">
-                  <template v-if="course[key]">
-                    <v-flex :key="key"
-                            xs3
-                            md2
-                            class="grey--text text--darken-2">{{ $t(`courseDetail.${key}`) }}</v-flex>
-                    <v-flex :key="key + '-content'"
-                            xs9
-                            md10>
-                      <v-chip v-for="item in course[key]"
-                              :key="item"
-                              @click="search(`${key}:${item}`)">{{item}}</v-chip>
-                    </v-flex>
-                  </template>
-                </template>
-                <template v-for="key in ['prerequirement', 'course_rule', 'memo']">
-                  <template v-if="course[key]">
-                    <v-flex :key="key"
-                            xs3
-                            md2
-                            class="grey--text text--darken-2">{{ $t(`courseDetail.${key}`) }}</v-flex>
-                    <v-flex :key="key + '-content'"
-                            xs9
-                            md10
-                            v-html="course[key]"></v-flex>
-                  </template>
-                </template>
-              </v-layout>
+    <loading-container v-if="$wait.is('selectCourses.getSyllabus')"
+                       slot="waiting" />
+    <v-container v-else
+                 fluid
+                 pa-0
+                 ma-0>
 
-              <v-btn v-if="isCurrentSemester(course.number) && selectionPhase && !course.canceled"
-                     @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)">{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-btn>
-              <!--
+      <v-tabs-items v-model="tabs">
+        <v-tab-item value="tab-course-detail-syllabus"
+                    :key="0">
+          <v-layout wrap
+                    justify-center>
+            <v-flex xs12>
+              <v-container>
+                <v-layout wrap>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.number') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ course.number }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">
+                    <a href="http://curricul.web.nthu.edu.tw/files/13-1073-12448.php"
+                       rel="noreferrer"
+                       target="_blank">{{ $t('courseDetail.time') }}</a></v-flex>
+                  <v-flex xs9
+                          md4>{{ course.time || '' }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.professor') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ toReadableProfessor(course.professor) }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.credit') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ course.credit }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.size_limit') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ (course.size_limit || '-') + ` (${course.previous_size || '-'})` }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.reserved') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ course.reserved }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.room') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ course.room }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">{{ $t('courseDetail.language') }}</v-flex>
+                  <v-flex xs9
+                          md4>{{ course.language }}</v-flex>
+                  <v-flex xs3
+                          md2
+                          class="grey--text text--darken-2">
+                    <a href="http://cge.gec.nthu.edu.tw/course-3/"
+                       rel="noreferrer"
+                       target="_blank">{{ $t('courseDetail.ge_object') }}</a>
+                  </v-flex>
+                  <v-flex xs9
+                          md4>{{ course.ge_object }}</v-flex>
+                </v-layout>
+                <v-layout wrap
+                          pb-3>
+                  <template v-for="key in ['ge_degree']">
+                    <template v-if="course[key]">
+                      <v-flex :key="key"
+                              xs3
+                              md2
+                              class="grey--text text--darken-2">{{ $t(`courseDetail.${key}`) }}</v-flex>
+                      <v-flex :key="key + '-content'"
+                              xs9
+                              md10>
+                        <v-chip @click="search(`${key}:${course[key]}`)">{{course[key]}}</v-chip>
+                      </v-flex>
+                    </template>
+                  </template>
+                  <template v-for="key in ['required', 'double', 'program']">
+                    <template v-if="course[key]">
+                      <v-flex :key="key"
+                              xs3
+                              md2
+                              class="grey--text text--darken-2">{{ $t(`courseDetail.${key}`) }}</v-flex>
+                      <v-flex :key="key + '-content'"
+                              xs9
+                              md10>
+                        <v-chip v-for="item in course[key]"
+                                :key="item"
+                                @click="search(`${key}:${item}`)">{{item}}</v-chip>
+                      </v-flex>
+                    </template>
+                  </template>
+                  <template v-for="key in ['prerequirement', 'course_rule', 'memo']">
+                    <template v-if="course[key]">
+                      <v-flex :key="key"
+                              xs3
+                              md2
+                              class="grey--text text--darken-2">{{ $t(`courseDetail.${key}`) }}</v-flex>
+                      <v-flex :key="key + '-content'"
+                              xs9
+                              md10
+                              v-html="course[key]"></v-flex>
+                    </template>
+                  </template>
+                </v-layout>
+
+                <v-btn v-if="isCurrentSemester(course.number) && selectionPhase && !course.canceled"
+                       @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)">{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-btn>
+                <!--
                 <v-btn
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
                 >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
                 -->
-            </v-container>
-          </v-flex>
-          <v-flex xs12
-                  v-if="course.syllabus && course.syllabus.briefDescription !== ''">
-            <v-divider></v-divider>
-            <v-container v-html="course.syllabus.briefDescription"></v-container>
-          </v-flex>
-          <v-flex xs12
-                  v-if="course.syllabus">
-            <v-divider></v-divider>
-            <v-container>
-              <v-btn :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
-                     target="_blank"
-                     rel="noreferrer">{{ $t('courseDetail.downloadSyllabus') }}</v-btn>
-              <div v-html="course.syllabus.description"></div>
-            </v-container>
-          </v-flex>
-        </v-layout>
-      </v-tab-item>
-
-      <v-tab-item value="tab-course-detail-enrolled-students"
-                  :key="1">
-        <v-container>
-          <v-layout wrap>
-            <v-flex xs12>
-              <v-text-field prepend-icon="search"
-                            clearable></v-text-field>
+              </v-container>
             </v-flex>
-            <v-flex xs12>
-              <v-btn>全選</v-btn>
-              <v-btn>寄EMAIL給同學</v-btn>
+            <v-flex xs12
+                    v-if="course.syllabus && course.syllabus.briefDescription !== ''">
+              <v-divider></v-divider>
+              <v-container v-html="course.syllabus.briefDescription"></v-container>
+            </v-flex>
+            <v-flex xs12
+                    v-if="course.syllabus">
+              <v-divider></v-divider>
+              <v-container>
+                <v-btn :href="`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.number}.pdf`"
+                       target="_blank"
+                       rel="noreferrer">{{ $t('courseDetail.downloadSyllabus') }}</v-btn>
+                <div v-html="course.syllabus.description"></div>
+              </v-container>
             </v-flex>
           </v-layout>
-        </v-container>
+        </v-tab-item>
 
-        <v-list>
-          <v-subheader>
-            共{{enrolledStudents.length}}位同學
-          </v-subheader>
-          <template v-for="(student, index) of enrolledStudents">
-            <v-list-tile :key="`student-${index}`">
-              <v-list-tile-action>
-                <v-checkbox></v-checkbox>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title v-text="student.name"></v-list-tile-title>
-                <v-list-tile-sub-title v-text="student.studentId + ' ' + student.department"></v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-tab-item>
-      <!--
+        <v-tab-item value="tab-course-detail-enrolled-students"
+                    :key="1">
+          <v-container>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field prepend-icon="search"
+                              clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-btn>全選</v-btn>
+                <v-btn>寄EMAIL給同學</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-container>
+
+          <v-list>
+            <v-subheader>
+              共{{enrolledStudents.length}}位同學
+            </v-subheader>
+            <template v-for="(student, index) of enrolledStudents">
+              <v-list-tile :key="`student-${index}`">
+                <v-list-tile-action>
+                  <v-checkbox></v-checkbox>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title v-text="student.name"></v-list-tile-title>
+                  <v-list-tile-sub-title v-text="student.studentId + ' ' + student.department"></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+        </v-tab-item>
+        <!--
         <v-tab-item value="tab-course-detail-comments"
                   :key="2">
           <v-layout wrap
@@ -274,7 +281,8 @@
           </v-layout>
         </v-tab-item>
         -->
-    </v-tabs-items>
+      </v-tabs-items>
+    </v-container>
     <!--
     <v-dialog :fullscreen="$store.state.ui.isMobile"
               v-model="showCommentDialog"
@@ -326,10 +334,12 @@ import {
   VChip
 } from 'vuetify/lib'
 import { mapState, mapGetters } from 'vuex'
+import LoadingContainer from '@/components/loading-container'
 
 export default {
   name: 'CourseDetail',
   components: {
+    LoadingContainer,
     VList,
     VListTile,
     VListTileSubTitle,
@@ -361,28 +371,10 @@ export default {
       showReportDialog: false,
       enrolledStudents: [
         {
-          name: '鄭建澤',
-          email: 'asd@gmail.com',
+          name: 'John Smith',
+          email: 'test@gmail.com',
           department: '工工系二年級',
-          studentId: '105034009'
-        },
-        {
-          name: '鄭建澤',
-          email: 'asd@gmail.com',
-          department: '工工系二年級',
-          studentId: '105034009'
-        },
-        {
-          name: '鄭建澤',
-          email: 'asd@gmail.com',
-          department: '工工系二年級',
-          studentId: '105034009'
-        },
-        {
-          name: '鄭建澤',
-          email: 'asd@gmail.com',
-          department: '工工系二年級',
-          studentId: '105034009'
+          studentId: '123456789'
         }
       ]
     }
