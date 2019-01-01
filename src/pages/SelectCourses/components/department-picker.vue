@@ -11,21 +11,18 @@
           <v-tabs v-model="activeTab"
                   centered
                   grow>
-            <v-tab :key="0"
-                   ripple>
+            <v-tab ripple>
               總錄/必選修
             </v-tab>
-            <v-tab :key="1"
-                   ripple>
+            <v-tab ripple>
               通識
             </v-tab>
-            <v-tab :key="2"
-                   ripple>
-              雙專長
-            </v-tab>
-            <v-tab :key="3"
-                   ripple>
+            <v-tab ripple>
               學分學程
+            </v-tab>
+            <v-tab ripple
+                   disabled>
+              雙專長
             </v-tab>
           </v-tabs>
         </div>
@@ -222,8 +219,8 @@ export default {
       activeTabCode: {
         0: 'departments',
         1: 'geDegree',
-        2: 'double',
-        3: 'program'
+        2: 'program',
+        3: 'double'
       }
     }
   },
@@ -327,8 +324,8 @@ export default {
     search(text) {
       let searchPrefix = {
         1: 'ge_degree',
-        2: 'double',
-        3: 'program'
+        2: 'program',
+        3: 'double'
       }
       this.$emit('search', `${searchPrefix[this.activeTab]}:${text}`)
     },
