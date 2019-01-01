@@ -66,7 +66,8 @@
                               md3
                               lg2>
                         <v-container>
-                          <a :href="people.link">
+                          <a :href="people.link"
+                             target="_blank">
                             <v-avatar size="64px"
                                       class="grey lighten-4">
                               <img v-if="people.img"
@@ -105,7 +106,8 @@
                             md2
                             lg1>
                       <v-container>
-                        <a :href="dependency.link">
+                        <a :href="dependency.link"
+                           target="_blank">
                           <v-avatar size="64px"
                                     class="grey lighten-4">
                             <img v-if="dependency.img"
@@ -118,7 +120,8 @@
                     </v-flex>
                   </v-layout>
                   <p>更多請參考
-                    <a href="https://github.com/pp253/nthu-select-courses/blob/master/package.json">package.json</a>。</p>
+                    <a href="https://github.com/pp253/nthu-select-courses/blob/master/package.json"
+                       target="_blank">package.json</a>。</p>
                   <v-btn icon
                          flat
                          large
@@ -136,7 +139,8 @@
                 <v-card-text>
                   <h2 class="pb-3">條款</h2>
                   <p>
-                    <a href="http://www.apache.org/licenses/">Apache-2.0</a>
+                    <a href="http://www.apache.org/licenses/LICENSE-2.0"
+                       target="_blank">Apache-2.0</a>
                   </p>
                   <v-btn icon
                          flat
@@ -172,14 +176,14 @@ export default {
       list: {
         開發者: [
           {
-            name: 'pp253',
-            link: 'https://github.com/pp253',
+            name: '鄭建澤',
+            link: 'mailto:pp.pp253@gmail.com',
             description: '開發者，清大工工20級',
             img: img_pp253
           },
           {
             text:
-              '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses">GitHub</a>，然後PR個，你就成為了開發者！'
+              '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses-server">GitHub</a>，然後PR個，你就成為了開發者！'
           }
         ],
         測試者: [
@@ -222,42 +226,47 @@ export default {
       dependencies: [
         {
           name: 'Vue',
-          link: '',
+          link: 'https://www.npmjs.com/package/vue',
           img: ''
         },
         {
           name: 'Vuex',
-          link: '',
+          link: 'https://www.npmjs.com/package/vuex',
           img: ''
         },
         {
           name: 'Vuetify',
-          link: '',
+          link: 'https://www.npmjs.com/package/vuetify',
           img: ''
         },
         {
           name: 'vue-router',
-          link: '',
+          link: 'https://www.npmjs.com/package/vue-router',
           img: ''
         },
         {
           name: 'vue-i18n',
-          link: '',
+          link: 'https://www.npmjs.com/package/vue-i18n',
           img: ''
         },
         {
-          name: 'chart.js',
-          link: '',
+          name: 'vue-chartjs',
+          link: 'https://www.npmjs.com/package/vue-chartjs',
           img: ''
         },
         {
           name: 'vue-draggable',
-          link: '',
+          link: 'https://www.npmjs.com/package/vue-draggable',
           img: ''
         },
         {
           name: 'axios',
-          link: '',
+          link: 'https://www.npmjs.com/package/axios',
+          img: ''
+        },
+        {
+          name: 'vue-wait',
+          link: 'https://www.npmjs.com/package/vue-wait',
           img: ''
         }
       ]
