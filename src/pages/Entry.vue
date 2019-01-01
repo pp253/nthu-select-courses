@@ -76,6 +76,7 @@
                     </v-window-item>
                     <v-window-item :value="true">
                       <v-card-text>
+                        <p>你可以先從校務資訊系統登入後，將網址列中的 <code>ACIXSTORE=XXX</code> 中的 <code>XXX</code> 貼過來登入</p>
                         <v-text-field name="input-ACIXSTORE"
                                       :label="$t('login.ACIXSTORE')"
                                       value=""
@@ -137,7 +138,7 @@
                                    pl-3
                                    pr-3
                                    pb-3>
-                        <h2>💨快速的排志願序</h2>
+                        <h2>💨快速排志願序</h2>
                         <p>你不再需要為了調整志願序而重複的退選又加選，改用更直覺的方式排志願序吧！</p>
                       </v-container>
                     </v-flex>
@@ -164,6 +165,37 @@
                   </v-layout>
                 </v-card-text>
               </v-card>
+
+              <v-card class="mb-3">
+                <v-card-title>
+                  <div>
+                    <span class="headline">最新資訊</span>
+                  </div>
+                </v-card-title>
+                <v-card-text class="pl-0 pr-0">
+                  <v-layout wrap>
+                    <v-flex xs12>
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-0>
+                        <h3>進修英文、商用英文課無法選填志願</h3>
+                        <p>目前簡易選課系統無法選填「進修英文」、「商用英文」等志願！感謝同學回報，我們會盡速修復</p>
+                      </v-container>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-0>
+                        <h3>通識向度、學分學程課程課表</h3>
+                        <p>請在「選擇科系」按鈕選擇通識向度、學分學程的課表。另外雙專長的課表目前是舊版的，所以先不開放</p>
+                      </v-container>
+                    </v-flex>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
+
               <v-card class="mb-3">
                 <v-card-title>
                   <div>
@@ -190,6 +222,16 @@
                                    pb-3>
                         <h2>簡易教學評量</h2>
                         <p>未來開放。</p>
+                      </v-container>
+                    </v-flex>
+                    <v-flex xs12
+                            sm6>
+                      <v-container pt-0
+                                   pl-3
+                                   pr-3
+                                   pb-3>
+                        <h2>問題會報與回饋</h2>
+                        <p>如果你有任何想說的話，請透過<a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a>留言！</p>
                       </v-container>
                     </v-flex>
                   </v-layout>
@@ -227,7 +269,6 @@
                       <v-card-text class="grey lighten-3">
                         太棒了！你有兩種方式可以告訴清大簡易選課系統，<br> 一、填寫
                         <a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a><br> 二、直接在GitHub上面開個issue
-                        <br> 感恩你，讚嘆你！
                       </v-card-text>
                     </v-card>
                   </v-expansion-panel-content>
