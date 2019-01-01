@@ -4,6 +4,8 @@
                ma-0
                class="courses-catalog">
     <v-toolbar dense
+               :dark="style.coursesCatalog.toolbar.dark"
+               :color="style.coursesCatalog.toolbar.color"
                extended>
       <v-toolbar-title v-t="title || 'SelectCourses.coursesCatalog.title'">
       </v-toolbar-title>
@@ -164,7 +166,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('selectCourses', ['courses', 'catalog', 'departments']),
+    ...mapState('selectCourses', [
+      'courses',
+      'catalog',
+      'departments',
+      'style'
+    ]),
     searchItems() {
       let searchText = this.searchText
       const splitReg = /^(.*?:)?(.*)$/

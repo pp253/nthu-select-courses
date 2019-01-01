@@ -4,6 +4,8 @@
                ma-0
                class="selection-result">
     <v-toolbar dense
+               :dark="style.selectionResult.toolbar.dark"
+               :color="style.selectionResult.toolbar.color"
                extended>
       <v-toolbar-title>
         {{$t('SelectCourses.selectionResult.title')}}
@@ -45,7 +47,7 @@
                  pa-0
                  ma-0
                  class="list-wrapper">
-      <loading-container v-if="$wait.is('selectCourses.getSelectionResult')"
+      <loading-container v-if="$wait.is(['selectCourses.getSelectionResult', 'selectCourses.getCurrentSelectedCourses'])"
                          slot="waiting" />
       <courses-list v-else
                     :courses="courses"
@@ -101,7 +103,8 @@ export default {
       'selectionResult',
       'availableSelectionResult',
       'semester',
-      'phase'
+      'phase',
+      'style'
     ]),
     readableAvailableSelectionResult() {
       let list = []

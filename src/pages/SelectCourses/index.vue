@@ -25,7 +25,7 @@
                        @click="pc[item.attr] = !pc[item.attr]"
                        ripple>
             <v-list-tile-action>
-              <v-icon :class="pc[item.attr] ? 'primary--text' : ''">{{item.icon}}</v-icon>
+              <v-icon :color="pc[item.attr] ? style[item.attr].textColor : ''">{{item.icon}}</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
@@ -57,7 +57,7 @@
         <v-flex class="main">
           <v-layout class="fill-height">
             <v-flex :class="'column ' + layoutSize.coursesList"
-                    :hidden="!showCoursesCatalog">
+                    :hidden="!coursesCatalog">
               <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
                                @update-preview-time="updatePreviewTime"
                                @open-course-detail="openCourseDetail"
@@ -67,17 +67,17 @@
             </v-flex>
 
             <v-flex :class="'column ' + layoutSize.selectedCourses"
-                    :hidden="!showSelectionResult">
+                    :hidden="!selectionResult">
               <selection-result :courses="courses"
                                 :list="list"
                                 :title="$t('SelectCourses.selectionResult.title')"
                                 @update-preview-time="updatePreviewTime"
                                 @open-course-detail="openCourseDetail"
-                                @refresh="refresh" />
+                                @refresh="refresh(true)" />
             </v-flex>
 
             <v-flex :class="'column ' + layoutSize.timeTable"
-                    :hidden="!showTimeTable">
+                    :hidden="!timeTable">
               <time-table :courses="courses"
                           :preview-time="previewTime"
                           :list="list"
@@ -90,7 +90,7 @@
                              :course-number="courseDetailNumber"
                              @close-course-detail="closeCourseDetail"
                              @search="search"
-                             @goto-panel-courses-catalog="uiMobileClearShowing(); mobile['showCoursesCatalog'] = true"></course-detail>
+                             @goto-panel-courses-catalog="uiMobileClearShowing(); mobile['coursesCatalog'] = true"></course-detail>
             </v-flex>
 
             <v-bottom-nav fixed
@@ -159,22 +159,22 @@ export default {
       previewTime: '',
       menu: [
         {
-          attr: 'showCoursesCatalog',
+          attr: 'coursesCatalog',
           icon: 'list',
           title: 'SelectCourses.coursesCatalog.shortTitle'
         },
         {
-          attr: 'showSelectionResult',
+          attr: 'selectionResult',
           icon: 'playlist_add_check',
           title: 'SelectCourses.selectionResult.shortTitle'
         } /*
         {
-          attr: 'showFavoriteCoursesList',
+          attr: 'favoriteCoursesList',
           icon: 'favorite',
           title: 'SelectCourses.favoriteCoursesList.title'
         },*/,
         {
-          attr: 'showTimeTable',
+          attr: 'timeTable',
           icon: 'grid_on',
           title: 'SelectCourses.timeTable.shortTitle'
         }
@@ -183,17 +183,20 @@ export default {
       courseDetailNumber: '',
       hideDrawer: false,
       pc: {
-        showCoursesCatalog: true,
-        showSelectionResult: true,
-        showFavoriteCoursesList: false,
-        showTimeTable: true
+        coursesCatalog: true,
+        selectionResult: true,
+        favoriteCoursesList: false,
+        timeTable: true
       },
       mobile: {
-        showCoursesCatalog: false,
-        showSelectionResult: true,
-        showFavoriteCoursesList: false,
-        showTimeTable: false
-      }
+        coursesCatalog: false,
+        selectionResult: true,
+        favoriteCoursesList: false,
+        timeTable: false
+      },
+
+      lastRefresh: 0,
+      refreshInterval: 2 * 60 * 1000
     }
   },
   computed: {
@@ -202,22 +205,20 @@ export default {
       'addOrDropPhase',
       'withdrawalPhase',
       'currentSelectedCourses',
-      'selectionResult',
       'availableSelectionResult',
       'semester',
-      'phase'
+      'phase',
+      'style'
     ]),
+    ...mapState('selectCourses', { sr: 'selectionResult' }),
     courses() {
       let courses = this.$store.state.selectCourses.courses
       let semester = this.semester
       let phase = this.phase
 
       if (semester && phase) {
-        if (
-          semester in this.selectionResult &&
-          phase in this.selectionResult[semester]
-        ) {
-          let selectionResult = this.selectionResult[semester][phase]
+        if (semester in this.sr && phase in this.sr[semester]) {
+          let selectionResult = this.sr[semester][phase]
           courses = Object.assign(
             {},
             courses,
@@ -237,11 +238,8 @@ export default {
       if (phase === 'current') {
         list = this.currentSelectedCourses
       } else if (semester && phase) {
-        if (
-          semester in this.selectionResult &&
-          phase in this.selectionResult[semester]
-        ) {
-          let selectionResult = this.selectionResult[semester][phase]
+        if (semester in this.sr && phase in this.sr[semester]) {
+          let selectionResult = this.sr[semester][phase]
           let selectionResultCatalog = [
             'waitingForRandom',
             'status',
@@ -287,15 +285,15 @@ export default {
       let cd = this.showCourseDetail
 
       if (this.$vuetify.breakpoint.mdAndUp) {
-        if (uc.showTimeTable) {
-          if (!uc.showCoursesCatalog && !uc.showSelectionResult) {
+        if (uc.timeTable) {
+          if (!uc.coursesCatalog && !uc.selectionResult) {
             if (cd) {
               layoutSize.timeTable = 'xs6'
               layoutSize.courseDetail = 'xs6'
             } else {
               layoutSize.timeTable = 'xs12'
             }
-          } else if (uc.showCoursesCatalog && uc.showSelectionResult) {
+          } else if (uc.coursesCatalog && uc.selectionResult) {
             if (cd) {
               layoutSize.courseDetail = 'xs6'
             } else {
@@ -313,7 +311,7 @@ export default {
             layoutSize.selectedCourses = 'xs6'
           }
         } else {
-          if (uc.showCoursesCatalog && uc.showSelectionResult) {
+          if (uc.coursesCatalog && uc.selectionResult) {
             if (cd) {
               layoutSize.courseDetail = 'xs6'
               layoutSize.coursesList = 'xs3'
@@ -322,7 +320,7 @@ export default {
               layoutSize.coursesList = 'xs6'
               layoutSize.selectedCourses = 'xs6'
             }
-          } else if (uc.showCoursesCatalog || uc.showSelectionResult) {
+          } else if (uc.coursesCatalog || uc.selectionResult) {
             if (cd) {
               layoutSize.courseDetail = 'xs6'
               layoutSize.coursesList = 'xs6'
@@ -343,20 +341,20 @@ export default {
 
       return layoutSize
     },
-    showCoursesCatalog() {
+    coursesCatalog() {
       return !this.$store.state.ui.isMobile
-        ? this.pc.showCoursesCatalog
-        : !this.showCourseDetail && this.mobile.showCoursesCatalog
+        ? this.pc.coursesCatalog
+        : !this.showCourseDetail && this.mobile.coursesCatalog
     },
-    showSelectionResult() {
+    selectionResult() {
       return !this.$store.state.ui.isMobile
-        ? this.pc.showSelectionResult
-        : !this.showCourseDetail && this.mobile.showSelectionResult
+        ? this.pc.selectionResult
+        : !this.showCourseDetail && this.mobile.selectionResult
     },
-    showTimeTable() {
+    timeTable() {
       return !this.$store.state.ui.isMobile
-        ? !this.showCourseDetail && this.pc.showTimeTable
-        : !this.showCourseDetail && this.mobile.showTimeTable
+        ? !this.showCourseDetail && this.pc.timeTable
+        : !this.showCourseDetail && this.mobile.timeTable
     }
   },
   methods: {
@@ -369,10 +367,10 @@ export default {
             : courseNumber
     },
     uiMobileClearShowing() {
-      this.mobile.showCoursesCatalog = false
-      this.mobile.showSelectionResult = false
-      this.mobile.showFavoriteCoursesList = false
-      this.mobile.showTimeTable = false
+      this.mobile.coursesCatalog = false
+      this.mobile.selectionResult = false
+      this.mobile.favoriteCoursesList = false
+      this.mobile.timeTable = false
     },
     openCourseDetail(courseNumber) {
       this.showCourseDetail = true
@@ -381,21 +379,27 @@ export default {
     closeCourseDetail() {
       this.showCourseDetail = false
     },
-    refresh() {
-      if (this.selectionPhase || this.addOrDropPhase || this.withdrawalPhase) {
-        this.$store.commit('ui/START_LOADING')
-
-        this.$store
-          .dispatch('selectCourses/getCurrentSelectedCourses')
-          .then(() => {
-            this.$store.commit('ui/STOP_LOADING')
-          })
-          .catch(err => {
-            console.error(err)
-            this.$router.push('/')
-            this.$store.commit('ui/STOP_LOADING')
-          })
+    refresh(force = false) {
+      if (
+        !(this.selectionPhase || this.addOrDropPhase || this.withdrawalPhase)
+      ) {
+        return
       }
+      if (force !== true) {
+        if (Date.now() - this.lastRefresh < this.refreshInterval) {
+          return
+        }
+      }
+      this.lastRefresh = Date.now()
+      this.$store
+        .dispatch('selectCourses/getCurrentSelectedCourses')
+        .then(() => {
+          this.$store.commit('ui/STOP_LOADING')
+        })
+        .catch(err => {
+          console.error(err)
+          this.$router.push('/')
+        })
     },
     search(text) {
       this.searchText = text
@@ -430,7 +434,8 @@ export default {
           this.addOrDropPhase ||
           this.withdrawalPhase
         ) {
-          this.refresh()
+          this.lastRefresh = Date.now()
+          this.refresh(true)
           this.$store.commit('selectCourses/SET_PHASE', {
             phase: 'current'
           })

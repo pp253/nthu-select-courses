@@ -100,7 +100,31 @@ export default {
       double: [],
       program: []
     },
-    popularLimit: 7
+    popularLimit: 7,
+
+    style: {
+      selectionResult: {
+        textColor: 'blue lighten-2',
+        toolbar: {
+          color: 'blue lighten-2',
+          dark: true
+        }
+      },
+      timeTable: {
+        textColor: 'purple lighten-2',
+        toolbar: {
+          color: 'purple lighten-2',
+          dark: true
+        }
+      },
+      coursesCatalog: {
+        textColor: 'cyan lighten-2',
+        toolbar: {
+          color: 'cyan lighten-2',
+          dark: true
+        }
+      }
+    }
   },
   getters: {
     isCurrentSemester(state, getters) {
@@ -446,6 +470,13 @@ export default {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
+        context.dispatch(
+          'loading/start',
+          'selectCourses.getCurrentSelectedCourses',
+          {
+            root: true
+          }
+        )
 
         api
           .getCurrentSelectedCourses(context.rootState.user.sessionToken)
@@ -453,9 +484,23 @@ export default {
             context.commit('SET_CURRENT_SELECTED_COURSES', {
               currentSelectedCourses: data.currentSelectedCourses
             })
+            context.dispatch(
+              'loading/end',
+              'selectCourses.getCurrentSelectedCourses',
+              {
+                root: true
+              }
+            )
             resolve(context.state.currentSelectedCourses)
           })
           .catch(err => {
+            context.dispatch(
+              'loading/end',
+              'selectCourses.getCurrentSelectedCourses',
+              {
+                root: true
+              }
+            )
             reject(err)
           })
       })

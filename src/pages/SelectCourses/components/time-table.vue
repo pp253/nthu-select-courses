@@ -3,7 +3,9 @@
                pa-0
                ma-0
                class="h-100">
-    <v-toolbar dense>
+    <v-toolbar dense
+               :dark="style.timeTable.toolbar.dark"
+               :color="style.timeTable.toolbar.color">
       <v-toolbar-title>{{ $t('SelectCourses.timeTable.title') }}</v-toolbar-title>
       <v-spacer />
       <v-menu bottom
@@ -67,7 +69,7 @@
         </v-card>
       </v-menu>
     </v-toolbar>
-    <loading-container v-if="$wait.is('selectCourses.getSelectionResult')"
+    <loading-container v-if="$wait.is(['selectCourses.getSelectionResult', 'selectCourses.getCurrentSelectedCourses'])"
                        slot="waiting" />
     <v-container v-else
                  fluid
@@ -224,7 +226,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('selectCourses', ['phase']),
+    ...mapState('selectCourses', ['phase', 'style']),
     ...mapGetters('selectCourses', ['toReadableProfessor']),
     timeTable() {
       let table = {}
@@ -239,6 +241,9 @@ export default {
       }
       for (let course of this.list) {
         if (course.header) {
+          continue
+        }
+        if (!this.courses[course.number].time) {
           continue
         }
         for (let i = 0; i < this.courses[course.number].time.length; i += 2) {
