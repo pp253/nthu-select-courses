@@ -9,7 +9,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production --target app --modern --dashboard --no-clean",
     "lint": "vue-cli-service lint",
-    "push": "bash ./.bin/push.sh"
+    "push": "bash ./.bin/push-to-github.sh"
   },
   "dependencies": {
     "vue": "^2.5.17",
