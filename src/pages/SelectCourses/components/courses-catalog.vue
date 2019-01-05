@@ -6,6 +6,7 @@
     <v-toolbar dense
                :dark="style.coursesCatalog.toolbar.dark"
                :color="style.coursesCatalog.toolbar.color"
+               style="z-index: 1;"
                extended>
       <v-toolbar-title v-t="title || 'SelectCourses.coursesCatalog.title'">
       </v-toolbar-title>

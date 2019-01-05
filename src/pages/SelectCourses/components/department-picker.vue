@@ -215,7 +215,7 @@ export default {
       choosedItem: '',
       searchText: '',
       dialog: false,
-      activeTab: null,
+      activeTab: 0,
       activeWin: 0,
       activeTabCode: {
         0: 'departments',

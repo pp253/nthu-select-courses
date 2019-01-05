@@ -6,6 +6,7 @@
     <v-toolbar dense
                :dark="style.selectionResult.toolbar.dark"
                :color="style.selectionResult.toolbar.color"
+               style="z-index: 1;"
                extended>
       <v-toolbar-title>
         {{$t('SelectCourses.selectionResult.title')}}
