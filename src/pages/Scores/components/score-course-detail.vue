@@ -24,7 +24,7 @@
       </v-tabs>
     </v-toolbar>
 
-    <v-content>
+    <v-content style="transform: translateZ(0);">
       <v-tabs-items v-model="tabs">
         <v-tab-item value="tab-distribution">
           <v-layout wrap

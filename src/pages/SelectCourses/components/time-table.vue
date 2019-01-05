@@ -74,7 +74,7 @@
     <v-container v-else
                  fluid
                  class="time-table"
-                 :style="`zoom: ${zoom}`">
+                 :style="`zoom: ${zoom}; transform: translateZ(0);`">
 
       <div class="table">
         <div class="table-head">

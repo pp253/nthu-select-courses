@@ -1,5 +1,6 @@
 <template>
-  <v-container class="entry">
+  <v-container class="entry"
+               style="transform: translateZ(0);">
     <v-layout wrap
               justify-center>
       <v-flex xs12

@@ -54,7 +54,8 @@
         </template>
       </v-card-title>
 
-      <v-card-text class="vh-100 pa-0">
+      <v-card-text class="vh-100 pa-0"
+                   style="transform: translateZ(0);">
 
         <v-window v-if="activeTab === 0"
                   v-model="activeWin"

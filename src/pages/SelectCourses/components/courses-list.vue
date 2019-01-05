@@ -3,7 +3,8 @@
 <template>
   <v-list class="courses-list"
           ripple
-          id="courses-list">
+          id="courses-list"
+          style="transform: translateZ(0);">
     <slot name="header"></slot>
 
     <v-subheader v-if="list && moreThanOnePage"
