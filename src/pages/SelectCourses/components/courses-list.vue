@@ -96,7 +96,7 @@
             </v-list-tile-sub-title>
             <v-list-tile-sub-title class="detail">{{ $t('SelectCourses.coursesList.courseDetail', [ courses[course.number].credit, courses[course.number].size_limit, courses[course.number].previous_size || '-', courses[course.number].room ]) }}
             </v-list-tile-sub-title>
-            <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || ' ' }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="memo">{{ courses[course.number].memo || courses[course.number].course_rule || ' ' }}</v-list-tile-sub-title>
           </v-list-tile-content>
 
           <v-list-tile-action>

@@ -75,6 +75,10 @@ export const ERR_MSG = {
   43: {
     title: '通識課最多只能選三堂',
     text: ''
+  },
+  44: {
+    title: '無效的加選',
+    text: ''
   }
 }
 
