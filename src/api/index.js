@@ -69,7 +69,11 @@ export const ERR_MSG = {
     text: ''
   },
   42: {
-    title: 'Violate course rule',
+    title: '違反課堂限制',
+    text: '請查閱本堂課的課堂限制'
+  },
+  43: {
+    title: '通識課最多只能選三堂',
     text: ''
   }
 }
