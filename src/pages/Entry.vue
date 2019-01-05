@@ -22,6 +22,16 @@
                     </v-flex>
                   </v-layout>
                 </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn flat
+                         href="https://www.facebook.com/nthu.courses"
+                         target="_blank"
+                         rel="noreferrer">
+                    <img src="/facebook-box.png"
+                         style="width: 28px;"
+                         class="mr-1" />關注清大簡易選課</v-btn>
+                </v-card-actions>
               </v-card>
             </v-container>
           </v-flex>
