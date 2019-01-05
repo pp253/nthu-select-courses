@@ -10,7 +10,16 @@
                          mb-3>
               <v-card class="transparent elevation-0">
                 <v-card-text>
-                  <h1>清大簡易選課系統</h1>
+                  <v-layout>
+                    <v-flex style="min-width: 88px;">
+                      <img src="/logo.png"
+                           style="width: 72px; display: inline-block; -webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);">
+                    </v-flex>
+                    <v-flex xs12>
+                      <h1>清大簡易選課</h1>
+                      <h3 style="color: #444;">選課，就是這麼簡單</h3>
+                    </v-flex>
+                  </v-layout>
                 </v-card-text>
               </v-card>
             </v-container>
@@ -116,7 +125,7 @@
               <v-card class="mb-3">
                 <v-card-title>
                   <div>
-                    <span class="headline">清大簡易選課系統</span><br />
+                    <span class="headline">清大簡易選課</span><br />
                     <span class="subheading">重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！</span>
                   </div>
                 </v-card-title>
@@ -129,7 +138,7 @@
                                    pr-3
                                    pb-3>
                         <h2>📱手機也能輕鬆選課</h2>
-                        <p>從此，選課不再是電腦的專利了。清大簡易選課系統提供適合手機瀏覽的介面，讓你隨時隨地都能選課。</p>
+                        <p>從此，選課不再是電腦的專利了。清大簡易選課提供適合手機瀏覽的介面，讓你隨時隨地都能選課。</p>
                       </v-container>
                     </v-flex>
                     <v-flex xs12
@@ -230,7 +239,7 @@
                                    pl-3
                                    pr-3
                                    pb-3>
-                        <h2>問題會報與回饋</h2>
+                        <h2>問題回報與回饋</h2>
                         <p>如果你有任何想說的話，請透過<a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a>留言！</p>
                       </v-container>
                     </v-flex>
@@ -267,7 +276,7 @@
                     <div slot="header">我發現問題了，可以怎麼反應？</div>
                     <v-card>
                       <v-card-text class="grey lighten-3">
-                        太棒了！你有兩種方式可以告訴清大簡易選課系統，<br> 一、填寫
+                        太棒了！你有兩種方式可以告訴清大簡易選課，<br> 一、填寫
                         <a href="https://goo.gl/forms/TgC3zCe5iYkQ6tyb2">回饋表單</a><br> 二、直接在GitHub上面開個issue
                       </v-card-text>
                     </v-card>
@@ -279,8 +288,38 @@
                 <v-card-title>
                   <span class="headline">連結</span>
                 </v-card-title>
-                <v-card-text class="underline">
+                <v-card-text class="py-0 underline">
                   <v-list>
+                    <v-list-tile>
+                      <a href="https://www.facebook.com/nthu.courses/"
+                         target="_blank"
+                         rel="noreferrer">清大簡易選課</a>
+                    </v-list-tile>
+                    <v-divider></v-divider>
+                    <v-list-tile>
+                      <a href="https://ge-helper.github.io/"
+                         target="_blank"
+                         rel="noreferrer">清大通識小幫手</a>
+                    </v-list-tile>
+                    <v-divider></v-divider>
+                    <v-list-tile>
+                      <a href="https://program-helper.github.io/"
+                         target="_blank"
+                         rel="noreferrer">清大學程小幫手</a>
+                    </v-list-tile>
+                    <v-divider></v-divider>
+                    <v-list-tile>
+                      <a href="https://www.facebook.com/nthu.course.keeper/"
+                         target="_blank"
+                         rel="noreferrer">清大選課管家</a>
+                    </v-list-tile>
+                    <v-divider></v-divider>
+                    <v-list-tile>
+                      <a href="https://www.facebook.com/poke.course/"
+                         target="_blank"
+                         rel="noreferrer">戳戳課</a>
+                    </v-list-tile>
+                    <v-divider></v-divider>
                     <v-list-tile>
                       <a href="http://nthu-course.cf/"
                          target="_blank"

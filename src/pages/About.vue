@@ -14,7 +14,7 @@
                          mb-3>
               <v-card class="transparent elevation-0">
                 <v-card-text>
-                  <h1>關於清大簡易選課系統</h1>
+                  <h1>關於清大簡易選課</h1>
                 </v-card-text>
               </v-card>
             </v-container>

@@ -20,9 +20,12 @@
           <p>在 {{beWithText[beWithIndex]}} 的陪伴下製作 —
             <a href="https://github.com/pp253"
                target="_blank"
-               rel="noreferrer">工工20 鄭建澤</a>
+               rel="noreferrer">工工20 pp253</a>
           </p>
           <p class="underline">
+            <a href="https://www.facebook.com/nthu.courses/"
+               target="_blank"
+               rel="noreferrer">粉絲專頁</a> ．
             <a @click="$router.push('/about')"
                target="_blank"
                rel="noreferrer">關於</a> ．
