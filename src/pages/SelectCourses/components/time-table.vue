@@ -22,12 +22,12 @@
         <v-card>
           <v-subheader>縮放大小</v-subheader>
           <v-list>
-            <v-list-tile v-for="index in [50, 75, 100, 150, 200]"
+            <v-list-tile v-for="index in [0.50, 0.75, 1.00, 1.50, 2.00]"
                          :key="index"
-                         @click="zoom = `${index}%`"
+                         @click="zoom = index"
                          ripple>
-              <v-list-tile-title>{{`${index}%`}}</v-list-tile-title>
-              <v-list-tile-avatar v-if="zoom === `${index}%`">
+              <v-list-tile-title>{{`${parseInt(index * 100)}%`}}</v-list-tile-title>
+              <v-list-tile-avatar v-if="zoom === index">
                 <v-icon>check</v-icon>
               </v-list-tile-avatar>
             </v-list-tile>
@@ -74,7 +74,7 @@
     <v-container v-else
                  fluid
                  class="time-table"
-                 :style="`zoom: ${zoom};`">
+                 :style="`zoom: ${zoom}`">
 
       <div class="table">
         <div class="table-head">
@@ -186,7 +186,7 @@ export default {
       showProfessor: false,
       showCourseNumber: false,
       showColor: true,
-      zoom: '100%',
+      zoom: 1,
 
       /**
        * These color is from
@@ -274,6 +274,7 @@ export default {
   height: calc(100% - 48px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: 64px;
 
   .table {
     $title-width: 30px;
