@@ -393,17 +393,23 @@ export default {
           !options.order &&
           context.state.courses[options.courseNumber].random !== 0
         ) {
-          options.order =
-            context.state.currentSelectedCourses
-              .filter(course => {
-                return (
-                  course.status &&
-                  course.status === 2 &&
-                  context.state.courses[course.number].random ===
-                    context.state.courses[course.number].random
-                )
-              })
-              .reduce((a, c) => (c.order > a.order ? c : a)).order + 1
+          let randomizedCourses = context.state.currentSelectedCourses.filter(
+            course => {
+              return (
+                course.status &&
+                course.status === 2 &&
+                context.state.courses[course.number].random ===
+                  context.state.courses[course.number].random
+              )
+            }
+          )
+          if (randomizedCourses.length > 0) {
+            options.order =
+              randomizedCourses.reduce((a, c) => (c.order > a.order ? c : a))
+                .order + 1
+          } else {
+            options.order = 1
+          }
         }
 
         api
