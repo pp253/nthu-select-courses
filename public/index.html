@@ -56,6 +56,16 @@
         page_path: location.pathname + location.hash
       })
     </script>
+
+    <script
+      src="https://browser.sentry-cdn.com/4.4.2/bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      Sentry.init({
+        dsn: 'https://2de2fb40b0944a33a754a7068899ab19@sentry.io/1364952'
+      })
+    </script>
   </head>
   <body>
     <noscript
