@@ -79,6 +79,10 @@ export const ERR_MSG = {
   44: {
     title: '無效的加選',
     text: ''
+  },
+  45: {
+    title: '體育課程曾不及格才能修兩門',
+    text: ''
   }
 }
 
