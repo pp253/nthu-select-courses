@@ -227,6 +227,9 @@ export default {
   watch: {
     value(newVal) {
       this.dialog = newVal
+    },
+    activeTab() {
+      this.searchText = ''
     }
   },
   computed: {
@@ -286,8 +289,7 @@ export default {
   },
   methods: {
     submit() {
-      this.dialog = false
-      this.$emit('close')
+      this.close()
       if (this.activeTab === 0) {
         if (this.choosedDepartment !== '') {
           this.$emit(
@@ -318,7 +320,9 @@ export default {
       return {}
     },
     close() {
+      this.activeWin = 0
       this.dialog = false
+      this.searchText = ''
       this.$emit('close')
     },
     search(text) {
