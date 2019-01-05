@@ -13,8 +13,8 @@
                 <v-card-text>
                   <v-layout>
                     <v-flex style="min-width: 88px;">
-                      <img src="/logo.png"
-                           style="width: 72px; display: inline-block; -webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);">
+                      <img src="/logo-circle.png"
+                           style="width: 72px; display: inline-block;">
                     </v-flex>
                     <v-flex xs12>
                       <h1>清大簡易選課</h1>
@@ -481,6 +481,7 @@ export default {
 <style lang="scss">
 .entry {
   overflow: auto;
+  transform: translateZ(0);
   height: 100vh;
   -webkit-overflow-scrolling: touch;
 
