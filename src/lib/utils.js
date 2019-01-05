@@ -1,6 +1,6 @@
 export function htmlEncode(str) {
   if (typeof str !== 'string') {
-    throw new Error('htmlEncode: str should be a string.')
+    return ''
   }
 
   let result = str
