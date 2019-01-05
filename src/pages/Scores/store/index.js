@@ -7,7 +7,24 @@ export default {
     scores: {},
     courses: {},
     scoresLoaded: false,
-    overview: {}
+    overview: {},
+
+    style: {
+      scoreList: {
+        textColor: '#FFBB5D',
+        toolbar: {
+          color: '#FFBB5D',
+          dark: false
+        }
+      },
+      scoreCourseDetail: {
+        textColor: '#FFD75D',
+        toolbar: {
+          color: '#FFD75D',
+          dark: false
+        }
+      }
+    }
   },
   mutations: {
     SET_SCORES(state, options) {

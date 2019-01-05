@@ -31,7 +31,7 @@
                   lg4>
             <v-container :pa-0="$vuetify.breakpoint.xsOnly"
                          pb-3>
-              <v-card>
+              <v-card :color="service.color">
                 <v-card-title>
                   <v-icon>{{ service.icon }}</v-icon>
                   <span class="headline"
@@ -74,14 +74,16 @@ export default {
           title: 'Scores.name',
           content: 'Scores.description',
           icon: 'assessment',
-          path: '/scores'
+          path: '/scores',
+          color: '#FFE4BF'
         },
         {
           title: 'SelectCourses.name',
           content: 'SelectCourses.description',
           icon: 'playlist_add',
           path: '/select_courses',
-          disabled: false
+          disabled: false,
+          color: '#C2E2FD'
         } /*,
         {
           title: 'AdvisorPassword.name',

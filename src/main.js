@@ -39,9 +39,9 @@ Vue.use(Vuetify, {
     VIcon
   },
   theme: {
-    primary: '#9C27B0',
-    secondary: '#FF6F00',
-    accent: '#8C9EFF',
+    primary: '#64B4F6',
+    secondary: '#7471F7',
+    accent: '#FFD75D',
     error: '#f44336',
     warning: '#FFD600',
     info: '#2196f3',

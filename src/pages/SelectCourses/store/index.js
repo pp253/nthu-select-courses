@@ -103,24 +103,24 @@ export default {
     popularLimit: 7,
 
     style: {
-      selectionResult: {
-        textColor: 'blue lighten-2',
+      coursesCatalog: {
+        textColor: '#1986E1',
         toolbar: {
-          color: 'blue lighten-2',
+          color: '#1986E1',
+          dark: true
+        }
+      },
+      selectionResult: {
+        textColor: '#3F9FEF',
+        toolbar: {
+          color: '#3F9FEF',
           dark: true
         }
       },
       timeTable: {
-        textColor: 'purple lighten-2',
+        textColor: '#64B4F6',
         toolbar: {
-          color: 'purple lighten-2',
-          dark: true
-        }
-      },
-      coursesCatalog: {
-        textColor: 'cyan lighten-2',
-        toolbar: {
-          color: 'cyan lighten-2',
+          color: '#64B4F6',
           dark: true
         }
       }

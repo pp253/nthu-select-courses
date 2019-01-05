@@ -6,6 +6,8 @@
     <v-toolbar dense
                app
                tabs
+               :dark="style.scoreCourseDetail.toolbar.dark"
+               :color="style.scoreCourseDetail.toolbar.color"
                class="elevation-1">
       <v-btn @click="$emit('close-score-detail')"
              icon>
@@ -112,6 +114,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import {
   VTabs,
   VTab,
@@ -192,6 +195,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('scores', ['style']),
     passRate() {
       if (!this.course || !this.course.distribution) {
         return 0

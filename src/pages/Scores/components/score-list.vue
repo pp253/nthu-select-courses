@@ -5,6 +5,8 @@
                class="score-list">
     <v-toolbar dense
                extended
+               :dark="style.scoreList.toolbar.dark"
+               :color="style.scoreList.toolbar.color"
                app>
       <v-btn @click="$router.push('/service')"
              icon>
@@ -94,6 +96,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import {
   VTextField,
   VList,
@@ -152,6 +155,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('scores', ['style']),
     readableSemester() {
       return this.searchText
         ? this.$t('common.search', [this.searchText])

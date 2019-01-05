@@ -34,20 +34,6 @@
           </v-list-tile>
           <span>{{ `顯示/關閉 ` + $t(item.title) }}</span>
         </v-tooltip>
-        <v-tooltip right
-                   style="position: absolute; bottom: 64px;">
-          <v-list-tile @click="() => {}"
-                       href="https://goo.gl/FruSFf"
-                       target="_blank"
-                       rel="noreferrer"
-                       slot="activator"
-                       ripple>
-            <v-list-tile-action>
-              <v-icon>feedback</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-          <span>意見回饋</span>
-        </v-tooltip>
       </v-list>
     </v-navigation-drawer>
 
