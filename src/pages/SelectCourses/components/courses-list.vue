@@ -73,12 +73,11 @@
 
         <v-list-tile v-if="(course.number) in courses"
                      ripple
-                     @click=""
                      :key="course.number"
                      :title="`${courses[course.number].title} ${courses[course.number].time}\n${toReadableProfessor(courses[course.number].professor)} ${course.number}\n${courses[course.number].room}`"
                      @mouseover="updatePreviewTime(courses[course.number].time || course.number)"
                      @mouseleave="updatePreviewTime('')"
-                     @dblclick="openCourseDetail(course.number)">
+                     @click="openCourseDetail(course.number)">
           <v-list-tile-content>
             <v-list-tile-title>
               <span v-if="courses[course.number].canceled"
@@ -102,7 +101,7 @@
 
           <v-list-tile-action>
             <v-list-tile-action-text>{{ courses[course.number].time }}</v-list-tile-action-text>
-            <div class="text-xs-center">
+            <div class="text-xs-center" @click.stop="">
               <v-menu top
                       left
                       lazy>
@@ -113,10 +112,12 @@
                 <v-list>
                   <v-list-tile v-if="isCurrentSemester(course.number) && (addOrDropPhase || selectionPhase) && !courses[course.number].canceled"
                                @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                               ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
+                               ripple>
+                               {{ isCourseSelected(course.number) ? $t('SelectCourses.action.quitCourse') : $t('SelectCourses.action.addCourse') }}</v-list-tile>
                   <v-list-tile v-if="addOrDropPhase && !courses[course.number].canceled"
                                @click="isCourseSelected(course.number) ? quitCourse(course.number) : addCourse(course.number)"
-                               ripple>{{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
+                               ripple>
+                               {{ isCourseSelected(course.number) ? $t('SelectCourses.action.addLimitedCourse') : $t('SelectCourses.action.printLimitedCourseForm') }}</v-list-tile>
                   <!--
                 <v-list-tile
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
