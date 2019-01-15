@@ -42,16 +42,6 @@
                 class="h-100">
         <v-flex class="main">
           <v-layout class="fill-height">
-            <v-flex :class="'column ' + layoutSize.coursesList"
-                    :hidden="!coursesCatalog">
-              <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
-                               @update-preview-time="updatePreviewTime"
-                               @open-course-detail="openCourseDetail"
-                               :search="searchText"
-                               ref="coursesCatalog"
-                               :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
-            </v-flex>
-
             <v-flex :class="'column ' + layoutSize.selectedCourses"
                     :hidden="!selectionResult">
               <selection-result :courses="courses"
@@ -60,6 +50,16 @@
                                 @update-preview-time="updatePreviewTime"
                                 @open-course-detail="openCourseDetail"
                                 @refresh="refresh(true)" />
+            </v-flex>
+
+            <v-flex :class="'column ' + layoutSize.coursesList"
+                    :hidden="!coursesCatalog">
+              <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
+                               @update-preview-time="updatePreviewTime"
+                               @open-course-detail="openCourseDetail"
+                               :search="searchText"
+                               ref="coursesCatalog"
+                               :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
             </v-flex>
 
             <v-flex :class="'column ' + layoutSize.timeTable"
@@ -409,6 +409,10 @@ export default {
     window.removeEventListener('focus', this.refresh)
   },
   mounted() {
+    this.$store.commit('ui/SET_THEME_COLOR', {
+      color: this.style.themeColor
+    })
+
     this.hideDrawer = false
     this.$store.commit('ui/START_LOADING')
 

@@ -121,6 +121,9 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit('ui/SET_THEME_COLOR', {
+      color: '#64B4F6'
+    })
     if (!this.$store.state.user.isLogin) {
       this.$router.push('/')
     }

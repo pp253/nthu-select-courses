@@ -57,7 +57,15 @@ export default {
      * Content of the snackbar.
      * Note that `snackbarText` will **not** be parsed by i18n.
      */
-    snackbarText: ''
+    snackbarText: '',
+
+    /**
+     * Theme color.
+     */
+    themeColor: '#64B4F6',
+    style: {
+      themeColor: '#64B4F6'
+    }
   },
   getters: {
     isNotMobile(state) {
@@ -90,6 +98,11 @@ export default {
     },
     STOP_LOADING(state) {
       state.loading = false
+    },
+    SET_THEME_COLOR(state, options) {
+      var metaThemeColor = document.querySelector('meta[name=theme-color]')
+      metaThemeColor.setAttribute('content', options.color)
+      state.themeColor = options.color
     }
   },
   actions: {

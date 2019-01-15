@@ -103,6 +103,7 @@ export default {
     popularLimit: 7,
 
     style: {
+      themeColor: '#64B4F6',
       coursesCatalog: {
         textColor: '#1986E1',
         toolbar: {

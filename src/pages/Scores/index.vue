@@ -33,7 +33,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('scores', ['scores', 'courses', 'overview'])
+    ...mapState('scores', ['scores', 'courses', 'overview', 'style'])
   },
   methods: {
     showDetail(courseNumber) {
@@ -56,6 +56,10 @@ export default {
     })
   },
   mounted() {
+    this.$store.commit('ui/SET_THEME_COLOR', {
+      color: this.style.themeColor
+    })
+
     this.$store.commit('ui/START_LOADING')
     this.$store
       .dispatch('scores/getScores')

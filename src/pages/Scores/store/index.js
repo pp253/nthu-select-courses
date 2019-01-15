@@ -10,6 +10,7 @@ export default {
     overview: {},
 
     style: {
+      themeColor: '#FFBB5D',
       scoreList: {
         textColor: '#FFBB5D',
         toolbar: {
