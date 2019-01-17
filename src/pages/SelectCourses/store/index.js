@@ -684,6 +684,25 @@ export default {
           return course.number === options.courseNumber
         }) !== undefined
       )
+    },
+    getClassmates(context, options) {
+      return new Promise((resolve, reject) => {
+        if (!context.rootState.user.isLogin) {
+          reject(error.ResponseErrorMsg.UserNotLogin())
+          return
+        }
+        api
+          .getClassmates(
+            context.rootState.user.sessionToken,
+            options.courseNumber
+          )
+          .then(data => {
+            resolve(data.classmates)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
     }
   }
 }

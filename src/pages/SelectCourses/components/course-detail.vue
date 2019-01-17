@@ -4,7 +4,8 @@
                fluid
                class="course-detail h-100">
     <v-toolbar dense
-               tabs>
+               tabs
+               style="z-index: 1;">
       <v-toolbar-title>
         <span v-if="course.canceled"
               class="red--text">停開</span>
@@ -20,7 +21,7 @@
               centered
               v-model="tabs">
         <v-tab href="#tab-course-detail-syllabus">{{ $t('courseDetail.syllabus') }}</v-tab>
-        <v-tab href="#tab-course-detail-enrolled-students">{{ $t('courseDetail.classmates') }}</v-tab>
+        <v-tab href="#tab-course-detail-enrolled-classmates">{{ $t('courseDetail.classmates') }}</v-tab>
         <!-- <v-tab href="#tab-course-detail-comments">課程評論</v-tab> -->
       </v-tabs>
     </v-toolbar>
@@ -164,36 +165,37 @@
           </v-layout>
         </v-tab-item>
 
-        <v-tab-item value="tab-course-detail-enrolled-students"
-                    :key="1">
+        <v-tab-item value="tab-course-detail-enrolled-classmates"
+                    :key="1"
+                    lazy>
           <v-container>
             <v-layout wrap>
               <v-flex xs12>
                 <v-text-field prepend-icon="search"
-                              clearable></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-btn>全選</v-btn>
-                <v-btn>寄EMAIL給同學</v-btn>
+                              clearable
+                              v-model="enrollingSearchText"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
 
-          <v-list>
+          <v-list three-line>
             <v-subheader>
-              共{{enrolledStudents.length}}位同學
+              <!-- +1 is for myself. -->
+              共{{enrolledClassmates.length + 1}}位同學
             </v-subheader>
-            <template v-for="(student, index) of enrolledStudents">
+            <template v-for="(student, index) of enrolledClassmatesSearchResult">
               <v-list-tile :key="`student-${index}`">
-                <v-list-tile-action>
-                  <v-checkbox></v-checkbox>
-                </v-list-tile-action>
                 <v-list-tile-content>
-                  <v-list-tile-title v-text="student.name"></v-list-tile-title>
-                  <v-list-tile-sub-title v-text="student.studentId + ' ' + student.department"></v-list-tile-sub-title>
+                  <v-list-tile-title v-text="`${student.name} ${student.studentId}`"></v-list-tile-title>
+                  <v-list-tile-sub-title v-text="student.department"></v-list-tile-sub-title>
+                  <v-list-tile-sub-title v-text="student.email"></v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
+              <v-divider :key="`student-${index}-divider`"></v-divider>
             </template>
+            <v-list-tile v-if="enrolledClassmatesSearchResult.length === 0">
+              <v-list-tile-content>沒有人選這堂課，或是你沒辦法看到這堂課的同學</v-list-tile-content>
+            </v-list-tile>
           </v-list>
         </v-tab-item>
         <!--
@@ -318,7 +320,6 @@ import {
   VList,
   VListTile,
   VListTileSubTitle,
-  VListTileAction,
   VListTileTitle,
   VListTileContent,
   VTabs,
@@ -328,7 +329,6 @@ import {
   VBtn,
   VToolbar,
   VToolbarTitle,
-  VCheckbox,
   VTextField,
   VIcon,
   VChip
@@ -343,7 +343,6 @@ export default {
     VList,
     VListTile,
     VListTileSubTitle,
-    VListTileAction,
     VListTileTitle,
     VListTileContent,
     VTabs,
@@ -353,7 +352,6 @@ export default {
     VBtn,
     VToolbar,
     VToolbarTitle,
-    VCheckbox,
     VTextField,
     VIcon,
     VChip
@@ -369,14 +367,8 @@ export default {
       tabs: null,
       showCommentDialog: false,
       showReportDialog: false,
-      enrolledStudents: [
-        {
-          name: 'John Smith',
-          email: 'test@gmail.com',
-          department: '工工系二年級',
-          studentId: '123456789'
-        }
-      ]
+      enrolledClassmates: [],
+      enrollingSearchText: ''
     }
   },
   computed: {
@@ -390,7 +382,26 @@ export default {
       'isCurrentSemester',
       'isCourseSelected',
       'toReadableProfessor'
-    ])
+    ]),
+    enrolledClassmatesSearchResult() {
+      if (!this.enrollingSearchText) {
+        return this.enrolledClassmates
+      }
+      let list = []
+      for (let classmate of this.enrolledClassmates) {
+        if (
+          (classmate.name &&
+            classmate.name.includes(this.enrollingSearchText)) ||
+          (classmate.department &&
+            classmate.department.includes(this.enrollingSearchText)) ||
+          (classmate.studentId &&
+            classmate.studentId.includes(this.enrollingSearchText))
+        ) {
+          list.push(classmate)
+        }
+      }
+      return list
+    }
   },
   watch: {
     courseNumber(newVal) {
@@ -415,6 +426,15 @@ export default {
             this.updateCourse()
           })
       }
+
+      this.$store
+        .dispatch('selectCourses/getClassmates', { courseNumber: newVal })
+        .then(classmates => {
+          this.enrolledClassmates = classmates
+        })
+        .catch(() => {
+          this.enrolledClassmates = []
+        })
     }
   },
   methods: {
@@ -508,6 +528,7 @@ export default {
     -webkit-overflow-scrolling: touch;
     padding-bottom: 64px;
     user-select: text;
+    transform: translateZ(0);
   }
   user-select: text;
 
