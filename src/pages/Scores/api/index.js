@@ -15,3 +15,11 @@ export function getDistribution(sessionToken, courseNumber) {
   }
   return legalRequest('api/scores/getDistribution', data)
 }
+
+export function getClassmates(sessionToken, courseNumber) {
+  let data = {
+    sessionToken: sessionToken,
+    courseNumber: courseNumber
+  }
+  return legalRequest('api/scores/getClassmates', data)
+}

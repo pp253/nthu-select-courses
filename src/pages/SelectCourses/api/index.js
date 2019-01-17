@@ -49,11 +49,20 @@ export function getAvailableSelectionResult(sessionToken) {
   return legalRequest('api/select_course/getAvailableSelectionResult', data)
 }
 
-export function getSelectionResult(sessionToken, semester, phase) {
+export function getSelectionResult(sessionToken, studentId, semester, phase) {
   let data = {
     sessionToken: sessionToken,
+    studentId: studentId,
     semester: semester,
     phase: phase
   }
   return legalRequest('api/select_course/getSelectionResult', data)
+}
+
+export function getClassmates(sessionToken, courseNumber) {
+  let data = {
+    sessionToken: sessionToken,
+    courseNumber: courseNumber
+  }
+  return legalRequest('api/scores/getClassmates', data)
 }
