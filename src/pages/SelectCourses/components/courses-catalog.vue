@@ -493,6 +493,7 @@ export default {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 64px;
+    transform: translateZ(0);
   }
 }
 </style>
