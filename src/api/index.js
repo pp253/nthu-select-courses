@@ -100,29 +100,34 @@ export function legalRequest(apiPath, data) {
       .post(SERVER_BASE + apiPath, data)
       .then(res => {
         if (res.data.error || res.data.warning) {
-          let err = res.data
-          if (err.id) {
-            store.commit('ui/OPEN_DIALOG', {
-              title:
-                (err.id in ERR_MSG && ERR_MSG[err.id].title) ||
-                err.msg ||
-                '對不起，系統發生錯誤了！',
-              text:
-                err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
-                  ? ERR_MSG[err.id].text + '<br>'
-                  : '',
-              more:
-                (err.more ? '<br>' + htmlEncode(err.more) : '') +
-                '如果你覺得這不應該發生，請試著向清大簡易選課反映。'
-            })
-          } else if (err.name) {
-            store.commit('ui/OPEN_DIALOG', {
-              title: err.name || err.title || err.msg,
-              text: err.message || err.more || err.msg,
-              more:
-                (err.more ? '<br>' + htmlEncode(err.more) : '') +
-                '如果你覺得這不應該發生，請試著向清大簡易選課反映。'
-            })
+          /**
+           * Avoiding warning to show in dialog.
+           */
+          if (res.data.warning !== 1) {
+            let err = res.data
+            if (err.id) {
+              store.commit('ui/OPEN_DIALOG', {
+                title:
+                  (err.id in ERR_MSG && ERR_MSG[err.id].title) ||
+                  err.msg ||
+                  '對不起，系統發生錯誤了！',
+                text:
+                  err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
+                    ? ERR_MSG[err.id].text + '<br>'
+                    : '',
+                more:
+                  (err.more ? '<br>' + htmlEncode(err.more) : '') +
+                  '如果你覺得這不應該發生，請試著向清大簡易選課反映。'
+              })
+            } else if (err.name) {
+              store.commit('ui/OPEN_DIALOG', {
+                title: err.name || err.title || err.msg,
+                text: err.message || err.more || err.msg,
+                more:
+                  (err.more ? '<br>' + htmlEncode(err.more) : '') +
+                  '如果你覺得這不應該發生，請試著向清大簡易選課反映。'
+              })
+            }
           }
           reject(res.data)
           return
