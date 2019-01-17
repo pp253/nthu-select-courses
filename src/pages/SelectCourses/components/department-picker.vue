@@ -20,8 +20,7 @@
             <v-tab ripple>
               學分學程
             </v-tab>
-            <v-tab ripple
-                   disabled>
+            <v-tab ripple>
               雙專長
             </v-tab>
           </v-tabs>
@@ -130,7 +129,8 @@
         </v-window>
 
         <v-list v-if="activeTab !== 0"
-                class="h-100 overflow-auto">
+                class="h-100 overflow-auto"
+                style="transform: translateZ(0);">
           <v-subheader v-if="!searchText && popularList && popularList.length > 0">常用</v-subheader>
           <template v-if="!searchText">
             <template v-for="item in popularList">
