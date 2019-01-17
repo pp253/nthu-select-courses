@@ -96,6 +96,28 @@ export default {
       selectedSemesterPhase: 'current'
     }
   },
+  watch: {
+    editable(newVal) {
+      if (newVal === true || !this.readableAvailableSelectionResult) {
+        return
+      }
+      let latest = 'current'
+      for (
+        let i = this.readableAvailableSelectionResult.length - 1;
+        i >= 0;
+        i--
+      ) {
+        if (this.readableAvailableSelectionResult[i].divider === true) {
+          continue
+        }
+        latest = this.readableAvailableSelectionResult[i].value
+        break
+      }
+
+      this.selectedSemesterPhase = latest
+      this.openSelectionResult(this.selectedSemesterPhase)
+    }
+  },
   computed: {
     ...mapState('selectCourses', [
       'selectionPhase',
@@ -105,7 +127,8 @@ export default {
       'availableSelectionResult',
       'semester',
       'phase',
-      'style'
+      'style',
+      'editable'
     ]),
     readableAvailableSelectionResult() {
       let list = []
@@ -146,6 +169,13 @@ export default {
           text: '目前選課狀況',
           value: `current`
         })
+      }
+
+      /**
+       * Avoid redundant divider.
+       */
+      if (list[list.length - 1].divider === true) {
+        list.pop()
       }
 
       list.reverse()
@@ -203,6 +233,7 @@ export default {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 64px;
+    transform: translateZ(0);
   }
 }
 </style>

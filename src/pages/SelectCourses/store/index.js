@@ -508,7 +508,15 @@ export default {
                 root: true
               }
             )
-            reject(err)
+            if (err.id === 48) {
+              context.commit('SET_SELECTION_PHASE', { selectionPhase: false })
+              context.commit('SET_EDITABLE', {
+                editable: false
+              })
+              resolve()
+            } else {
+              reject(err)
+            }
           })
       })
     },
@@ -621,6 +629,7 @@ export default {
         api
           .getSelectionResult(
             context.rootState.user.sessionToken,
+            context.rootState.user.username,
             options.semester,
             options.phase
           )
