@@ -285,7 +285,7 @@
                     <v-card>
                       <v-card-text class="grey lighten-3">
                         不是。這個是由
-                        <a @click="$router.push('/about')">在校學生</a>自發架設的簡易選課系統，旨在提供更提供清爽、直覺和方便的選課系統。目前簡易選課系統正在與本校校務資訊組研討合併至官方選課系統的可能性。
+                        <a @click="$router.push('/about')">在校學生</a>自發架設的簡易選課系統，旨在提供更提供清爽、直覺和方便的選課系統。目前簡易選課正在與本校校務資訊組研討合併至官方選課系統的可能性。
                       </v-card-text>
                     </v-card>
                   </v-expansion-panel-content>
