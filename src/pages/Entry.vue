@@ -97,7 +97,7 @@
                     <v-window-item :value="true">
                       <v-card-text>
                         <p>你可以先從校務資訊系統登入後，將網址列中的 <code>ACIXSTORE=XXX</code> 中的 <code>XXX</code> 貼過來登入</p>
-                        <v-text-field name="input-username"
+                        <v-text-field name="input-ACIXSTORE-username"
                                       :label="$t('login.username')"
                                       value=""
                                       autocomplete="on"
