@@ -97,6 +97,12 @@
                     <v-window-item :value="true">
                       <v-card-text>
                         <p>你可以先從校務資訊系統登入後，將網址列中的 <code>ACIXSTORE=XXX</code> 中的 <code>XXX</code> 貼過來登入</p>
+                        <v-text-field name="input-username"
+                                      :label="$t('login.username')"
+                                      value=""
+                                      autocomplete="on"
+                                      v-model="username"
+                                      required></v-text-field>
                         <v-text-field name="input-ACIXSTORE"
                                       :label="$t('login.ACIXSTORE')"
                                       value=""
@@ -116,7 +122,7 @@
                            flat>{{ $t(usingACIXSTORE ? 'login.usingPassword' : 'login.usingACIXSTORE') }}</v-btn>
                     <v-spacer />
                     <v-btn @click="submit"
-                           :disabled="(!usingACIXSTORE && (!username || !userpass || !authCheckCode)) || (usingACIXSTORE && !(ACIXSTORE.length === 26))"
+                           :disabled="(!usingACIXSTORE && (!username || !userpass || !authCheckCode)) || (usingACIXSTORE && (!(ACIXSTORE.length === 26) || !username))"
                            color="primary">{{ $t('login.login') }}</v-btn>
                   </v-card-actions>
                 </v-card>
@@ -411,7 +417,7 @@ export default {
       if (this.usingACIXSTORE) {
         this.$store.commit('user/SET_USER', {
           isLogin: true,
-          username: 'UNKNOWN',
+          username: this.username,
           sessionToken: this.ACIXSTORE
         })
         this.$router.push('/service')
