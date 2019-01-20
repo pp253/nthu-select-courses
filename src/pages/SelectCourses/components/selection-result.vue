@@ -102,11 +102,7 @@ export default {
         return
       }
       let latest = 'current'
-      for (
-        let i = this.readableAvailableSelectionResult.length - 1;
-        i >= 0;
-        i--
-      ) {
+      for (let i = 0; i < this.readableAvailableSelectionResult.length; i++) {
         if (this.readableAvailableSelectionResult[i].divider === true) {
           continue
         }
