@@ -42,16 +42,6 @@
                 class="h-100">
         <v-flex class="main">
           <v-layout class="fill-height">
-            <v-flex :class="'column ' + layoutSize.selectedCourses"
-                    :hidden="!selectionResult">
-              <selection-result :courses="courses"
-                                :list="list"
-                                :title="$t('SelectCourses.selectionResult.title')"
-                                @update-preview-time="updatePreviewTime"
-                                @open-course-detail="openCourseDetail"
-                                @refresh="refresh(true)" />
-            </v-flex>
-
             <v-flex :class="'column ' + layoutSize.coursesList"
                     :hidden="!coursesCatalog">
               <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
@@ -60,6 +50,16 @@
                                :search="searchText"
                                ref="coursesCatalog"
                                :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
+            </v-flex>
+
+            <v-flex :class="'column ' + layoutSize.selectedCourses"
+                    :hidden="!selectionResult">
+              <selection-result :courses="courses"
+                                :list="list"
+                                :title="$t('SelectCourses.selectionResult.title')"
+                                @update-preview-time="updatePreviewTime"
+                                @open-course-detail="openCourseDetail"
+                                @refresh="refresh(true)" />
             </v-flex>
 
             <v-flex :class="'column ' + layoutSize.timeTable"
