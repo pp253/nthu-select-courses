@@ -96,24 +96,6 @@ export default {
       selectedSemesterPhase: 'current'
     }
   },
-  watch: {
-    editable(newVal) {
-      if (newVal === true || !this.readableAvailableSelectionResult) {
-        return
-      }
-      let latest = 'current'
-      for (let i = 0; i < this.readableAvailableSelectionResult.length; i++) {
-        if (this.readableAvailableSelectionResult[i].divider === true) {
-          continue
-        }
-        latest = this.readableAvailableSelectionResult[i].value
-        break
-      }
-
-      this.selectedSemesterPhase = latest
-      this.openSelectionResult(this.selectedSemesterPhase)
-    }
-  },
   computed: {
     ...mapState('selectCourses', [
       'selectionPhase',
@@ -178,7 +160,32 @@ export default {
       return list
     }
   },
+  watch: {
+    editable() {
+      this.setSelectionResult()
+    },
+    readableAvailableSelectionResult() {
+      this.setSelectionResult()
+    }
+  },
   methods: {
+    setSelectionResult() {
+      if (this.editable === true || !this.readableAvailableSelectionResult) {
+        return
+      }
+      let latest = 'current'
+      for (let i = 0; i < this.readableAvailableSelectionResult.length; i++) {
+        let item = this.readableAvailableSelectionResult[i]
+        if (item.divider === true || item.value === undefined) {
+          continue
+        }
+        latest = item.value
+        break
+      }
+
+      this.selectedSemesterPhase = latest
+      this.openSelectionResult(this.selectedSemesterPhase)
+    },
     toReadableSemester(semester) {
       if (!semester) {
         return ''
