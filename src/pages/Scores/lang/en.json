@@ -1,0 +1,15 @@
+{
+  "Scores": {
+    "name": "Simple Score",
+    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！",
+    "selecting": "Select semester",
+    "grade": "Grade",
+    "title": "{0} Grade",
+    "emptyText": "Not provided yet",
+    "distribution": "Distribution",
+    "requestSharingDistributionTitle": "請問你願意匿名提供成績分布給 NTHU+ 嗎？",
+    "requestSharingDistributionText": "這並不會記錄你的隱私資料，像是你的名字、密碼，以及成績。",
+    "passRate": "Pass Rate",
+    "totalStudents": "Students"
+  }
+}

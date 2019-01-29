@@ -1,0 +1,102 @@
+{
+  "SelectCourses": {
+    "name": "簡易選課系統",
+    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！",
+    "action": {
+      "addCourse": "加入課程",
+      "quitCourse": "退選",
+      "addLimitedCourse": "加簽",
+      "printLimitedCourseForm": "列印加簽單",
+      "addFavorite": "加入最愛",
+      "removeFavorite": "移除最愛",
+      "addSuccess": "您已成功加選「{0}」。",
+      "quitSuccess": "您已成功退選「{0}」",
+      "editOrderSuccess": "您已成功編輯志願序"
+    },
+    "selectionResult": {
+      "title": "選課結果",
+      "shortTitle": "選課結果",
+      "waitingForRandom": "待亂數",
+      "status": "已選上",
+      "randomFailed": "未選上"
+    },
+    "departmentPicker": {
+      "title": "選擇科系"
+    },
+    "favoriteCoursesList": {
+      "title": "最愛課程"
+    },
+    "coursesCatalog": {
+      "title": "課程清單",
+      "shortTitle": "課程清單",
+      "pleaseSelect": "請從上方按鈕選擇你要查看的課程，或是搜尋關鍵字"
+    },
+    "coursesList": {
+      "emptyText": "您還沒有加入的課程歐！",
+      "syllabus": "課程大綱",
+      "detail": "詳細資訊",
+      "editOrder": "編輯志願序",
+      "order": "志願{0}",
+      "courseSub": "{0}　{1}",
+      "courseDetail": "學分{0}　人限{1} ({2})　{3}",
+      "waitingForRandomTitle": "待亂數",
+      "waitingForRandomGEPETitle": "通識、體育志願（待亂數）",
+      "waitingForRandomCLTTitle": "大學中文志願（待亂數）",
+      "addedCoursesTitle": "已選上",
+      "failedCoursesTitle": "未選上",
+      "pages": "有{0}個課程。第{1}頁，共{2}頁。"
+    },
+    "timeTable": {
+      "title": "課表",
+      "shortTitle": "課表",
+      "weekday": {
+        "m": "一",
+        "t": "二",
+        "w": "三",
+        "r": "四",
+        "f": "五",
+        "s": "六"
+      }
+    },
+    "phase": {
+      "100": "第1次選課紀錄",
+      "100P": "第1次選課結果",
+      "101": "第2次選課紀錄",
+      "101P": "第2次選課結果",
+      "500": "新生選課紀錄",
+      "500P": "新生選課結果",
+      "200": "第3次選課紀錄",
+      "200P": "第3次選課結果",
+      "200S": "開學前選課結果",
+      "300": "加退選紀錄",
+      "300P": "加退選結果",
+      "400": "二退紀錄",
+      "400P": "二退結果"
+    },
+    "periodPicker": {
+      "title": "查詢時段"
+    },
+    "geDegreeShort": {
+      "GEHumanities": "通人",
+      "GESocialSciences": "通社",
+      "GENaturalSciences": "通自",
+      "GEC1": "核1",
+      "GEC2": "核2",
+      "GEC3": "核3",
+      "GEC4": "核4",
+      "GEC5": "核5",
+      "GEC6": "核6"
+    },
+    "geDegree": {
+      "GEHumanities": "人文學領域",
+      "GESocialSciences": "社會科學領域",
+      "GENaturalSciences": "自然科學領域",
+      "GEC1": "核心通識1",
+      "GEC2": "核心通識2",
+      "GEC3": "核心通識3",
+      "GEC4": "核心通識4",
+      "GEC5": "核心通識5",
+      "GEC6": "核心通識6"
+    }
+  }
+}

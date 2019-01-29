@@ -1,0 +1,88 @@
+{
+  "dialog": {
+    "OK": "好的",
+    "Apply": "確定",
+    "Cancel": "取消",
+    "Retry": "重試",
+    "Clear": "清除",
+    "Close": "關閉",
+    "Yes": "好的",
+    "No": "不了，謝謝"
+  },
+  "common": {
+    "nowLoading": "載入中...",
+    "search": "搜尋：{0}",
+    "people": "{0} 人"
+  },
+  "login": {
+    "username": "帳號",
+    "userpass": "密碼",
+    "auth_img": "驗證碼",
+    "login": "登入",
+    "directLogin": "您還保持登入，直接進入",
+    "logout": "登出",
+    "authCodeFormatError": "驗證碼應該有六位數字！",
+    "ACIXSTORE": "ACIXSTORE 碼",
+    "usingACIXSTORE": "使用ACIXSTORE登入",
+    "usingPassword": "使用帳密登入",
+    "ACIXSTOREFormatError": "ACIXSTORE應該有26位字母與數字！"
+  },
+  "entry": {
+    "UserInfoNotCorrectTitle": "帳號名稱或密碼錯誤",
+    "UserInfoNotCorrectText": "帳號名稱或密碼輸入錯誤，請再試一遍！",
+    "AuthCheckCodeNotCorrectTitle": "驗證碼錯誤",
+    "AuthCheckCodeNotCorrectText": "驗證碼輸入錯誤，請再試一遍！",
+    "NTHUServerErrorTitle": "選課系統錯誤",
+    "NTHUServerErrorText": "選課系統錯誤，請再試一遍！"
+  },
+  "Service": {
+    "title": "你好，請選擇以下服務",
+    "into": "進入{0}",
+    "selectLanguege": "選擇語言"
+  },
+  "CommentsAboutCourses": {
+    "name": "簡易教學評鑑調查",
+    "description": "尚未開放。"
+  },
+  "AdvisorPassword": {
+    "name": "輸入教師密碼",
+    "description": "這雖然沒有特別簡易，但至少讓你不用為了輸入密碼而重新登入至原校務資訊系統。"
+  },
+  "SelectCourses": {
+    "name": "簡易選課系統",
+    "description": "重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+  },
+  "Scores": {
+    "name": "簡易成績查詢",
+    "description": "簡易成績查詢讓你用更好的介面，看到更好的成績！"
+  },
+  "semester": {
+    "10": "上學期",
+    "20": "下學期",
+    "30": "暑期"
+  },
+  "courseDetail": {
+    "title": "課程資訊",
+    "number": "科號",
+    "time": "時間",
+    "professor": "授課教師",
+    "credit": "學分",
+    "size_limit": "人限",
+    "room": "地點",
+    "prerequirement": "擋修",
+    "memo": "備註",
+    "close": "關閉課程資訊",
+    "classmates": "同班同學",
+    "syllabus": "課程大綱",
+    "downloadSyllabus": "下載課程大綱",
+    "course_rule": "課程限制",
+    "ge_degree": "通識類別",
+    "ge_object": "通識對象",
+    "language": "授課語言",
+    "required": "必選修",
+    "program": "學分學程",
+    "reserved": "新生保留",
+    "double": "第一二專長",
+    "add": "不可加簽說明"
+  }
+}

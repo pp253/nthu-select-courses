@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <link rel="icon" href="<%= BASE_URL %>favicon.png" />
+    <title>清大簡易選課</title>
+    <meta name="theme-color" content="#64B4F6" />
+
+    <meta
+      property="description"
+      content="重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+    />
+    <meta
+      name="Description"
+      content="重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+    />
+    <meta
+      property="keywords"
+      content="清大,清華大學,選課,校務資訊系統,簡易選課"
+    />
+    <meta name="keywords" content="清大,清華大學,選課,校務資訊系統,簡易選課" />
+    <meta
+      property="og:description"
+      content="重新設計的選課系統，目標是提供清爽、直覺和方便的選課系統！"
+    />
+    <meta property="og:title" content="清大簡易選課" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nthu-courses.github.io" />
+    <meta
+      property="og:image"
+      content="<%= BASE_URL %>shared-link-thumbnail.png"
+    />
+    <meta property="og:site_name" content="清大簡易選課" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-120580369-2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'UA-120580369-2', {
+        page_path: location.pathname + location.hash
+      })
+    </script>
+
+    <script
+      src="https://browser.sentry-cdn.com/4.4.2/bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      Sentry.init({
+        dsn: 'https://2de2fb40b0944a33a754a7068899ab19@sentry.io/1364952'
+      })
+    </script>
+  </head>
+  <body>
+    <noscript
+      >JavaScript功能尚未開啟，如果您想繼續使用，
+      <a
+        href="https://support.norton.com/sp/zh/tw/home/current/solutions/v57840248_NortonM_Retail_1_zh_tw"
+        >請開啟他</a
+      >。或是您的瀏覽器太過老舊，請前往
+      <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">原校務資訊系統</a>。
+      <br />
+      We're sorry but asd doesn't work properly without JavaScript enabled.
+      Please
+      <a
+        href="https://support.norton.com/sp/zh/tw/home/current/solutions/v57840248_NortonM_Retail_1_zh_tw"
+        >enable it</a
+      >
+      to continue. or upgrade your web browser, otherwise, go to
+      <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">CCXP</a> instead.
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <!-- Hotjar Tracking Code for https://nthu-courses.github.io/ -->
+    <script>
+      ;(function(h, o, t, j, a, r) {
+        h.hj =
+          h.hj ||
+          function() {
+            ;(h.hj.q = h.hj.q || []).push(arguments)
+          }
+        h._hjSettings = { hjid: 1143873, hjsv: 6 }
+        a = o.getElementsByTagName('head')[0]
+        r = o.createElement('script')
+        r.async = 1
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv
+        a.appendChild(r)
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')
+    </script>
+  </body>
+</html>

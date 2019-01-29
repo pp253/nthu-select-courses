@@ -1,10 +1,16 @@
 .DS_Store
-node_modules/
-/dist/
+node_modules
+/dist
+courses_db.json
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/test/unit/coverage/
 
 # Editor directories and files
 .idea
@@ -13,3 +19,6 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+*.sw*
+src/pages/SelectCourses/store/courses_db.json
+src/pages/SelectCourses/store/courses_db.min.json

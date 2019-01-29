@@ -1,0 +1,78 @@
+{
+  "dialog": {
+    "OK": "OK",
+    "Apply": "Apply",
+    "Cancel": "Cancel",
+    "Retry": "Retry",
+    "Clear": "Clear",
+    "Close": "Close",
+    "Yes": "Yes",
+    "No": "No, Thanks"
+  },
+  "common": {
+    "nowLoading": "Now Loading...",
+    "search": "Search: {0}",
+    "people": "{0} students"
+  },
+  "login": {
+    "username": "User Name",
+    "userpass": "Password",
+    "auth_img": "CAPTCHA",
+    "login": "Login",
+    "directLogin": "You're still logged in",
+    "logout": "Logout",
+    "authCodeFormatError": "CAPTCHA should have 6 digits!",
+    "ACIXSTORE": "ACIXSTORE Code",
+    "usingACIXSTORE": "Using ACIXSTORE",
+    "usingPassword": "Using Password",
+    "ACIXSTOREFormatError": "ACIXSTORE should have 26 digits!"
+  },
+  "entry": {
+    "UserInfoNotCorrectTitle": "Wrong user name or password!",
+    "UserInfoNotCorrectText": "Please try again.",
+    "AuthCheckCodeNotCorrectTitle": "CAPACHA is incorrect!",
+    "AuthCheckCodeNotCorrectText": "Please try again.",
+    "NTHUServerErrorTitle": "NTHU Server Error",
+    "NTHUServerErrorText": "NTHU server error, please try again!"
+  },
+  "Service": {
+    "title": "Hello! How can I help you?",
+    "into": "GOTO {0}",
+    "selectLanguege": "Select Languege"
+  },
+  "CommentsAboutCourses": {
+    "name": "Comments About the Courses",
+    "description": "WIP"
+  },
+  "AdvisorPassword": {
+    "name": "Enter Advisor's Password",
+    "description": "WIP"
+  },
+  "SelectCourses": {
+    "name": "Simple Selecting Courses",
+    "description": "Simplie, easy, and intuitive."
+  },
+  "Scores": {
+    "name": "Simple Score",
+    "description": "Simplie, easy, and intuitive."
+  },
+  "semester": {
+    "10": "First Semester",
+    "20": "Second Semester",
+    "30": "Summer Semester"
+  },
+  "courseDetail": {
+    "title": "Title",
+    "number": "Number",
+    "time": "Time",
+    "professor": "Teacher",
+    "credit": "Credit",
+    "size_limit": "Size Limit",
+    "room": "Room",
+    "prerequirement": "Prerequirement",
+    "memo": "Memo",
+    "close": "Close",
+    "classmates": "Classmates",
+    "downloadSyllabus": "Download Syllabus"
+  }
+}
