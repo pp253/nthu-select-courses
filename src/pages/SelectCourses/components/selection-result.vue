@@ -1,10 +1,5 @@
 <template>
-  <v-container
-    fluid
-    pa-0
-    ma-0
-    class="selection-result"
-  >
+  <v-container fluid pa-0 ma-0 class="selection-result">
     <v-toolbar
       dense
       :dark="style.selectionResult.toolbar.dark"
@@ -17,12 +12,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
-        <v-btn
-          slot="activator"
-          icon
-          flat
-          @click="$emit('refresh')"
-        >
+        <v-btn slot="activator" icon flat @click="$emit('refresh')">
           <v-icon>refresh</v-icon>
         </v-btn>
         <span>重新整理</span>
@@ -43,10 +33,7 @@
         single-line
         menu-props="bottom"
       >
-        <template
-          slot="item"
-          slot-scope="data"
-        >
+        <template slot="item" slot-scope="data">
           <template v-if="data.item.type === 'divider'">
             <v-divider />
           </template>
@@ -59,12 +46,7 @@
       </v-select>
     </v-toolbar>
 
-    <v-container
-      fluid
-      pa-0
-      ma-0
-      class="list-wrapper"
-    >
+    <v-container fluid pa-0 ma-0 class="list-wrapper">
       <loading-container
         v-if="
           $wait.is([

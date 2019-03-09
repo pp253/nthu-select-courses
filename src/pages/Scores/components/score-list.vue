@@ -48,9 +48,17 @@
               GPA：{{ overview[semester].gpa }}
             </v-list-tile-title>
             <!-- eslint-disable-next-line -->
-            <v-list-tile-sub-title>班排名：{{overview[semester].classRanking}}　系排名：{{overview[semester].departmentRanking}}</v-list-tile-sub-title>
+            <v-list-tile-sub-title
+              >班排名：{{ overview[semester].classRanking }} 系排名：{{
+                overview[semester].departmentRanking
+              }}</v-list-tile-sub-title
+            >
             <!-- eslint-disable-next-line -->
-            <v-list-tile-sub-title>應得學分：{{overview[semester].credit}}　實得學分：{{overview[semester].deservedCredit}}</v-list-tile-sub-title>
+            <v-list-tile-sub-title
+              >應得學分：{{ overview[semester].credit }} 實得學分：{{
+                overview[semester].deservedCredit
+              }}</v-list-tile-sub-title
+            >
           </v-list-tile-content>
         </v-list-tile>
         <v-divider v-if="overview && overview[semester] && !searchText" />
