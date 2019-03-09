@@ -629,7 +629,7 @@ export default {
         api
           .getSelectionResult(
             context.rootState.user.sessionToken,
-            context.rootState.user.username,
+            context.rootState.user.ID,
             options.semester,
             options.phase
           )

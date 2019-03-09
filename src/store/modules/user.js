@@ -1,14 +1,44 @@
 import * as api from '@/api'
 import error from '@/lib/error'
 
+const TEMP_ID = '105034009'
+const TEMP_SESSION_TOKEN = '9uhi0os1gu4upovajf82hbt9j4'
+
 export default {
   namespaced: true,
   state: {
-    isLogin: false,
+    isLogin: TEMP_SESSION_TOKEN !== '' ? true : false,
     loginToken: '',
     authImg: '',
-    username: '',
-    sessionToken: ''
+    ID: TEMP_ID || '',
+    sessionToken: TEMP_SESSION_TOKEN || '',
+
+    OID: '',
+    NAME: { C: '', E: '', X: '' },
+    SEX: '',
+    PRE_SCH: '',
+    PRE_DEPT: '',
+    PRE_STATUS: '',
+    DIV: '',
+    DEPT: '',
+    E_YEAR: '',
+    CATEGORY: '',
+    CLASS: '',
+    GROUP: '',
+    GRADE: '',
+    SEC_DEPT: '',
+    MINR: '',
+    ENG_LEVEL: '',
+    STATUS: '',
+    EXG: {
+      START: '',
+      ENG: ''
+    },
+    CAMPUS: '',
+    TE: '',
+    CURR_SCHE: '',
+    MAJOR: '',
+    IDL_SEL: ''
   },
   mutations: {
     SET_LOGIN_TOKEN(state, options) {
@@ -24,18 +54,18 @@ export default {
       state.isLogin = false
       state.loginToken = ''
       state.authImg = ''
-      state.username = ''
+      state.ID = ''
       state.sessionToken = ''
     },
-    SET_USERNAME(state, options) {
-      state.username = options.username
+    SET_ID(state, options) {
+      state.ID = options.ID
     },
     SET_SESSION_TOKEN(state, options) {
       state.sessionToken = options.sessionToken
     },
     SET_USER(state, options) {
       state.isLogin = options.isLogin !== undefined ? options.isLogin : true
-      state.username = options.username !== undefined ? options.username : true
+      state.ID = options.ID !== undefined ? options.ID : true
       state.sessionToken =
         options.sessionToken !== undefined ? options.sessionToken : true
     }
@@ -60,8 +90,8 @@ export default {
       })
     },
     /**
-     * Pass the username and user password to server and get the session token.
-     * @param {Object} loginInfo Login Info should include `username`,
+     * Pass the ID and user password to server and get the session token.
+     * @param {Object} loginInfo Login Info should include `ID`,
      * `userpass`, `authCheckCode`.
      * @return {Promise}
      */
@@ -78,7 +108,7 @@ export default {
 
         api
           .getSessionToken({
-            username: loginInfo.username,
+            ID: loginInfo.ID,
             userpass: loginInfo.userpass,
             authCheckCode: loginInfo.authCheckCode,
             loginToken: context.state.loginToken
@@ -86,7 +116,7 @@ export default {
           .then(data => {
             context.commit('SET_USER', {
               isLogin: true,
-              username: data.username,
+              ID: data.ID,
               sessionToken: data.sessionToken
             })
 

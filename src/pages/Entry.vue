@@ -60,11 +60,11 @@
                     <v-window-item :value="false">
                       <v-card-text>
                         <v-text-field
-                          name="input-username"
-                          :label="$t('login.username')"
+                          name="input-ID"
+                          :label="$t('login.ID')"
                           value=""
                           autocomplete="on"
-                          v-model="username"
+                          v-model="ID"
                           required
                         ></v-text-field>
                         <v-text-field
@@ -104,7 +104,7 @@
                               @keyup.native="
                                 e => {
                                   e.key === 'Enter' &&
-                                    (username && userpass && authCheckCode) &&
+                                    (ID && userpass && authCheckCode) &&
                                     submit()
                                 }
                               "
@@ -121,11 +121,11 @@
                           <code>XXX</code> 貼過來登入
                         </p>
                         <v-text-field
-                          name="input-ACIXSTORE-username"
-                          :label="$t('login.username')"
+                          name="input-ACIXSTORE-ID"
+                          :label="$t('login.ID')"
                           value=""
                           autocomplete="on"
-                          v-model="username"
+                          v-model="ID"
                           required
                         ></v-text-field>
                         <v-text-field
@@ -163,9 +163,9 @@
                       @click="submit"
                       :disabled="
                         (!usingACIXSTORE &&
-                          (!username || !userpass || !authCheckCode)) ||
+                          (!ID || !userpass || !authCheckCode)) ||
                           (usingACIXSTORE &&
-                            (!(ACIXSTORE.length === 26) || !username))
+                            (!(ACIXSTORE.length === 26) || !ID))
                       "
                       color="primary"
                       >{{ $t('login.login') }}</v-btn
@@ -468,7 +468,7 @@ export default {
   },
   data() {
     return {
-      username: '',
+      ID: '',
       userpass: '',
       authCheckCode: '',
       usingACIXSTORE: false,
@@ -481,13 +481,13 @@ export default {
       if (this.usingACIXSTORE) {
         this.$store.commit('user/SET_USER', {
           isLogin: true,
-          username: this.username,
+          ID: this.ID,
           sessionToken: this.ACIXSTORE
         })
         this.$router.push('/service')
       } else {
         let loginInfo = {
-          username: this.username,
+          ID: this.ID,
           userpass: this.userpass,
           authCheckCode: this.authCheckCode
         }
