@@ -1,20 +1,10 @@
 <template>
-  <v-container mt-5
-               fluid
-               class="advisor-password">
+  <v-container mt-5 fluid class="advisor-password">
     <v-layout>
-      <v-flex xs12
-              sm6
-              offset-sm3
-              md4
-              offset-md4
-              xl2
-              offset-xl5>
+      <v-flex xs12 sm6 offset-sm3 md4 offset-md4 xl2 offset-xl5>
         <v-card>
           <v-card-title>
-            <v-btn @click="$router.push('/service')"
-                   icon
-                   flat>
+            <v-btn @click="$router.push('/service')" icon flat>
               <v-icon>arrow_back</v-icon>
             </v-btn>
             <span class="headline">輸入導師密碼</span>
@@ -25,8 +15,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn flat
-                   v-text="$t('dialog.OK')"></v-btn>
+            <v-btn flat v-text="$t('dialog.OK')"></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -66,5 +55,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

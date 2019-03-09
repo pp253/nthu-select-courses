@@ -1,31 +1,32 @@
 <template>
-  <v-container fluid
-               pa-0
-               class="select-courses h-100">
-    <v-navigation-drawer light
-                         :mini-variant="true"
-                         :mini-variant-width="80"
-                         :value="!$store.state.ui.isMobile"
-                         app
-                         stateless
-                         touchless
-                         class="navdrawer">
+  <v-container fluid pa-0 class="select-courses h-100">
+    <v-navigation-drawer
+      light
+      :mini-variant="true"
+      :mini-variant-width="80"
+      :value="!$store.state.ui.isMobile"
+      app
+      stateless
+      touchless
+      class="navdrawer"
+    >
       <v-list pt-0>
-        <v-list-tile @click="$router.push('/service')"
-                     ripple
-                     class="mb-3">
+        <v-list-tile @click="$router.push('/service')" ripple class="mb-3">
           <v-list-tile-action>
             <v-icon>arrow_back</v-icon>
           </v-list-tile-action>
         </v-list-tile>
-        <v-tooltip v-for="item in menu"
-                   :key="item.title"
-                   right>
-          <v-list-tile slot="activator"
-                       @click="pc[item.attr] = !pc[item.attr]"
-                       ripple>
+        <v-tooltip v-for="item in menu" :key="item.title" right>
+          <v-list-tile
+            slot="activator"
+            @click="pc[item.attr] = !pc[item.attr]"
+            ripple
+          >
             <v-list-tile-action>
-              <v-icon :color="pc[item.attr] ? style[item.attr].textColor : ''">{{item.icon}}</v-icon>
+              <v-icon
+                :color="pc[item.attr] ? style[item.attr].textColor : ''"
+                >{{ item.icon }}</v-icon
+              >
             </v-list-tile-action>
 
             <v-list-tile-content>
@@ -38,56 +39,81 @@
     </v-navigation-drawer>
 
     <v-content>
-      <v-layout row
-                class="h-100">
+      <v-layout row class="h-100">
         <v-flex class="main">
           <v-layout class="fill-height">
-            <v-flex :class="'column ' + layoutSize.coursesList"
-                    :hidden="!coursesCatalog">
-              <courses-catalog :title="$t('SelectCourses.coursesCatalog.title')"
-                               @update-preview-time="updatePreviewTime"
-                               @open-course-detail="openCourseDetail"
-                               :search="searchText"
-                               ref="coursesCatalog"
-                               :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'" />
+            <v-flex
+              :class="'column ' + layoutSize.coursesList"
+              :hidden="!coursesCatalog"
+            >
+              <courses-catalog
+                :title="$t('SelectCourses.coursesCatalog.title')"
+                @update-preview-time="updatePreviewTime"
+                @open-course-detail="openCourseDetail"
+                :search="searchText"
+                ref="coursesCatalog"
+                :empty-text="'SelectCourses.coursesCatalog.pleaseSelect'"
+              />
             </v-flex>
 
-            <v-flex :class="'column ' + layoutSize.selectedCourses"
-                    :hidden="!selectionResult">
-              <selection-result :courses="courses"
-                                :list="list"
-                                :title="$t('SelectCourses.selectionResult.title')"
-                                @update-preview-time="updatePreviewTime"
-                                @open-course-detail="openCourseDetail"
-                                @refresh="refresh(true)" />
+            <v-flex
+              :class="'column ' + layoutSize.selectedCourses"
+              :hidden="!selectionResult"
+            >
+              <selection-result
+                :courses="courses"
+                :list="list"
+                :title="$t('SelectCourses.selectionResult.title')"
+                @update-preview-time="updatePreviewTime"
+                @open-course-detail="openCourseDetail"
+                @refresh="refresh(true)"
+              />
             </v-flex>
 
-            <v-flex :class="'column ' + layoutSize.timeTable"
-                    :hidden="!timeTable">
-              <time-table :courses="courses"
-                          :preview-time="previewTime"
-                          :list="list"
-                          @update-preview-time="updatePreviewTime"></time-table>
+            <v-flex
+              :class="'column ' + layoutSize.timeTable"
+              :hidden="!timeTable"
+            >
+              <time-table
+                :courses="courses"
+                :preview-time="previewTime"
+                :list="list"
+                @update-preview-time="updatePreviewTime"
+              ></time-table>
             </v-flex>
 
-            <v-flex :class="'column ' + layoutSize.courseDetail"
-                    :hidden="!showCourseDetail">
-              <course-detail :title="$t('courseDetail.title')"
-                             :course-number="courseDetailNumber"
-                             @close-course-detail="closeCourseDetail"
-                             @search="search"
-                             @goto-panel-courses-catalog="uiMobileClearShowing(); mobile['coursesCatalog'] = true"></course-detail>
+            <v-flex
+              :class="'column ' + layoutSize.courseDetail"
+              :hidden="!showCourseDetail"
+            >
+              <course-detail
+                :title="$t('courseDetail.title')"
+                :course-number="courseDetailNumber"
+                @close-course-detail="closeCourseDetail"
+                @search="search"
+                @goto-panel-courses-catalog="
+                  uiMobileClearShowing()
+                  mobile['coursesCatalog'] = true
+                "
+              ></course-detail>
             </v-flex>
 
-            <v-bottom-nav fixed
-                          :value="$store.state.ui.isMobile"
-                          :hidden="hideDrawer"
-                          :active="bottomDrawerActive"
-                          color="white">
-              <v-btn v-for="item in menu"
-                     :key="item.title + '-btn'"
-                     @click="uiMobileClearShowing(); mobile[item.attr] = true"
-                     flat>
+            <v-bottom-nav
+              fixed
+              :value="$store.state.ui.isMobile"
+              :hidden="hideDrawer"
+              :active="bottomDrawerActive"
+              color="white"
+            >
+              <v-btn
+                v-for="item in menu"
+                :key="item.title + '-btn'"
+                @click="
+                  uiMobileClearShowing()
+                  mobile[item.attr] = true
+                "
+                flat
+              >
                 <span v-text="$t(item.title)"></span>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-btn>
@@ -349,8 +375,8 @@ export default {
         courseNumber in this.courses
           ? this.courses[courseNumber].time
           : courseNumber in this.$store.state.selectCourses.courses
-            ? this.$store.state.selectCourses.courses[courseNumber].time
-            : courseNumber
+          ? this.$store.state.selectCourses.courses[courseNumber].time
+          : courseNumber
     },
     uiMobileClearShowing() {
       this.mobile.coursesCatalog = false

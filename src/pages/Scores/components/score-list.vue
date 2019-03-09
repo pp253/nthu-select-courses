@@ -1,15 +1,13 @@
 <template>
-  <v-container pa-0
-               ma-0
-               fluid
-               class="score-list">
-    <v-toolbar dense
-               extended
-               :dark="style.scoreList.toolbar.dark"
-               :color="style.scoreList.toolbar.color"
-               app>
-      <v-btn @click="$router.push('/service')"
-             icon>
+  <v-container pa-0 ma-0 fluid class="score-list">
+    <v-toolbar
+      dense
+      extended
+      :dark="style.scoreList.toolbar.dark"
+      :color="style.scoreList.toolbar.color"
+      app
+    >
+      <v-btn @click="$router.push('/service')" icon>
         <v-icon>arrow_back</v-icon>
       </v-btn>
       <v-menu :nudge-width="100">
@@ -18,32 +16,36 @@
           <v-icon>arrow_drop_down</v-icon>
         </v-toolbar-title>
         <v-list>
-          <v-list-tile v-for="item in availableSemester"
-                       :key="item.value"
-                       @click="semester = item.value"
-                       ripple>
+          <v-list-tile
+            v-for="item in availableSemester"
+            :key="item.value"
+            @click="semester = item.value"
+            ripple
+          >
             <v-list-tile-title v-text="item.text" />
           </v-list-tile>
         </v-list>
       </v-menu>
 
-      <v-text-field slot="extension"
-                    v-model="searchText"
-                    type="text"
-                    name="input-search"
-                    prepend-icon="search"
-                    clearable></v-text-field>
+      <v-text-field
+        slot="extension"
+        v-model="searchText"
+        type="text"
+        name="input-search"
+        prepend-icon="search"
+        clearable
+      ></v-text-field>
     </v-toolbar>
 
     <v-content>
-      <v-list two-line
-              ripple
-              class="list-wrapper">
-        <v-list-tile v-if="overview && overview[semester] && !searchText"
-                     class="three-line-list-tile">
+      <v-list two-line ripple class="list-wrapper">
+        <v-list-tile
+          v-if="overview && overview[semester] && !searchText"
+          class="three-line-list-tile"
+        >
           <v-list-tile-content>
             <v-list-tile-title>
-              GPA：{{overview[semester].gpa}}
+              GPA：{{ overview[semester].gpa }}
             </v-list-tile-title>
             <!-- eslint-disable-next-line -->
             <v-list-tile-sub-title>班排名：{{overview[semester].classRanking}}　系排名：{{overview[semester].departmentRanking}}</v-list-tile-sub-title>
@@ -55,41 +57,54 @@
 
         <template v-if="scoresList.length > 0">
           <template v-for="(score, index) in scoresList">
-
-            <v-subheader v-if="score.type && score.type === 'subheader'"
-                         :key="score.title">
+            <v-subheader
+              v-if="score.type && score.type === 'subheader'"
+              :key="score.title"
+            >
               {{ score.title }}
             </v-subheader>
-            <v-list-tile v-if="!score.type && score.type !== 'subheader'"
-                         @click="$emit('show-score-detail', score.courseNumber)"
-                         :key="score.number"
-                         ripple>
+            <v-list-tile
+              v-if="!score.type && score.type !== 'subheader'"
+              @click="$emit('show-score-detail', score.courseNumber)"
+              :key="score.number"
+              ripple
+            >
               <v-list-tile-content>
                 <v-list-tile-title>{{ score.courseTitle }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ score.courseNumber + ' 學分' + score.credit }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{
+                  score.courseNumber + ' 學分' + score.credit
+                }}</v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
                 <div class="text-xs-center">
-                  <v-list-tile-action-text>{{ score.grade }}</v-list-tile-action-text>
-                  <v-menu offset-y
-                          left>
-                    <v-btn slot="activator"
-                           icon>
+                  <v-list-tile-action-text>{{
+                    score.grade
+                  }}</v-list-tile-action-text>
+                  <v-menu offset-y left>
+                    <v-btn slot="activator" icon>
                       <v-icon>keyboard_arrow_right</v-icon>
                     </v-btn>
                   </v-menu>
                 </div>
               </v-list-tile-action>
             </v-list-tile>
-            <v-divider v-if="(!score.type && score.type !== 'subheader') && index < scoresList.length - 1"
-                       :key="score.courseNumber + '-divider-' + Math.random()"></v-divider>
+            <v-divider
+              v-if="
+                !score.type &&
+                  score.type !== 'subheader' &&
+                  index < scoresList.length - 1
+              "
+              :key="score.courseNumber + '-divider-' + Math.random()"
+            ></v-divider>
           </template>
         </template>
 
-        <div v-if="scoresList.length === 0"
-             class="text-xs-center pt-5"
-             v-text="$t('scores.emptyText')"></div>
+        <div
+          v-if="scoresList.length === 0"
+          class="text-xs-center pt-5"
+          v-text="$t('scores.emptyText')"
+        ></div>
       </v-list>
     </v-content>
   </v-container>
