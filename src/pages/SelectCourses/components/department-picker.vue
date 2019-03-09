@@ -1,16 +1,15 @@
 <template>
-  <v-dialog v-model="dialog"
-            :fullscreen="$store.state.ui.isMobile"
-            max-width="500px"
-            persistent
-            scrollable>
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="$store.state.ui.isMobile"
+    max-width="500px"
+    persistent
+    scrollable
+  >
     <v-card class="department-picker dialog-full-scrollable">
-      <v-card-title primary-title
-                    class="pt-0">
+      <v-card-title primary-title class="pt-0">
         <div style="width: 100%;">
-          <v-tabs v-model="activeTab"
-                  centered
-                  grow>
+          <v-tabs v-model="activeTab" centered grow>
             <v-tab ripple>
               總錄/必選修
             </v-tab>
@@ -26,55 +25,70 @@
           </v-tabs>
         </div>
         <template>
-          <div v-if="activeTab !== 0 || activeWin === 0"
-               style="display: block; width: 100%;">
-            <v-text-field v-model="searchText"
-                          type="text"
-                          value=""
-                          prepend-icon="search"
-                          clearable
-                          hide-details />
+          <div
+            v-if="activeTab !== 0 || activeWin === 0"
+            style="display: block; width: 100%;"
+          >
+            <v-text-field
+              v-model="searchText"
+              type="text"
+              value=""
+              prepend-icon="search"
+              clearable
+              hide-details
+            />
           </div>
-          <div v-else
-               style="display: block; width: 100%;">
-            <v-btn icon
-                   flat
-                   @click="activeWin = 0"
-                   class="ml-0 mb-0"
-                   style="margin-top: 12px;">
+          <div v-else style="display: block; width: 100%;">
+            <v-btn
+              icon
+              flat
+              @click="activeWin = 0"
+              class="ml-0 mb-0"
+              style="margin-top: 12px;"
+            >
               <v-icon>arrow_back</v-icon>
             </v-btn>
-            <span class="v-toolbar__title ml-0"
-                  style="position: relative; top: 9px;">
-              {{choosedDepartment}}
-              {{getDepartmentDetail(choosedDepartment).chineseName || getDepartmentDetail(choosedDepartment).name}}
+            <span
+              class="v-toolbar__title ml-0"
+              style="position: relative; top: 9px;"
+            >
+              {{ choosedDepartment }}
+              {{
+                getDepartmentDetail(choosedDepartment).chineseName ||
+                  getDepartmentDetail(choosedDepartment).name
+              }}
             </span>
           </div>
         </template>
       </v-card-title>
 
-      <v-card-text class="vh-100 pa-0"
-                   style="transform: translateZ(0);">
-
-        <v-window v-if="activeTab === 0"
-                  v-model="activeWin"
-                  class="h-100">
-          <v-window-item class="h-100"
-                         key="department">
+      <v-card-text class="vh-100 pa-0" style="transform: translateZ(0);">
+        <v-window v-if="activeTab === 0" v-model="activeWin" class="h-100">
+          <v-window-item class="h-100" key="department">
             <v-list class="h-100 overflow-auto">
               <v-subheader v-if="!searchText && popularList">常用</v-subheader>
               <template v-if="!searchText">
                 <template v-for="department in popularList">
-                  <v-list-tile ripple
-                               :key="department.abbr + '-popular'"
-                               @click="choosedDepartment = department.abbr; choosedClass = ''; activeWin = 1">
-                    <v-list-tile-content :class="choosedDepartment === department.abbr ? 'primary--text' : ''">
+                  <v-list-tile
+                    ripple
+                    :key="department.abbr + '-popular'"
+                    @click="
+                      choosedDepartment = department.abbr
+                      choosedClass = ''
+                      activeWin = 1
+                    "
+                  >
+                    <v-list-tile-content
+                      :class="
+                        choosedDepartment === department.abbr
+                          ? 'primary--text'
+                          : ''
+                      "
+                    >
                       <v-container px-0>
                         <v-layout>
-                          <v-flex xs3
-                                  md2>{{ department.abbr }}</v-flex>
-                          <v-flex xs9
-                                  md10>{{ department.chineseName }}</v-flex>
+                          <v-flex xs3 md2>{{ department.abbr }}</v-flex>
+                          <v-flex xs9 md10>{{ department.chineseName }}</v-flex>
                         </v-layout>
                       </v-container>
                     </v-list-tile-content>
@@ -85,16 +99,26 @@
 
               <v-subheader>全部</v-subheader>
               <template v-for="(department, departmentAbbr) in searchList">
-                <v-list-tile ripple
-                             :key="departmentAbbr"
-                             @click="choosedDepartment = departmentAbbr; choosedClass = ''; activeWin = 1">
-                  <v-list-tile-content :class="choosedDepartment === departmentAbbr ? 'primary--text' : ''">
+                <v-list-tile
+                  ripple
+                  :key="departmentAbbr"
+                  @click="
+                    choosedDepartment = departmentAbbr
+                    choosedClass = ''
+                    activeWin = 1
+                  "
+                >
+                  <v-list-tile-content
+                    :class="
+                      choosedDepartment === departmentAbbr
+                        ? 'primary--text'
+                        : ''
+                    "
+                  >
                     <v-container px-0>
                       <v-layout>
-                        <v-flex xs3
-                                md2>{{ department.abbr }}</v-flex>
-                        <v-flex xs9
-                                md10>{{ department.chineseName }}</v-flex>
+                        <v-flex xs3 md2>{{ department.abbr }}</v-flex>
+                        <v-flex xs9 md10>{{ department.chineseName }}</v-flex>
                       </v-layout>
                     </v-container>
                   </v-list-tile-content>
@@ -104,21 +128,28 @@
             </v-list>
           </v-window-item>
 
-          <v-window-item class="h-100"
-                         key="class">
-            <v-list class="h-100 overflow-auto"
-                    v-if="choosedDepartment !== ''">
-              <v-list-tile ripple
-                           :key="choosedDepartment"
-                           @click="choosedClass = ''">
-                <v-list-tile-content :class="choosedClass === '' ? 'primary--text' : ''">總錄</v-list-tile-content>
+          <v-window-item class="h-100" key="class">
+            <v-list class="h-100 overflow-auto" v-if="choosedDepartment !== ''">
+              <v-list-tile
+                ripple
+                :key="choosedDepartment"
+                @click="choosedClass = ''"
+              >
+                <v-list-tile-content
+                  :class="choosedClass === '' ? 'primary--text' : ''"
+                  >總錄</v-list-tile-content
+                >
               </v-list-tile>
               <v-divider />
               <template v-for="cls in departments[choosedDepartment].classes">
-                <v-list-tile ripple
-                             :key="cls.abbr"
-                             @click="choosedClass = cls.abbr">
-                  <v-list-tile-content :class="choosedClass === cls.abbr ? 'primary--text' : ''">
+                <v-list-tile
+                  ripple
+                  :key="cls.abbr"
+                  @click="choosedClass = cls.abbr"
+                >
+                  <v-list-tile-content
+                    :class="choosedClass === cls.abbr ? 'primary--text' : ''"
+                  >
                     {{ cls.name }} {{ cls.abbr }}
                   </v-list-tile-content>
                 </v-list-tile>
@@ -128,16 +159,32 @@
           </v-window-item>
         </v-window>
 
-        <v-list v-if="activeTab !== 0"
-                class="h-100 overflow-auto"
-                style="transform: translateZ(0);">
-          <v-subheader v-if="!searchText && popularList && popularList.length > 0">常用</v-subheader>
+        <v-list
+          v-if="activeTab !== 0"
+          class="h-100 overflow-auto"
+          style="transform: translateZ(0);"
+        >
+          <v-subheader
+            v-if="!searchText && popularList && popularList.length > 0"
+            >常用</v-subheader
+          >
           <template v-if="!searchText">
             <template v-for="item in popularList">
-              <v-list-tile ripple
-                           :key="item + '-popular'"
-                           @click="choosedTab = activeTab; choosedItem = item">
-                <v-list-tile-content :class="choosedTab === activeTab && item === choosedItem ? 'primary--text' : ''">
+              <v-list-tile
+                ripple
+                :key="item + '-popular'"
+                @click="
+                  choosedTab = activeTab
+                  choosedItem = item
+                "
+              >
+                <v-list-tile-content
+                  :class="
+                    choosedTab === activeTab && item === choosedItem
+                      ? 'primary--text'
+                      : ''
+                  "
+                >
                   {{ item }}
                 </v-list-tile-content>
               </v-list-tile>
@@ -146,11 +193,22 @@
           </template>
 
           <v-subheader>全部</v-subheader>
-          <template v-for="(item) in searchList">
-            <v-list-tile ripple
-                         :key="item"
-                         @click="choosedTab = activeTab; choosedItem = item">
-              <v-list-tile-content :class="choosedTab === activeTab && choosedItem === item ? 'primary--text' : ''">
+          <template v-for="item in searchList">
+            <v-list-tile
+              ripple
+              :key="item"
+              @click="
+                choosedTab = activeTab
+                choosedItem = item
+              "
+            >
+              <v-list-tile-content
+                :class="
+                  choosedTab === activeTab && choosedItem === item
+                    ? 'primary--text'
+                    : ''
+                "
+              >
                 {{ item }}
               </v-list-tile-content>
             </v-list-tile>
@@ -160,11 +218,10 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat
-               @click="close()">{{ $t('dialog.Cancel') }}</v-btn>
-        <v-btn color="primary"
-               flat
-               @click="submit()">{{ $t('dialog.Apply') }}</v-btn>
+        <v-btn flat @click="close()">{{ $t('dialog.Cancel') }}</v-btn>
+        <v-btn color="primary" flat @click="submit()">{{
+          $t('dialog.Apply')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -1,32 +1,38 @@
 <template>
-  <v-container fluid
-               pa-0
-               ma-0
-               class="h-100">
-    <v-toolbar dense
-               :dark="style.timeTable.toolbar.dark"
-               :color="style.timeTable.toolbar.color">
-      <v-toolbar-title>{{ $t('SelectCourses.timeTable.title') }}</v-toolbar-title>
+  <v-container fluid pa-0 ma-0 class="h-100">
+    <v-toolbar
+      dense
+      :dark="style.timeTable.toolbar.dark"
+      :color="style.timeTable.toolbar.color"
+    >
+      <v-toolbar-title>{{
+        $t('SelectCourses.timeTable.title')
+      }}</v-toolbar-title>
       <v-spacer />
-      <v-menu bottom
-              left
-              lazy
-              :close-on-click="true"
-              :close-on-content-click="false"
-              min-width="200"
-              max-width="200">
-        <v-btn icon
-               slot="activator">
+      <v-menu
+        bottom
+        left
+        lazy
+        :close-on-click="true"
+        :close-on-content-click="false"
+        min-width="200"
+        max-width="200"
+      >
+        <v-btn icon slot="activator">
           <v-icon>zoom_in</v-icon>
         </v-btn>
         <v-card>
           <v-subheader>縮放大小</v-subheader>
           <v-list>
-            <v-list-tile v-for="index in [0.50, 0.75, 1.00, 1.50, 2.00]"
-                         :key="index"
-                         @click="zoom = index"
-                         ripple>
-              <v-list-tile-title>{{`${parseInt(index * 100)}%`}}</v-list-tile-title>
+            <v-list-tile
+              v-for="index in [0.5, 0.75, 1.0, 1.5, 2.0]"
+              :key="index"
+              @click="zoom = index"
+              ripple
+            >
+              <v-list-tile-title>{{
+                `${parseInt(index * 100)}%`
+              }}</v-list-tile-title>
               <v-list-tile-avatar v-if="zoom === index">
                 <v-icon>check</v-icon>
               </v-list-tile-avatar>
@@ -35,91 +41,158 @@
         </v-card>
       </v-menu>
 
-      <v-menu bottom
-              left
-              lazy
-              :close-on-click="true"
-              :close-on-content-click="false"
-              min-width="200"
-              max-width="200">
-        <v-btn icon
-               slot="activator">
+      <v-menu
+        bottom
+        left
+        lazy
+        :close-on-click="true"
+        :close-on-content-click="false"
+        min-width="200"
+        max-width="200"
+      >
+        <v-btn icon slot="activator">
           <v-icon>more_vert</v-icon>
         </v-btn>
         <v-card>
           <v-subheader>顯示</v-subheader>
           <v-card-text class="pt-0">
-            <v-checkbox v-model="showRoom"
-                        :label="`顯示地點`"
-                        color="primary"
-                        hide-details />
-            <v-checkbox v-model="showProfessor"
-                        :label="`顯示授課教師`"
-                        color="primary"
-                        hide-details />
-            <v-checkbox v-model="showCourseNumber"
-                        :label="`顯示科號`"
-                        color="primary"
-                        hide-details />
-            <v-checkbox v-model="showColor"
-                        :label="`為課堂上色`"
-                        color="primary"
-                        hide-details />
+            <v-checkbox
+              v-model="showRoom"
+              :label="`顯示地點`"
+              color="primary"
+              hide-details
+            />
+            <v-checkbox
+              v-model="showProfessor"
+              :label="`顯示授課教師`"
+              color="primary"
+              hide-details
+            />
+            <v-checkbox
+              v-model="showCourseNumber"
+              :label="`顯示科號`"
+              color="primary"
+              hide-details
+            />
+            <v-checkbox
+              v-model="showColor"
+              :label="`為課堂上色`"
+              color="primary"
+              hide-details
+            />
           </v-card-text>
         </v-card>
       </v-menu>
     </v-toolbar>
-    <loading-container v-if="$wait.is(['selectCourses.getSelectionResult', 'selectCourses.getCurrentSelectedCourses'])"
-                       slot="waiting" />
-    <v-container v-else
-                 fluid
-                 class="time-table"
-                 :style="`zoom: ${zoom}; transform: translateZ(0);`">
-
+    <loading-container
+      v-if="
+        $wait.is([
+          'selectCourses.getSelectionResult',
+          'selectCourses.getCurrentSelectedCourses'
+        ])
+      "
+      slot="waiting"
+    />
+    <v-container
+      v-else
+      fluid
+      class="time-table"
+      :style="`zoom: ${zoom}; transform: translateZ(0);`"
+    >
       <div class="table">
         <div class="table-head">
           <div class="table-row">
             <div class="table-col col-title col-title-time"></div>
             <div class="table-col col-title"></div>
-            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.m') }}</div>
-            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.t') }}</div>
-            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.w') }}</div>
-            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.r') }}</div>
-            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.f') }}</div>
-            <div class="table-col">{{ $t('SelectCourses.timeTable.weekday.s') }}</div>
+            <div class="table-col">
+              {{ $t('SelectCourses.timeTable.weekday.m') }}
+            </div>
+            <div class="table-col">
+              {{ $t('SelectCourses.timeTable.weekday.t') }}
+            </div>
+            <div class="table-col">
+              {{ $t('SelectCourses.timeTable.weekday.w') }}
+            </div>
+            <div class="table-col">
+              {{ $t('SelectCourses.timeTable.weekday.r') }}
+            </div>
+            <div class="table-col">
+              {{ $t('SelectCourses.timeTable.weekday.f') }}
+            </div>
+            <div class="table-col">
+              {{ $t('SelectCourses.timeTable.weekday.s') }}
+            </div>
           </div>
         </div>
         <div class="table-body">
-          <div v-for="timeSection in timeSectionName"
-               :key="timeSection.name"
-               :class="'table-row time-section-' + timeSection.name">
-            <div class="table-col col-title col-title-time">{{ timeSection.startTime }}<br>{{ timeSection.endTime }}</div>
+          <div
+            v-for="timeSection in timeSectionName"
+            :key="timeSection.name"
+            :class="'table-row time-section-' + timeSection.name"
+          >
+            <div class="table-col col-title col-title-time">
+              {{ timeSection.startTime }}<br />{{ timeSection.endTime }}
+            </div>
             <div class="table-col col-title">{{ timeSection.name }}</div>
-            <div v-for="weekday in weekdayName"
-                 :key="weekday"
-                 :class="'table-col' + (previewTime && previewTime.includes(weekday + timeSection.name) ? ' purple lighten-4 preview' : '')">
-              <div v-for="course in timeTable[weekday][timeSection.name]"
-                   :key="course.number"
-                   :title="`${courses[course.number].title} ${courses[course.number].time}\n${toReadableProfessor(courses[course.number].professor)} ${course.number}\n${courses[course.number].room}`"
-                   @mouseover="$emit('update-preview-time', course.number)"
-                   @mouseleave="$emit('update-preview-time', '')"
-                   :class="course.status === 'waitingForRandom' ? 'light-blue--text' : (course.status === 'randomFailed' ? 'red--text ' : '')"
-                   :style="showColor && course.color && `background-color: ${course.color[0]}; color: ${course.color[1]};`">
+            <div
+              v-for="weekday in weekdayName"
+              :key="weekday"
+              :class="
+                'table-col' +
+                  (previewTime &&
+                  previewTime.includes(weekday + timeSection.name)
+                    ? ' purple lighten-4 preview'
+                    : '')
+              "
+            >
+              <div
+                v-for="course in timeTable[weekday][timeSection.name]"
+                :key="course.number"
+                :title="
+                  `${courses[course.number].title} ${
+                    courses[course.number].time
+                  }\n${toReadableProfessor(courses[course.number].professor)} ${
+                    course.number
+                  }\n${courses[course.number].room}`
+                "
+                @mouseover="$emit('update-preview-time', course.number)"
+                @mouseleave="$emit('update-preview-time', '')"
+                :class="
+                  course.status === 'waitingForRandom'
+                    ? 'light-blue--text'
+                    : course.status === 'randomFailed'
+                    ? 'red--text '
+                    : ''
+                "
+                :style="
+                  showColor &&
+                    course.color &&
+                    `background-color: ${course.color[0]}; color: ${
+                      course.color[1]
+                    };`
+                "
+              >
                 <span>{{ courses[course.number].title }}</span>
-                <span v-if="
-                      showCourseNumber"><br>{{ courses[course.number].number }}</span>
-                <span v-if="showProfessor"><br>{{ toReadableProfessor(courses[course.number].professor) }}</span>
-                <span v-if="showRoom"><br>{{ courses[course.number].room }}</span>
+                <span v-if="showCourseNumber"
+                  ><br />{{ courses[course.number].number }}</span
+                >
+                <span v-if="showProfessor"
+                  ><br />{{
+                    toReadableProfessor(courses[course.number].professor)
+                  }}</span
+                >
+                <span v-if="showRoom"
+                  ><br />{{ courses[course.number].room }}</span
+                >
               </div>
             </div>
           </div>
         </div>
       </div>
-      <v-layout pb-5
-                v-if="$store.state.selectCourses.phase !== 'current'">
+      <v-layout pb-5 v-if="$store.state.selectCourses.phase !== 'current'">
         <v-flex xs12>
-          <span class="">黑字</span>：已選上。<br>
-          <span class="info--text">藍字</span>：待亂數，目前未選上。<br>
+          <span class="">黑字</span>：已選上。<br />
+          <span class="info--text">藍字</span>：待亂數，目前未選上。<br />
           <span class="error--text">紅字</span>：亂數失敗，未選上。
         </v-flex>
       </v-layout>

@@ -1,98 +1,116 @@
 <template>
-  <v-container fluid
-               pa-0
-               ma-0
-               class="courses-catalog">
-    <v-toolbar dense
-               :dark="style.coursesCatalog.toolbar.dark"
-               :color="style.coursesCatalog.toolbar.color"
-               style="z-index: 1;"
-               extended>
+  <v-container fluid pa-0 ma-0 class="courses-catalog">
+    <v-toolbar
+      dense
+      :dark="style.coursesCatalog.toolbar.dark"
+      :color="style.coursesCatalog.toolbar.color"
+      style="z-index: 1;"
+      extended
+    >
       <v-toolbar-title v-t="title || 'SelectCourses.coursesCatalog.title'">
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
-        <v-btn slot="activator"
-               @click="showDepartmentPicker = true"
-               icon
-               flat
-               class="ma-0 pa-0">
+        <v-btn
+          slot="activator"
+          @click="showDepartmentPicker = true"
+          icon
+          flat
+          class="ma-0 pa-0"
+        >
           <v-icon>list</v-icon>
         </v-btn>
         <span>選擇科系</span>
       </v-tooltip>
-      <department-picker :value="showDepartmentPicker"
-                         @update-department="updateDepartment"
-                         @close="showDepartmentPicker = false"
-                         @search="t => {searchText = t; onlySearchAbbr = false; updateList()}" />
+      <department-picker
+        :value="showDepartmentPicker"
+        @update-department="updateDepartment"
+        @close="showDepartmentPicker = false"
+        @search="
+          t => {
+            searchText = t
+            onlySearchAbbr = false
+            updateList()
+          }
+        "
+      />
 
-      <v-text-field slot="extension"
-                    v-model="searchText"
-                    type="text"
-                    value=""
-                    prepend-icon="search"
-                    clearable
-                    @focus="showMenu = true"
-                    @input="(str) => {str === null && (searchText = '', updateList(), showMenu = false)}"
-                    @keyup.native="(e) => {e.key === 'Enter' && (updateList(), showMenu = false)}">
+      <v-text-field
+        slot="extension"
+        v-model="searchText"
+        type="text"
+        value=""
+        prepend-icon="search"
+        clearable
+        @focus="showMenu = true"
+        @input="
+          str => {
+            str === null &&
+              ((searchText = ''), updateList(), (showMenu = false))
+          }
+        "
+        @keyup.native="
+          e => {
+            e.key === 'Enter' && (updateList(), (showMenu = false))
+          }
+        "
+      >
       </v-text-field>
     </v-toolbar>
 
-    <v-container fluid
-                 pa-0
-                 ma-0
-                 class="list-wrapper"
-                 id="courses-catalog-list">
-      <courses-list :courses="courses"
-                    :list="list"
-                    empty-text="SelectCourses.coursesCatalog.pleaseSelect"
-                    :result="false"
-                    @update-preview-time="updatePreviewTime"
-                    @open-course-detail="openCourseDetail"
-                    @update-page="updatePage">
-
+    <v-container fluid pa-0 ma-0 class="list-wrapper" id="courses-catalog-list">
+      <courses-list
+        :courses="courses"
+        :list="list"
+        empty-text="SelectCourses.coursesCatalog.pleaseSelect"
+        :result="false"
+        @update-preview-time="updatePreviewTime"
+        @open-course-detail="openCourseDetail"
+        @update-page="updatePage"
+      >
         <template slot="header">
           <v-layout>
-            <v-flex xs12
-                    text-xs-right>
-              <v-btn flat
-                     small
-                     outline
-                     @click="showPeriodPicker = true">
+            <v-flex xs12 text-xs-right>
+              <v-btn flat small outline @click="showPeriodPicker = true">
                 <v-icon>event</v-icon>搜尋時段
               </v-btn>
-              <v-menu bottom
-                      left
-                      lazy
-                      min-width="250"
-                      max-width="250">
-                <v-btn flat
-                       small
-                       outline
-                       slot="activator"
-                       class="ml-0">
+              <v-menu bottom left lazy min-width="250" max-width="250">
+                <v-btn flat small outline slot="activator" class="ml-0">
                   <v-icon>filter_list</v-icon>進階搜尋
                 </v-btn>
                 <v-card>
                   <v-card-text class="px-0">
                     <v-list class="pa-0">
-                      <v-list-tile v-for="item in searchItems"
-                                   :key="item.value"
-                                   @click="showMenu = false; item.action && item.action(); updateList()"
-                                   ripple>
+                      <v-list-tile
+                        v-for="item in searchItems"
+                        :key="item.value"
+                        @click="
+                          showMenu = false
+                          item.action && item.action()
+                          updateList()
+                        "
+                        ripple
+                      >
                         <v-list-tile-title>
-                          <span class="grey--text lighten-1">{{`搜尋${item.scope} `}}</span>
+                          <span class="grey--text lighten-1">{{
+                            `搜尋${item.scope} `
+                          }}</span>
                           {{ item.text }}
                         </v-list-tile-title>
                       </v-list-tile>
                       <v-divider v-if="abbr" />
                     </v-list>
-                    <v-checkbox v-if="abbr"
-                                v-model="onlySearchAbbr"
-                                :label="`只搜尋「${getDepartmentDetail(abbr).chineseName || getDepartmentDetail(abbr).name}」`"
-                                hide-details
-                                color="primary"
-                                class="pt-2 ml-3 mr-3" />
+                    <v-checkbox
+                      v-if="abbr"
+                      v-model="onlySearchAbbr"
+                      :label="
+                        `只搜尋「${getDepartmentDetail(abbr).chineseName ||
+                          getDepartmentDetail(abbr).name}」`
+                      "
+                      hide-details
+                      color="primary"
+                      class="pt-2 ml-3 mr-3"
+                    />
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -102,9 +120,11 @@
       </courses-list>
     </v-container>
 
-    <period-picker :value="showPeriodPicker"
-                   @update-periods="updatePeriods"
-                   @close="showPeriodPicker = false" />
+    <period-picker
+      :value="showPeriodPicker"
+      @update-periods="updatePeriods"
+      @close="showPeriodPicker = false"
+    />
   </v-container>
 </template>
 

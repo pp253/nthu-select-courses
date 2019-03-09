@@ -1,37 +1,52 @@
 <template>
-  <v-container fluid
-               pa-0
-               ma-0
-               class="selection-result">
-    <v-toolbar dense
-               :dark="style.selectionResult.toolbar.dark"
-               :color="style.selectionResult.toolbar.color"
-               style="z-index: 1;"
-               extended>
+  <v-container
+    fluid
+    pa-0
+    ma-0
+    class="selection-result"
+  >
+    <v-toolbar
+      dense
+      :dark="style.selectionResult.toolbar.dark"
+      :color="style.selectionResult.toolbar.color"
+      style="z-index: 1;"
+      extended
+    >
       <v-toolbar-title>
-        {{$t('SelectCourses.selectionResult.title')}}
+        {{ $t('SelectCourses.selectionResult.title') }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
-        <v-btn slot="activator"
-               icon
-               flat
-               @click="$emit('refresh')">
+        <v-btn
+          slot="activator"
+          icon
+          flat
+          @click="$emit('refresh')"
+        >
           <v-icon>refresh</v-icon>
         </v-btn>
         <span>重新整理</span>
       </v-tooltip>
-      <v-select slot="extension"
-                :items="readableAvailableSelectionResult"
-                @input="(semesterPhase) => {openSelectionResult(semesterPhase); selectedSemesterPhase = semesterPhase}"
-                item-text="text"
-                item-value="value"
-                :value="selectedSemesterPhase"
-                :label="$t('SelectCourses.selectionResult.title')"
-                single-line
-                menu-props="bottom">
-        <template slot="item"
-                  slot-scope="data">
+      <v-select
+        slot="extension"
+        :items="readableAvailableSelectionResult"
+        @input="
+          semesterPhase => {
+            openSelectionResult(semesterPhase)
+            selectedSemesterPhase = semesterPhase
+          }
+        "
+        item-text="text"
+        item-value="value"
+        :value="selectedSemesterPhase"
+        :label="$t('SelectCourses.selectionResult.title')"
+        single-line
+        menu-props="bottom"
+      >
+        <template
+          slot="item"
+          slot-scope="data"
+        >
           <template v-if="data.item.type === 'divider'">
             <v-divider />
           </template>
@@ -44,18 +59,29 @@
       </v-select>
     </v-toolbar>
 
-    <v-container fluid
-                 pa-0
-                 ma-0
-                 class="list-wrapper">
-      <loading-container v-if="$wait.is(['selectCourses.getSelectionResult', 'selectCourses.getCurrentSelectedCourses'])"
-                         slot="waiting" />
-      <courses-list v-else
-                    :courses="courses"
-                    :list="list"
-                    :result="$store.state.selectCourses.phase === 'current'"
-                    @update-preview-time="updatePreviewTime"
-                    @open-course-detail="openCourseDetail" />
+    <v-container
+      fluid
+      pa-0
+      ma-0
+      class="list-wrapper"
+    >
+      <loading-container
+        v-if="
+          $wait.is([
+            'selectCourses.getSelectionResult',
+            'selectCourses.getCurrentSelectedCourses'
+          ])
+        "
+        slot="waiting"
+      />
+      <courses-list
+        v-else
+        :courses="courses"
+        :list="list"
+        :result="$store.state.selectCourses.phase === 'current'"
+        @update-preview-time="updatePreviewTime"
+        @open-course-detail="openCourseDetail"
+      />
     </v-container>
   </v-container>
 </template>
