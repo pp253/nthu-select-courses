@@ -26,7 +26,7 @@
       slot="waiting"
     />
     <v-container v-else fluid pa-0 ma-0>
-      <v-tabs-items v-model="tabs">
+      <v-tabs-items v-model="tabs" touchless>
         <v-tab-item value="tab-course-detail-syllabus" :key="0">
           <v-layout wrap justify-center>
             <v-flex xs12>
@@ -164,18 +164,86 @@
                 >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
                 -->
               </v-container>
+              <v-divider></v-divider>
             </v-flex>
+
+            <v-flex xs12 v-if="scoresDist.length == 0">
+              <v-container>
+                這堂課還沒有歷年成績分布，或是你沒辦法看到。為了使用此服務，你必須曾分享過你曾參與課程的成績分布（不包含你的成績）到NTHU_ScoreSharing。詳見
+                <a
+                  href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                  target="_blank"
+                >
+                  NTHU ScoreSharing </a
+                >。
+              </v-container>
+              <v-divider></v-divider>
+            </v-flex>
+
+            <v-flex xs12 v-if="scoresDist.length > 0">
+              <distribution-chart :chart-data="chartData" />
+
+              <v-container pt-0>
+                <div class="text-xs-center">
+                  歷年成績：{{ scoresDist[scoresDistIndex][0] }}，全班{{
+                    scoresDist[scoresDistIndex][1][13]
+                  }}人
+                </div>
+
+                <v-layout>
+                  <v-flex xs12>
+                    <v-slider
+                      :max="scoresDist.length - 1"
+                      :min="0"
+                      v-model="scoresDistIndex"
+                      label="年分"
+                    ></v-slider>
+                  </v-flex>
+                  <v-flex mt-2>
+                    <v-btn
+                      icon
+                      flat
+                      @click="scoresDistIndex--"
+                      :disabled="scoresDistIndex <= 0"
+                    >
+                      <v-icon>chevron_left</v-icon>
+                    </v-btn>
+                  </v-flex>
+                  <v-flex mt-2>
+                    <v-btn
+                      icon
+                      flat
+                      @click="scoresDistIndex++"
+                      :disabled="scoresDistIndex === scoresDist.length - 1"
+                    >
+                      <v-icon>chevron_right</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+                <div class="text-xs-right" style="font-size: 0.9em;">
+                  以上資料來自
+                  <a
+                    href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                    target="_blank"
+                  >
+                    NTHU ScoreSharing
+                  </a>
+                </div>
+              </v-container>
+              <v-divider></v-divider>
+            </v-flex>
+
             <v-flex
               xs12
               v-if="course.syllabus && course.syllabus.briefDescription !== ''"
             >
-              <v-divider></v-divider>
               <v-container
                 v-html="course.syllabus.briefDescription"
               ></v-container>
-            </v-flex>
-            <v-flex xs12 v-if="course.syllabus">
               <v-divider></v-divider>
+            </v-flex>
+
+            <v-flex xs12 v-if="course.syllabus">
               <v-container>
                 <v-btn
                   :href="
@@ -185,8 +253,9 @@
                   "
                   target="_blank"
                   rel="noreferrer"
-                  >{{ $t('courseDetail.downloadSyllabus') }}</v-btn
                 >
+                  {{ $t('courseDetail.downloadSyllabus') }}
+                </v-btn>
                 <div v-html="course.syllabus.description"></div>
               </v-container>
             </v-flex>
@@ -230,9 +299,9 @@
               <v-divider :key="`student-${index}-divider`"></v-divider>
             </template>
             <v-list-tile v-if="enrolledClassmatesSearchResult.length === 0">
-              <v-list-tile-content
-                >沒有人選這堂課，或是你沒辦法看到這堂課的同學</v-list-tile-content
-              >
+              <v-list-tile-content>
+                沒有人選這堂課，或是你沒辦法看到這堂課的同學
+              </v-list-tile-content>
             </v-list-tile>
           </v-list>
         </v-tab-item>
@@ -369,10 +438,13 @@ import {
   VToolbarTitle,
   VTextField,
   VIcon,
-  VChip
+  VChip,
+  VSlider
 } from 'vuetify/lib'
 import { mapState, mapGetters } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
+import DistributionChart from '../../Scores/components/distribution-chart'
+import Vue from 'vue'
 
 export default {
   name: 'CourseDetail',
@@ -392,7 +464,9 @@ export default {
     VToolbarTitle,
     VTextField,
     VIcon,
-    VChip
+    VChip,
+    VSlider,
+    DistributionChart
   },
   props: {
     title: String,
@@ -406,7 +480,10 @@ export default {
       showCommentDialog: false,
       showReportDialog: false,
       enrolledClassmates: [],
-      enrollingSearchText: ''
+      enrollingSearchText: '',
+      scoresDist: [],
+      scoresDistIndex: 0,
+      chartData: null
     }
   },
   computed: {
@@ -455,6 +532,40 @@ export default {
         } else {
           this.updateCourse()
         }
+
+        this.$store
+          .dispatch('selectCourses/scoresharing/query', {
+            NAME: this.courses[newVal].title,
+            TEACHER: this.courses[newVal].professor
+          })
+          .then(scoresDist => {
+            Vue.set(this, 'scoresDist', scoresDist || [])
+            if (this.scoresDist.length > 0) {
+              this.chartData = {
+                labels: [
+                  'A+',
+                  'A',
+                  'A-',
+                  'B+',
+                  'B',
+                  'B-',
+                  'C+',
+                  'C',
+                  'C-',
+                  'D',
+                  'E',
+                  'X'
+                ],
+                datasets: [
+                  {
+                    label: 'Distribution of scores',
+                    backgroundColor: '#64b4f6',
+                    data: this.scoresDist[0][1].slice(0, 13)
+                  }
+                ]
+              }
+            }
+          })
       } else {
         this.$store
           .dispatch('selectCourses/getSyllabus', {
@@ -473,6 +584,35 @@ export default {
         .catch(() => {
           this.enrolledClassmates = []
         })
+
+      this.scoresDistIndex = 0
+    },
+    scoresDistIndex(newVal) {
+      if (this.scoresDist.length > 0) {
+        this.chartData = {
+          labels: [
+            'A+',
+            'A',
+            'A-',
+            'B+',
+            'B',
+            'B-',
+            'C+',
+            'C',
+            'C-',
+            'D',
+            'E',
+            'X'
+          ],
+          datasets: [
+            {
+              label: 'Distribution of scores',
+              backgroundColor: '#64b4f6',
+              data: this.scoresDist[newVal][1].slice(0, 13)
+            }
+          ]
+        }
+      }
     }
   },
   methods: {

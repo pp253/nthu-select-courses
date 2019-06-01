@@ -1,8 +1,8 @@
 import * as api from '@/api'
 import error from '@/lib/error'
 
-const TEMP_ID = '105034009'
-const TEMP_SESSION_TOKEN = '9uhi0os1gu4upovajf82hbt9j4'
+const TEMP_ID = ''
+const TEMP_SESSION_TOKEN = ''
 
 export default {
   namespaced: true,
@@ -11,34 +11,7 @@ export default {
     loginToken: '',
     authImg: '',
     ID: TEMP_ID || '',
-    sessionToken: TEMP_SESSION_TOKEN || '',
-
-    OID: '',
-    NAME: { C: '', E: '', X: '' },
-    SEX: '',
-    PRE_SCH: '',
-    PRE_DEPT: '',
-    PRE_STATUS: '',
-    DIV: '',
-    DEPT: '',
-    E_YEAR: '',
-    CATEGORY: '',
-    CLASS: '',
-    GROUP: '',
-    GRADE: '',
-    SEC_DEPT: '',
-    MINR: '',
-    ENG_LEVEL: '',
-    STATUS: '',
-    EXG: {
-      START: '',
-      ENG: ''
-    },
-    CAMPUS: '',
-    TE: '',
-    CURR_SCHE: '',
-    MAJOR: '',
-    IDL_SEL: ''
+    sessionToken: TEMP_SESSION_TOKEN || ''
   },
   mutations: {
     SET_LOGIN_TOKEN(state, options) {
@@ -108,7 +81,7 @@ export default {
 
         api
           .getSessionToken({
-            ID: loginInfo.ID,
+            username: loginInfo.ID,
             userpass: loginInfo.userpass,
             authCheckCode: loginInfo.authCheckCode,
             loginToken: context.state.loginToken
@@ -116,7 +89,7 @@ export default {
           .then(data => {
             context.commit('SET_USER', {
               isLogin: true,
-              ID: data.ID,
+              ID: loginInfo.ID,
               sessionToken: data.sessionToken
             })
 
