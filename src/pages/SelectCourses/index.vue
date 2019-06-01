@@ -465,6 +465,13 @@ export default {
         this.$router.push('/')
         this.$store.commit('ui/STOP_LOADING')
       })
+
+    this.$store
+      .dispatch('selectCourses/scoresharing/validate')
+      .then(valid => {
+        console.log(`[scoresharing/validate] valid=${valid}`)
+      })
+      .catch(err => console.error(err))
   }
 }
 </script>
