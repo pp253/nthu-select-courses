@@ -21,7 +21,7 @@
           <p>
             在 {{ beWithText[beWithIndex] }} 的陪伴下製作 —
             <a href="https://github.com/pp253" target="_blank" rel="noreferrer">
-              工工20 pp253
+              pp253
             </a>
           </p>
           <p class="underline">
