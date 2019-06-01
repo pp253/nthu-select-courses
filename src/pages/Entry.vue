@@ -51,9 +51,6 @@
                       <div class="grey--text darken-1">
                         請使用你在校務資訊系統登入的帳號。常見問題請見頁底。
                       </div>
-                      <div class="red--text darken-1">
-                        本系統目前尚處測試階段，選課完請前往校務資訊系統確認！
-                      </div>
                     </div>
                   </v-card-title>
                   <v-window v-model="usingACIXSTORE" vertical>
@@ -207,15 +204,22 @@
                     </v-flex>
                     <v-flex xs12 sm6>
                       <v-container pt-0 pl-3 pr-3 pb-3>
-                        <h2>🔍聰明搜尋</h2>
+                        <h2>📊歷年成績分布</h2>
                         <p>
-                          有了搜尋功能後，選課變得更快樂了呢～你除了能搜尋課程名稱、教師以外，還可以搜尋時段。
+                          整合
+                          <a
+                            href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                            target="_blank"
+                          >
+                            NTHU ScoreSharing
+                          </a>
+                          的歷年成績分布，選課的同時就能看到成績分布！
                         </p>
                       </v-container>
                     </v-flex>
                     <v-flex xs12 sm6>
                       <v-container pt-0 pl-3 pr-3 pb-3>
-                        <h2>👁一目瞭然的課表</h2>
+                        <h2>💦一目瞭然的課表</h2>
                         <p>
                           濃縮不必要的資訊後，清爽的課表讓你能更專注在選課上。
                         </p>
