@@ -11,20 +11,17 @@
       </v-btn>
 
       <v-tabs slot="extension" centered v-model="tabs">
-        <v-tab href="#tab-course-detail-syllabus">{{
-          $t('courseDetail.syllabus')
-        }}</v-tab>
-        <v-tab href="#tab-course-detail-enrolled-classmates">{{
-          $t('courseDetail.classmates')
-        }}</v-tab>
+        <v-tab href="#tab-course-detail-syllabus">
+          {{ $t('courseDetail.syllabus') }}
+        </v-tab>
+        <v-tab href="#tab-course-detail-enrolled-classmates">
+          {{ $t('courseDetail.classmates') }}
+        </v-tab>
         <!-- <v-tab href="#tab-course-detail-comments">課程評論</v-tab> -->
       </v-tabs>
     </v-toolbar>
 
-    <loading-container
-      v-if="$wait.is('selectCourses.getSyllabus')"
-      slot="waiting"
-    />
+    <loading-container v-if="$wait.is('selectCourses.getSyllabus')" />
     <v-container v-else fluid pa-0 ma-0>
       <v-tabs-items v-model="tabs" touchless>
         <v-tab-item value="tab-course-detail-syllabus" :key="0">
@@ -32,55 +29,59 @@
             <v-flex xs12>
               <v-container>
                 <v-layout wrap>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.number')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.number') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.number }}</v-flex>
                   <v-flex xs3 md2 class="grey--text text--darken-2">
                     <a
                       href="http://curricul.web.nthu.edu.tw/files/13-1073-12448.php"
                       rel="noreferrer"
                       target="_blank"
-                      >{{ $t('courseDetail.time') }}</a
-                    ></v-flex
-                  >
+                    >
+                      {{ $t('courseDetail.time') }}
+                    </a>
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.time || '' }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.professor')
-                  }}</v-flex>
-                  <v-flex xs9 md4>{{
-                    toReadableProfessor(course.professor)
-                  }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.credit')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.professor') }}
+                  </v-flex>
+                  <v-flex xs9 md4>
+                    {{ toReadableProfessor(course.professor) }}
+                  </v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.credit') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.credit }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.size_limit')
-                  }}</v-flex>
-                  <v-flex xs9 md4>{{
-                    (course.size_limit || '-') +
-                      ` (${course.previous_size || '-'})`
-                  }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.reserved')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.size_limit') }}
+                  </v-flex>
+                  <v-flex xs9 md4>
+                    {{
+                      (course.size_limit || '-') +
+                        ` (${course.previous_size || '-'})`
+                    }}
+                  </v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.reserved') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.reserved }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.room')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.room') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.room }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.language')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.language') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.language }}</v-flex>
                   <v-flex xs3 md2 class="grey--text text--darken-2">
                     <a
                       href="http://cge.gec.nthu.edu.tw/course-3/"
                       rel="noreferrer"
                       target="_blank"
-                      >{{ $t('courseDetail.ge_object') }}</a
                     >
+                      {{ $t('courseDetail.ge_object') }}
+                    </a>
                   </v-flex>
                   <v-flex xs9 md4>{{ course.ge_object }}</v-flex>
                 </v-layout>
@@ -92,12 +93,13 @@
                         xs3
                         md2
                         class="grey--text text--darken-2"
-                        >{{ $t(`courseDetail.${key}`) }}</v-flex
                       >
+                        {{ $t(`courseDetail.${key}`) }}
+                      </v-flex>
                       <v-flex :key="key + '-content'" xs9 md10>
-                        <v-chip @click="search(`${key}:${course[key]}`)">{{
-                          course[key]
-                        }}</v-chip>
+                        <v-chip @click="search(`${key}:${course[key]}`)">
+                          {{ course[key] }}
+                        </v-chip>
                       </v-flex>
                     </template>
                   </template>
@@ -115,8 +117,9 @@
                           v-for="item in course[key]"
                           :key="item"
                           @click="search(`${key}:${item}`)"
-                          >{{ item }}</v-chip
                         >
+                          {{ item }}
+                        </v-chip>
                       </v-flex>
                     </template>
                   </template>
@@ -129,8 +132,9 @@
                         xs3
                         md2
                         class="grey--text text--darken-2"
-                        >{{ $t(`courseDetail.${key}`) }}</v-flex
                       >
+                        {{ $t(`courseDetail.${key}`) }}
+                      </v-flex>
                       <v-flex
                         :key="key + '-content'"
                         xs9
@@ -152,12 +156,13 @@
                       ? quitCourse(course.number)
                       : addCourse(course.number)
                   "
-                  >{{
+                >
+                  {{
                     isCourseSelected(course.number)
                       ? $t('SelectCourses.action.quitCourse')
                       : $t('SelectCourses.action.addCourse')
-                  }}</v-btn
-                >
+                  }}
+                </v-btn>
                 <!--
                 <v-btn
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
@@ -167,59 +172,27 @@
               <v-divider></v-divider>
             </v-flex>
 
-            <v-flex xs12 v-if="scoresDist.length == 0">
+            <v-flex xs12 v-if="!valid">
               <v-container>
-                這堂課還沒有歷年成績分布，或是你沒辦法看到。為了使用此服務，你必須曾分享過你曾參與課程的成績分布（不包含你的成績）到NTHU_ScoreSharing。詳見
-                <a
-                  href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
-                  target="_blank"
-                >
-                  NTHU ScoreSharing </a
-                >。
-              </v-container>
-              <v-divider></v-divider>
-            </v-flex>
+                您目前無法看這堂課的歷年成績分布。如果想要了解，請進行以下步驟
 
-            <v-flex xs12 v-if="scoresDist.length > 0">
-              <distribution-chart :chart-data="chartData" />
-
-              <v-container pt-0>
-                <div class="text-xs-center">
-                  歷年成績：{{ scoresDist[scoresDistIndex][0] }}，全班{{
-                    scoresDist[scoresDistIndex][1][13]
-                  }}人
-                </div>
-
-                <v-layout>
-                  <v-flex xs12>
-                    <v-slider
-                      :max="scoresDist.length - 1"
-                      :min="0"
-                      v-model="scoresDistIndex"
-                      label="年分"
-                    ></v-slider>
-                  </v-flex>
-                  <v-flex mt-2>
-                    <v-btn
-                      icon
-                      flat
-                      @click="scoresDistIndex--"
-                      :disabled="scoresDistIndex <= 0"
+                <ol>
+                  <li>在<b>電腦</b>上開啟 Google Chrome，手機沒辦法用。</li>
+                  <li>
+                    安裝
+                    <a
+                      href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                      target="_blank"
                     >
-                      <v-icon>chevron_left</v-icon>
-                    </v-btn>
-                  </v-flex>
-                  <v-flex mt-2>
-                    <v-btn
-                      icon
-                      flat
-                      @click="scoresDistIndex++"
-                      :disabled="scoresDistIndex === scoresDist.length - 1"
-                    >
-                      <v-icon>chevron_right</v-icon>
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
+                      NTHU ScoreSharing 擴充功能 </a
+                    >。
+                  </li>
+                  <li>
+                    登入校務資訊系統。登入後，如有詢問是否願意分享成績，點「是」。
+                  </li>
+                  <li><a @click="retry">點此重試。</a></li>
+                </ol>
+
                 <div class="text-xs-right" style="font-size: 0.9em;">
                   以上資料來自
                   <a
@@ -229,6 +202,71 @@
                     NTHU ScoreSharing
                   </a>
                 </div>
+              </v-container>
+              <v-divider></v-divider>
+            </v-flex>
+
+            <v-flex xs12 v-if="valid">
+              <distribution-chart
+                v-if="scoresDist.length > 0"
+                :chart-data="chartData"
+              />
+
+              <v-container :pt-0="scoresDist.length > 0">
+                <v-wait for="scoresharing/query">
+                  <loading-container slot="waiting"></loading-container>
+
+                  <div v-if="!scoresDist || scoresDist.length === 0">
+                    還沒有人上傳過這堂課的歷年成績分布😥
+                  </div>
+
+                  <div class="text-xs-center" v-if="scoresDist.length > 0">
+                    歷年成績：{{ scoresDist[scoresDistIndex][0] }}，全班{{
+                      scoresDist[scoresDistIndex][1][13]
+                    }}人
+                  </div>
+
+                  <v-layout v-if="scoresDist.length > 0">
+                    <v-flex xs12>
+                      <v-slider
+                        :max="scoresDist.length - 1"
+                        :min="0"
+                        v-model="scoresDistIndex"
+                        label="年分"
+                      ></v-slider>
+                    </v-flex>
+                    <v-flex mt-2>
+                      <v-btn
+                        icon
+                        flat
+                        @click="scoresDistIndex--"
+                        :disabled="scoresDistIndex <= 0"
+                      >
+                        <v-icon>chevron_left</v-icon>
+                      </v-btn>
+                    </v-flex>
+                    <v-flex mt-2>
+                      <v-btn
+                        icon
+                        flat
+                        @click="scoresDistIndex++"
+                        :disabled="scoresDistIndex === scoresDist.length - 1"
+                      >
+                        <v-icon>chevron_right</v-icon>
+                      </v-btn>
+                    </v-flex>
+                  </v-layout>
+
+                  <div class="text-xs-right" style="font-size: 0.9em;">
+                    以上資料來自
+                    <a
+                      href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                      target="_blank"
+                    >
+                      NTHU ScoreSharing
+                    </a>
+                  </div>
+                </v-wait>
               </v-container>
               <v-divider></v-divider>
             </v-flex>
@@ -487,17 +525,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('selectCourses', [
+      'isCurrentSemester',
+      'isCourseSelected',
+      'toReadableProfessor'
+    ]),
     ...mapState('selectCourses', [
       'selectionPhase',
       'addOrDropPhase',
       'withdrawalPhase',
       'currentSelectedCourses'
     ]),
-    ...mapGetters('selectCourses', [
-      'isCurrentSemester',
-      'isCourseSelected',
-      'toReadableProfessor'
-    ]),
+    ...mapState('selectCourses/scoresharing', ['valid']),
     enrolledClassmatesSearchResult() {
       if (!this.enrollingSearchText) {
         return this.enrolledClassmates
@@ -528,44 +567,12 @@ export default {
             })
             .then(() => {
               this.updateCourse()
+              this.updateScoresDist()
             })
         } else {
           this.updateCourse()
+          this.updateScoresDist()
         }
-
-        this.$store
-          .dispatch('selectCourses/scoresharing/query', {
-            NAME: this.courses[newVal].title,
-            TEACHER: this.courses[newVal].professor
-          })
-          .then(scoresDist => {
-            Vue.set(this, 'scoresDist', scoresDist || [])
-            if (this.scoresDist.length > 0) {
-              this.chartData = {
-                labels: [
-                  'A+',
-                  'A',
-                  'A-',
-                  'B+',
-                  'B',
-                  'B-',
-                  'C+',
-                  'C',
-                  'C-',
-                  'D',
-                  'E',
-                  'X'
-                ],
-                datasets: [
-                  {
-                    label: 'Distribution of scores',
-                    backgroundColor: '#64b4f6',
-                    data: this.scoresDist[0][1].slice(0, 13)
-                  }
-                ]
-              }
-            }
-          })
       } else {
         this.$store
           .dispatch('selectCourses/getSyllabus', {
@@ -573,6 +580,7 @@ export default {
           })
           .then(() => {
             this.updateCourse()
+            this.updateScoresDist(newVal)
           })
       }
 
@@ -584,8 +592,6 @@ export default {
         .catch(() => {
           this.enrolledClassmates = []
         })
-
-      this.scoresDistIndex = 0
     },
     scoresDistIndex(newVal) {
       if (this.scoresDist.length > 0) {
@@ -616,6 +622,58 @@ export default {
     }
   },
   methods: {
+    updateScoresDist() {
+      let course =
+        Object.keys(this.course) === 0
+          ? this.courses[this.courseNumber]
+          : this.course
+      if (!course || Object.keys(course) === 0) {
+        console.error(
+          'course and courses[courseNumber] are both null',
+          course,
+          this.courseNumber
+        )
+        return
+      }
+
+      let teacher = Array.isArray(course.professor)
+        ? course.professor
+        : [course.professor.split('(')[0]]
+      this.$store
+        .dispatch('selectCourses/scoresharing/query', {
+          NAME: course.title || course.chineseTitle,
+          TEACHER: teacher
+        })
+        .then(scoresDist => {
+          Vue.set(this, 'scoresDist', scoresDist || [])
+          if (this.scoresDist.length > 0) {
+            this.chartData = {
+              labels: [
+                'A+',
+                'A',
+                'A-',
+                'B+',
+                'B',
+                'B-',
+                'C+',
+                'C',
+                'C-',
+                'D',
+                'E',
+                'X'
+              ],
+              datasets: [
+                {
+                  label: 'Distribution of scores',
+                  backgroundColor: '#64b4f6',
+                  data: this.scoresDist[0][1].slice(0, 13)
+                }
+              ]
+            }
+          }
+        })
+      this.scoresDistIndex = 0
+    },
     updateCourse() {
       if (this.courseNumber in this.courses) {
         this.course = this.courses[this.courseNumber]
@@ -691,6 +749,14 @@ export default {
       if (this.$store.state.ui.isMobile) {
         this.closeCourseDetail()
         this.$emit('goto-panel-courses-catalog')
+      }
+    },
+    async retry() {
+      let valid = await this.$store.dispatch(
+        'selectCourses/scoresharing/validate'
+      )
+      if (valid) {
+        await this.updateScoresDist(this.courseNumber)
       }
     }
   }

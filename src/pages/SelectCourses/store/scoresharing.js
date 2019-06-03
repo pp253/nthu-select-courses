@@ -36,16 +36,25 @@ export default {
   },
   actions: {
     async validate(context) {
+      context.dispatch('loading/start', 'scoresharing/validate', {
+        root: true
+      })
+
       let username = context.rootState.user.ID
       let { data } = await scoresharing.validate(username)
       let valid = data === 'true' || data === true
       context.commit('SET_VALID', { valid: valid })
+
+      context.dispatch('loading/end', 'scoresharing/validate', {
+        root: true
+      })
       return valid
     },
     async query(context, options) {
       if (context.state.valid === false) {
         return null
       }
+
       if (
         !options.NAME ||
         !options.TEACHER ||
@@ -62,9 +71,17 @@ export default {
         return context.state.scores[queryKey]
       }
 
+      context.dispatch('loading/start', 'scoresharing/query', {
+        root: true
+      })
+
       let username = context.rootState.user.ID
       let { data } = await scoresharing.query(username, queryKey)
       let scoresDist = data
+
+      context.dispatch('loading/end', 'scoresharing/query', {
+        root: true
+      })
 
       if (typeof scoresDist !== 'object' || !(scoresDist instanceof Array)) {
         context.commit('SET_SCORE', {
@@ -78,6 +95,7 @@ export default {
         queryKey: queryKey,
         scoresDist: scoresDist.reverse()
       })
+
       return scoresDist
     }
   }
