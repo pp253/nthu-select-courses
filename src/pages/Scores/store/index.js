@@ -8,6 +8,7 @@ export default {
     courses: {},
     scoresLoaded: false,
     overview: {},
+    cumulative: {},
 
     style: {
       themeColor: '#FFBB5D',
@@ -69,6 +70,9 @@ export default {
     SET_OVERVIEW(state, options) {
       state.overview = Object.assign({}, state.overview, options.overview)
     },
+    SET_CUMULATIVE(state, options) {
+      state.cumulative = Object.assign({}, state.cumulative, options.cumulative)
+    },
     SET_SCORES_LOADED(state) {
       state.scoresLoaded = true
     }
@@ -85,7 +89,8 @@ export default {
           resolve({
             scores: context.state.scores,
             courses: context.state.courses,
-            overview: context.state.overview
+            overview: context.state.overview,
+            cumulative: context.state.cumulative
           })
         } else {
           api
@@ -94,6 +99,7 @@ export default {
               context.commit('SET_SCORES', { scores: data.scores })
               context.commit('SET_COURSES', { courses: data.courses })
               context.commit('SET_OVERVIEW', { overview: data.overview })
+              context.commit('SET_CUMULATIVE', { cumulative: data.cumulative })
               context.commit('SET_SCORES_LOADED')
               resolve(data)
             })
