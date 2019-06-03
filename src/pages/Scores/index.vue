@@ -5,6 +5,7 @@
       :scores="scores"
       :courses="courses"
       :overview="overview"
+      :cumulative="cumulative"
       :hidden="showCourseDetail"
     />
     <score-course-detail
@@ -34,7 +35,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('scores', ['scores', 'courses', 'overview', 'style'])
+    ...mapState('scores', [
+      'scores',
+      'courses',
+      'overview',
+      'cumulative',
+      'style'
+    ])
   },
   methods: {
     showDetail(courseNumber) {
