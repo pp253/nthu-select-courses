@@ -29,7 +29,6 @@
               v-for="index in [0.5, 0.75, 1.0, 1.5, 2.0]"
               :key="index"
               @click="zoom = index"
-              ripple
             >
               <v-list-tile-title>
                 {{ `${parseInt(index * 100)}%` }}
@@ -56,26 +55,33 @@
         </v-btn>
         <v-card>
           <v-subheader>顯示</v-subheader>
-          <v-card-text class="pt-0">
-            <v-checkbox
-              v-model="showRoom"
-              :label="`顯示地點`"
-              color="primary"
-              hide-details
-            />
-            <v-checkbox
-              v-model="showProfessor"
-              :label="`顯示授課教師`"
-              color="primary"
-              hide-details
-            />
-            <v-checkbox
-              v-model="showColor"
-              :label="`為課堂上色`"
-              color="primary"
-              hide-details
-            />
-          </v-card-text>
+          <v-list class="pt-0">
+            <v-list-tile @click="showColor = !showColor">
+              <v-list-tile-title>為課堂上色</v-list-tile-title>
+              <v-list-tile-avatar v-if="showColor">
+                <v-icon>done</v-icon>
+              </v-list-tile-avatar>
+            </v-list-tile>
+
+            <v-list-tile @click="showRoom = !showRoom">
+              <v-list-tile-title>顯示地點</v-list-tile-title>
+              <v-list-tile-avatar v-if="showRoom">
+                <v-icon>done</v-icon>
+              </v-list-tile-avatar>
+            </v-list-tile>
+
+            <v-list-tile @click="showProfessor = !showProfessor">
+              <v-list-tile-title>顯示授課教師</v-list-tile-title>
+              <v-list-tile-avatar v-if="showProfessor">
+                <v-icon>done</v-icon>
+              </v-list-tile-avatar>
+            </v-list-tile>
+
+            <v-list-tile @click="print">
+              列印課表
+            </v-list-tile>
+          </v-list>
+          <v-card-text> </v-card-text>
         </v-card>
       </v-menu>
     </v-toolbar>
@@ -97,12 +103,12 @@
           'selectCourses.getCurrentSelectedCourses'
         ])
       "
-      pa-0
+      px-0
       fluid
       class="time-table"
       :style="
-        `zoom: ${zoom}; padding-top: ${48 /
-          zoom}px !important; padding-bottom: ${64 / zoom}px !important;`
+        `zoom: ${zoom}; padding-top: ${48 / zoom}px; padding-bottom: ${64 /
+          zoom}px; transform: translateZ(0);`
       "
       id="time-table-content"
       ref="timeTable"
@@ -167,9 +173,9 @@
           v-for="weekday in weekdayName"
           :key="weekday"
           :class="
-            'table-col' +
+            'table-col ' +
               (previewTime && previewTime.includes(weekday + timeSection.name)
-                ? ' purple lighten-4 preview'
+                ? 'preview'
                 : '')
           "
         >
@@ -196,14 +202,16 @@
                     };`
                 "
               >
-                <span
+                <div
                   class="vertical-middle-wrapper"
                   :title="
                     `${courses[course.number].title} ${
                       courses[course.number].time
                     }\n${toReadableProfessor(
                       courses[course.number].professor
-                    )} ${course.number}\n${courses[course.number].room}`
+                    )} ${course.number}\n${toShoterRoom(
+                      courses[course.number].room
+                    )}`
                   "
                 >
                   <span class="two-line">
@@ -213,9 +221,9 @@
                     {{ toReadableProfessor(courses[course.number].professor) }}
                   </span>
                   <span v-if="showRoom" class="one-line">
-                    {{ courses[course.number].room }}
+                    {{ toShoterRoom(courses[course.number].room) }}
                   </span>
-                </span>
+                </div>
               </v-flex>
             </v-layout>
           </v-container>
@@ -229,6 +237,66 @@
           </v-container>
         </v-flex>
       </v-layout>
+
+      <div style="display: none;">
+        <table class="time-table-print" id="time-table-print">
+          <thead>
+            <tr>
+              <td colspan="7" style="font-size: 24px; padding: 6px;">
+                課表
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td v-for="w in weekdayName" :key="w">
+                {{ $t(`SelectCourses.timeTable.weekday.${w.toLowerCase()}`) }}
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="timeSection in timeSectionName" :key="timeSection.name">
+              <td>
+                <span class="time-section-time">
+                  {{ timeSection.startTime }}
+                </span>
+                {{ timeSection.name }}
+                <span class="time-section-time">
+                  {{ timeSection.endTime }}
+                </span>
+              </td>
+
+              <td v-for="weekday in weekdayName" :key="weekday">
+                <div
+                  v-for="course in timeTable[weekday][timeSection.name]"
+                  :key="course.number"
+                  class="course"
+                  :style="
+                    showColor &&
+                      course.color &&
+                      `background-color: ${course.color[0]}; color: ${
+                        course.color[1]
+                      };`
+                  "
+                >
+                  <div class="vertical-middle-wrapper">
+                    <span>
+                      {{ courses[course.number].title }}
+                    </span>
+                    <span v-if="showProfessor" class="sub">
+                      {{
+                        toReadableProfessor(courses[course.number].professor)
+                      }}
+                    </span>
+                    <span v-if="showRoom" class="sub">
+                      {{ toShoterRoom(courses[course.number].room) }}
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </v-container>
   </v-container>
 </template>
@@ -246,6 +314,7 @@ import {
   VCheckbox,
   VIcon
 } from 'vuetify/lib'
+import { Printd } from 'printd'
 import { mapGetters, mapState } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
 
@@ -261,7 +330,6 @@ export default {
     VListTile,
     VListTileAvatar,
     VListTileTitle,
-    VCheckbox,
     VIcon
   },
   props: {
@@ -299,7 +367,7 @@ export default {
        * https://www.schemecolor.com/new-meaning-to-life.php
        */
       colorPair: [
-        ['#74A73A', '#fff'],
+        ['#addc78', '#000'],
         ['#D0E534', '#000'],
         ['#E5EFB2', '#000'],
         ['#E5C695', '#000'],
@@ -311,7 +379,7 @@ export default {
         ['#E1DCDE', '#000'],
         ['#BECFDD', '#000'],
         ['#AEC4D7', '#000'],
-        ['#A1BACF', '#043b3e']
+        ['#A1BACF', '#000']
       ],
       colorPairCount: 0
     }
@@ -319,9 +387,17 @@ export default {
   watch: {
     phase() {
       this.colorPairCount = 0
+    },
+    isMobile(nv) {
+      if (nv) {
+        this.zoom = 0.75
+      } else {
+        this.zoom = 1
+      }
     }
   },
   computed: {
+    ...mapState('ui', ['isMobile']),
     ...mapState('selectCourses', ['phase', 'style']),
     ...mapGetters('selectCourses', ['toReadableProfessor']),
     timeTable() {
@@ -360,6 +436,89 @@ export default {
       let color = this.colorPair[this.colorPairCount]
       this.colorPairCount = (this.colorPairCount + 1) % this.colorPair.length
       return color
+    },
+    toShoterRoom(room) {
+      const reg = /^[a-zA-Z0-9\s]*(.*)$/
+      return (room && reg.exec(room)[1]) || ''
+    },
+    print() {
+      const d = new Printd()
+      d.print(document.getElementById('time-table-print'), [
+        `
+.time-table-print {
+  border: 2px solid #000;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: -apple-system, '微軟正黑體', 'Microsoft JhengHei',
+    BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.time-table-print tr {
+  padding: 0;
+  margin: 0;
+}
+.time-table-print td {
+  text-align: center;
+  border: 1px solid #000;
+  padding: 3px;
+  margin: 0;
+}
+.time-table-print tbody td {
+  width: 15.5%;
+  text-align: center;
+  border: 1px solid #000;
+  padding: 3px;
+  margin: 0;
+  vertical-align: middle;
+  height: 66px;
+}
+.course {
+  text-align: center;
+  white-space: initial;
+  min-height: 58px;
+  line-height: 58px;
+  padding: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.vertical-middle-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 18px;
+}
+.vertical-middle-wrapper span {
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.vertical-middle-wrapper span:nth-child(1) {
+}
+.vertical-middle-wrapper span:nth-child(2) {
+  margin-top: 8px;
+}
+
+.time-table-print td:nth-child(1) {
+  width: 7%;
+  text-align: center;
+  border: 1px solid #000;
+  padding: 0;
+  margin: 0;
+}
+.time-table-print td:nth-child(1) span {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+.time-table-print td:nth-child(1) span.time-section-time {
+  font-size: 9px;
+  color: #666;
+}
+      `
+      ])
     }
   }
 }
@@ -385,6 +544,8 @@ export default {
     background-color: rgba(255, 255, 255, 0.9);
     z-index: 2;
     line-height: 30px;
+    transition-property: box-shadow;
+    transition-duration: 0.2s;
 
     &.shadow {
       box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
@@ -430,6 +591,10 @@ export default {
         display: block;
       }
     }
+  }
+
+  .preview {
+    background-color: rgba(0, 0, 0, 0.3);
   }
 
   .course-cell {
@@ -495,6 +660,10 @@ export default {
       .time-section-time {
         color: rgba(255, 255, 255, 0.3);
       }
+    }
+
+    .preview {
+      background-color: rgba(255, 255, 255, 0.3);
     }
 
     .course-cell {
