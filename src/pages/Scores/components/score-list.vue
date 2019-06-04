@@ -20,7 +20,6 @@
             v-for="item in availableSemester"
             :key="item.value"
             @click="semester = item.value"
-            ripple
           >
             <v-list-tile-title v-text="item.text" />
           </v-list-tile>
@@ -78,7 +77,7 @@
         </v-card>
       </v-container>
 
-      <v-list two-line ripple class="list-wrapper">
+      <v-list two-line class="list-wrapper">
         <template v-if="scoresList.length > 0">
           <template v-for="(score, index) in scoresList">
             <v-subheader
@@ -91,7 +90,6 @@
               v-if="!score.type && score.type !== 'subheader'"
               @click="$emit('show-score-detail', score.courseNumber)"
               :key="score.number"
-              ripple
             >
               <v-list-tile-content>
                 <v-list-tile-title>{{ score.courseTitle }}</v-list-tile-title>

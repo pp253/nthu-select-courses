@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Entry from '@/pages/Entry'
 import Service from '@/pages/Service'
+import { signal } from './back'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -39,3 +40,9 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  next(signal())
+})
+
+export default router
