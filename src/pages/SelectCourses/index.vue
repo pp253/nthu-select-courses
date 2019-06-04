@@ -166,33 +166,13 @@
                 <img
                   v-if="isMobile"
                   style="max-height: 60vh; max-width: 100%;"
-                  src="@/assets/search-mobile.gif"
-                  alt="🔍搜尋課程，還可以搜尋時段"
-                />
-                <img
-                  v-else
-                  style="max-height: 60vh; max-width: 100%;"
-                  src="@/assets/search-mobile.gif"
-                  alt="🔍搜尋課程，還可以搜尋時段"
-                />
-              </div>
-
-              <v-card-text class="text-xs-center">
-                🔍搜尋課程，還可以搜尋時段
-              </v-card-text>
-            </v-window-item>
-            <v-window-item>
-              <div class="text-xs-center">
-                <img
-                  v-if="isMobile"
-                  style="max-height: 60vh; max-width: 100%;"
                   src="@/assets/time-table-mobile.gif"
                   alt="💦一目瞭然的課表，還可以顯示教室地點"
                 />
                 <img
                   v-else
                   style="max-height: 60vh; max-width: 100%;"
-                  src="@/assets/time-table-mobile.gif"
+                  src="@/assets/time-table.gif"
                   alt="💦一目瞭然的課表，還可以顯示教室地點"
                 />
               </div>
@@ -212,13 +192,33 @@
                 <img
                   v-else
                   style="max-height: 60vh; max-width: 100%;"
-                  src="@/assets/selection-result-mobile.gif"
+                  src="@/assets/selection-result.gif"
                   alt="查看每個階段的選課結果"
                 />
               </div>
 
               <v-card-text class="text-xs-center">
                 😎查看每個階段的選課結果，課表也會一起更新
+              </v-card-text>
+            </v-window-item>
+            <v-window-item>
+              <div class="text-xs-center">
+                <img
+                  v-if="isMobile"
+                  style="max-height: 60vh; max-width: 100%;"
+                  src="@/assets/search-mobile.gif"
+                  alt="🔍搜尋課程，還可以搜尋時段"
+                />
+                <img
+                  v-else
+                  style="max-height: 60vh; max-width: 100%;"
+                  src="@/assets/search-mobile.gif"
+                  alt="🔍搜尋課程，還可以搜尋時段"
+                />
+              </div>
+
+              <v-card-text class="text-xs-center">
+                🔍搜尋課程，還可以搜尋時段
               </v-card-text>
             </v-window-item>
           </v-window>
