@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { register, unregister } from '@/router/back'
 import { VDialog, VBtn } from 'vuetify/lib'
 
 export default {
@@ -97,6 +98,11 @@ export default {
   watch: {
     value(newVal) {
       this.dialog = newVal
+      if (this.dialog) {
+        register(this.beforeBack)
+      } else {
+        unregister(this.beforeBack)
+      }
     }
   },
   methods: {
@@ -127,9 +133,14 @@ export default {
     clearPeriods() {
       this.periods = []
     },
+    beforeBack() {
+      this.close()
+      return false
+    },
     close() {
       this.dialog = false
       this.$emit('close')
+      unregister(this.beforeBack)
     }
   }
 }
