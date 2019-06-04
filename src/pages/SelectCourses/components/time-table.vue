@@ -309,7 +309,6 @@ import {
   VListTile,
   VListTileAvatar,
   VListTileTitle,
-  VCheckbox,
   VIcon
 } from 'vuetify/lib'
 import { Printd } from 'printd'
