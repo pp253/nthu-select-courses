@@ -70,7 +70,7 @@ export default {
         header: '其他需要志願序的課程 (請至原選課系統調整志願序)',
         status: 2,
         orderable: false,
-        includesCatalogs: ['進英']
+        includesCatalogs: ['英']
       },
       {
         header: 'SelectCourses.coursesList.waitingForRandomTitle',
@@ -103,9 +103,9 @@ export default {
      */
     popular: {
       departments: [
-        coursesDb.departments['GE  '],
-        coursesDb.departments['GEC '],
-        coursesDb.departments['PE  '],
+        coursesDb.departments['GE'],
+        coursesDb.departments['GEC'],
+        coursesDb.departments['PE'],
         coursesDb.departments['LANG']
       ],
       geDegree: [],
