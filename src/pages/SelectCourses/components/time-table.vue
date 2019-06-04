@@ -41,6 +41,8 @@
         </v-card>
       </v-menu>
 
+      <v-btn icon @click="print"><v-icon>print</v-icon></v-btn>
+
       <v-menu
         bottom
         left
@@ -76,12 +78,7 @@
                 <v-icon>done</v-icon>
               </v-list-tile-avatar>
             </v-list-tile>
-
-            <v-list-tile @click="print">
-              列印課表
-            </v-list-tile>
           </v-list>
-          <v-card-text> </v-card-text>
         </v-card>
       </v-menu>
     </v-toolbar>
@@ -187,6 +184,7 @@
                 :key="course.number"
                 @mouseover="$emit('update-preview-time', course.number)"
                 @mouseleave="$emit('update-preview-time', '')"
+                @click="openCourseDetail(course.number)"
                 :class="
                   (course.status === 'waitingForRandom'
                     ? 'highlight '
@@ -432,6 +430,9 @@ export default {
     }
   },
   methods: {
+    openCourseDetail(courseNumber) {
+      this.$emit('open-course-detail', courseNumber)
+    },
     getRandomColor() {
       let color = this.colorPair[this.colorPairCount]
       this.colorPairCount = (this.colorPairCount + 1) % this.colorPair.length
@@ -520,6 +521,13 @@ export default {
       `
       ])
     }
+  },
+  mounted() {
+    if (this.isMobile) {
+      this.zoom = 0.75
+    } else {
+      this.zoom = 1
+    }
   }
 }
 </script>
@@ -603,10 +611,11 @@ export default {
     min-height: $col-height;
     line-height: $col-height;
     margin: 0 3px 3px 3px;
-    padding: 0 3px 3px 3px;
+    padding: 3px 3px 3px 3px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 2px;
     overflow: hidden;
+    cursor: pointer;
 
     .vertical-middle-wrapper {
       display: inline-block;
