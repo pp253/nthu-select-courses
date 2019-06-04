@@ -145,13 +145,13 @@
               <div class="text-xs-center">
                 <img
                   v-if="isMobile"
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/open-course-detail-mobile.gif"
                   alt="📊點擊課程打開課程大綱、成績分布"
                 />
                 <img
                   v-else
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/open-course-detail.gif"
                   alt="📊點擊課程打開課程大綱、成績分布"
                 />
@@ -165,13 +165,13 @@
               <div class="text-xs-center">
                 <img
                   v-if="isMobile"
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/time-table-mobile.gif"
                   alt="💦一目瞭然的課表，還可以顯示教室地點"
                 />
                 <img
                   v-else
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/time-table.gif"
                   alt="💦一目瞭然的課表，還可以顯示教室地點"
                 />
@@ -185,13 +185,13 @@
               <div class="text-xs-center">
                 <img
                   v-if="isMobile"
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/selection-result-mobile.gif"
                   alt="查看每個階段的選課結果"
                 />
                 <img
                   v-else
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/selection-result.gif"
                   alt="查看每個階段的選課結果"
                 />
@@ -205,13 +205,13 @@
               <div class="text-xs-center">
                 <img
                   v-if="isMobile"
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/search-mobile.gif"
                   alt="🔍搜尋課程，還可以搜尋時段"
                 />
                 <img
                   v-else
-                  style="max-height: 60vh; max-width: 100%;"
+                  style="max-height: 40vh; max-width: 100%;"
                   src="@/assets/search-mobile.gif"
                   alt="🔍搜尋課程，還可以搜尋時段"
                 />
