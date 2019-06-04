@@ -3,6 +3,10 @@ import error from '@/lib/error'
 import coursesDb from './courses_db.min.json'
 import scoresharing from './scoresharing'
 
+export function getCourseSemester(courseNumber) {
+  return courseNumber.slice(0, 5)
+}
+
 export default {
   namespaced: true,
   modules: { scoresharing },
@@ -63,6 +67,12 @@ export default {
         includesCatalogs: ['中']
       },
       {
+        header: '其他需要志願序的課程 (請至原選課系統調整志願序)',
+        status: 2,
+        orderable: false,
+        includesCatalogs: ['進英']
+      },
+      {
         header: 'SelectCourses.coursesList.waitingForRandomTitle',
         status: 2,
         orderable: false
@@ -93,9 +103,9 @@ export default {
      */
     popular: {
       departments: [
-        coursesDb.departments['GE'],
-        coursesDb.departments['GEC'],
-        coursesDb.departments['PE'],
+        coursesDb.departments['GE  '],
+        coursesDb.departments['GEC '],
+        coursesDb.departments['PE  '],
         coursesDb.departments['LANG']
       ],
       geDegree: [],
@@ -129,14 +139,16 @@ export default {
       }
     },
 
-    classmates: {}
+    classmates: {},
+
+    notSupport: ['進修英文', '商用英文', '初級英文寫作-段落']
   },
   getters: {
-    isCurrentSemester(state, getters) {
+    isCurrentSemester(state) {
       return courseNumber => {
         return (
           courseNumber !== undefined &&
-          getters.getCourseSemester(courseNumber) === state.currentSemester
+          getCourseSemester(courseNumber) === state.currentSemester
         )
       }
     },
@@ -695,13 +707,6 @@ export default {
         }
         reject(error.ResponseErrorMsg.DepartmentAbbrNotFound())
       })
-    },
-    isCourseSelected(context, options) {
-      return (
-        context.state.currentSelectedCourses.find(course => {
-          return course.number === options.courseNumber
-        }) !== undefined
-      )
     },
     getClassmates(context, options) {
       return new Promise((resolve, reject) => {

@@ -6,7 +6,7 @@
         {{ course.title || course.chineseTitle || title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="closeCourseDetail">
+      <v-btn icon @click="close">
         <v-icon>close</v-icon>
       </v-btn>
 
@@ -343,120 +343,8 @@
             </v-list-tile>
           </v-list>
         </v-tab-item>
-        <!--
-        <v-tab-item value="tab-course-detail-comments"
-                  :key="2">
-          <v-layout wrap
-                    justify-center>
-            <v-flex xs12>
-              <v-container>
-                <v-layout wrap>
-                  <v-flex xs4>
-                    <div class="comments-score-title grey--text text--darken-2">甜度</div>
-                    <div class="comments-score-value">3.8</div>
-                  </v-flex>
-                  <v-flex xs4>
-                    <div class="comments-score-title grey--text text--darken-2">甜度</div>
-                    <div class="comments-score-value">3.8</div>
-                  </v-flex>
-                  <v-flex xs4>
-                    <div class="comments-score-title grey--text text--darken-2">甜度</div>
-                    <div class="comments-score-value">3.8</div>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-
-              <v-divider />
-              <v-container pa-0>
-                <v-layout wrap>
-                  <v-flex xs12
-                          sm6
-                          lg4>
-                    <v-container>
-                      <v-btn @click.native="showCommentDialog = true"
-                             block>撰寫您的評論</v-btn>
-                    </v-container>
-                  </v-flex>
-                  <v-flex v-for="i in 6"
-                          :key="i"
-                          xs12
-                          sm6
-                          lg4>
-                    <v-container pa-3>
-                      <v-card>
-                        <v-card-title class="pb-0">
-                          <span>123</span>
-                          <v-spacer />
-                          <span>
-                            3.5 / 3.5 / 3.5
-                          </span>
-                        </v-card-title>
-                        <v-card-text>任何產業均有其產業秩序及遊戲規則，利用他人著作的遊戲規則，最主要是著作權法。特別是現今多元的社會中，利用他人著作的情形，</v-card-text>
-                        <v-card-actions class="pt-0">
-                          <v-btn icon>
-                            <v-icon class="grey--text text--lighten-1">thumb_up</v-icon>
-                          </v-btn>
-                          <v-btn icon>
-                            <v-icon class="grey--text text--lighten-1">thumb_down</v-icon>
-                          </v-btn>
-                          <v-spacer />
-                          <v-btn icon>
-                            <v-icon class="grey--text text--lighten-1">report_problem</v-icon>
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-container>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-
-              <v-divider />
-
-              <v-container>
-                {{ course.professor }}老師還有開設以下課程
-                <v-layout>
-                  <v-flex>
-
-                  </v-flex>
-                </v-layout>
-              </v-container>
-              <v-divider />
-              <v-container>
-                以上資料由NTHU+提供。
-              </v-container>
-            </v-flex>
-          </v-layout>
-        </v-tab-item>
-        -->
       </v-tabs-items>
     </v-container>
-    <!--
-    <v-dialog :fullscreen="$store.state.ui.isMobile"
-              v-model="showCommentDialog"
-              max-width="500px"
-              persistent>
-      <v-card>
-        <v-card-title class="headline">評論{{ course.title || course.chineseTitle }}</v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field name="comments-name"
-                          label="您的名字"
-                          value="匿名"></v-text-field>
-            <v-text-field name="comments-text"
-                          label="您的想法"
-                          multi-line></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn flat
-                 @click="showCommentDialog = false">取消</v-btn>
-          <v-btn flat
-                 @click="showCommentDialog = false">送出</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    -->
   </v-container>
 </template>
 
@@ -483,6 +371,7 @@ import { mapState, mapGetters } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
 import DistributionChart from '../../Scores/components/distribution-chart'
 import Vue from 'vue'
+import { register, unregister } from '../../../router/back'
 
 export default {
   name: 'CourseDetail',
@@ -534,7 +423,8 @@ export default {
       'selectionPhase',
       'addOrDropPhase',
       'withdrawalPhase',
-      'currentSelectedCourses'
+      'currentSelectedCourses',
+      'notSupport'
     ]),
     ...mapState('selectCourses/scoresharing', ['valid']),
     enrolledClassmatesSearchResult() {
@@ -559,6 +449,9 @@ export default {
   },
   watch: {
     courseNumber(newVal) {
+      let courseNumber = newVal
+      unregister(this.beforeBack)
+      register(this.beforeBack)
       if (this.courses[newVal]) {
         if (!this.courses[newVal].syllabus) {
           this.$store
@@ -566,6 +459,9 @@ export default {
               courseNumber: newVal
             })
             .then(() => {
+              if (courseNumber !== this.courseNumber) {
+                return
+              }
               this.updateCourse()
               this.updateScoresDist()
             })
@@ -579,6 +475,9 @@ export default {
             courseNumber: newVal
           })
           .then(() => {
+            if (courseNumber !== this.courseNumber) {
+              return
+            }
             this.updateCourse()
             this.updateScoresDist(newVal)
           })
@@ -587,9 +486,15 @@ export default {
       this.$store
         .dispatch('selectCourses/getClassmates', { courseNumber: newVal })
         .then(classmates => {
+          if (courseNumber !== this.courseNumber) {
+            return
+          }
           this.enrolledClassmates = classmates
         })
         .catch(() => {
+          if (courseNumber !== this.courseNumber) {
+            return
+          }
           this.enrolledClassmates = []
         })
     },
@@ -623,15 +528,16 @@ export default {
   },
   methods: {
     updateScoresDist() {
+      let courseNumber = this.courseNumber
       let course =
         Object.keys(this.course) === 0
-          ? this.courses[this.courseNumber]
+          ? this.courses[courseNumber]
           : this.course
       if (!course || Object.keys(course) === 0) {
         console.error(
           'course and courses[courseNumber] are both null',
           course,
-          this.courseNumber
+          courseNumber
         )
         return
       }
@@ -645,6 +551,9 @@ export default {
           TEACHER: teacher
         })
         .then(scoresDist => {
+          if (courseNumber !== this.courseNumber) {
+            return
+          }
           Vue.set(this, 'scoresDist', scoresDist || [])
           if (this.scoresDist.length > 0) {
             this.chartData = {
@@ -682,6 +591,17 @@ export default {
       }
     },
     addCourse(courseNumber) {
+      if (this.notSupport.includes(this.courses[courseNumber].title)) {
+        this.$store.dispatch('ui/openRequestDialog', {
+          title: `很抱歉，簡易選課不支援加選「${
+            this.courses[courseNumber].title
+          }」`,
+          text: '因為這堂課的加選機制比較複雜，請至原選課系統選課！',
+          mode: 'info'
+        })
+        return
+      }
+
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch('ui/openRequestDialog', {
@@ -733,30 +653,31 @@ export default {
           })
       })
     },
-    /* eslint-disable-next-line */
-    addFavorite(number) {
-      // store.addFavorateCourses(number)
+    beforeBack() {
+      this.close()
+      return false
     },
-    /* eslint-disable-next-line */
-    removeFavorite(number) {
-      // store.removeFavorateCourses(number)
-    },
-    closeCourseDetail() {
+    close() {
       this.$emit('close-course-detail')
+      unregister(this.beforeBack)
     },
     search(text) {
       this.$emit('search', text)
       if (this.$store.state.ui.isMobile) {
-        this.closeCourseDetail()
+        this.close()
         this.$emit('goto-panel-courses-catalog')
       }
     },
     async retry() {
+      let courseNumber = this.courseNumber
       let valid = await this.$store.dispatch(
         'selectCourses/scoresharing/validate'
       )
+      if (courseNumber !== this.courseNumber) {
+        return
+      }
       if (valid) {
-        await this.updateScoresDist(this.courseNumber)
+        await this.updateScoresDist()
       }
     }
   }
