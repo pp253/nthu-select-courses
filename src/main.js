@@ -14,6 +14,7 @@ import Vuetify, {
   VBtn,
   VIcon
 } from 'vuetify/lib'
+import { Ripple } from 'vuetify/lib/directives'
 import 'vuetify/src/stylus/app.styl'
 import VueWait from 'vue-wait'
 import locale from '@/locale'
@@ -37,6 +38,9 @@ Vue.use(Vuetify, {
     VSubheader,
     VBtn,
     VIcon
+  },
+  directives: {
+    Ripple
   },
   theme: {
     primary: '#64B4F6',

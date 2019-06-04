@@ -64,19 +64,19 @@ export default {
     return {
       services: [
         {
-          title: 'Scores.name',
-          content: 'Scores.description',
-          icon: 'assessment',
-          path: '/scores',
-          color: '#FFE4BF'
-        },
-        {
           title: 'SelectCourses.name',
           content: 'SelectCourses.description',
           icon: 'playlist_add',
           path: '/select_courses',
           disabled: false,
           color: '#C2E2FD'
+        },
+        {
+          title: 'Scores.name',
+          content: 'Scores.description',
+          icon: 'assessment',
+          path: '/scores',
+          color: '#FFE4BF'
         } /*,
         {
           title: 'AdvisorPassword.name',
