@@ -51,6 +51,9 @@
                       <div class="grey--text darken-1">
                         請使用你在校務資訊系統登入的帳號。常見問題請見頁底。
                       </div>
+                      <div class="red--text">
+                        本系統還在測試階段，選完課請至原選課系統確認！
+                      </div>
                     </div>
                   </v-card-title>
                   <v-window v-model="usingACIXSTORE" vertical>
