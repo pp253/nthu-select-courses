@@ -168,7 +168,25 @@
               {{ courses[course.number].time }}
             </v-list-tile-action-text>
             <div class="text-xs-center" @click.stop>
-              <v-menu top left lazy>
+              <v-btn
+                icon
+                v-if="
+                  isCurrentSemester(course.number) &&
+                    (addOrDropPhase || selectionPhase) &&
+                    !courses[course.number].canceled
+                "
+                @click="toggleAddQuitCourse(course.number)"
+              >
+                <v-icon>
+                  {{
+                    isCourseSelected(course.number)
+                      ? 'add_circle'
+                      : 'add_circle_outline'
+                  }}
+                </v-icon>
+              </v-btn>
+
+              <v-menu v-if="false" top left lazy>
                 <v-btn icon slot="activator">
                   <v-icon>more_vert</v-icon>
                 </v-btn>
@@ -178,11 +196,6 @@
                       isCurrentSemester(course.number) &&
                         (addOrDropPhase || selectionPhase) &&
                         !courses[course.number].canceled
-                    "
-                    @click="
-                      isCourseSelected(course.number)
-                        ? quitCourse(course.number)
-                        : addCourse(course.number)
                     "
                   >
                     {{
@@ -194,9 +207,11 @@
                   <v-list-tile
                     v-if="addOrDropPhase && !courses[course.number].canceled"
                     @click="
-                      isCourseSelected(course.number)
-                        ? quitCourse(course.number)
-                        : addCourse(course.number)
+                      () => {
+                        isCourseSelected(course.number)
+                          ? quitCourse(course.number)
+                          : addCourse(course.number)
+                      }
                     "
                   >
                     {{
@@ -205,11 +220,6 @@
                         : $t('SelectCourses.action.printLimitedCourseForm')
                     }}
                   </v-list-tile>
-                  <!--
-                <v-list-tile
-                  @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
-                >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('SelectCourses.action.addFavorite') : $t('SelectCourses.action.removeFavorite') }}</v-list-tile>
-                -->
                   <v-list-tile @click="openCourseDetail(course.number)">
                     {{ $t('SelectCourses.coursesList.detail') }}
                   </v-list-tile>
@@ -227,7 +237,7 @@
 
     <div v-if="list && moreThanOnePage" class="text-xs-center mt-3">
       <v-container v-if="page < getPage(list.length)">
-        <v-btn block @click="page++" color="white">下一頁</v-btn>
+        <v-btn block @click="page++" color="primary">下一頁</v-btn>
       </v-container>
       <v-pagination
         :length="getPage(list.length)"
@@ -236,11 +246,13 @@
       ></v-pagination>
     </div>
 
-    <div
-      v-if="list && list.length === 0"
-      class="text-xs-center pt-5"
-      v-t="emptyText"
-    ></div>
+    <v-container>
+      <div
+        v-if="list && list.length === 0"
+        class="text-xs-center pt-5"
+        v-t="emptyText"
+      ></div>
+    </v-container>
   </v-list>
 </template>
 
@@ -261,7 +273,8 @@ import {
   VMenu
 } from 'vuetify/lib'
 import draggable from 'vuedraggable'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import { getCourseSemester, toReadableProfessor } from '@/lib/utils'
 
 export default {
   name: 'CoursesList',
@@ -295,7 +308,7 @@ export default {
   data() {
     return {
       page: 1,
-      coursesPerPage: 20,
+      coursesPerPage: 40,
       resultList: []
     }
   },
@@ -315,12 +328,7 @@ export default {
       'geDegreeCode',
       'notSupport'
     ]),
-    ...mapGetters('selectCourses', [
-      'isCurrentSemester',
-      'isCourseSelected',
-      'coursesFiltering',
-      'toReadableProfessor'
-    ]),
+    ...mapGetters('selectCourses', ['coursesFiltering']),
     moreThanOnePage() {
       return !this.result && this.list && this.list.length > this.coursesPerPage
     },
@@ -394,6 +402,27 @@ export default {
     }
   },
   methods: {
+    toggleAddQuitCourse(courseNumber) {
+      this.isCourseSelected(courseNumber)
+        ? this.quitCourse(courseNumber)
+        : this.addCourse(courseNumber)
+    },
+    toReadableProfessor,
+    isCurrentSemester(courseNumber) {
+      return (
+        courseNumber !== undefined &&
+        getCourseSemester(courseNumber) === this.currentSemester
+      )
+    },
+    isCourseSelected(courseNumber) {
+      return (
+        this.currentSelectedCourses != null &&
+        courseNumber !== undefined &&
+        this.currentSelectedCourses.find(course => {
+          return course.number === courseNumber
+        }) !== undefined
+      )
+    },
     toShoterRoom(room) {
       const reg = /^[a-zA-Z0-9\s]*(.*)$/
       return (room && reg.exec(room)[1]) || ''

@@ -38,7 +38,7 @@
       "editOrder": "編輯志願序",
       "order": "志願{0}",
       "courseSub": "{0}　{1}",
-      "courseDetail": "學分{0}　人限{1} ({2})　{3}",
+      "courseDetail": "學分{0} | 人限{1}({2}) | {3}",
       "waitingForRandomTitle": "待亂數",
       "waitingForRandomGEPETitle": "通識、體育志願（待亂數）",
       "waitingForRandomCLTTitle": "大學中文志願（待亂數）",
