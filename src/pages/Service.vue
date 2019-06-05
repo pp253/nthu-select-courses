@@ -31,7 +31,7 @@
                 <v-card-text v-t="service.content"></v-card-text>
                 <v-card-actions>
                   <v-btn
-                    @click="$router.push(service.path)"
+                    @click="goto(service.path)"
                     outline
                     block
                     :disabled="service.disabled"
@@ -111,6 +111,12 @@ export default {
           console.error(err)
           this.$store.commit('ui/STOP_LOADING')
         })
+    },
+    goto(path) {
+      this.$store.commit('ui/START_LOADING')
+      setTimeout(() => {
+        this.$router.push(path)
+      }, 500)
     }
   },
   mounted() {
