@@ -154,7 +154,7 @@ export default {
   },
   data() {
     return {
-      chartData: null,
+      chartData: {},
       tabs: 'tab-distribution'
     }
   },
