@@ -177,7 +177,7 @@
                 您目前無法看這堂課的歷年成績分布。如果想要了解，請進行以下步驟
 
                 <ol>
-                  <li>在<b>電腦</b>上開啟 Google Chrome，手機沒辦法用。</li>
+                  <li>在<b>電腦</b>上開啟 Google Chrome，⚠️手機沒辦法用。</li>
                   <li>
                     安裝
                     <a
@@ -188,7 +188,11 @@
                     >。
                   </li>
                   <li>
-                    登入校務資訊系統。登入後，如有詢問是否願意分享成績，點「是」。
+                    登入
+                    <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">
+                      校務資訊系統
+                    </a>
+                    。登入後，如有詢問是否願意分享成績，點「是」。
                   </li>
                   <li><a @click="retry">點此重試。</a></li>
                 </ol>
@@ -220,13 +224,8 @@
                     還沒有人上傳過這堂課的歷年成績分布😥
                   </div>
 
-                  <div class="text-xs-center" v-if="scoresDist.length > 0">
-                    歷年成績：{{ scoresDist[scoresDistIndex][0] }}，全班{{
-                      scoresDist[scoresDistIndex][1][13]
-                    }}人
-                  </div>
-
                   <v-layout v-if="scoresDist.length > 0">
+                    <!--
                     <v-flex xs12>
                       <v-slider
                         :max="scoresDist.length - 1"
@@ -235,7 +234,8 @@
                         label="年分"
                       ></v-slider>
                     </v-flex>
-                    <v-flex mt-2>
+                    -->
+                    <v-flex>
                       <v-btn
                         icon
                         flat
@@ -245,7 +245,14 @@
                         <v-icon>chevron_left</v-icon>
                       </v-btn>
                     </v-flex>
-                    <v-flex mt-2>
+                    <v-flex xs12>
+                      <div class="text-xs-center" v-if="scoresDist.length > 0">
+                        歷年成績：{{ scoresDist[scoresDistIndex][0] }}
+                        <br />
+                        全班{{ scoresDist[scoresDistIndex][1][13] }}人
+                      </div>
+                    </v-flex>
+                    <v-flex>
                       <v-btn
                         icon
                         flat
