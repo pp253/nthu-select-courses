@@ -542,9 +542,17 @@ export default {
         return
       }
 
-      let teacher = Array.isArray(course.professor)
-        ? course.professor
-        : [course.professor.split('(')[0]]
+      let teacher
+      if (Array.isArray(course.professor)) {
+        teacher = course.professor
+      } else if (typeof course.professor === 'string') {
+        teacher = [course.professor.split('(')[0]]
+      } else {
+        throw new Error(
+          '[course-detail/updateScoresDist] course.professor should be either an array or string.' +
+            course.professor
+        )
+      }
       this.$store
         .dispatch('selectCourses/scoresharing/query', {
           NAME: course.title || course.chineseTitle,
