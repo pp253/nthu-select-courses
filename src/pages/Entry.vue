@@ -260,7 +260,7 @@
                 <v-flex xs12 sm6 lg4 order-sm2>
                   <v-card class="transparent elevation-0">
                     <v-card-title>
-                      <h2 class="headline">整合歷屆成績分布</h2>
+                      <h2 class="headline">整合歷屆成績分布*</h2>
                     </v-card-title>
                     <v-card-text>
                       感謝<a
@@ -270,6 +270,14 @@
                         NTHU ScoreSharing
                       </a>
                       ，簡易選課整合歷屆成績分布，讓你在選課的時候如魚得水。
+                    </v-card-text>
+                    <v-card-text style="font-size: 14px;" class="grey--text">
+                      * 您必須曾經在電腦版 Chrome 安裝過<a
+                        href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                        target="_blank"
+                      >
+                        NTHU ScoreSharing </a
+                      >套件，方可使用此功能。資料由 NTHU ScoreSharing 提供。
                     </v-card-text>
                   </v-card>
                 </v-flex>
