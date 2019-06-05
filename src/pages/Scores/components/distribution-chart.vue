@@ -44,7 +44,7 @@ export default {
               left: 0,
               right: 0,
               top: 40,
-              bottom: 40
+              bottom: 10
             }
           },
           plugins: {

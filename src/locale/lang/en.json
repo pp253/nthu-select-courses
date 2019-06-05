@@ -15,7 +15,7 @@
     "people": "{0} students"
   },
   "login": {
-    "username": "User Name",
+    "ID": "User Name",
     "userpass": "Password",
     "auth_img": "CAPTCHA",
     "login": "Login",

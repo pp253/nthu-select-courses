@@ -1,17 +1,19 @@
 <template>
-  <v-container pa-0
-               ma-0
-               fluid
-               class="scores">
-    <score-list @show-score-detail="showDetail"
-                :scores="scores"
-                :courses="courses"
-                :overview="overview"
-                :hidden="showCourseDetail" />
-    <score-course-detail @close-score-detail="closeDetail"
-                         :courses="courses"
-                         :course-detail-number="courseDetailNumber"
-                         :hidden="!showCourseDetail" />
+  <v-container pa-0 ma-0 fluid class="scores">
+    <score-list
+      @show-score-detail="showDetail"
+      :scores="scores"
+      :courses="courses"
+      :overview="overview"
+      :cumulative="cumulative"
+      :hidden="showCourseDetail"
+    />
+    <score-course-detail
+      @close-score-detail="closeDetail"
+      :courses="courses"
+      :course-detail-number="courseDetailNumber"
+      :hidden="!showCourseDetail"
+    />
   </v-container>
 </template>
 
@@ -33,7 +35,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('scores', ['scores', 'courses', 'overview', 'style'])
+    ...mapState('scores', [
+      'scores',
+      'courses',
+      'overview',
+      'cumulative',
+      'style'
+    ])
   },
   methods: {
     showDetail(courseNumber) {

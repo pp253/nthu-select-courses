@@ -20,7 +20,6 @@
             v-for="item in availableSemester"
             :key="item.value"
             @click="semester = item.value"
-            ripple
           >
             <v-list-tile-title v-text="item.text" />
           </v-list-tile>
@@ -38,23 +37,47 @@
     </v-toolbar>
 
     <v-content>
-      <v-list two-line ripple class="list-wrapper">
-        <v-list-tile
-          v-if="overview && overview[semester] && !searchText"
-          class="three-line-list-tile"
-        >
-          <v-list-tile-content>
-            <v-list-tile-title>
-              GPA：{{ overview[semester].gpa }}
-            </v-list-tile-title>
-            <!-- eslint-disable-next-line -->
-            <v-list-tile-sub-title>班排名：{{overview[semester].classRanking}}　系排名：{{overview[semester].departmentRanking}}</v-list-tile-sub-title>
-            <!-- eslint-disable-next-line -->
-            <v-list-tile-sub-title>應得學分：{{overview[semester].credit}}　實得學分：{{overview[semester].deservedCredit}}</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-divider v-if="overview && overview[semester] && !searchText" />
+      <v-container v-if="overview && overview[semester] && !searchText">
+        <v-card>
+          <v-card-text>
+            <v-layout wrap>
+              <v-flex xs4 md2 pb-2 class="list-with-label">
+                <div class="label">GPA</div>
+                {{ overview[semester].gpa }}
+              </v-flex>
 
+              <v-flex xs4 md2 pb-2 class="list-with-label">
+                <div class="label">應得學分</div>
+                {{ overview[semester].credit }}
+              </v-flex>
+              <v-flex xs4 md2 pb-2 class="list-with-label">
+                <div class="label">實得學分</div>
+                {{ overview[semester].deservedCredit }}
+              </v-flex>
+
+              <v-flex xs6 sm3 md2 pb-2 class="list-with-label">
+                <div class="label">班排名</div>
+                {{ overview[semester].classRanking }}
+              </v-flex>
+              <v-flex xs6 sm3 md2 pb-2 class="list-with-label">
+                <div class="label">系排名</div>
+                {{ overview[semester].departmentRanking }}
+              </v-flex>
+
+              <v-flex xs6 sm3 md2 class="list-with-label">
+                <div class="label">累計排名</div>
+                {{ cumulative.cumulativeRanking }}
+              </v-flex>
+              <v-flex xs6 sm3 md2 class="list-with-label">
+                <div class="label">累計平均GPA</div>
+                {{ cumulative.gpa }}
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-container>
+
+      <v-list two-line class="list-wrapper">
         <template v-if="scoresList.length > 0">
           <template v-for="(score, index) in scoresList">
             <v-subheader
@@ -67,20 +90,19 @@
               v-if="!score.type && score.type !== 'subheader'"
               @click="$emit('show-score-detail', score.courseNumber)"
               :key="score.number"
-              ripple
             >
               <v-list-tile-content>
                 <v-list-tile-title>{{ score.courseTitle }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{
-                  score.courseNumber + ' 學分' + score.credit
-                }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>
+                  {{ score.courseNumber + ' 學分' + score.credit }}
+                </v-list-tile-sub-title>
               </v-list-tile-content>
 
               <v-list-tile-action>
                 <div class="text-xs-center">
-                  <v-list-tile-action-text>{{
-                    score.grade
-                  }}</v-list-tile-action-text>
+                  <v-list-tile-action-text>
+                    {{ score.grade }}
+                  </v-list-tile-action-text>
                   <v-menu offset-y left>
                     <v-btn slot="activator" icon>
                       <v-icon>keyboard_arrow_right</v-icon>
@@ -150,7 +172,8 @@ export default {
   props: {
     scores: Object,
     courses: Object,
-    overview: Object
+    overview: Object,
+    cumulative: Object
   },
   data() {
     return {
@@ -266,6 +289,15 @@ export default {
       font-size: 16px;
       position: relative;
       top: 2px;
+    }
+  }
+
+  .list-with-label {
+    font-size: 20px;
+
+    .label {
+      display: block;
+      font-size: 12px;
     }
   }
 }

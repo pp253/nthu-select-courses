@@ -10,16 +10,16 @@
       <v-card-title primary-title class="pt-0">
         <div style="width: 100%;">
           <v-tabs v-model="activeTab" centered grow>
-            <v-tab ripple>
+            <v-tab>
               總錄/必選修
             </v-tab>
-            <v-tab ripple>
+            <v-tab>
               通識
             </v-tab>
-            <v-tab ripple>
+            <v-tab>
               學分學程
             </v-tab>
-            <v-tab ripple>
+            <v-tab>
               雙專長
             </v-tab>
           </v-tabs>
@@ -70,7 +70,6 @@
               <template v-if="!searchText">
                 <template v-for="department in popularList">
                   <v-list-tile
-                    ripple
                     :key="department.abbr + '-popular'"
                     @click="
                       choosedDepartment = department.abbr
@@ -100,7 +99,6 @@
               <v-subheader>全部</v-subheader>
               <template v-for="(department, departmentAbbr) in searchList">
                 <v-list-tile
-                  ripple
                   :key="departmentAbbr"
                   @click="
                     choosedDepartment = departmentAbbr
@@ -130,23 +128,16 @@
 
           <v-window-item class="h-100" key="class">
             <v-list class="h-100 overflow-auto" v-if="choosedDepartment !== ''">
-              <v-list-tile
-                ripple
-                :key="choosedDepartment"
-                @click="choosedClass = ''"
-              >
+              <v-list-tile :key="choosedDepartment" @click="choosedClass = ''">
                 <v-list-tile-content
                   :class="choosedClass === '' ? 'primary--text' : ''"
-                  >總錄</v-list-tile-content
                 >
+                  總錄
+                </v-list-tile-content>
               </v-list-tile>
               <v-divider />
               <template v-for="cls in departments[choosedDepartment].classes">
-                <v-list-tile
-                  ripple
-                  :key="cls.abbr"
-                  @click="choosedClass = cls.abbr"
-                >
+                <v-list-tile :key="cls.abbr" @click="choosedClass = cls.abbr">
                   <v-list-tile-content
                     :class="choosedClass === cls.abbr ? 'primary--text' : ''"
                   >
@@ -166,12 +157,12 @@
         >
           <v-subheader
             v-if="!searchText && popularList && popularList.length > 0"
-            >常用</v-subheader
           >
+            常用
+          </v-subheader>
           <template v-if="!searchText">
             <template v-for="item in popularList">
               <v-list-tile
-                ripple
                 :key="item + '-popular'"
                 @click="
                   choosedTab = activeTab
@@ -195,7 +186,6 @@
           <v-subheader>全部</v-subheader>
           <template v-for="item in searchList">
             <v-list-tile
-              ripple
               :key="item"
               @click="
                 choosedTab = activeTab
@@ -219,15 +209,16 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn flat @click="close()">{{ $t('dialog.Cancel') }}</v-btn>
-        <v-btn color="primary" flat @click="submit()">{{
-          $t('dialog.Apply')
-        }}</v-btn>
+        <v-btn color="primary" flat @click="submit()">
+          {{ $t('dialog.Apply') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import { register, unregister } from '@/router/back'
 import {
   VDialog,
   VWindow,
@@ -285,6 +276,11 @@ export default {
   watch: {
     value(newVal) {
       this.dialog = newVal
+      if (this.dialog) {
+        register(this.beforeBack)
+      } else {
+        unregister(this.beforeBack)
+      }
     },
     activeTab() {
       this.searchText = ''
@@ -377,11 +373,20 @@ export default {
       }
       return {}
     },
+    beforeBack() {
+      if (this.activeTab === 0 && this.activeWin === 1) {
+        this.activeWin = 0
+      } else {
+        this.close()
+      }
+      return false
+    },
     close() {
       this.activeWin = 0
       this.dialog = false
       this.searchText = ''
       this.$emit('close')
+      unregister(this.beforeBack)
     },
     search(text) {
       let searchPrefix = {

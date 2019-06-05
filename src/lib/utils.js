@@ -24,3 +24,18 @@ export function toArray(obj) {
   }
   return arr
 }
+
+export function getCourseSemester(courseNumber) {
+  return courseNumber.slice(0, 5)
+}
+
+export function toReadableProfessor(professorList) {
+  if (!professorList) {
+    return ''
+  }
+  let name = ''
+  for (let p of professorList) {
+    name += p.split('\t')[0] + ' '
+  }
+  return name
+}

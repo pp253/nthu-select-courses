@@ -153,48 +153,49 @@ export default {
           {
             name: '鄭建澤',
             link: 'mailto:pp.pp253@gmail.com',
-            description: '開發者，清大工工20級',
+            description: '工工20',
             img: img_pp253
-          },
-          {
-            text:
-              '<b>如何成為開發者？</b>請前往<a href="https://github.com/pp253/nthu-select-courses-server">GitHub</a>，然後PR個，你就成為了開發者！'
           }
         ],
         測試者: [
           {
             name: '王子齊',
             link: '',
-            description: '第一次封測，清大工工20級',
+            description: '第一次封測，工工20',
             img: ''
           },
           {
             name: '賴朱頎',
             link: '',
-            description: '第一次封測，清大工工20級',
+            description: '第一次封測，工工20',
             img: ''
           },
           {
             name: '黃提道',
             link: '',
-            description: '第一次封測，清大工工20級',
+            description: '第一次封測，工工20',
             img: ''
           },
           {
             name: '王冠勛',
             link: '',
-            description: '第一次封測，清大工工20級',
+            description: '第一次封測，工工20',
             img: ''
           },
           {
-            text:
-              '<b>如何成為測試者？</b>你可以透過表單申請成為新功能的測試者，只要試過任何測試版本，你都會出現在上面。'
+            name: '疏晢',
+            link: '',
+            description: '第一次封測，工院20',
+            img: ''
           }
         ],
         特別感謝: [
           {
-            text:
-              '<b>如何成為特別感謝者？</b>提供建議，或是發現並回報錯誤的人，只要你同意，就可以成為特別感謝的人。'
+            name: 'NTHU ScoreSharing',
+            link:
+              'https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf',
+            description: '提供成績分布',
+            img: ''
           }
         ]
       },

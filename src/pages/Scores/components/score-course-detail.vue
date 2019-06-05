@@ -8,7 +8,7 @@
       :color="style.scoreCourseDetail.toolbar.color"
       class="elevation-1"
     >
-      <v-btn @click="$emit('close-score-detail')" icon>
+      <v-btn @click="close" icon>
         <v-icon>arrow_back</v-icon>
       </v-btn>
       <v-toolbar-title v-if="course && course.syllabus">{{
@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import { register, unregister } from '@/router/back'
 import { mapState } from 'vuex'
 import {
   VTabs,
@@ -153,12 +154,13 @@ export default {
   },
   data() {
     return {
-      chartData: null,
+      chartData: {},
       tabs: 'tab-distribution'
     }
   },
   watch: {
     courseDetailNumber(newVal) {
+      register(this.beforeBack)
       this.$store.commit('ui/START_LOADING')
 
       this.$store
@@ -225,6 +227,16 @@ export default {
       } else {
         return {}
       }
+    }
+  },
+  methods: {
+    beforeBack() {
+      this.close()
+      return false
+    },
+    close() {
+      this.$emit('close-score-detail')
+      unregister(this.beforeBack)
     }
   }
 }

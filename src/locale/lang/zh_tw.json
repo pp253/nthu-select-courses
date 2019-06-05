@@ -15,7 +15,7 @@
     "people": "{0} 人"
   },
   "login": {
-    "username": "帳號",
+    "ID": "帳號",
     "userpass": "密碼",
     "auth_img": "驗證碼",
     "login": "登入",

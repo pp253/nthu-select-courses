@@ -127,13 +127,13 @@ export default {
     this.$store.commit('ui/STOP_LOADING')
 
     /**
-     * You can pass the AXICSTORE by /#/?session_token=???&username=???
+     * You can pass the AXICSTORE by /#/?session_token=???&ID=???
      */
     if (this.$route.query.session_token) {
       console.log('PRELOAD Session Token:', this.$route.query.session_token)
       this.$store.commit('user/SET_USER', {
         isLogin: true,
-        username: this.$route.query.username || 'UNKNOWN',
+        ID: this.$route.query.ID || 'UNKNOWN',
         sessionToken: this.$route.query.session_token
       })
       this.$router.push('/service')

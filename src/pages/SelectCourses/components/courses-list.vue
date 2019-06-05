@@ -3,7 +3,6 @@
 <template>
   <v-list
     class="courses-list"
-    ripple
     id="courses-list"
     style="transform: translateZ(0);"
   >
@@ -60,19 +59,17 @@
                           }}
                         </v-list-tile-action>
                         <v-list-tile-content>
-                          <v-list-tile-title>{{
-                            courses[element.number].title
-                          }}</v-list-tile-title>
-                          <v-list-tile-sub-title
-                            >{{
+                          <v-list-tile-title>
+                            {{ courses[element.number].title }}
+                          </v-list-tile-title>
+                          <v-list-tile-sub-title>
+                            {{
                               toReadableProfessor(
                                 courses[element.number].professor
                               )
                             }}
-                            {{
-                              courses[element.number].time
-                            }}</v-list-tile-sub-title
-                          >
+                            {{ courses[element.number].time }}
+                          </v-list-tile-sub-title>
                         </v-list-tile-content>
                         <v-list-tile-avatar class="drag-handle">
                           <v-icon>drag_handle</v-icon>
@@ -102,14 +99,13 @@
 
         <v-list-tile
           v-if="course.number in courses"
-          ripple
           :key="course.number"
           :title="
             `${courses[course.number].title} ${
               courses[course.number].time
             }\n${toReadableProfessor(courses[course.number].professor)} ${
               course.number
-            }\n${courses[course.number].room}`
+            }\n${toShoterRoom(courses[course.number].room)}`
           "
           @mouseover="
             updatePreviewTime(courses[course.number].time || course.number)
@@ -119,9 +115,9 @@
         >
           <v-list-tile-content>
             <v-list-tile-title>
-              <span v-if="courses[course.number].canceled" class="course-tag"
-                >停開</span
-              >
+              <span v-if="courses[course.number].canceled" class="course-tag">
+                停開
+              </span>
               <span
                 v-if="courses[course.number].ge_degree"
                 class="course-tag"
@@ -140,37 +136,57 @@
                   class="course-tag">{{ courses[course.number].required }}</span> -->
               {{ courses[course.number].title }}
             </v-list-tile-title>
-            <v-list-tile-sub-title class="grey--text text--darken-4"
-              >{{
+            <v-list-tile-sub-title class="grey--text text--darken-4">
+              {{
                 $t('SelectCourses.coursesList.courseSub', [
                   toReadableProfessor(courses[course.number].professor),
                   courses[course.number].number
                 ])
               }}
             </v-list-tile-sub-title>
-            <v-list-tile-sub-title class="detail"
-              >{{
+            <v-list-tile-sub-title class="detail">
+              {{
                 $t('SelectCourses.coursesList.courseDetail', [
                   courses[course.number].credit,
                   courses[course.number].size_limit,
                   courses[course.number].previous_size || '-',
-                  courses[course.number].room
+                  toShoterRoom(courses[course.number].room)
                 ])
               }}
             </v-list-tile-sub-title>
-            <v-list-tile-sub-title class="memo">{{
-              courses[course.number].memo ||
-                courses[course.number].course_rule ||
-                ' '
-            }}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="memo">
+              {{
+                courses[course.number].memo ||
+                  courses[course.number].course_rule ||
+                  ' '
+              }}
+            </v-list-tile-sub-title>
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <v-list-tile-action-text>{{
-              courses[course.number].time
-            }}</v-list-tile-action-text>
+            <v-list-tile-action-text>
+              {{ courses[course.number].time }}
+            </v-list-tile-action-text>
             <div class="text-xs-center" @click.stop>
-              <v-menu top left lazy>
+              <v-btn
+                icon
+                v-if="
+                  isCurrentSemester(course.number) &&
+                    (addOrDropPhase || selectionPhase) &&
+                    !courses[course.number].canceled
+                "
+                @click="toggleAddQuitCourse(course.number)"
+              >
+                <v-icon>
+                  {{
+                    isCourseSelected(course.number)
+                      ? 'add_circle'
+                      : 'add_circle_outline'
+                  }}
+                </v-icon>
+              </v-btn>
+
+              <v-menu v-if="false" top left lazy>
                 <v-btn icon slot="activator">
                   <v-icon>more_vert</v-icon>
                 </v-btn>
@@ -181,45 +197,32 @@
                         (addOrDropPhase || selectionPhase) &&
                         !courses[course.number].canceled
                     "
-                    @click="
-                      isCourseSelected(course.number)
-                        ? quitCourse(course.number)
-                        : addCourse(course.number)
-                    "
-                    ripple
                   >
                     {{
                       isCourseSelected(course.number)
                         ? $t('SelectCourses.action.quitCourse')
                         : $t('SelectCourses.action.addCourse')
-                    }}</v-list-tile
-                  >
+                    }}
+                  </v-list-tile>
                   <v-list-tile
                     v-if="addOrDropPhase && !courses[course.number].canceled"
                     @click="
-                      isCourseSelected(course.number)
-                        ? quitCourse(course.number)
-                        : addCourse(course.number)
+                      () => {
+                        isCourseSelected(course.number)
+                          ? quitCourse(course.number)
+                          : addCourse(course.number)
+                      }
                     "
-                    ripple
                   >
                     {{
                       isCourseSelected(course.number)
                         ? $t('SelectCourses.action.addLimitedCourse')
                         : $t('SelectCourses.action.printLimitedCourseForm')
-                    }}</v-list-tile
-                  >
-                  <!--
-                <v-list-tile
-                  @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
-                  ripple
-                >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('SelectCourses.action.addFavorite') : $t('SelectCourses.action.removeFavorite') }}</v-list-tile>
-                -->
-                  <v-list-tile
-                    @click="openCourseDetail(course.number)"
-                    ripple
-                    >{{ $t('SelectCourses.coursesList.detail') }}</v-list-tile
-                  >
+                    }}
+                  </v-list-tile>
+                  <v-list-tile @click="openCourseDetail(course.number)">
+                    {{ $t('SelectCourses.coursesList.detail') }}
+                  </v-list-tile>
                 </v-list>
               </v-menu>
             </div>
@@ -234,7 +237,7 @@
 
     <div v-if="list && moreThanOnePage" class="text-xs-center mt-3">
       <v-container v-if="page < getPage(list.length)">
-        <v-btn block @click="page++" color="white">下一頁</v-btn>
+        <v-btn block @click="page++" color="primary">下一頁</v-btn>
       </v-container>
       <v-pagination
         :length="getPage(list.length)"
@@ -243,11 +246,13 @@
       ></v-pagination>
     </div>
 
-    <div
-      v-if="list && list.length === 0"
-      class="text-xs-center pt-5"
-      v-t="emptyText"
-    ></div>
+    <v-container>
+      <div
+        v-if="list && list.length === 0"
+        class="text-xs-center pt-5"
+        v-t="emptyText"
+      ></div>
+    </v-container>
   </v-list>
 </template>
 
@@ -269,6 +274,7 @@ import {
 } from 'vuetify/lib'
 import draggable from 'vuedraggable'
 import { mapState, mapGetters } from 'vuex'
+import { getCourseSemester, toReadableProfessor } from '@/lib/utils'
 
 export default {
   name: 'CoursesList',
@@ -302,7 +308,7 @@ export default {
   data() {
     return {
       page: 1,
-      coursesPerPage: 20,
+      coursesPerPage: 40,
       resultList: []
     }
   },
@@ -319,14 +325,10 @@ export default {
       'currentSemester',
       'currentSelectedCourses',
       'coursesFilteringConfig',
-      'geDegreeCode'
+      'geDegreeCode',
+      'notSupport'
     ]),
-    ...mapGetters('selectCourses', [
-      'isCurrentSemester',
-      'isCourseSelected',
-      'coursesFiltering',
-      'toReadableProfessor'
-    ]),
+    ...mapGetters('selectCourses', ['coursesFiltering']),
     moreThanOnePage() {
       return !this.result && this.list && this.list.length > this.coursesPerPage
     },
@@ -400,10 +402,46 @@ export default {
     }
   },
   methods: {
+    toggleAddQuitCourse(courseNumber) {
+      this.isCourseSelected(courseNumber)
+        ? this.quitCourse(courseNumber)
+        : this.addCourse(courseNumber)
+    },
+    toReadableProfessor,
+    isCurrentSemester(courseNumber) {
+      return (
+        courseNumber !== undefined &&
+        getCourseSemester(courseNumber) === this.currentSemester
+      )
+    },
+    isCourseSelected(courseNumber) {
+      return (
+        this.currentSelectedCourses != null &&
+        courseNumber !== undefined &&
+        this.currentSelectedCourses.find(course => {
+          return course.number === courseNumber
+        }) !== undefined
+      )
+    },
+    toShoterRoom(room) {
+      const reg = /^[a-zA-Z0-9\s]*(.*)$/
+      return (room && reg.exec(room)[1]) || ''
+    },
     getPage(index) {
       return parseInt((index - 1) / this.coursesPerPage) + 1
     },
     addCourse(courseNumber) {
+      if (this.notSupport.includes(this.courses[courseNumber].title)) {
+        this.$store.dispatch('ui/openRequestDialog', {
+          title: `很抱歉，簡易選課不支援加選「${
+            this.courses[courseNumber].title
+          }」`,
+          text: '因為這堂課的加選機制比較複雜，請至原選課系統選課！',
+          mode: 'info'
+        })
+        return
+      }
+
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch('ui/openRequestDialog', {
@@ -586,9 +624,14 @@ export default {
 
   .v-list__tile {
     height: 88px + 16px !important;
+    // padding: 0 8px 0 8px;
 
-    .v-list__tile__action-text {
-      font-size: 16px;
+    .v-list__tile__action {
+      max-width: 30px;
+      min-width: 30px;
+      .v-list__tile__action-text {
+        font-size: 16px;
+      }
     }
 
     .memo {

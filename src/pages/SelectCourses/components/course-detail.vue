@@ -6,81 +6,82 @@
         {{ course.title || course.chineseTitle || title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="closeCourseDetail">
+      <v-btn icon @click="close">
         <v-icon>close</v-icon>
       </v-btn>
 
       <v-tabs slot="extension" centered v-model="tabs">
-        <v-tab href="#tab-course-detail-syllabus">{{
-          $t('courseDetail.syllabus')
-        }}</v-tab>
-        <v-tab href="#tab-course-detail-enrolled-classmates">{{
-          $t('courseDetail.classmates')
-        }}</v-tab>
+        <v-tab href="#tab-course-detail-syllabus">
+          {{ $t('courseDetail.syllabus') }}
+        </v-tab>
+        <v-tab href="#tab-course-detail-enrolled-classmates">
+          {{ $t('courseDetail.classmates') }}
+        </v-tab>
         <!-- <v-tab href="#tab-course-detail-comments">課程評論</v-tab> -->
       </v-tabs>
     </v-toolbar>
 
-    <loading-container
-      v-if="$wait.is('selectCourses.getSyllabus')"
-      slot="waiting"
-    />
+    <loading-container v-if="$wait.is('selectCourses.getSyllabus')" />
     <v-container v-else fluid pa-0 ma-0>
-      <v-tabs-items v-model="tabs">
+      <v-tabs-items v-model="tabs" touchless>
         <v-tab-item value="tab-course-detail-syllabus" :key="0">
           <v-layout wrap justify-center>
             <v-flex xs12>
               <v-container>
                 <v-layout wrap>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.number')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.number') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.number }}</v-flex>
                   <v-flex xs3 md2 class="grey--text text--darken-2">
                     <a
                       href="http://curricul.web.nthu.edu.tw/files/13-1073-12448.php"
                       rel="noreferrer"
                       target="_blank"
-                      >{{ $t('courseDetail.time') }}</a
-                    ></v-flex
-                  >
+                    >
+                      {{ $t('courseDetail.time') }}
+                    </a>
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.time || '' }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.professor')
-                  }}</v-flex>
-                  <v-flex xs9 md4>{{
-                    toReadableProfessor(course.professor)
-                  }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.credit')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.professor') }}
+                  </v-flex>
+                  <v-flex xs9 md4>
+                    {{ toReadableProfessor(course.professor) }}
+                  </v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.credit') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.credit }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.size_limit')
-                  }}</v-flex>
-                  <v-flex xs9 md4>{{
-                    (course.size_limit || '-') +
-                      ` (${course.previous_size || '-'})`
-                  }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.reserved')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.size_limit') }}
+                  </v-flex>
+                  <v-flex xs9 md4>
+                    {{
+                      (course.size_limit || '-') +
+                        ` (${course.previous_size || '-'})`
+                    }}
+                  </v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.reserved') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.reserved }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.room')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.room') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.room }}</v-flex>
-                  <v-flex xs3 md2 class="grey--text text--darken-2">{{
-                    $t('courseDetail.language')
-                  }}</v-flex>
+                  <v-flex xs3 md2 class="grey--text text--darken-2">
+                    {{ $t('courseDetail.language') }}
+                  </v-flex>
                   <v-flex xs9 md4>{{ course.language }}</v-flex>
                   <v-flex xs3 md2 class="grey--text text--darken-2">
                     <a
                       href="http://cge.gec.nthu.edu.tw/course-3/"
                       rel="noreferrer"
                       target="_blank"
-                      >{{ $t('courseDetail.ge_object') }}</a
                     >
+                      {{ $t('courseDetail.ge_object') }}
+                    </a>
                   </v-flex>
                   <v-flex xs9 md4>{{ course.ge_object }}</v-flex>
                 </v-layout>
@@ -92,12 +93,13 @@
                         xs3
                         md2
                         class="grey--text text--darken-2"
-                        >{{ $t(`courseDetail.${key}`) }}</v-flex
                       >
+                        {{ $t(`courseDetail.${key}`) }}
+                      </v-flex>
                       <v-flex :key="key + '-content'" xs9 md10>
-                        <v-chip @click="search(`${key}:${course[key]}`)">{{
-                          course[key]
-                        }}</v-chip>
+                        <v-chip @click="search(`${key}:${course[key]}`)">
+                          {{ course[key] }}
+                        </v-chip>
                       </v-flex>
                     </template>
                   </template>
@@ -115,8 +117,9 @@
                           v-for="item in course[key]"
                           :key="item"
                           @click="search(`${key}:${item}`)"
-                          >{{ item }}</v-chip
                         >
+                          {{ item }}
+                        </v-chip>
                       </v-flex>
                     </template>
                   </template>
@@ -129,8 +132,9 @@
                         xs3
                         md2
                         class="grey--text text--darken-2"
-                        >{{ $t(`courseDetail.${key}`) }}</v-flex
                       >
+                        {{ $t(`courseDetail.${key}`) }}
+                      </v-flex>
                       <v-flex
                         :key="key + '-content'"
                         xs9
@@ -152,30 +156,139 @@
                       ? quitCourse(course.number)
                       : addCourse(course.number)
                   "
-                  >{{
+                >
+                  {{
                     isCourseSelected(course.number)
                       ? $t('SelectCourses.action.quitCourse')
                       : $t('SelectCourses.action.addCourse')
-                  }}</v-btn
-                >
+                  }}
+                </v-btn>
                 <!--
                 <v-btn
                   @click="store.user.favoriteCourses.indexOf(course.number) === -1 ? addFavorite(course.number) : removeFavorite(course.number)"
                 >{{ store.user.favoriteCourses.indexOf(course.number) === -1 ? $t('action.addFavorite') : $t('action.removeFavorite') }}</v-btn>
                 -->
               </v-container>
+              <v-divider></v-divider>
             </v-flex>
+
+            <v-flex xs12 v-if="!valid">
+              <v-container>
+                您目前無法看這堂課的歷年成績分布。如果想要了解，請進行以下步驟
+
+                <ol>
+                  <li>在<b>電腦</b>上開啟 Google Chrome，⚠️手機沒辦法用。</li>
+                  <li>
+                    安裝
+                    <a
+                      href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                      target="_blank"
+                    >
+                      NTHU ScoreSharing 擴充功能 </a
+                    >。
+                  </li>
+                  <li>
+                    登入
+                    <a href="https://www.ccxp.nthu.edu.tw/ccxp/COURSE/">
+                      校務資訊系統
+                    </a>
+                    。登入後，如有詢問是否願意分享成績，點「是」。
+                  </li>
+                  <li><a @click="retry">點此重試。</a></li>
+                </ol>
+
+                <div class="text-xs-right" style="font-size: 0.9em;">
+                  以上資料來自
+                  <a
+                    href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                    target="_blank"
+                  >
+                    NTHU ScoreSharing
+                  </a>
+                </div>
+              </v-container>
+              <v-divider></v-divider>
+            </v-flex>
+
+            <v-flex xs12 v-if="valid">
+              <distribution-chart
+                v-if="scoresDist.length > 0"
+                :chart-data="chartData"
+              />
+
+              <v-container :pt-0="scoresDist.length > 0">
+                <v-wait for="scoresharing/query">
+                  <loading-container slot="waiting"></loading-container>
+
+                  <div v-if="!scoresDist || scoresDist.length === 0">
+                    還沒有人上傳過這堂課的歷年成績分布😥
+                  </div>
+
+                  <v-layout v-if="scoresDist.length > 0">
+                    <!--
+                    <v-flex xs12>
+                      <v-slider
+                        :max="scoresDist.length - 1"
+                        :min="0"
+                        v-model="scoresDistIndex"
+                        label="年分"
+                      ></v-slider>
+                    </v-flex>
+                    -->
+                    <v-flex>
+                      <v-btn
+                        icon
+                        flat
+                        @click="scoresDistIndex--"
+                        :disabled="scoresDistIndex <= 0"
+                      >
+                        <v-icon>chevron_left</v-icon>
+                      </v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <div class="text-xs-center" v-if="scoresDist.length > 0">
+                        歷年成績：{{ scoresDist[scoresDistIndex][0] }}
+                        <br />
+                        全班{{ scoresDist[scoresDistIndex][1][13] }}人
+                      </div>
+                    </v-flex>
+                    <v-flex>
+                      <v-btn
+                        icon
+                        flat
+                        @click="scoresDistIndex++"
+                        :disabled="scoresDistIndex === scoresDist.length - 1"
+                      >
+                        <v-icon>chevron_right</v-icon>
+                      </v-btn>
+                    </v-flex>
+                  </v-layout>
+
+                  <div class="text-xs-right" style="font-size: 0.9em;">
+                    以上資料來自
+                    <a
+                      href="https://chrome.google.com/webstore/detail/nthuscoresharing/fbbgchnopppgncdjbckkjehfchncghdf"
+                      target="_blank"
+                    >
+                      NTHU ScoreSharing
+                    </a>
+                  </div>
+                </v-wait>
+              </v-container>
+              <v-divider></v-divider>
+            </v-flex>
+
             <v-flex
               xs12
               v-if="course.syllabus && course.syllabus.briefDescription !== ''"
             >
-              <v-divider></v-divider>
               <v-container
                 v-html="course.syllabus.briefDescription"
               ></v-container>
-            </v-flex>
-            <v-flex xs12 v-if="course.syllabus">
               <v-divider></v-divider>
+            </v-flex>
+
+            <v-flex xs12 v-if="course.syllabus">
               <v-container>
                 <v-btn
                   :href="
@@ -185,8 +298,9 @@
                   "
                   target="_blank"
                   rel="noreferrer"
-                  >{{ $t('courseDetail.downloadSyllabus') }}</v-btn
                 >
+                  {{ $t('courseDetail.downloadSyllabus') }}
+                </v-btn>
                 <div v-html="course.syllabus.description"></div>
               </v-container>
             </v-flex>
@@ -230,126 +344,14 @@
               <v-divider :key="`student-${index}-divider`"></v-divider>
             </template>
             <v-list-tile v-if="enrolledClassmatesSearchResult.length === 0">
-              <v-list-tile-content
-                >沒有人選這堂課，或是你沒辦法看到這堂課的同學</v-list-tile-content
-              >
+              <v-list-tile-content>
+                沒有人選這堂課，或是你沒辦法看到這堂課的同學
+              </v-list-tile-content>
             </v-list-tile>
           </v-list>
         </v-tab-item>
-        <!--
-        <v-tab-item value="tab-course-detail-comments"
-                  :key="2">
-          <v-layout wrap
-                    justify-center>
-            <v-flex xs12>
-              <v-container>
-                <v-layout wrap>
-                  <v-flex xs4>
-                    <div class="comments-score-title grey--text text--darken-2">甜度</div>
-                    <div class="comments-score-value">3.8</div>
-                  </v-flex>
-                  <v-flex xs4>
-                    <div class="comments-score-title grey--text text--darken-2">甜度</div>
-                    <div class="comments-score-value">3.8</div>
-                  </v-flex>
-                  <v-flex xs4>
-                    <div class="comments-score-title grey--text text--darken-2">甜度</div>
-                    <div class="comments-score-value">3.8</div>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-
-              <v-divider />
-              <v-container pa-0>
-                <v-layout wrap>
-                  <v-flex xs12
-                          sm6
-                          lg4>
-                    <v-container>
-                      <v-btn @click.native="showCommentDialog = true"
-                             block>撰寫您的評論</v-btn>
-                    </v-container>
-                  </v-flex>
-                  <v-flex v-for="i in 6"
-                          :key="i"
-                          xs12
-                          sm6
-                          lg4>
-                    <v-container pa-3>
-                      <v-card>
-                        <v-card-title class="pb-0">
-                          <span>123</span>
-                          <v-spacer />
-                          <span>
-                            3.5 / 3.5 / 3.5
-                          </span>
-                        </v-card-title>
-                        <v-card-text>任何產業均有其產業秩序及遊戲規則，利用他人著作的遊戲規則，最主要是著作權法。特別是現今多元的社會中，利用他人著作的情形，</v-card-text>
-                        <v-card-actions class="pt-0">
-                          <v-btn icon>
-                            <v-icon class="grey--text text--lighten-1">thumb_up</v-icon>
-                          </v-btn>
-                          <v-btn icon>
-                            <v-icon class="grey--text text--lighten-1">thumb_down</v-icon>
-                          </v-btn>
-                          <v-spacer />
-                          <v-btn icon>
-                            <v-icon class="grey--text text--lighten-1">report_problem</v-icon>
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-container>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-
-              <v-divider />
-
-              <v-container>
-                {{ course.professor }}老師還有開設以下課程
-                <v-layout>
-                  <v-flex>
-
-                  </v-flex>
-                </v-layout>
-              </v-container>
-              <v-divider />
-              <v-container>
-                以上資料由NTHU+提供。
-              </v-container>
-            </v-flex>
-          </v-layout>
-        </v-tab-item>
-        -->
       </v-tabs-items>
     </v-container>
-    <!--
-    <v-dialog :fullscreen="$store.state.ui.isMobile"
-              v-model="showCommentDialog"
-              max-width="500px"
-              persistent>
-      <v-card>
-        <v-card-title class="headline">評論{{ course.title || course.chineseTitle }}</v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field name="comments-name"
-                          label="您的名字"
-                          value="匿名"></v-text-field>
-            <v-text-field name="comments-text"
-                          label="您的想法"
-                          multi-line></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn flat
-                 @click="showCommentDialog = false">取消</v-btn>
-          <v-btn flat
-                 @click="showCommentDialog = false">送出</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    -->
   </v-container>
 </template>
 
@@ -369,10 +371,14 @@ import {
   VToolbarTitle,
   VTextField,
   VIcon,
-  VChip
+  VChip,
+  VSlider
 } from 'vuetify/lib'
 import { mapState, mapGetters } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
+import DistributionChart from '../../Scores/components/distribution-chart'
+import Vue from 'vue'
+import { register, unregister } from '../../../router/back'
 
 export default {
   name: 'CourseDetail',
@@ -392,7 +398,9 @@ export default {
     VToolbarTitle,
     VTextField,
     VIcon,
-    VChip
+    VChip,
+    VSlider,
+    DistributionChart
   },
   props: {
     title: String,
@@ -406,21 +414,26 @@ export default {
       showCommentDialog: false,
       showReportDialog: false,
       enrolledClassmates: [],
-      enrollingSearchText: ''
+      enrollingSearchText: '',
+      scoresDist: [],
+      scoresDistIndex: 0,
+      chartData: null
     }
   },
   computed: {
-    ...mapState('selectCourses', [
-      'selectionPhase',
-      'addOrDropPhase',
-      'withdrawalPhase',
-      'currentSelectedCourses'
-    ]),
     ...mapGetters('selectCourses', [
       'isCurrentSemester',
       'isCourseSelected',
       'toReadableProfessor'
     ]),
+    ...mapState('selectCourses', [
+      'selectionPhase',
+      'addOrDropPhase',
+      'withdrawalPhase',
+      'currentSelectedCourses',
+      'notSupport'
+    ]),
+    ...mapState('selectCourses/scoresharing', ['valid']),
     enrolledClassmatesSearchResult() {
       if (!this.enrollingSearchText) {
         return this.enrolledClassmates
@@ -443,6 +456,9 @@ export default {
   },
   watch: {
     courseNumber(newVal) {
+      let courseNumber = newVal
+      unregister(this.beforeBack)
+      register(this.beforeBack)
       if (this.courses[newVal]) {
         if (!this.courses[newVal].syllabus) {
           this.$store
@@ -450,10 +466,15 @@ export default {
               courseNumber: newVal
             })
             .then(() => {
+              if (courseNumber !== this.courseNumber) {
+                return
+              }
               this.updateCourse()
+              this.updateScoresDist()
             })
         } else {
           this.updateCourse()
+          this.updateScoresDist()
         }
       } else {
         this.$store
@@ -461,21 +482,122 @@ export default {
             courseNumber: newVal
           })
           .then(() => {
+            if (courseNumber !== this.courseNumber) {
+              return
+            }
             this.updateCourse()
+            this.updateScoresDist(newVal)
           })
       }
 
       this.$store
         .dispatch('selectCourses/getClassmates', { courseNumber: newVal })
         .then(classmates => {
+          if (courseNumber !== this.courseNumber) {
+            return
+          }
           this.enrolledClassmates = classmates
         })
         .catch(() => {
+          if (courseNumber !== this.courseNumber) {
+            return
+          }
           this.enrolledClassmates = []
         })
+    },
+    scoresDistIndex(newVal) {
+      if (this.scoresDist.length > 0) {
+        this.chartData = {
+          labels: [
+            'A+',
+            'A',
+            'A-',
+            'B+',
+            'B',
+            'B-',
+            'C+',
+            'C',
+            'C-',
+            'D',
+            'E',
+            'X'
+          ],
+          datasets: [
+            {
+              label: 'Distribution of scores',
+              backgroundColor: '#64b4f6',
+              data: this.scoresDist[newVal][1].slice(0, 13)
+            }
+          ]
+        }
+      }
     }
   },
   methods: {
+    updateScoresDist() {
+      let courseNumber = this.courseNumber
+      let course =
+        Object.keys(this.course) === 0
+          ? this.courses[courseNumber]
+          : this.course
+      if (!course || Object.keys(course) === 0) {
+        console.error(
+          'course and courses[courseNumber] are both null',
+          course,
+          courseNumber
+        )
+        return
+      }
+
+      let teacher
+      if (Array.isArray(course.professor)) {
+        teacher = course.professor
+      } else if (typeof course.professor === 'string') {
+        teacher = [course.professor.split('(')[0]]
+      } else {
+        throw new Error(
+          '[course-detail/updateScoresDist] course.professor should be either an array or string.' +
+            course.professor
+        )
+      }
+      this.$store
+        .dispatch('selectCourses/scoresharing/query', {
+          NAME: course.title || course.chineseTitle,
+          TEACHER: teacher
+        })
+        .then(scoresDist => {
+          if (courseNumber !== this.courseNumber) {
+            return
+          }
+          Vue.set(this, 'scoresDist', scoresDist || [])
+          if (this.scoresDist.length > 0) {
+            this.chartData = {
+              labels: [
+                'A+',
+                'A',
+                'A-',
+                'B+',
+                'B',
+                'B-',
+                'C+',
+                'C',
+                'C-',
+                'D',
+                'E',
+                'X'
+              ],
+              datasets: [
+                {
+                  label: 'Distribution of scores',
+                  backgroundColor: '#64b4f6',
+                  data: this.scoresDist[0][1].slice(0, 13)
+                }
+              ]
+            }
+          }
+        })
+      this.scoresDistIndex = 0
+    },
     updateCourse() {
       if (this.courseNumber in this.courses) {
         this.course = this.courses[this.courseNumber]
@@ -484,6 +606,17 @@ export default {
       }
     },
     addCourse(courseNumber) {
+      if (this.notSupport.includes(this.courses[courseNumber].title)) {
+        this.$store.dispatch('ui/openRequestDialog', {
+          title: `很抱歉，簡易選課不支援加選「${
+            this.courses[courseNumber].title
+          }」`,
+          text: '因為這堂課的加選機制比較複雜，請至原選課系統選課！',
+          mode: 'info'
+        })
+        return
+      }
+
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch('ui/openRequestDialog', {
@@ -535,22 +668,31 @@ export default {
           })
       })
     },
-    /* eslint-disable-next-line */
-    addFavorite(number) {
-      // store.addFavorateCourses(number)
+    beforeBack() {
+      this.close()
+      return false
     },
-    /* eslint-disable-next-line */
-    removeFavorite(number) {
-      // store.removeFavorateCourses(number)
-    },
-    closeCourseDetail() {
+    close() {
       this.$emit('close-course-detail')
+      unregister(this.beforeBack)
     },
     search(text) {
       this.$emit('search', text)
       if (this.$store.state.ui.isMobile) {
-        this.closeCourseDetail()
+        this.close()
         this.$emit('goto-panel-courses-catalog')
+      }
+    },
+    async retry() {
+      let courseNumber = this.courseNumber
+      let valid = await this.$store.dispatch(
+        'selectCourses/scoresharing/validate'
+      )
+      if (courseNumber !== this.courseNumber) {
+        return
+      }
+      if (valid) {
+        await this.updateScoresDist()
       }
     }
   }

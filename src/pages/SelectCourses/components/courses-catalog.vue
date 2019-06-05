@@ -89,12 +89,11 @@
                           item.action && item.action()
                           updateList()
                         "
-                        ripple
                       >
                         <v-list-tile-title>
-                          <span class="grey--text lighten-1">{{
-                            `搜尋${item.scope} `
-                          }}</span>
+                          <span class="grey--text lighten-1">
+                            {{ `搜尋${item.scope} ` }}
+                          </span>
                           {{ item.text }}
                         </v-list-tile-title>
                       </v-list-tile>
@@ -191,7 +190,8 @@ export default {
       'courses',
       'catalog',
       'departments',
-      'style'
+      'style',
+      'notSupport'
     ]),
     searchItems() {
       let searchText = this.searchText
@@ -273,12 +273,12 @@ export default {
             return
           }
           for (let courseNumber in courses) {
-            let atleast = false
-            let meet = true
             let course = courses[courseNumber]
-            if (!course.time) {
+            if (!courseNumber || !course || !course.time) {
               continue
             }
+            let atleast = false
+            let meet = true
             for (let idx = 0; idx < course.time.length; idx += 2) {
               let period = course.time.slice(idx, idx + 2)
               if (searchPeriods.indexOf(period) === -1) {
@@ -302,6 +302,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               course.professor &&
               course.professor
@@ -322,6 +325,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               (course.title &&
                 course.title.toLowerCase().includes(searchTitle)) ||
@@ -341,6 +347,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (course.number.toLowerCase().includes(searchNumber)) {
               list.push({
                 number: courseNumber
@@ -355,6 +364,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               course.ge_degree &&
               course.ge_degree.toLowerCase().includes(searchGEDegree)
@@ -372,6 +384,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               course.double &&
               course.double.find(v => v.toLowerCase().includes(searchDouble))
@@ -389,6 +404,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               course.program &&
               course.program.find(v => v.toLowerCase().includes(searchProgram))
@@ -406,6 +424,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               course.required &&
               course.required.find(v =>
@@ -421,6 +442,9 @@ export default {
           this.title = this.$t('common.search', [searchText])
           for (let courseNumber in courses) {
             let course = courses[courseNumber]
+            if (!courseNumber || !course) {
+              continue
+            }
             if (
               course.number.toLowerCase().includes(searchText) ||
               (course.title &&
@@ -428,9 +452,10 @@ export default {
               (course.title_eng &&
                 course.title_eng.toLowerCase().includes(searchText)) ||
               (course.professor &&
-                course.professor.find(v =>
-                  v.toLowerCase().includes(searchText)
-                )) ||
+                course.professor
+                  .join(' ')
+                  .toLowerCase()
+                  .includes(searchText)) ||
               (course.time && course.time.toLowerCase().includes(searchText)) ||
               (course.room && course.room.toLowerCase().includes(searchText))
             ) {

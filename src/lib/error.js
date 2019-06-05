@@ -53,6 +53,12 @@ export const ResponseErrorMsg = {
       id: 1011,
       msg: `We are not in selection phase right now.`
     })
+  },
+  NotSupport() {
+    return ResponseErrorJSON({
+      id: 1012,
+      msg: `We are not support to add this course right now.`
+    })
   }
 }
 

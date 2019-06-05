@@ -11,22 +11,17 @@
       class="navdrawer"
     >
       <v-list pt-0>
-        <v-list-tile @click="$router.push('/service')" ripple class="mb-3">
+        <v-list-tile @click="$router.push('/service')" class="mb-3">
           <v-list-tile-action>
             <v-icon>arrow_back</v-icon>
           </v-list-tile-action>
         </v-list-tile>
         <v-tooltip v-for="item in menu" :key="item.title" right>
-          <v-list-tile
-            slot="activator"
-            @click="pc[item.attr] = !pc[item.attr]"
-            ripple
-          >
+          <v-list-tile slot="activator" @click="pc[item.attr] = !pc[item.attr]">
             <v-list-tile-action>
-              <v-icon
-                :color="pc[item.attr] ? style[item.attr].textColor : ''"
-                >{{ item.icon }}</v-icon
-              >
+              <v-icon :color="pc[item.attr] ? style[item.attr].textColor : ''">
+                {{ item.icon }}
+              </v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
@@ -35,6 +30,17 @@
           </v-list-tile>
           <span>{{ `顯示/關閉 ` + $t(item.title) }}</span>
         </v-tooltip>
+      </v-list>
+
+      <v-list style="position: absolute; bottom: 16px; width: 100%;">
+        <v-list-tile @click="tipsDialog = true" ripple>
+          <v-list-tile-action>
+            <v-icon>help</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>幫助</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
@@ -79,6 +85,7 @@
                 :preview-time="previewTime"
                 :list="list"
                 @update-preview-time="updatePreviewTime"
+                @open-course-detail="openCourseDetail"
               ></time-table>
             </v-flex>
 
@@ -121,6 +128,145 @@
           </v-layout>
         </v-flex>
       </v-layout>
+
+      <v-dialog
+        v-model="tipsDialog"
+        max-width="540"
+        :fullscreen="isMobile"
+        max-height="600"
+      >
+        <v-card>
+          <v-card-title class="headline">
+            小提示
+          </v-card-title>
+
+          <v-window v-model="tipsWindow">
+            <v-window-item>
+              <div class="text-xs-center">
+                <img
+                  v-if="isMobile"
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/open-course-detail-mobile.gif"
+                  alt="📊點擊課程打開課程大綱、成績分布"
+                />
+                <img
+                  v-else
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/open-course-detail.gif"
+                  alt="📊點擊課程打開課程大綱、成績分布"
+                />
+              </div>
+
+              <v-card-text class="text-xs-center">
+                📊點擊課程打開課程大綱、成績分布
+              </v-card-text>
+            </v-window-item>
+            <v-window-item>
+              <div class="text-xs-center">
+                <img
+                  v-if="isMobile"
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/time-table-mobile.gif"
+                  alt="💦一目瞭然的課表，還可以顯示教室地點"
+                />
+                <img
+                  v-else
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/time-table.gif"
+                  alt="💦一目瞭然的課表，還可以顯示教室地點"
+                />
+              </div>
+
+              <v-card-text class="text-xs-center">
+                💦一目瞭然的課表，還可以顯示教室地點
+              </v-card-text>
+            </v-window-item>
+            <v-window-item>
+              <div class="text-xs-center">
+                <img
+                  v-if="isMobile"
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/selection-result-mobile.gif"
+                  alt="查看每個階段的選課結果"
+                />
+                <img
+                  v-else
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/selection-result.gif"
+                  alt="查看每個階段的選課結果"
+                />
+              </div>
+
+              <v-card-text class="text-xs-center">
+                😎查看每個階段的選課結果，課表也會一起更新
+              </v-card-text>
+            </v-window-item>
+            <v-window-item>
+              <div class="text-xs-center">
+                <img
+                  v-if="isMobile"
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/search-mobile.gif"
+                  alt="🔍搜尋課程，還可以搜尋時段"
+                />
+                <img
+                  v-else
+                  style="max-height: 40vh; max-width: 100%;"
+                  src="@/assets/search-mobile.gif"
+                  alt="🔍搜尋課程，還可以搜尋時段"
+                />
+              </div>
+
+              <v-card-text class="text-xs-center">
+                🔍搜尋課程，還可以搜尋時段
+              </v-card-text>
+            </v-window-item>
+          </v-window>
+          <v-card-actions>
+            <v-btn
+              flat
+              @click="tipsWindow = tipsWindow - 1"
+              :disabled="tipsWindow === 0"
+            >
+              <v-icon>chevron_left</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+
+            <v-item-group v-model="tipsWindow" class="text-xs-center" mandatory>
+              <v-item v-for="n in 4" :key="`btn-${n}`">
+                <v-btn
+                  icon
+                  @click="tipsWindow = n - 1"
+                  :color="
+                    tipsWindow === n - 1
+                      ? 'blue--text'
+                      : 'blue--text text--darken-4'
+                  "
+                  small
+                >
+                  <v-icon>fiber_manual_record</v-icon>
+                </v-btn>
+              </v-item>
+            </v-item-group>
+
+            <v-spacer></v-spacer>
+
+            <v-btn
+              flat
+              @click="tipsWindow = tipsWindow + 1"
+              :disabled="tipsWindow === 3"
+            >
+              <v-icon>chevron_right</v-icon>
+            </v-btn>
+          </v-card-actions>
+
+          <v-card-actions>
+            <v-btn color="primary" block @click="tipsDialog = false">
+              瞭解 😉
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-content>
   </v-container>
 </template>
@@ -137,7 +283,12 @@ import {
   VBottomNav,
   VNavigationDrawer,
   VContent,
-  VIcon
+  VIcon,
+  VDialog,
+  VWindow,
+  VWindowItem,
+  VItem,
+  VItemGroup
 } from 'vuetify/lib'
 import { mapState } from 'vuex'
 import TimeTable from './components/time-table'
@@ -163,10 +314,17 @@ export default {
     VBottomNav,
     VNavigationDrawer,
     VContent,
-    VIcon
+    VIcon,
+    VDialog,
+    VWindow,
+    VWindowItem,
+    VItem,
+    VItemGroup
   },
   data() {
     return {
+      tipsDialog: true,
+      tipsWindow: 0,
       searchText: null,
       previewTime: '',
       menu: [
@@ -223,6 +381,7 @@ export default {
       'style'
     ]),
     ...mapState('selectCourses', { sr: 'selectionResult' }),
+    ...mapState('ui', ['isMobile']),
     courses() {
       let courses = this.$store.state.selectCourses.courses
       let semester = this.semester
@@ -465,6 +624,13 @@ export default {
         this.$router.push('/')
         this.$store.commit('ui/STOP_LOADING')
       })
+
+    this.$store
+      .dispatch('selectCourses/scoresharing/validate')
+      .then(valid => {
+        console.log(`[scoresharing/validate] valid=${valid}`)
+      })
+      .catch(err => console.error(err))
   }
 }
 </script>

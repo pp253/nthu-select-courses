@@ -1,9 +1,15 @@
 import * as api from '../api'
 import error from '@/lib/error'
 import coursesDb from './courses_db.min.json'
+import scoresharing from './scoresharing'
+
+export function getCourseSemester(courseNumber) {
+  return courseNumber.slice(0, 5)
+}
 
 export default {
   namespaced: true,
+  modules: { scoresharing },
   state: {
     departments: coursesDb.departments,
     geDegreeTypes: [
@@ -30,9 +36,9 @@ export default {
     addOrDropPhase: false,
     withdrawalPhase: false,
     editable: false,
-    currentSemester: '10720',
+    currentSemester: '10810',
     currentPhase: '100',
-    semester: '',
+    semester: '10',
     /**
      * phase
      *   - 'current': we are in selection phase right now.
@@ -59,6 +65,12 @@ export default {
         status: 2,
         orderable: true,
         includesCatalogs: ['中']
+      },
+      {
+        header: '其他需要志願序的課程 (請至原選課系統調整志願序)',
+        status: 2,
+        orderable: false,
+        includesCatalogs: ['英']
       },
       {
         header: 'SelectCourses.coursesList.waitingForRandomTitle',
@@ -125,14 +137,18 @@ export default {
           dark: true
         }
       }
-    }
+    },
+
+    classmates: {},
+
+    notSupport: ['進修英文', '商用英文', '初級英文寫作-段落']
   },
   getters: {
-    isCurrentSemester(state, getters) {
+    isCurrentSemester(state) {
       return courseNumber => {
         return (
           courseNumber !== undefined &&
-          getters.getCourseSemester(courseNumber) === state.currentSemester
+          getCourseSemester(courseNumber) === state.currentSemester
         )
       }
     },
@@ -275,6 +291,11 @@ export default {
       state.semester = ''
 
       state.phase = ''
+    },
+    SET_CLASSMATES(state, options) {
+      state.classmates = Object.assign({}, state.classmates, {
+        [options.courseNumber]: options.classmates
+      })
     },
     SET_SELECTION_PHASE(state, options) {
       state.selectionPhase = options.selectionPhase
@@ -629,7 +650,7 @@ export default {
         api
           .getSelectionResult(
             context.rootState.user.sessionToken,
-            context.rootState.user.username,
+            context.rootState.user.ID,
             options.semester,
             options.phase
           )
@@ -687,26 +708,29 @@ export default {
         reject(error.ResponseErrorMsg.DepartmentAbbrNotFound())
       })
     },
-    isCourseSelected(context, options) {
-      return (
-        context.state.currentSelectedCourses.find(course => {
-          return course.number === options.courseNumber
-        }) !== undefined
-      )
-    },
     getClassmates(context, options) {
       return new Promise((resolve, reject) => {
         if (!context.rootState.user.isLogin) {
           reject(error.ResponseErrorMsg.UserNotLogin())
           return
         }
+        let courseNumber = options.courseNumber
+        if (!courseNumber) {
+          return
+        }
+        if (context.state.classmates.hasOwnProperty(courseNumber)) {
+          resolve(context.state.classmates[courseNumber])
+          return
+        }
+
         api
-          .getClassmates(
-            context.rootState.user.sessionToken,
-            options.courseNumber
-          )
+          .getClassmates(context.rootState.user.sessionToken, courseNumber)
           .then(data => {
             resolve(data.classmates)
+            context.commit('SET_CLASSMATES', {
+              courseNumber: courseNumber,
+              classmates: data.classmates
+            })
           })
           .catch(err => {
             reject(err)
