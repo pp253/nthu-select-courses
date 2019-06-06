@@ -371,8 +371,7 @@ import {
   VToolbarTitle,
   VTextField,
   VIcon,
-  VChip,
-  VSlider
+  VChip
 } from 'vuetify/lib'
 import { mapState, mapGetters } from 'vuex'
 import LoadingContainer from '@/components/loading-container'
@@ -399,7 +398,6 @@ export default {
     VTextField,
     VIcon,
     VChip,
-    VSlider,
     DistributionChart
   },
   props: {
