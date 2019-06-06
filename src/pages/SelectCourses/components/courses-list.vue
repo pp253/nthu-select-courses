@@ -19,9 +19,14 @@
     </v-subheader>
     <template v-if="list && list.length > 0">
       <template v-for="(course, index) in adjustedList">
-        <v-subheader v-if="course.header" :key="course.header" class="pr-0">
-          {{ $t(course.header) }}</v-subheader
+        <v-subheader
+          v-if="course.header"
+          :key="course.header"
+          class="pr-0"
+          style="font-weight: bold;"
         >
+          {{ $t(course.header) }}
+        </v-subheader>
         <v-subheader v-if="course.orderable" :key="course.header + '-btn'">
           <v-dialog
             v-if="course.orderable"
@@ -36,6 +41,7 @@
               slot="activator"
               outline
               block
+              @click="openEditOrder(course)"
               v-t="'SelectCourses.coursesList.editOrder'"
             ></v-btn>
             <v-card class="dialog-full-scrollable">
@@ -45,10 +51,7 @@
               ></v-card-title>
               <v-card-text class="fill-height">
                 <v-list subheader>
-                  <draggable
-                    v-model="course.newOrder"
-                    :options="{ handle: '.drag-handle' }"
-                  >
+                  <draggable v-model="course.newOrder" handle=".drag-handle">
                     <template v-for="element in course.newOrder">
                       <v-list-tile avatar :key="'drag-' + element.number">
                         <v-list-tile-action class="grey--text lighten-1">
@@ -180,7 +183,7 @@
                 <v-icon>
                   {{
                     isCourseSelected(course.number)
-                      ? 'add_circle'
+                      ? 'clear'
                       : 'add_circle_outline'
                   }}
                 </v-icon>
@@ -257,6 +260,7 @@
 </template>
 
 <script>
+import { register, unregister } from '@/router/back'
 import {
   VList,
   VListTile,
@@ -595,13 +599,14 @@ export default {
           oldOrder: category.oldOrder
         })
         .then(() => {
-          category.dialog = false
+          this.closeEditOrder(category)
           this.$store.dispatch('ui/openSnackbar', {
             snackbarText: this.$t('SelectCourses.action.editOrderSuccess')
           })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
+          this.closeEditOrder(category)
           console.error(err)
           this.$store.commit('ui/STOP_LOADING')
         })
@@ -611,7 +616,19 @@ export default {
       for (let order of category.oldOrder) {
         category.newOrder.push(order)
       }
+      this.closeEditOrder(category)
+    },
+    openEditOrder(category) {
+      // category.dialog = true
+      category.beforeBack = () => {
+        this.closeEditOrder(category)
+        return false
+      }
+      register(category.beforeBack)
+    },
+    closeEditOrder(category) {
       category.dialog = false
+      unregister(category.beforeBack)
     }
   }
 }
