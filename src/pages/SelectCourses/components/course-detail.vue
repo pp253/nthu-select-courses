@@ -604,15 +604,22 @@ export default {
       }
     },
     addCourse(courseNumber) {
-      if (this.notSupport.includes(this.courses[courseNumber].title)) {
-        this.$store.dispatch('ui/openRequestDialog', {
-          title: `很抱歉，簡易選課不支援加選「${
-            this.courses[courseNumber].title
-          }」`,
-          text: '因為這堂課的加選機制比較複雜，請至原選課系統選課！',
-          mode: 'info'
-        })
-        return
+      let title = this.courses[courseNumber].title
+      for (let term of this.notSupport) {
+        if (
+          term === title ||
+          title.startsWith(`${term}-`) ||
+          title.startsWith(`${term}：`)
+        ) {
+          this.$store.dispatch('ui/openRequestDialog', {
+            title: `很抱歉，簡易選課不支援加選「${
+              this.courses[courseNumber].title
+            }」`,
+            text: '因為這堂課的加選機制比較複雜，請至原選課系統選課！',
+            mode: 'info'
+          })
+          return
+        }
       }
 
       return new Promise((resolve, reject) => {
