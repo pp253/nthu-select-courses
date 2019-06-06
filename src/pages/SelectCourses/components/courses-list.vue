@@ -600,6 +600,9 @@ export default {
     },
     editOrder(category) {
       this.$store.commit('ui/START_LOADING')
+      if (!category.newOrder || !category.oldOrder) {
+        return
+      }
       this.$store
         .dispatch('selectCourses/editOrder', {
           newOrder: category.newOrder,
