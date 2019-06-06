@@ -50,6 +50,7 @@ export default {
      * Configuration of the sorting of courses stauts,
      * - header: their title to be shown in the <CourseList>
      * - status: course.status (0, 1, 2)
+     * - order: set order=true to make the courses category to be order.
      * - orderable: set orderable=true to show the reorder button in <CourseList>.
      * - includesCatalogs: the catalog of random course
      */
@@ -57,20 +58,23 @@ export default {
       {
         header: 'SelectCourses.coursesList.waitingForRandomGEPETitle',
         status: 2,
+        order: true,
         orderable: true,
         includesCatalogs: ['通', '體']
       },
       {
         header: 'SelectCourses.coursesList.waitingForRandomCLTTitle',
         status: 2,
+        order: true,
         orderable: true,
         includesCatalogs: ['中']
       },
       {
-        header: '其他需要志願序的課程 (請至原選課系統調整志願序)',
+        header: '其他有志願序的課程 (請至原選課系統調整志願序)',
         status: 2,
+        order: true,
         orderable: false,
-        includesCatalogs: ['英']
+        includesCatalogs: ['進階英文']
       },
       {
         header: 'SelectCourses.coursesList.waitingForRandomTitle',
@@ -141,7 +145,16 @@ export default {
 
     classmates: {},
 
-    notSupport: ['進修英文', '商用英文', '初級英文寫作-段落']
+    notSupport: [
+      '進修英文',
+      '進階英文',
+      '進階英文：閱讀與討論',
+      '進階英文：聽講',
+      '進階英文：閱讀與討論',
+      '進階英文：閱讀與討論',
+      '商用英文',
+      '初級英文寫作-段落'
+    ]
   },
   getters: {
     isCurrentSemester(state) {
@@ -241,7 +254,7 @@ export default {
          * If item.status is randomized (status=2).
          */
         if (item.status === 2) {
-          if (item.orderable === true) {
+          if (item.order === true) {
             let list = []
             for (let catalog of item.includesCatalogs) {
               if (!(catalog in coursesSet[item.status])) {
@@ -269,6 +282,32 @@ export default {
           resultSet[item.header] = coursesSet[item.status]
         }
       }
+
+      // deal with unknown courses category
+      for (let course of state.currentSelectedCourses) {
+        if (!course.status) {
+          console.error('Course should have course status.', course)
+          continue
+        }
+        let exist = false
+        for (let header in resultSet) {
+          if (
+            resultSet[header].findIndex(v => v.number === course.number) !== -1
+          ) {
+            exist = true
+            break
+          }
+        }
+        if (!exist) {
+          if (!resultSet['其他有志願序的課程 (請至原選課系統調整志願序)']) {
+            resultSet['其他有志願序的課程 (請至原選課系統調整志願序)'] = []
+          }
+          resultSet['其他有志願序的課程 (請至原選課系統調整志願序)'].push(
+            course
+          )
+        }
+      }
+
       return resultSet
     }
   },
