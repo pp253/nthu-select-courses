@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { htmlEncode } from '@/lib/utils'
 
-export const SERVER_BASE = 'http://localhost:3000/' // 'https://nthu-courses.duckdns.org/' //
+export const SERVER_BASE = 'https://nthu-courses.duckdns.org/' // 'http://localhost:3000/'
 export const ERR_MSG = {
   20: {
     title: 'entry.UserInfoNotCorrectTitle',
