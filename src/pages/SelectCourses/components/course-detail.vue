@@ -14,9 +14,11 @@
         <v-tab href="#tab-course-detail-syllabus">
           {{ $t('courseDetail.syllabus') }}
         </v-tab>
+        <!--
         <v-tab href="#tab-course-detail-enrolled-classmates">
           {{ $t('courseDetail.classmates') }}
         </v-tab>
+        -->
         <!-- <v-tab href="#tab-course-detail-comments">課程評論</v-tab> -->
       </v-tabs>
     </v-toolbar>
@@ -488,6 +490,11 @@ export default {
           })
       }
 
+      /**
+       * FIXME: this may cause "db error" in ces system.
+       * turn off this temporary.
+       */
+      /*
       this.$store
         .dispatch('selectCourses/getClassmates', { courseNumber: newVal })
         .then(classmates => {
@@ -502,6 +509,7 @@ export default {
           }
           this.enrolledClassmates = []
         })
+      */
     },
     scoresDistIndex(newVal) {
       if (this.scoresDist.length > 0) {
