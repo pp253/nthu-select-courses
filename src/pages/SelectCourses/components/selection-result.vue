@@ -207,21 +207,17 @@ export default {
       }
       if (semesterPhase === 'current') {
         this.$store.commit('selectCourses/SET_PHASE', { phase: 'current' })
+        this.$store.dispatch('selectCourses/getCurrentSelectedCourses')
       } else {
         let rgText = semesterPhase.split(' ')
         this.$store.commit('selectCourses/SET_SEMESTER', {
           semester: rgText[0]
         })
         this.$store.commit('selectCourses/SET_PHASE', { phase: rgText[1] })
-        if (
-          !this.selectionResult[this.semester] ||
-          !this.selectionResult[this.semester][this.phase]
-        ) {
-          this.$store.dispatch('selectCourses/getSelectionResult', {
-            semester: this.semester,
-            phase: this.phase
-          })
-        }
+        this.$store.dispatch('selectCourses/getSelectionResult', {
+          semester: this.semester,
+          phase: this.phase
+        })
       }
     },
     updatePreviewTime(number) {

@@ -355,13 +355,11 @@ export default {
       pc: {
         coursesCatalog: true,
         selectionResult: true,
-        favoriteCoursesList: false,
         timeTable: true
       },
       mobile: {
         coursesCatalog: false,
         selectionResult: true,
-        favoriteCoursesList: false,
         timeTable: false
       },
 

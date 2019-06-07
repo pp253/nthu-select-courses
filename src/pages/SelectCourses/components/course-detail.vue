@@ -652,6 +652,12 @@ export default {
                 resolve(data)
               })
               .catch(err => {
+                if (err && err.id === 1011) {
+                  this.$store.commit('ui/OPEN_DIALOG', {
+                    title: '加選失敗',
+                    text: '請在選課結果頁籤中切換選課階段至「目前選課狀況」'
+                  })
+                }
                 this.$store.commit('ui/STOP_LOADING')
                 reject(err)
               })
@@ -749,6 +755,12 @@ export default {
                 resolve()
               })
               .catch(err => {
+                if (err && err.id === 1011) {
+                  this.$store.commit('ui/OPEN_DIALOG', {
+                    title: '退選失敗',
+                    text: '請在選課結果頁籤中切換選課階段至「目前選課狀況」'
+                  })
+                }
                 this.$store.commit('ui/STOP_LOADING')
                 reject(err)
               })
