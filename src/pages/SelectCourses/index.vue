@@ -261,7 +261,7 @@
           </v-card-actions>
 
           <v-card-actions>
-            <v-btn color="primary" block @click="tipsDialog = false">
+            <v-btn color="primary" block @click="closeTipsDialog">
               瞭解 😉
             </v-btn>
           </v-card-actions>
@@ -323,7 +323,7 @@ export default {
   },
   data() {
     return {
-      tipsDialog: true,
+      tipsDialog: false,
       tipsWindow: 0,
       searchText: null,
       previewTime: '',
@@ -550,6 +550,13 @@ export default {
     closeCourseDetail() {
       this.showCourseDetail = false
     },
+    openTipsDialog() {
+      this.tipsDialog = true
+    },
+    closeTipsDialog() {
+      this.tipsDialog = false
+      this.$cookie.set('tipsVersion', '1', { expires: 7 })
+    },
     refresh(force = false) {
       if (
         !(this.selectionPhase || this.addOrDropPhase || this.withdrawalPhase)
@@ -597,6 +604,10 @@ export default {
     this.$store.commit('ui/SET_THEME_COLOR', {
       color: this.style.themeColor
     })
+    let tipsVersion = this.$cookie.get('tipsVersion')
+    if (!tipsVersion) {
+      this.openTipsDialog()
+    }
 
     this.hideDrawer = false
     this.$store.commit('ui/START_LOADING')
