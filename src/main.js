@@ -17,6 +17,7 @@ import Vuetify, {
 import { Ripple } from 'vuetify/lib/directives'
 import 'vuetify/src/stylus/app.styl'
 import VueWait from 'vue-wait'
+import VueCookie from 'vue-cookie'
 import locale from '@/locale'
 import router from '@/router'
 import store from '@/store'
@@ -53,6 +54,7 @@ Vue.use(Vuetify, {
   }
 })
 
+Vue.use(VueCookie)
 Vue.use(VueWait)
 
 Vue.config.productionTip = false

@@ -14,9 +14,11 @@
         <v-tab href="#tab-course-detail-syllabus">
           {{ $t('courseDetail.syllabus') }}
         </v-tab>
+        <!--
         <v-tab href="#tab-course-detail-enrolled-classmates">
           {{ $t('courseDetail.classmates') }}
         </v-tab>
+        -->
         <!-- <v-tab href="#tab-course-detail-comments">課程評論</v-tab> -->
       </v-tabs>
     </v-toolbar>
@@ -422,7 +424,8 @@ export default {
     ...mapGetters('selectCourses', [
       'isCurrentSemester',
       'isCourseSelected',
-      'toReadableProfessor'
+      'toReadableProfessor',
+      'coursesFiltering'
     ]),
     ...mapState('selectCourses', [
       'selectionPhase',
@@ -488,6 +491,11 @@ export default {
           })
       }
 
+      /**
+       * FIXME: this may cause "db error" in ces system.
+       * turn off this temporary.
+       */
+      /*
       this.$store
         .dispatch('selectCourses/getClassmates', { courseNumber: newVal })
         .then(classmates => {
@@ -502,6 +510,7 @@ export default {
           }
           this.enrolledClassmates = []
         })
+      */
     },
     scoresDistIndex(newVal) {
       if (this.scoresDist.length > 0) {
@@ -650,6 +659,12 @@ export default {
                 resolve(data)
               })
               .catch(err => {
+                if (err && err.id === 1011) {
+                  this.$store.commit('ui/OPEN_DIALOG', {
+                    title: '加選失敗',
+                    text: '請在選課結果頁籤中切換選課階段至「目前選課狀況」'
+                  })
+                }
                 this.$store.commit('ui/STOP_LOADING')
                 reject(err)
               })
@@ -658,18 +673,104 @@ export default {
     },
     quitCourse(courseNumber) {
       return new Promise((resolve, reject) => {
-        this.$store.commit('ui/START_LOADING')
         this.$store
-          .dispatch('selectCourses/quitCourse', {
-            courseNumber: courseNumber
+          .dispatch('ui/openRequestDialog', {
+            title: `確定退選「${this.courses[courseNumber].title}」嗎？`,
+            text: '此動作無法還原。',
+            mode: 'request'
           })
-          .then(data => {
-            this.$store.commit('ui/STOP_LOADING')
-            resolve(data)
-          })
-          .catch(err => {
-            this.$store.commit('ui/STOP_LOADING')
-            reject(err)
+          .then(response => {
+            if (!response) {
+              resolve()
+              return
+            }
+
+            /**
+             * If the courses prepare to quit is a orderable course,
+             * suggest user to reorder the list.
+             */
+            let suggestReorder = this.courses[courseNumber].random > 1
+            let header = null
+            if (suggestReorder) {
+              for (header in this.coursesFiltering) {
+                if (
+                  this.coursesFiltering[header].find(
+                    c => c.number === courseNumber
+                  )
+                ) {
+                  break
+                }
+              }
+            }
+
+            this.$store.commit('ui/START_LOADING')
+            this.$store
+              .dispatch('selectCourses/quitCourse', {
+                courseNumber: courseNumber
+              })
+              .then(() => {
+                this.$store.commit('ui/STOP_LOADING')
+                this.$store.dispatch('ui/openSnackbar', {
+                  snackbarText: this.$t('SelectCourses.action.quitSuccess', [
+                    this.courses[courseNumber].title
+                  ])
+                })
+
+                /**
+                 * Check whether the course is a randomized and orderable course,
+                 * if it is, we suggest user to perform editOrder().
+                 */
+                if (this.courses[courseNumber].random === 0) {
+                  resolve()
+                  return
+                }
+
+                return this.$store.dispatch('ui/openRequestDialog', {
+                  title: `請問是否要自動補齊空缺的志願序？`,
+                  text:
+                    '補齊空缺的志願序可能會花些時間，如果要大量退選的話，建議稍後再自動補齊空缺的志願序。你可以透過「編輯志願序」按鈕補齊空缺的志願序。',
+                  mode: 'request'
+                })
+              })
+              .then(response => {
+                if (!response) {
+                  resolve()
+                  return
+                }
+
+                let list = this.coursesFiltering[header]
+
+                this.$store.commit('ui/START_LOADING')
+                this.$store
+                  .dispatch('selectCourses/editOrder', {
+                    newOrder: list,
+                    oldOrder: list
+                  })
+                  .then(() => {
+                    this.$store.dispatch('ui/openSnackbar', {
+                      snackbarText: this.$t(
+                        'SelectCourses.action.editOrderSuccess'
+                      )
+                    })
+                    this.$store.commit('ui/STOP_LOADING')
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    this.$store.commit('ui/STOP_LOADING')
+                  })
+
+                resolve()
+              })
+              .catch(err => {
+                if (err && err.id === 1011) {
+                  this.$store.commit('ui/OPEN_DIALOG', {
+                    title: '退選失敗',
+                    text: '請在選課結果頁籤中切換選課階段至「目前選課狀況」'
+                  })
+                }
+                this.$store.commit('ui/STOP_LOADING')
+                reject(err)
+              })
           })
       })
     },
