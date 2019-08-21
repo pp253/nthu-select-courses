@@ -25,7 +25,10 @@
       <v-tabs-items v-model="tabs">
         <v-tab-item value="tab-distribution">
           <v-layout wrap justify-center>
-            <v-flex xs12 lg8 xl6>
+            <v-flex xs12 v-if="distributionNotProvided" pa-5 text-xs-center>
+              這堂課沒有提供成績分布😥😥😥
+            </v-flex>
+            <v-flex xs12 lg8 xl6 v-if="!distributionNotProvided">
               <v-container v-if="course && course.distribution">
                 <v-layout>
                   <v-flex
@@ -98,9 +101,7 @@
                 <v-btn
                   v-if="course.syllabus.file"
                   :href="
-                    `https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${
-                      course.syllabus.number
-                    }.pdf`
+                    `https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/output/6_6.1_6.1.12/${course.syllabus.number}.pdf`
                   "
                   target="_blank"
                   rel="noreferrer"
@@ -155,7 +156,8 @@ export default {
   data() {
     return {
       chartData: {},
-      tabs: 'tab-distribution'
+      tabs: 'tab-distribution',
+      distributionNotProvided: false
     }
   },
   watch: {
@@ -166,6 +168,12 @@ export default {
       this.$store
         .dispatch('scores/getDistribution', { courseNumber: newVal })
         .then(distribution => {
+          if (!distribution) {
+            this.distributionNotProvided = true
+            this.$store.commit('ui/STOP_LOADING')
+            return
+          }
+          this.distributionNotProvided = false
           this.chartData = {
             labels: [
               'A+',

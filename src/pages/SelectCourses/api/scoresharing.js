@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-export const SERVER_BASE = 'https://www.leporidae.ml/v2/'
+export const SERVER_BASE = 'https://www.nthuscoresharing.ml/api/v1/'
 
 export function query(username, query_key) {
   return axios.get(
-    SERVER_BASE + `query?user_id=${username}&query_key=${query_key}`
+    SERVER_BASE + `getPastCourse?userID=${username}&courseNumber=${query_key}`
   )
 }
 
 export function validate(username) {
-  return axios.get(SERVER_BASE + `validate?user_id=${username}`)
+  return axios.post(SERVER_BASE + `login`, { userId: username })
 }
