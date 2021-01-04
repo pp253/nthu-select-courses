@@ -12,7 +12,7 @@
     "push": "bash ./.bin/push-to-github.sh"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "chart.js": "^2.8.0",
     "chartjs-plugin-datalabels": "0.5.0",
     "printd": "^1.4.0",
